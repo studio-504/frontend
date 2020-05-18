@@ -121,7 +121,7 @@
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/REAL.app",
-        "build": "ENVFILE=.env.development react-native run-ios --simulator='iPhone 11' --scheme REAL.development -- --reset-cache -sdk iphonesimulator -derivedDataPath ios/build",
+        "build": "xcodebuild -workspace ios/REAL.xcworkspace  -scheme REAL.development -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 11"

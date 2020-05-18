@@ -19,7 +19,7 @@ const BottomAction = ({
   const styling = styles(theme)
 
   return (
-    <TouchableOpacity style={styling.root} onPress={onPress}>
+    <TouchableOpacity style={styling.root} onPress={onPress} testID='login_1'>
       <Subheading style={styling.action}>{children}</Subheading>
     </TouchableOpacity>
   )
