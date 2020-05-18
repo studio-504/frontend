@@ -29,7 +29,7 @@ const Archived = ({
       <GridComponent items={path(['data'])(postsGetArchived)}>
         {(post, priorityIndex) => (
           <GridItemComponent
-            onPress={navigationActions.navigatePostMedia(navigation, { post, theme, })}
+            onPress={navigationActions.navigatePostMedia(navigation, { post })}
             active={false}
             activeIcon={null}
             inactiveIcon={null}

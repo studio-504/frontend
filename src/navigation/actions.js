@@ -86,8 +86,11 @@ export const navigateProfileFollower = (navigation, params) => () =>
 export const navigateProfileFollowed = (navigation, params) => () =>
   navigation.push('ProfileFollowed', params)
 
-export const navigatePostMedia = (navigation, params) => () =>
+export const navigatePostMedia = (navigation, params) => () => {
+  console.log(params)
   navigation.push('PostMedia', params)
+}
+  
 
 export const navigatePostLikes = (navigation, params) => () =>
   navigation.push('PostLikes', params)
@@ -151,18 +154,3 @@ export const navigateAuthForgotConfirm = (navigation, params) => () =>
 
 export const navigateAuthCamera = (navigation, params) => () =>
   navigation.navigate('AuthCamera', params)
-
-/**
- *
- */
-export const navigateAuthSignup = (navigation, params) => () =>
-  navigation.navigate('AuthSignup', params)
-
-export const navigateAuthSignupConfirm = (navigation, params) => () =>
-  navigation.navigate('AuthSignupConfirm', params)
-
-export const navigateOnboardCamera = (navigation, params) => () =>
-  navigation.navigate('OnboardCamera', params)
-
-export const navigateOnboardPhoto = (navigation, params) => () =>
-  navigation.navigate('OnboardPhoto', params)

@@ -55,16 +55,10 @@ function* authCheckRequest(req) {
       nextRoute: 'Root',
     }))
   } catch (error) {
-    // yield AwsAuth.signOut({ global: true })
     if (path(['message'])(error) === 'PROFILE_PHOTO_MISSING') {
       yield put(actions.authCheckFailure({
         message: errors.getMessagePayload(constants.AUTH_CHECK_FAILURE, 'PROFILE_PHOTO_MISSING', error.message),
         nextRoute: 'AuthPhoto',
-      }))
-    } else if (path(['errors', '0', 'path', '0'])(error) === 'self') {
-      yield put(actions.authCheckFailure({
-        message: errors.getMessagePayload(constants.AUTH_CHECK_FAILURE, 'USER_JUST_CREATED', error.message),
-        nextRoute: 'OnboardName',
       }))
     } else {
       yield put(actions.authCheckFailure({
@@ -92,12 +86,12 @@ function* authSigninRequest(req) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninFailure({
         message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_CONFIRMED'),
-        nextRoute: 'AuthSignup',
+        nextRoute: 'Signup',
       }))
     } else if (error.code === 'UserNotFoundException') {
       yield put(actions.authSigninFailure({
         message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_FOUND'),
-        nextRoute: 'AuthSignup',
+        nextRoute: 'Signup',
       }))
     } else if (error.code === 'NotAuthorizedException') {
       yield put(actions.authSigninFailure({
