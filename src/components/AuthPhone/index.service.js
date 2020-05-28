@@ -8,6 +8,7 @@ import compose from 'ramda/src/compose'
 import toLower from 'ramda/src/toLower'
 import replace from 'ramda/src/replace'
 import pathOr from 'ramda/src/pathOr'
+import { logEvent } from 'services/Analytics'
 
 const AuthPhoneComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -35,10 +36,11 @@ const AuthPhoneComponentService = ({ children }) => {
     /**
      *
      */
+    logEvent('SIGNUP_CREATE_REQUEST')
     const signupCreatePayload = {
       username: signupUsername.payload.username,
       usernameType: 'phone',
-      phone: signupPhone.payload.phone,
+      phone: `${payload.countryCode}${payload.phone}`,
       email: null,
       password: signupPassword.payload.password,
     }
@@ -87,6 +89,7 @@ const AuthPhoneComponentService = ({ children }) => {
       signupCreate.data.cognitoDelivery !== 'SMS'
     ) return
 
+    logEvent('SIGNUP_CREATE_SUCCESS')
     navigationActions.navigateAuthPhoneConfirm(navigation)()
   }, [
     signupCreate.status,
@@ -97,11 +100,13 @@ const AuthPhoneComponentService = ({ children }) => {
   const formErrorMessage = signupCreate.error.text
 
   const formInitialValues = {
-    phone: signupPhone.payload.phone || '+1',
+    countryCode: '+1',
+    phone: signupPhone.payload.phone,
   }
 
   const handleFormTransform = (values) => ({
-    phone: compose(replace(/[^+0-9]/g, ''),  trim, toLower, pathOr('', ['phone']))(values),
+    countryCode: compose(replace(/[^+0-9]/g, ''), trim, toLower, pathOr('', ['countryCode']))(values),
+    phone: compose(replace(/[^0-9]/g, ''), trim, toLower, pathOr('', ['phone']))(values),
   })
 
   const handleErrorClose = () => dispatch(signupActions.signupCreateIdle())

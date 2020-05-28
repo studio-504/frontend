@@ -26,15 +26,33 @@ export const AuthProvider = ({
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const nextRoute = useSelector(state => state.auth.authCheck.nextRoute)
   const status = useSelector(state => state.auth.authCheck.status)
-  const authUserId = useSelector(state => state.auth.user.userId)
   const translationFetch = useSelector(state => state.translation.translationFetch)
   const languageCode = useSelector(authSelector.languageCodeSelector)
   const theme = useSelector(authSelector.themeSelector)
   const uiNotifications = useSelector(state => state.ui.notifications)
+  const authUserId = useSelector(state => path(['userId'])(state.auth.user))
+  const authGoogle = useSelector(state => state.auth.authGoogle)
+  const authCheck = useSelector(state => state.auth.authCheck)
+
+  const postsDelete = useSelector(state => state.posts.postsDelete)
+  const postsArchive = useSelector(state => state.posts.postsArchive)
+  const postsRestoreArchived = useSelector(state => state.posts.postsRestoreArchived)
+  const postsFlag = useSelector(state => state.posts.postsFlag)
+
+  const errorsPool = [{
+    appErrorMessage: authGoogle.error.text,
+    handleErrorClose: () => dispatch(authActions.authGoogleIdle()),
+  }, {
+    appErrorMessage: authCheck.error.text,
+    handleErrorClose: () => dispatch(authActions.authCheckIdle()),
+  }]
+  const { appErrorMessage, handleErrorClose } = errorsPool
+    .filter(error => error.appErrorMessage && !error.appErrorMessage.includes('Failed to authorize'))
+    .pop() || {}
 
   const user = useSelector(
     authSelector.authUserSelector,
-    (prevProps, nextProps) => prevProps.userId === nextProps.userId
+    (prevProps = {}, nextProps = {}) => prevProps.userId === nextProps.userId
   )
 
   const authCheckRequest = (payload) =>
@@ -101,6 +119,29 @@ export const AuthProvider = ({
     Logger.setUser(user)
   }, [path(['userId'])(user)])
 
+  useEffect(() => {
+    if (postsDelete.status === 'success') {
+      dispatch(postsActions.postsDeleteIdle())
+    }
+
+    if (postsArchive.status === 'success') {
+      dispatch(postsActions.postsArchiveIdle())
+    }
+
+    if (postsRestoreArchived.status === 'success') {
+      dispatch(postsActions.postsRestoreArchivedIdle())
+    }
+
+    if (postsFlag.status === 'success') {
+      dispatch(postsActions.postsFlagIdle())
+    }
+  }, [
+    postsDelete.status,
+    postsArchive.status,
+    postsRestoreArchived.status,
+    postsFlag.status,
+  ])
+
   if (
     !path(['data', 'en'])(translationFetch) ||
     !path(['data', 'length'])(themeFetch)
@@ -129,5 +170,7 @@ export const AuthProvider = ({
     authenticated,
     uiNotifications,
     uiNotificationIdle,
+    appErrorMessage,
+    handleErrorClose,
   })
 }

@@ -46,7 +46,8 @@ const Action = ({
    */
   const likeButtonVisibility = (
     !post.likesDisabled &&
-    !path(['postedBy', 'likesDisabled'])(post)
+    !path(['postedBy', 'likesDisabled'])(post) &&
+    !path(['likesDisabled'])(user)
   )
 
   /**
@@ -56,7 +57,8 @@ const Action = ({
    */
   const commentButtonVisibility = (
     !post.commentsDisabled &&
-    !path(['postedBy', 'commentsDisabled'])(post)
+    !path(['postedBy', 'commentsDisabled'])(post) &&
+    !path(['commentsDisabled'])(user)
   )
 
   /**
@@ -66,7 +68,8 @@ const Action = ({
    * - Current authenticated user is tagged in post by author
    */
   const shareButtonVisibility = (
-    !post.sharingDisabled ||
+    !post.sharingDisabled &&
+    !path(['sharingDisabled'])(user) &&
     tagged
   )
 
@@ -112,9 +115,6 @@ const Action = ({
         : null}
       </View>
 
-      <View style={styling.actionCenter}>
-      </View>
-
       {seenByVisibility ?
         <TouchableOpacity style={styling.actionRight} onPress={navigationActions.navigatePostViews(navigation, { post })}>
           <Caption>{t('Seen by {{viewedByCount}} people', { viewedByCount: post.viewedByCount })}</Caption>
@@ -141,11 +141,6 @@ const styles = theme => StyleSheet.create({
   },
   actionLeft: {
     flex: 1,
-    flexDirection: 'row',
-  },
-  actionCenter: {
-    flex: 1,
-    justifyContent: 'center',
     flexDirection: 'row',
   },
   actionRight: {

@@ -1,54 +1,106 @@
 import { graphqlOperation } from '@aws-amplify/api'
 import { call, put, takeEvery, all, getContext, select } from 'redux-saga/effects'
-import { eventChannel } from 'redux-saga'
+import { eventChannel, END } from 'redux-saga'
 import path from 'ramda/src/path'
-import RNFetchBlob from 'rn-fetch-blob'
 import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as constants from 'store/ducks/posts/constants'
-import promiseRetry from 'promise-retry'
 import dayjs from 'dayjs'
 import { v4 as uuid } from 'uuid'
 import RNFS from 'react-native-fs' 
 import * as Logger from 'services/Logger'
+import filePath from 'path'
 
-/**
- * 
- */
-function initPostsCreateUploadChannel({ image, imageUrl }) {
-  if (!image || !imageUrl) {
-    return eventChannel(emitter => {
-      emitter({ status: 'success', progress: 100 })
-
-      return () => {
-      }
-    })
+function initPostsCreateUploadChannel({ image, uploadUrl }) {
+  const getName = (image) => {
+    return filePath.basename(image, '.jpg')
   }
 
-  const imagePath = RNFetchBlob.wrap((image || '').replace('file://', ''))
+  const getFilename = (image) => {
+    return filePath.basename(image)
+  }
 
-  return eventChannel(emitter => {
-    promiseRetry((retry, attempt) => {
-      emitter({ status: 'retry', progress: 0, attempt })
+  const getFilepath = (image) => {
+    return image
+  }
 
-      return RNFetchBlob
-        .fetch('PUT', imageUrl, { 'Content-Type' : 'application/octet-stream' }, imagePath)
-        .uploadProgress((written, total) => {
-          emitter({ status: 'progress', progress: parseInt(written / total * 100, 10), attempt })
-        })
-        .catch((error) => {
-          emitter({ status: 'progress', progress: 0, attempt, error })
-          retry(error)
-        })
-    }, { retries: 5 })
-    .then((resp) => {
-      emitter({ status: 'success', progress: 100 })
+  const getFiletype = (image) => {
+    return 'image/jpeg'
+  }
+
+  const files = [{
+    name: getName(image),
+    filename: getFilename(image),
+    filepath: getFilepath(image),
+    filetype: getFiletype(image),
+  }]
+
+  const handleRequest = (emitter) => (response) => {
+    const jobId = response.jobId
+    emitter({ status: 'retry', progress: 0, jobId, })
+  }
+
+  const handleProgress = (emitter) => (response) => {
+    const jobId = response.jobId
+    const progress = parseInt(response.totalBytesSent / response.totalBytesExpectedToSend * 100, 10)
+
+    if (progress % 10 === 0) {
+      const nextProgress = progress === 100 ? 99 : progress
+      emitter({ status: 'progress', progress: nextProgress, jobId })
+    }
+  }
+
+  const handleSuccess = (emitter) => (response) => {
+    const jobId = response.jobId
+    emitter({ status: 'success', progress: 99, jobId })
+    emitter(END)
+  }
+
+  const handleFailure = (emitter) => (error) => {
+    emitter({ status: 'failure', progress: 0 })
+    emitter(END)
+  }
+
+  const initUpload = (emitter) => (begin, progress) =>
+    RNFS.uploadFiles({
+      binaryStreamOnly: true,
+      toUrl: uploadUrl,
+      files: files,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
+      begin,
+      progress,
     })
-    .catch((error) => {
-      emitter({ status: 'failure', progress: 0 })
-    })
+
+  /**
+   *
+   */
+  return eventChannel((emitter) => {
+    const uploader = initUpload(emitter)(
+      handleRequest(emitter),
+      handleProgress(emitter)
+    )
+
+    const next = (response) => {
+      if (response.statusCode === 200) {
+        handleSuccess(emitter)(response)
+      } else {
+        handleFailure(emitter)(response)
+      }
+    }
+
+    const fail = (error) => {
+      handleFailure(emitter)(error)
+    }
+
+    uploader.promise
+      .then(next)
+      .catch(fail)
 
     return () => {
+      RNFS.stopUpload(uploader.jobId)
     }
   })
 }
@@ -56,16 +108,23 @@ function initPostsCreateUploadChannel({ image, imageUrl }) {
 function* handlePostsCreateRequest(payload) {
   const AwsAPI = yield getContext('AwsAPI')
 
-  const data = yield AwsAPI.graphql(graphqlOperation(queries.addPhotoPost, payload))
-
-  const currentIndex = 0
-  const selector = path(['data', 'addPost'])
-  const imageSelector = path(['images', currentIndex])
+  const data = yield (function* getPost() {
+    try {
+      const post = yield AwsAPI.graphql(graphqlOperation(queries.getPost, payload))
+      if (!post.data.post) {
+        throw new Error('Post must be created')
+      }
+      return post.data.post
+    } catch (error) {
+      const post = yield AwsAPI.graphql(graphqlOperation(queries.addPhotoPost, payload))
+      return post.data.addPost
+    }
+  })()
 
   return {
-    userId: selector(data).postedBy.userId,
-    imageUrl: selector(data).imageUploadUrl,
-    image: imageSelector(payload),
+    userId: data.postedBy.userId,
+    imageUrl: data.imageUploadUrl,
+    image: path(['images', 0])(payload),
   }
 }
 
@@ -99,7 +158,7 @@ function* handleImagePost(req) {
     const data = yield handlePostsCreateRequest(req.payload)
 
     const channel = yield call(initPostsCreateUploadChannel, {
-      imageUrl: data.imageUrl,
+      uploadUrl: data.imageUrl,
       image: data.image,
     })
 
@@ -108,6 +167,7 @@ function* handleImagePost(req) {
         attempt: upload.attempt || req.payload.attempt,
         progress: nextProgress || parseInt(upload.progress, 10),
         error: upload.error,
+        jobId: upload.jobId,
       })
 
       if (upload.status === 'progress') {
@@ -115,7 +175,7 @@ function* handleImagePost(req) {
       }
 
       if (upload.status === 'success') {
-        yield put(actions.postsCreateProgress({ data: {}, payload: req.payload, meta: meta(100) }))
+        yield put(actions.postsCreateProgress({ data: {}, payload: req.payload, meta: meta(99) }))
       }
 
       if (upload.status === 'failure') {
@@ -141,6 +201,17 @@ function* postsCreateRequest(req) {
 
   if (req.payload.postType === 'IMAGE') {
     return yield handleImagePost(req)
+  }
+}
+
+/**
+ * 
+ */
+function* postsCreateIdle(req) {
+  const jobId = path(['payload', 'meta', 'jobId'])(req)
+
+  if (jobId) {
+    yield RNFS.stopUpload(jobId)
   }
 }
 
@@ -197,7 +268,6 @@ function* postsCreateSchedulerRequest() {
     /**
      * Cleanup
      */
-
     yield all(
       successPosts.map((post) => call(removePost, post))
     )
@@ -228,5 +298,6 @@ function* postsCreateSchedulerRequest() {
 
 export default () => [
   takeEvery(constants.POSTS_CREATE_REQUEST, postsCreateRequest),
+  takeEvery(constants.POSTS_CREATE_IDLE, postsCreateIdle),
   takeEvery(constants.POSTS_CREATE_SCHEDULER_REQUEST, postsCreateSchedulerRequest),
 ]

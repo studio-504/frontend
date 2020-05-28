@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk/global'
 import { put, getContext, takeEvery, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
 import {
   federatedGoogleSignin,
   federatedGoogleSignout,
@@ -55,10 +56,20 @@ function* authCheckRequest(req) {
       nextRoute: 'Root',
     }))
   } catch (error) {
-    if (path(['message'])(error) === 'PROFILE_PHOTO_MISSING') {
+    if (pathOr('', ['message'])(error).includes('Network request failed')) {
+      yield put(actions.authCheckFailure({
+        message: errors.getMessagePayload(constants.AUTH_CHECK_FAILURE, 'NETWORK', error.message),
+        nextRoute: 'AuthHome',
+      }))
+    } else if (pathOr('', ['message'])(error) === 'PROFILE_PHOTO_MISSING') {
       yield put(actions.authCheckFailure({
         message: errors.getMessagePayload(constants.AUTH_CHECK_FAILURE, 'PROFILE_PHOTO_MISSING', error.message),
         nextRoute: 'AuthPhoto',
+      }))
+    } else if (path(['errors', '0', 'path', '0'])(error) === 'self') {
+      yield put(actions.authCheckFailure({
+        message: errors.getMessagePayload(constants.AUTH_CHECK_FAILURE, 'USER_JUST_CREATED', error.message),
+        nextRoute: 'AuthCognito',
       }))
     } else {
       yield put(actions.authCheckFailure({
@@ -147,9 +158,15 @@ function* authGoogleRequest(req) {
       data,
     }))
   } catch (error) {
-    yield put(actions.authGoogleFailure({
-      message: errors.getMessagePayload(constants.AUTH_GOOGLE_FAILURE, 'GENERIC', error.message),
-    }))
+    if (error.message && error.message.includes('The user canceled the sign in request')) {
+      yield put(actions.authGoogleFailure({
+        message: errors.getMessagePayload(constants.AUTH_GOOGLE_FAILURE, 'CANCELED', error.message),
+      }))
+    } else {
+      yield put(actions.authGoogleFailure({
+        message: errors.getMessagePayload(constants.AUTH_GOOGLE_FAILURE, 'GENERIC', error.message),
+      }))
+    }
   }
 }
 

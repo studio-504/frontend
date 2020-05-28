@@ -1,23 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
-import * as usersServices from 'store/ducks/users/services'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useScrollToTop } from '@react-navigation/native'
 import toLower from 'ramda/src/toLower'
 import path from 'ramda/src/path'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersSelector from 'store/ducks/users/selectors'
+import * as postsSelector from 'store/ducks/posts/selectors'
 import useS3ExpiryState from 'services/S3ExpiryState'
 
 const SearchService = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUserSelector)
-  const usersSearch = useSelector(state => state.users.usersSearch)
+  const usersSearch = useSelector(usersSelector.usersSearchSelector())
   const usersFollow = useSelector(state => state.users.usersFollow)
   const usersUnfollow = useSelector(state => state.users.usersUnfollow)
-  const usersGetProfileCache = useSelector(state => state.users.usersGetProfileCache)
-  const usersGetTrendingUsers = useSelector(state => state.users.usersGetTrendingUsers)
-  const postsGetTrendingPosts = useSelector(state => state.posts.postsGetTrendingPosts)
+  const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
   const themes = useSelector(state => state.theme.themeFetch.data)
@@ -64,24 +64,12 @@ const SearchService = ({ children }) => {
   const [formFocus, handleFormFocus] = useState(false)
   const [formChange, handleFormChange] = useState(false)
 
-  const urlToBeValidated = path(['data', 0, 'image', 'url'])(postsGetTrendingPosts)
-  useS3ExpiryState({
-    urlToBeValidated,
-    condition: (
-      urlToBeValidated &&
-      postsGetTrendingPosts.status !== 'loading'
-    ),
-    onExpiry: () => {
-      dispatch(postsActions.postsGetTrendingPostsRequest({ limit: 30 }))
-    },
-  })
-
   return children({
     themes,
     feedRef,
     user,
     themeFetch,
-    usersSearch: usersServices.cachedUsersSearch(usersSearch, usersGetProfileCache),
+    usersSearch,
     usersSearchRequest,
     usersFollow,
     usersFollowRequest,
@@ -89,7 +77,7 @@ const SearchService = ({ children }) => {
     usersUnfollowRequest,
     usersAcceptFollowerUser,
     usersAcceptFollowerUserRequest,
-    usersGetTrendingUsers: usersServices.cachedUsersGetTrendingUsers(usersGetTrendingUsers, usersGetProfileCache),
+    usersGetTrendingUsers,
     postsGetTrendingPostsRequest,
     postsGetTrendingPosts,
     postsGetTrendingPostsMoreRequest,

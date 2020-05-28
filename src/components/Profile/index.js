@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native'
 import CountsComponent from 'components/Profile/Counts'
 import AboutComponent from 'components/Profile/About'
@@ -16,52 +17,17 @@ import NativeError from 'templates/NativeError'
 import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
 import * as navigationActions from 'navigation/actions'
+import ScrollService from 'services/Scroll'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
-
-const PostsScrollHelper = ({
-  userId,
-  postsGet,
-  postsGetRequest,
-  postsGetMoreRequest,
-}) => {
-  const handleLoadMore = () => {
-    if (
-      postsGet.status === 'loading' ||
-      !path(['data', 'length'])(postsGet) ||
-      !path(['meta', 'nextToken'])(postsGet) ||
-      path(['meta', 'nextToken'])(postsGet) === path(['payload', 'nextToken'])(postsGet)
-    ) { return }
-    postsGetMoreRequest({ nextToken: path(['meta', 'nextToken'])(postsGet) })
-  }
-
-  const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) =>
-    layoutMeasurement.height + contentOffset.y >= contentSize.height - 160
-
-  const handleScrollChange = ({ nativeEvent }) => {
-    if (isCloseToBottom(nativeEvent)) {
-      handleLoadMore()
-    }
-  }
-
-  const handleRefresh = () => {
-    postsGetRequest({ userId })
-  }
-
-  return {
-    handleScrollChange,
-    handleRefresh,
-  }
-}
 
 const Profile = ({
   t,
   theme,
   profileRef,
 
-  user,
   usersBlock,
   usersGetProfile,
 
@@ -102,14 +68,11 @@ const Profile = ({
     })()
   }
 
-  const scroll = PostsScrollHelper({
-    userId: path(['data', 'userId'])(usersGetProfile),
-    postsGet,
-    postsGetRequest,
-    postsGetMoreRequest,
+  const scroll = ScrollService({
+    resource: postsGet,
+    loadInit: () => postsGetRequest({ userId: path(['data', 'userId'])(usersGetProfile) }),
+    loadMore: (payload) => postsGetMoreRequest({ ...payload, userId: path(['data', 'userId'])(usersGetProfile) }),
   })
-
-  const self = path(['data', 'userId'])(usersGetProfile) === path(['userId'])(user)
 
   return (
     <ScrollView
@@ -121,7 +84,7 @@ const Profile = ({
         <RefreshControl
           tintColor={theme.colors.border}
           onRefresh={scroll.handleRefresh}
-          refreshing={postsGet.status === 'loading'}
+          refreshing={scroll.refreshing}
         />
       )}
     >
@@ -153,14 +116,12 @@ const Profile = ({
 
       <View style={styling.about}>
         <AboutComponent
-          user={user}
           usersGetProfile={usersGetProfile}
         />
       </View>
 
       <View style={styling.action}>
         <ActionComponent
-          self={self}
           usersGetProfile={usersGetProfile}
           usersBlock={usersBlock}
           usersBlockRequest={usersBlockRequest}
@@ -178,6 +139,12 @@ const Profile = ({
         setIndex={setIndex}
         routes={routes}
       />
+
+      {scroll.loadingmore ?
+        <View style={styling.activity}>
+          <ActivityIndicator color={theme.colors.border} />
+        </View>
+      : null}
     </ScrollView>
   )
 }
@@ -194,14 +161,17 @@ const styles = theme => StyleSheet.create({
     padding: 12,
   },
   image: {
-    paddingRight: 12,
+    paddingRight: theme.spacing.base,
   },
   counts: {
     flex: 1,
   },
   about: {
-    paddingHorizontal: 12,
-    marginBottom: 12,
+    paddingHorizontal: theme.spacing.base,
+    marginBottom: theme.spacing.base,
+  },
+  activity: {
+    padding: theme.spacing.base * 2,
   },
 })
 

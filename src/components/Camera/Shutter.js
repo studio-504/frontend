@@ -22,7 +22,7 @@ const Shutter = ({
   const styling = styles(theme)
   
   return (
-    <View style={styling.root}>
+    <View style={styling.root} testID="components/Camera/Shutter">
       <View style={styling.action}>
         <TouchableOpacity style={styling.item} onPress={handleLibrarySnap}>
           <UploadIcon
@@ -31,7 +31,7 @@ const Shutter = ({
         </TouchableOpacity>
         <View style={styling.item} />
 
-        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap}>
+        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap} testID="components/Camera/Shutter/Snap">
         </TouchableOpacity>
 
         <TouchableOpacity style={styling.item} onPress={handleFlipToggle}>

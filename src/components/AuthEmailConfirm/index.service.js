@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
+import { Keyboard } from 'react-native'
 import * as signupActions from 'store/ducks/signup/actions'
 import * as navigationActions from 'navigation/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
+import { logEvent } from 'services/Analytics'
 
 const AuthEmailConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -16,7 +18,18 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const signupConfirm = useSelector(state => state.signup.signupConfirm)
   const signupCognitoIdentity = useSelector(state => state.signup.signupCognitoIdentity)
 
+  /**
+   *
+   */
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(signupActions.signupConfirmIdle())
+    })
+    return unsubscribe
+  }, [navigation])
+
   const handleFormSubmit = (payload) => {
+    logEvent('SIGNUP_CONFIRM_REQUEST')
     const nextPayload = {
       confirmationCode: payload.confirmationCode,
       cognitoUsername: signupCognitoIdentity.cognitoUsername,
@@ -55,31 +68,16 @@ const AuthEmailConfirmComponentService = ({ children }) => {
       signupConfirm.status !== 'success'
     ) return
 
+    logEvent('SIGNUP_CONFIRM_SUCCESS')
     dispatch(signupActions.signupCreateIdle())
     dispatch(signupActions.signupConfirmIdle())
+    dispatch(signupActions.signupUsernameIdle())
+    dispatch(signupActions.signupPasswordIdle())
 
+    Keyboard.dismiss()
     navigationActions.navigateAuthPhoto(navigation)()
   }, [
     signupConfirm.status,
-  ])
-
-  /**
-   * Redirect to verification confirmation once signup was successful
-   */
-  useEffect(() => {
-    if (
-      path(['params', 'confirmationCode', 'length'])(route) !== 6 ||
-      !path(['cognitoUsername', 'length'])(signupCognitoIdentity) ||
-      !path(['cognitoUserId', 'length'])(signupCognitoIdentity) ||
-      !path(['username', 'length'])(signupCognitoIdentity) ||
-      !path(['password', 'length'])(signupCognitoIdentity)
-    ) return
-
-    handleFormSubmit({
-      confirmationCode: path(['params', 'confirmationCode'])(route),
-    })
-  }, [
-    path(['params', 'confirmationCode'])(route),
   ])
 
   const formSubmitLoading = signupConfirm.status === 'loading'
@@ -91,7 +89,10 @@ const AuthEmailConfirmComponentService = ({ children }) => {
     confirmationCode: path(['params', 'confirmationCode'])(route),
   }
 
-  const handleFormTransform = (values) => values
+  const handleFormTransform = (values) => ({
+    cognitoUsername: values.cognitoUsername,
+    confirmationCode: values.confirmationCode,
+  })
 
   const handleErrorClose = () => dispatch(signupActions.signupConfirmIdle())
 

@@ -11,12 +11,13 @@ import * as navigationActions from 'navigation/actions'
 import useAppState from 'services/AppState'
 import useS3ExpiryState from 'services/S3ExpiryState'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as postsSelector from 'store/ducks/posts/selectors'
 
 const PostsListService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const postsFeedGet = useSelector(state => state.posts.postsFeedGet)
+  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
   const postsRestoreArchived = useSelector(state => state.posts.postsRestoreArchived)
@@ -28,7 +29,7 @@ const PostsListService = ({ children }) => {
   const postsCreateQueue = useSelector(state => state.posts.postsCreateQueue)
   const usersGetPendingFollowers = useSelector(state => state.users.usersGetPendingFollowers)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
-  const postsGetTrendingPosts = useSelector(state => state.posts.postsGetTrendingPosts)
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const themes = useSelector(state => state.theme.themeFetch.data)
   
   const postsFeedGetRequest = (payload) =>
@@ -64,18 +65,12 @@ const PostsListService = ({ children }) => {
   const usersGetPendingFollowersRequest = (payload) => 
     dispatch(usersActions.usersGetPendingFollowersRequest(payload))
 
-  const postsCreateRequest = (post) => {
-    const postId = uuid()
-    const mediaId = uuid()
-    dispatch(postsActions.postsCreateRequest({
-      ...post,
-      postId,
-      mediaId,
-    }))
+  const postsCreateRequest = (payload) => {
+    dispatch(postsActions.postsCreateRequest(payload))
   }
 
   const postsCreateIdle = (payload) =>
-    dispatch(postsActions.postsCreateIdle({ payload }))
+    dispatch(postsActions.postsCreateIdle(payload))
 
   useAppState({
     onForeground: () => {
@@ -83,45 +78,9 @@ const PostsListService = ({ children }) => {
     },
   })
 
-  const urlToBeValidated = path(['data', 0, 'image', 'url'])(postsFeedGet)
-  useS3ExpiryState({
-    urlToBeValidated,
-    condition: (
-      urlToBeValidated &&
-      postsFeedGet.status !== 'loading'
-    ),
-    onExpiry: () => {
-      postsFeedGetRequest({ limit: 20 })
-    },
-  })
-
   useEffect(() => {
     usersGetPendingFollowersRequest({ userId: user.userId })
   }, [usersAcceptFollowerUser.status])
-
-  useEffect(() => {
-    if (postsDelete.status === 'success') {
-      dispatch(postsActions.postsDeleteIdle())
-    }
-
-    if (postsArchive.status === 'success') {
-      dispatch(postsActions.postsArchiveIdle())
-    }
-
-    if (postsRestoreArchived.status === 'success') {
-      dispatch(postsActions.postsRestoreArchivedIdle())
-      navigationActions.navigateBack(navigation)()
-    }
-
-    if (postsFlag.status === 'success') {
-      dispatch(postsActions.postsFlagIdle())
-    }
-  }, [
-    postsDelete.status,
-    postsArchive.status,
-    postsRestoreArchived.status,
-    postsFlag.status,
-  ])
 
   const handleEditPress = (post) =>
     navigationActions.navigatePostEdit(navigation, { post })()

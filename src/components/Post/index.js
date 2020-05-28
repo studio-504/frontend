@@ -99,8 +99,6 @@ const PostComponent = ({
         <ViewShot ref={createTextPostRef} onCapture={onCapture}>
           <TextOnlyComponent
             text={post.text}
-            themes={themes}
-            themeCode={post.postedBy.themeCode}
           >
             <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
             <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
@@ -192,8 +190,6 @@ PostComponent.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
   feedRef: PropTypes.any,
-  postsFeedGet: PropTypes.any,
-  postsFeedGetRequest: PropTypes.any,
   postsShareRequest: PropTypes.any,
   handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
@@ -206,7 +202,6 @@ PostComponent.propTypes = {
   usersGetFollowedUsersWithStories: PropTypes.any,
   usersGetFollowedUsersWithStoriesRequest: PropTypes.any,
   t: PropTypes.any,
-  themes: PropTypes.any,
   post: PropTypes.any,
   postsRestoreArchivedRequest: PropTypes.any,
   priorityIndex: PropTypes.any,
@@ -216,7 +211,6 @@ PostComponent.propTypes = {
   actionSheetRef: PropTypes.any,
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
-  feedRef: PropTypes.any,
   priorityQueueInstance: PropTypes.any,
 }
 

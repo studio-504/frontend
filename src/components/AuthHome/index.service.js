@@ -66,6 +66,10 @@ const AuthHomeComponentService = ({ children }) => {
     const shouldRedirect = [
       'AuthHome',
       'AuthPhoto',
+      'AuthCognito',
+
+      'AuthSignup',
+      'AuthSignupConfirm',
     ].includes(authCheck.nextRoute)
     if (shouldRedirect) {
       navigation.navigate(authCheck.nextRoute)

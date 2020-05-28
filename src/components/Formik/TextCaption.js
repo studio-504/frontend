@@ -12,7 +12,7 @@ import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
-const TextDemo = ({
+const TextCaption = ({
   t,
   theme,
   field: {
@@ -86,7 +86,7 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-TextDemo.propTypes = {
+TextCaption.propTypes = {
   theme: PropTypes.any,
   field: PropTypes.any,
   form: PropTypes.any,
@@ -99,4 +99,4 @@ TextDemo.propTypes = {
   t: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(TextDemo))
+export default withTranslation()(withTheme(TextCaption))

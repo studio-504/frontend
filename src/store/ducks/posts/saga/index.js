@@ -10,6 +10,9 @@ import * as constants from 'store/ducks/posts/constants'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 
+const usersResourcePoolMergePostedBy = (data) => data.map(post => post.postedBy)
+const usersResourcePoolMergeCommentedBy = (data) => data.map(post => post.commentedBy)
+
 /**
  *
  */
@@ -55,6 +58,20 @@ function* postsViewsGetRequest(req) {
   }
 }
 
+function* postsViewsGetMoreRequest(req) {
+  const errorWrapper = yield getContext('errorWrapper')
+
+  try {
+    const data = yield queryService.apiRequest(queries.viewedBy, req.payload)
+    const dataSelector = path(['data', 'post', 'viewedBy', 'items'])
+    const metaSelector = compose(omit(['items']), path(['data', 'post', 'viewedBy']))
+
+    yield put(actions.postsViewsGetMoreSuccess({ payload: req.payload, data: dataSelector(data), meta: metaSelector(data) }))
+  } catch (error) {
+    yield put(actions.postsViewsGetMoreFailure({ payload: req.payload, message: errorWrapper(error) }))
+  }
+}
+
 
 function* postsLikesGetRequest(req) {
   const errorWrapper = yield getContext('errorWrapper')
@@ -81,6 +98,7 @@ function* postsFeedGetRequest(req) {
     const dataSelector = path(['data', 'self', 'feed', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'self', 'feed']))
 
+    yield put(usersActions.usersResourcePoolMerge({ data: usersResourcePoolMergePostedBy(dataSelector(data)) }))
     yield put(actions.postsFeedGetSuccess({ data: dataSelector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsFeedGetFailure({ message: errorWrapper(error), payload: req.payload, }))
@@ -95,6 +113,7 @@ function* postsFeedGetMoreRequest(req) {
     const dataSelector = path(['data', 'self', 'feed', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'self', 'feed']))
 
+    yield put(usersActions.usersResourcePoolMerge({ data: usersResourcePoolMergePostedBy(dataSelector(data)) }))
     yield put(actions.postsFeedGetMoreSuccess({ data: dataSelector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsFeedGetMoreFailure({ message: errorWrapper(error), payload: req.payload, }))
@@ -110,15 +129,15 @@ function* postsGetArchivedRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.getPosts, { ...req.payload, postStatus: 'ARCHIVED' })
     const selector = path(['data', 'user', 'posts', 'items'])
+    const metaSelector = compose(omit(['items']), path(['data', 'user', 'posts']))
 
-    yield put(actions.postsGetArchivedSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsGetArchivedSuccess({ data: selector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsGetArchivedFailure({ message: errorWrapper(error), payload: req.payload }))
   }
 }
 
 function* handlePostsEditRequest(payload) {
-
   yield queryService.apiRequest(queries.editPostExpiresAt, payload)
   yield queryService.apiRequest(queries.editPostAlbum, payload)
   return yield queryService.apiRequest(queries.editPost, payload)
@@ -133,8 +152,9 @@ function* postsEditRequest(req) {
   try {
     const data = yield handlePostsEditRequest(req.payload)
     const selector = path(['data', 'editPost'])
+    const meta = {}
 
-    yield put(actions.postsEditSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsEditSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsEditFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -149,8 +169,9 @@ function* postsDeleteRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.deletePost, req.payload)
     const selector = path(['data', 'deletePost'])
+    const meta = {}
 
-    yield put(actions.postsDeleteSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsDeleteSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsDeleteFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -165,8 +186,9 @@ function* postsArchiveRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.archivePost, req.payload)
     const selector = path(['data', 'archivePost'])
+    const meta = {}
 
-    yield put(actions.postsArchiveSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsArchiveSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsArchiveFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -181,8 +203,9 @@ function* postsRestoreArchivedRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.restoreArchivedPost, req.payload)
     const selector = path(['data', 'restoreArchivedPost'])
+    const meta = {}
 
-    yield put(actions.postsRestoreArchivedSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsRestoreArchivedSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsRestoreArchivedFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -197,8 +220,9 @@ function* postsFlagRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.flagPost, req.payload)
     const selector = path(['data', 'flagPost'])
+    const meta = {}
 
-    yield put(actions.postsFlagSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsFlagSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsFlagFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -213,8 +237,9 @@ function* postsSingleGetRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.getPost, req.payload)
     const selector = path(['data', 'post'])
+    const meta = {}
 
-    yield put(actions.postsSingleGetSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsSingleGetSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsSingleGetFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -229,8 +254,9 @@ function* postsOnymouslyLikeRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.onymouslyLikePost, req.payload)
     const selector = path(['data', 'onymouslyLikePost'])
+    const meta = {}
 
-    yield put(actions.postsOnymouslyLikeSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsOnymouslyLikeSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsOnymouslyLikeFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -245,8 +271,9 @@ function* postsAnonymouslyLikeRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.anonymouslyLikePost, req.payload)
     const selector = path(['data', 'anonymouslyLikePost'])
+    const meta = {}
 
-    yield put(actions.postsAnonymouslyLikeSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsAnonymouslyLikeSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsAnonymouslyLikeFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -261,8 +288,9 @@ function* postsDislikeRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.dislikePost, req.payload)
     const selector = path(['data', 'dislikePost'])
+    const meta = {}
 
-    yield put(actions.postsDislikeSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsDislikeSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsDislikeFailure({ message: errorWrapper(error), payload: req.payload, }))
   }
@@ -277,8 +305,9 @@ function* postsReportPostViewsRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.reportPostViews, req.payload)
     const selector = path(['data', 'reportPostViews'])
+    const meta = {}
 
-    yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsReportPostViewsFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -293,8 +322,9 @@ function* postsReportCommentViewsRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.reportCommentViews, req.payload)
     const selector = path(['data', 'reportCommentViews'])
+    const meta = {}
 
-    yield put(actions.postsReportCommentViewsSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.postsReportCommentViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsReportCommentViewsFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -308,10 +338,11 @@ function* postsGetTrendingPostsRequest(req) {
 
   try {
     const data = yield queryService.apiRequest(queries.trendingPosts, req.payload)
-    const selector = path(['data', 'trendingPosts', 'items'])
+    const dataSelector = path(['data', 'trendingPosts', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
 
-    yield put(actions.postsGetTrendingPostsSuccess({ data: selector(data), payload: req.payload, meta: metaSelector(data) }))
+    yield put(usersActions.usersResourcePoolMerge({ data: usersResourcePoolMergePostedBy(dataSelector(data)) }))
+    yield put(actions.postsGetTrendingPostsSuccess({ data: dataSelector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsGetTrendingPostsFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -322,10 +353,11 @@ function* postsGetTrendingPostsMoreRequest(req) {
 
   try {
     const data = yield queryService.apiRequest(queries.trendingPosts, req.payload)
-    const selector = path(['data', 'trendingPosts', 'items'])
+    const dataSelector = path(['data', 'trendingPosts', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
 
-    yield put(actions.postsGetTrendingPostsMoreSuccess({ data: selector(data), payload: req.payload, meta: metaSelector(data) }))
+    yield put(usersActions.usersResourcePoolMerge({ data: usersResourcePoolMergePostedBy(dataSelector(data)) }))
+    yield put(actions.postsGetTrendingPostsMoreSuccess({ data: dataSelector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsGetTrendingPostsMoreFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -339,9 +371,11 @@ function* postsCommentsGetRequest(req) {
 
   try {
     const data = yield queryService.apiRequest(queries.comments, req.payload)
-    const selector = path(['data', 'post', 'comments', 'items'])
+    const dataSelector = path(['data', 'post', 'comments', 'items'])
+    const metaSelector = compose(omit(['items']), path(['data', 'post', 'comments']))
 
-    yield put(actions.postsCommentsGetSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(usersActions.usersResourcePoolMerge({ data: usersResourcePoolMergeCommentedBy(dataSelector(data)) }))
+    yield put(actions.postsCommentsGetSuccess({ data: dataSelector(data), payload: req.payload, meta: metaSelector(data) }))
   } catch (error) {
     yield put(actions.postsCommentsGetFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -356,8 +390,9 @@ function* commentsAddRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.addComment, req.payload)
     const selector = path(['data', 'addComment'])
+    const meta = {}
 
-    yield put(actions.commentsAddSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.commentsAddSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.commentsAddFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -372,8 +407,9 @@ function* commentsDeleteRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.deleteComment, req.payload)
     const selector = path(['data', 'deleteComment'])
+    const meta = {}
 
-    yield put(actions.commentsDeleteSuccess({ data: selector(data), payload: req.payload, meta: data }))
+    yield put(actions.commentsDeleteSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.commentsDeleteFailure({ message: errorWrapper(error), payload: req.payload }))
   }
@@ -384,11 +420,12 @@ export default () => [
   takeEvery(constants.POSTS_GET_MORE_REQUEST, postsGetMoreRequest),
 
   takeEvery(constants.POSTS_VIEWS_GET_REQUEST, postsViewsGetRequest),
-  takeEvery(constants.POSTS_LIKES_GET_REQUEST, postsLikesGetRequest),
+  takeEvery(constants.POSTS_VIEWS_GET_MORE_REQUEST, postsViewsGetMoreRequest),
 
   takeLatest(constants.POSTS_FEED_GET_REQUEST, postsFeedGetRequest),
   takeLatest(constants.POSTS_FEED_GET_MORE_REQUEST, postsFeedGetMoreRequest),
 
+  takeEvery(constants.POSTS_LIKES_GET_REQUEST, postsLikesGetRequest),
   takeLatest(constants.POSTS_GET_ARCHIVED_REQUEST, postsGetArchivedRequest),
   takeLatest(constants.POSTS_EDIT_REQUEST, postsEditRequest),
   takeLatest(constants.POSTS_DELETE_REQUEST, postsDeleteRequest),

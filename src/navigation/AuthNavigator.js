@@ -16,9 +16,11 @@ import AuthEmailScreen from 'screens/AuthEmailScreen'
 import AuthEmailConfirmScreen from 'screens/AuthEmailConfirmScreen'
 import AuthPhotoScreen from 'screens/AuthPhotoScreen'
 import AuthPhotoUploadScreen from 'screens/AuthPhotoUploadScreen'
+import AuthPhotoErrorScreen from 'screens/AuthPhotoErrorScreen'
 import CameraScreen from 'screens/CameraScreen'
 import AuthForgotScreen from 'screens/AuthForgotScreen'
 import AuthForgotConfirmScreen from 'screens/AuthForgotConfirmScreen'
+import AuthCognitoScreen from 'screens/AuthCognitoScreen'
 
 const SignupNavigator = () => {
   const Tab = createMaterialTopTabNavigator()
@@ -31,6 +33,7 @@ const SignupNavigator = () => {
         component={AuthPhoneScreen}
         options={{
           tabBarLabel: 'Phone',
+          tabBarTestID: 'navigation/AuthNavigator/Signup/phone',
         }}
       />
       <Tab.Screen
@@ -38,6 +41,7 @@ const SignupNavigator = () => {
         component={AuthEmailScreen}
         options={{
           tabBarLabel: 'Email',
+          tabBarTestID: 'navigation/AuthNavigator/Signup/email',
         }}
       />
     </Tab.Navigator>
@@ -63,49 +67,55 @@ const AuthNavigator = ({ theme }) => {
       <Stack.Screen
         name="Signup"
         component={SignupNavigator}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthSignin"
         component={AuthSigninScreen}
-        {...stackScreenAuthProps({ options: { title: 'Log In', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Log In', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthUsername"
         component={AuthUsernameScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthPassword"
         component={AuthPasswordScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthEmailConfirm"
         component={AuthEmailConfirmScreen}
-        {...stackScreenAuthProps({ options: { title: 'Email Confirm', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Enter 6-digit code', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthPhoneConfirm"
         component={AuthPhoneConfirmScreen}
-        {...stackScreenAuthProps({ options: { title: 'Phone Confirm', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Enter 6-digit code', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthPhotoUpload"
         component={AuthPhotoUploadScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: null, } })}
+        {...stackScreenAuthProps({ options: { title: 'Welcome', headerLeft: null, } })}
       />
 
       <Stack.Screen
         name="AuthPhoto"
         component={AuthPhotoScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: null, } })}
+        {...stackScreenAuthProps({ options: { title: 'Welcome', headerLeft: null, } })}
+      />
+
+      <Stack.Screen
+        name="AuthPhotoError"
+        component={AuthPhotoErrorScreen}
+        {...stackScreenAuthProps({ options: { title: 'Welcome', headerLeft: null, } })}
       />
 
       <Stack.Screen
@@ -117,13 +127,19 @@ const AuthNavigator = ({ theme }) => {
       <Stack.Screen
         name="AuthForgot"
         component={AuthForgotScreen}
-        {...stackScreenAuthProps({ options: { title: 'Forgot', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Forgot', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
       />
 
       <Stack.Screen
         name="AuthForgotConfirm"
         component={AuthForgotConfirmScreen}
-        {...stackScreenAuthProps({ options: { title: 'Forgot Confirm', headerLeft: navigationOptions.pageHeaderLeft, } })}
+        {...stackScreenAuthProps({ options: { title: 'Forgot Confirm', headerLeft: navigationOptions.pageHeaderLeft, gestureEnabled: true, } })}
+      />
+
+      <Stack.Screen
+        name="AuthCognito"
+        component={AuthCognitoScreen}
+        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft: null } })}
       />
     </Stack.Navigator>
   )

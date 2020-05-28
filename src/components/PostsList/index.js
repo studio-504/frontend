@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -15,46 +15,11 @@ import BookmarkComponent from 'components/PostsList/Bookmark'
 import NativeError from 'templates/NativeError'
 import StoriesComponent from 'components/Stories'
 import ContextComponent from 'components/Cache/Context'
+import ScrollService from 'services/Scroll'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
-
-const ScrollHelper = ({
-  postsFeedGet,
-  postsFeedGetMoreRequest,
-  postsFeedGetRequest,
-  usersGetFollowedUsersWithStoriesRequest,
-}) => {
-  const handleLoadMore = () => {
-    if (
-      postsFeedGet.status === 'loading' ||
-      !path(['data', 'length'])(postsFeedGet) ||
-      !path(['meta', 'nextToken'])(postsFeedGet) ||
-      path(['meta', 'nextToken'])(postsFeedGet) === path(['payload', 'nextToken'])(postsFeedGet)
-    ) { return }
-    postsFeedGetMoreRequest({ nextToken: path(['meta', 'nextToken'])(postsFeedGet) })
-  }
-
-  const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) =>
-    layoutMeasurement.height + contentOffset.y >= contentSize.height - 1000
-
-  const handleScrollChange = ({ nativeEvent }) => {
-    if (isCloseToBottom(nativeEvent)) {
-      handleLoadMore()
-    }
-  }
-  
-  const handleRefresh = () => {
-    postsFeedGetRequest({})
-    usersGetFollowedUsersWithStoriesRequest()
-  }
-
-  return {
-    handleScrollChange,
-    handleRefresh,
-  }
-}
 
 const PostsList = ({
   t,
@@ -94,11 +59,14 @@ const PostsList = ({
 }) => {
   const styling = styles(theme)
   
-  const scroll = ScrollHelper({
-    postsFeedGet,
-    postsFeedGetMoreRequest,
-    postsFeedGetRequest,
-    usersGetFollowedUsersWithStoriesRequest,
+  const scroll = ScrollService({
+    resource: postsFeedGet,
+    loadInit: () => (
+      postsFeedGetRequest() &&
+      usersGetFollowedUsersWithStoriesRequest()
+    ),
+    loadMore: postsFeedGetMoreRequest,
+    multiplier: 3,
   })
 
   const renderItem = useCallback(({ item: post, index }) => (
@@ -173,37 +141,39 @@ const PostsList = ({
           <RefreshControl
             tintColor={theme.colors.border}
             onRefresh={scroll.handleRefresh}
-            refreshing={postsFeedGet.status === 'loading'}
+            refreshing={scroll.refreshing}
           />
         )}
         onViewableItemsChanged={onViewableItemsChangedRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
-        ListHeaderComponent={() => <>
-          <StoriesComponent
-            user={user}
-            usersGetFollowedUsersWithStories={usersGetFollowedUsersWithStories}
-          />
-
-          <View style={styling.uploading}>
-            {Object.values(postsCreateQueue).map((post, key) => (
-              <UploadingComponent
-                key={key}
-                user={user}
-                post={post}
-                postsCreateRequest={postsCreateRequest}
-                postsCreateIdle={postsCreateIdle}
-              />
-            ))}
-          </View>
-
-          <View style={styling.uploading}>
-            <PendingRequestsComponent
-              usersGetPendingFollowers={usersGetPendingFollowers}
+        ListHeaderComponent={() => (
+          <React.Fragment>
+            <StoriesComponent
+              user={user}
+              usersGetFollowedUsersWithStories={usersGetFollowedUsersWithStories}
             />
-          </View>
-        </>}
+  
+            <View style={styling.uploading}>
+              {Object.values(postsCreateQueue).map((post, key) => (
+                <UploadingComponent
+                  key={key}
+                  user={user}
+                  post={post}
+                  postsCreateRequest={postsCreateRequest}
+                  postsCreateIdle={postsCreateIdle}
+                />
+              ))}
+            </View>
+  
+            <View style={styling.uploading}>
+              <PendingRequestsComponent
+                usersGetPendingFollowers={usersGetPendingFollowers}
+              />
+            </View>
+          </React.Fragment>
+        )}
         renderItem={renderItem}
-        ListFooterComponent={postsFeedGet.status === 'loading' ? ActivityIndicator : null}
+        ListFooterComponent={scroll.loadingmore ? ActivityIndicator : null}
         ListFooterComponentStyle={styling.loading}
       />
     </View>

@@ -160,6 +160,13 @@ const initialState = {
     meta: {},
   },
 
+  /**
+   * postId -> { data: {} }
+   */
+  postsPool: {
+
+  },
+
   postsCreateQueue: {},
   postsRecreateQueue: {},
   postsGetCache: {},
@@ -176,54 +183,48 @@ const postsGetRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsGetSuccess = (state, action) => update(state, {
   postsGet: {
     status: { $set: 'success' },
-    payload: { $set: action.payload },
+    payload: { $set: action.payload.payload },
+    meta: { $set: action.payload.meta },
   },
+  
+  /**
+   * 
+   */
   postsGetCache: {
-    $resourceCacheSetSuccess: {
+    $postsResourceCacheSetSuccess: {
       ...action,
       resourceKey: action.payload.payload.userId,
       initialState: initialState.postsGet,
     },
   },
+
+  /**
+   *
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
+  }
 })
 
 const postsGetFailure = (state, action) => update(state, {
   postsGet: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload },
-  },
-  postsGetCache: {
-    $resourceCacheSetFailure: {
-      ...action,
-      resourceKey: action.payload.payload.userId,
-      initialState: initialState.postsGet,
-    },
+    payload: { $set: action.payload.payload },
   },
 })
 
 const postsGetIdle = (state, action) => update(state, {
   postsGet: {
     status: { $set: 'idle' },
-    payload: { $set: action.payload },
-  },
-  postsGetCache: {
-    $resourceCacheSetIdle: {
-      ...action,
-      resourceKey: action.payload.payload.userId,
-      initialState: initialState.postsGet,
-    },
+    payload: { $set: action.payload.payload },
   },
 })
 
@@ -232,25 +233,33 @@ const postsGetMoreRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCachePushRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsGetMoreSuccess = (state, action) => update(state, {
   postsGet: {
     status: { $set: 'success' },
-    payload: { $set: action.payload },
+    payload: { $set: action.payload.payload },
+    meta: { $set: action.payload.meta },
   },
+
+  /**
+   * 
+   */
   postsGetCache: {
-    $resourceCachePushSuccess: {
+    $postsResourceCachePushSuccess: {
       ...action,
       resourceKey: action.payload.payload.userId,
       initialState: initialState.postsGet,
+    },
+  },
+  
+  /**
+   *
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
     },
   },
 })
@@ -263,13 +272,6 @@ const postsViewsGetRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsViewsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.postId,
-      initialState: initialState.postsViewsGet,
-    },
-  },
 })
 
 const postsViewsGetSuccess = (state, action) => update(state, {
@@ -277,25 +279,11 @@ const postsViewsGetSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsViewsGetCache: {
-    $resourceCacheSetSuccess: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsViewsGet,
-    },
-  },
 })
 
 const postsViewsGetFailure = (state, action) => update(state, {
   postsViewsGet: {
     status: { $set: 'failure' },
-  },
-  postsViewsGetCache: {
-    $resourceCacheSetFailure: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsViewsGet,
-    },
   },
 })
 
@@ -304,14 +292,22 @@ const postsViewsGetIdle = (state, action) => update(state, {
     data: { $set: initialState.postsViewsGet.data },
     status: { $set: 'idle' },
   },
-  postsViewsGetCache: {
-    $resourceCacheSetIdle: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsViewsGet,
-    },
+})
+
+const postsViewsGetMoreRequest = (state, action) => update(state, {
+  postsViewsGet: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
   },
 })
+
+const postsViewsGetMoreSuccess = (state, action) => update(state, {
+  postsViewsGet: {
+    status: { $set: 'success' },
+    payload: { $set: action.payload.payload },
+  },
+})
+
 
 /**
  *
@@ -321,13 +317,6 @@ const postsLikesGetRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsLikesGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.postId,
-      initialState: initialState.postsLikesGet,
-    },
-  },
 })
 
 const postsLikesGetSuccess = (state, action) => update(state, {
@@ -335,25 +324,11 @@ const postsLikesGetSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsLikesGetCache: {
-    $resourceCacheSetSuccess: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsLikesGet,
-    },
-  },
 })
 
 const postsLikesGetFailure = (state, action) => update(state, {
   postsLikesGet: {
     status: { $set: 'failure' },
-  },
-  postsLikesGetCache: {
-    $resourceCacheSetFailure: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsLikesGet,
-    },
   },
 })
 
@@ -361,13 +336,6 @@ const postsLikesGetIdle = (state, action) => update(state, {
   postsLikesGet: {
     data: { $set: initialState.postsLikesGet.data },
     status: { $set: 'idle' },
-  },
-  postsLikesGetCache: {
-    $resourceCacheSetIdle: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsLikesGet,
-    },
   },
 })
 
@@ -383,8 +351,29 @@ const postsGetArchivedRequest = (state, action) => update(state, {
 
 const postsGetArchivedSuccess = (state, action) => update(state, {
   postsGetArchived: {
-    data: { $set: action.payload.data },
+    data: { $postsResourceSetSuccess: action },
     status: { $set: 'success' },
+  },
+
+  /**
+   * 
+   */
+  postsGetCache: {
+    $postsResourceCacheSetSuccess: {
+      ...action,
+      resourceKey: action.payload.payload.userId,
+      initialState: initialState.postsGet,
+    },
+  },
+  
+  /**
+   *
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
   },
 })
 
@@ -409,13 +398,6 @@ const postsEditRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsEditSuccess = (state, action) => update(state, {
@@ -423,27 +405,12 @@ const postsEditSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-      },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
@@ -468,13 +435,6 @@ const postsDeleteRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsDeleteSuccess = (state, action) => update(state, {
@@ -482,27 +442,12 @@ const postsDeleteSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
+
+  /**
+   *
+   */
   postsFeedGet: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostRemove: { postId: action.payload.data.postId },
-      },
-    },
+    data: { $postsResourceRemoveSuccess: action },
   },
 })
 
@@ -527,13 +472,6 @@ const postsArchiveRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsArchiveSuccess = (state, action) => update(state, {
@@ -541,27 +479,12 @@ const postsArchiveSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostRemove: { postId: action.payload.data.postId },
-      },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
@@ -593,10 +516,12 @@ const postsRestoreArchivedSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsGetArchived: {
-    data: {
-      $feedPostRemove: { postId: action.payload.data.postId },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
@@ -628,10 +553,12 @@ const postsFlagSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
@@ -656,36 +583,18 @@ const postsSingleGetRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsSingleGetSuccess = (state, action) => update(state, {
   postsSingleGet: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-      },
-    },
+  
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
@@ -715,9 +624,19 @@ const postsFeedGetRequest = (state, action) => update(state, {
 
 const postsFeedGetSuccess = (state, action) => update(state, {
   postsFeedGet: {
-    data: { $set: action.payload.data },
+    data: { $postsResourceSetSuccess: action },
     status: { $set: 'success' },
     meta: { $set: action.payload.meta },
+  },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
   },
 })
 
@@ -742,9 +661,19 @@ const postsFeedGetMoreRequest = (state, action) => update(state, {
 
 const postsFeedGetMoreSuccess = (state, action) => update(state, {
   postsFeedGet: {
-    data: { $push: action.payload.data },
+    data: { $postsResourcePushSuccess: action },
     status: { $set: 'success' },
     meta: { $set: action.payload.meta },
+  },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
   },
 })
 
@@ -756,6 +685,10 @@ const postsCreateRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
+
+  /**
+   *
+   */
   postsCreateQueue: {
     $resourceCacheSetRequest: {
       ...action,
@@ -770,6 +703,10 @@ const postsCreateSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
+
+  /**
+   *
+   */
   postsCreateQueue: {
     $resourceCacheSetSuccess: {
       ...action,
@@ -783,6 +720,10 @@ const postsCreateFailure = (state, action) => update(state, {
   postsCreate: {
     status: { $set: 'failure' },
   },
+
+  /**
+   *
+   */
   postsCreateQueue: {
     $resourceCacheSetFailure: {
       ...action,
@@ -797,6 +738,10 @@ const postsCreateIdle = (state, action) => update(state, {
     data: { $set: initialState.postsCreate.data },
     status: { $set: 'idle' },
   },
+
+  /**
+   *
+   */
   postsCreateQueue: {
     $resourceCacheSetRemove: {
       ...action,
@@ -811,6 +756,10 @@ const postsCreateProgress = (state, action) => update(state, {
     status: { $set: 'loading' },
     meta: { $set: action.payload.meta },
   },
+
+  /**
+   *
+   */
   postsCreateQueue: {
     $resourceCacheAlterRequest: {
       ...action,
@@ -828,33 +777,6 @@ const postsOnymouslyLikeRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
-  },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsOnymouslyLikeSuccess = (state, action) => update(state, {
@@ -862,43 +784,18 @@ const postsOnymouslyLikeSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-      },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
 const postsOnymouslyLikeFailure = (state, action) => update(state, {
   postsOnymouslyLike: {
     status: { $set: 'failure' },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
   },
 })
 
@@ -917,33 +814,6 @@ const postsAnonymouslyLikeRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ANONYMOUSLY_LIKED' },
-    },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ANONYMOUSLY_LIKED' },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ANONYMOUSLY_LIKED' },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ANONYMOUSLY_LIKED' },
-    },
-  },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsAnonymouslyLikeSuccess = (state, action) => update(state, {
@@ -951,43 +821,18 @@ const postsAnonymouslyLikeSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-      },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
 const postsAnonymouslyLikeFailure = (state, action) => update(state, {
   postsAnonymouslyLike: {
     status: { $set: 'failure' },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
   },
 })
 
@@ -1006,33 +851,6 @@ const postsDislikeRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'NOT_LIKED' },
-    },
-  },
-  postsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.postsGet,
-    },
-  },
 })
 
 const postsDislikeSuccess = (state, action) => update(state, {
@@ -1040,43 +858,18 @@ const postsDislikeSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsFeedGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetArchived: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGet: {
-    data: {
-      $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-    },
-  },
-  postsGetCache: {
-    [action.payload.data.postedBy.userId]: {
-      data: {
-        $feedPostUpdate: { postId: action.payload.data.postId, post: action.payload.data },
-      },
-    },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolSet: action,
   },
 })
 
 const postsDislikeFailure = (state, action) => update(state, {
   postsDislike: {
     status: { $set: 'failure' },
-  },
-  postsFeedGet: {
-    data: {
-      $feedPostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
-  },
-  postsSingleGet: {
-    data: {
-      $singlePostLikeStatusUpdate: { postId: action.payload.postId, likeStatus: 'ONYMOUSLY_LIKED' },
-    },
   },
 })
 
@@ -1190,9 +983,19 @@ const postsGetTrendingPostsRequest = (state, action) => update(state, {
 
 const postsGetTrendingPostsSuccess = (state, action) => update(state, {
   postsGetTrendingPosts: {
-    data: { $set: action.payload.data },
+    data: { $postsResourceSetSuccess: action },
     status: { $set: 'success' },
     meta: { $set: action.payload.meta },
+  },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
   },
 })
 
@@ -1219,10 +1022,20 @@ const postsGetTrendingPostsMoreRequest = (state, action) => update(state, {
 
 const postsGetTrendingPostsMoreSuccess = (state, action) => update(state, {
   postsGetTrendingPosts: {
+    data: { $postsResourcePushSuccess: action },
     status: { $set: 'success' },
-    payload: { $set: action.payload },
+    payload: { $set: action.payload.payload },
     meta: { $set: action.payload.meta },
-    data: { $push: action.payload.data },
+  },
+
+  /**
+   * User pool entry
+   */
+  postsPool: {
+    $postsResourcePoolMerge: {
+      ...action,
+      initialState: initialState.postsSingleGet,
+    },
   },
 })
 
@@ -1234,13 +1047,6 @@ const postsCommentsGetRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  postsCommentsGetCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.postId,
-      initialState: initialState.postsCommentsGet,
-    },
-  },
 })
 
 const postsCommentsGetSuccess = (state, action) => update(state, {
@@ -1248,25 +1054,11 @@ const postsCommentsGetSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-  postsCommentsGetCache: {
-    $resourceCacheSetSuccess: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsCommentsGet,
-    },
-  },
 })
 
 const postsCommentsGetFailure = (state, action) => update(state, {
   postsCommentsGet: {
     status: { $set: 'failure' },
-  },
-  postsCommentsGetCache: {
-    $resourceCacheSetFailure: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsCommentsGet,
-    },
   },
 })
 
@@ -1274,13 +1066,6 @@ const postsCommentsGetIdle = (state, action) => update(state, {
   postsCommentsGet: {
     data: { $set: initialState.postsCommentsGet.data },
     status: { $set: 'idle' },
-  },
-  postsCommentsGetCache: {
-    $resourceCacheSetIdle: {
-      ...action,
-      resourceKey: action.payload.payload.postId,
-      initialState: initialState.postsCommentsGet,
-    },
   },
 })
 
@@ -1356,6 +1141,8 @@ export default handleActions({
   [constants.POSTS_VIEWS_GET_SUCCESS]: postsViewsGetSuccess,
   [constants.POSTS_VIEWS_GET_FAILURE]: postsViewsGetFailure,
   [constants.POSTS_VIEWS_GET_IDLE]: postsViewsGetIdle,
+  [constants.POSTS_VIEWS_GET_MORE_REQUEST]: postsViewsGetMoreRequest,
+  [constants.POSTS_VIEWS_GET_MORE_SUCCESS]: postsViewsGetMoreSuccess,
 
   [constants.POSTS_LIKES_GET_REQUEST]: postsLikesGetRequest,
   [constants.POSTS_LIKES_GET_SUCCESS]: postsLikesGetSuccess,

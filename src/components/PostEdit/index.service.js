@@ -2,11 +2,12 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as albumsActions from 'store/ducks/albums/actions'
 import * as postsActions from 'store/ducks/posts/actions'
-import * as postsServices from 'store/ducks/posts/services'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as albumsSelector from 'store/ducks/albums/selectors'
+import * as postsSelector from 'store/ducks/posts/selectors'
 
 const PostEditService = ({ children }) => {
   const dispatch = useDispatch()
@@ -15,10 +16,10 @@ const PostEditService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const postId = path(['params', 'post', 'postId'])(route)
   const postUserId = path(['params', 'post', 'postedBy', 'userId'])(route)
-  const postsSingleGet = useSelector(state => state.posts.postsSingleGet)
+  const navigationParamPost = path(['params', 'post'])(route)
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(navigationParamPost))
   const postsEdit = useSelector(state => state.posts.postsEdit)
-  const albumsGet = useSelector(state => state.albums.albumsGet)
-  const albumsGetCache = useSelector(state => state.albums.albumsGetCache)
+  const albumsGet = useSelector(albumsSelector.albumsGetSelector(user.userId))
 
   useEffect(() => {
     dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))
@@ -42,8 +43,8 @@ const PostEditService = ({ children }) => {
   }, [postsEdit.status])
 
   return children({
-    albumsGet: postsServices.cachedPostsGet(albumsGet, albumsGetCache, user.userId),
-    postsSingleGet: postsServices.cachedPostsSingleGet(postsSingleGet, path(['params', 'post'])(route)),
+    albumsGet,
+    postsSingleGet,
     postsSingleGetRequest,
     postsEdit,
     postsEditRequest,

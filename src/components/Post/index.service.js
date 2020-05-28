@@ -9,12 +9,13 @@ import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as postsSelector from 'store/ducks/posts/selectors'
 
 const PostsListService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const postsFeedGet = useSelector(state => state.posts.postsFeedGet)
+  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
   const postsRestoreArchived = useSelector(state => state.posts.postsRestoreArchived)
@@ -26,7 +27,6 @@ const PostsListService = ({ children }) => {
   const postsCreateQueue = useSelector(state => state.posts.postsCreateQueue)
   const usersGetPendingFollowers = useSelector(state => state.users.usersGetPendingFollowers)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
-  const themes = useSelector(state => state.theme.themeFetch.data)
   
   const postsFeedGetRequest = (payload) =>
     dispatch(postsActions.postsFeedGetRequest(payload))
@@ -72,31 +72,7 @@ const PostsListService = ({ children }) => {
   }
 
   const postsCreateIdle = (payload) =>
-    dispatch(postsActions.postsCreateIdle({ payload }))
-  
-  useEffect(() => {
-    if (postsDelete.status === 'success') {
-      dispatch(postsActions.postsDeleteIdle())
-    }
-
-    if (postsArchive.status === 'success') {
-      dispatch(postsActions.postsArchiveIdle())
-    }
-
-    if (postsRestoreArchived.status === 'success') {
-      dispatch(postsActions.postsRestoreArchivedIdle())
-      navigationActions.navigateBack(navigation)()
-    }
-
-    if (postsFlag.status === 'success') {
-      dispatch(postsActions.postsFlagIdle())
-    }
-  }, [
-    postsDelete.status,
-    postsArchive.status,
-    postsRestoreArchived.status,
-    postsFlag.status,
-  ])
+    dispatch(postsActions.postsCreateIdle(payload))
 
   const handleEditPress = (post) =>
     navigationActions.navigatePostEdit(navigation, { post })()
@@ -165,7 +141,6 @@ const PostsListService = ({ children }) => {
   })
 
   return children({
-    themes,
     user,
     postsFeedGet,
     postsFeedGetRequest,

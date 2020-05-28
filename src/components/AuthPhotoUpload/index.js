@@ -7,7 +7,7 @@ import {
 import ActionsComponent from 'components/AuthPhotoUpload/Actions'
 import ProgressComponent from 'components/AuthPhotoUpload/Progress'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import PhotoTemplate from 'templates/Auth/Photo'
+import AuthPhotoTemplate from 'templates/Auth/Photo'
 import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTheme } from 'react-native-paper'
@@ -25,7 +25,7 @@ const AuthPhotoUpload = ({
   const navigation = useNavigation()
 
   return (
-    <React.Fragment>
+    <View testID="components/AuthPhotoUpload" style={styling.root}>
       {formErrorMessage ?
         <AuthErrorTemplate
           text={formErrorMessage}
@@ -33,14 +33,14 @@ const AuthPhotoUpload = ({
         />
       : null}
 
-      <View style={styling.root}>
+      <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Add Profile Picture')}
           subtitle={t('Add an Unmodified Profile Picture. Our AI detects photoshop and filters')}
         />
 
         <View style={styling.content}>
-          <PhotoTemplate
+          <AuthPhotoTemplate
             activeUpload={activeUpload}
           />
 
@@ -55,20 +55,20 @@ const AuthPhotoUpload = ({
           : null}
         </View>
       </View>
-    </React.Fragment>
+    </View>
   )
 }
 
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,
+  },
+  component: {
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    flex: 1,
   },
   content: {
     flex: 1,
-  },
-  footer: {
   },
 })
 

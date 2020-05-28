@@ -53,7 +53,7 @@ const CameraComponent = ({
   const bottomHeight = usePulse(getCameraBonds(prevStatus).bottom, getCameraBonds(photoSize).bottom)
 
   return (
-    <View style={styling.root}>
+    <View style={styling.root} testID="components/Camera">
       <CameraTemplate
         header={(
           <CameraHeaderTemplate

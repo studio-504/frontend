@@ -29,6 +29,8 @@ const TextField = ({
   autoCompleteType = 'off',
   secureTextEntry,
   autoFocus = false,
+  maxLength,
+  testID,
 }) => {
   const styling = styles(theme)
   
@@ -68,6 +70,8 @@ const TextField = ({
         returnKeyType="done"
         textContentType={textContentType}
         autoFocus={autoFocus}
+        maxLength={maxLength}
+        testID={testID}
       />
 
       {!hideError ?
@@ -111,6 +115,8 @@ TextField.propTypes = {
   secureTextEntry: PropTypes.any,
   textContentType: PropTypes.any,
   autoFocus: PropTypes.any,
+  maxLength: PropTypes.any,
+  testID: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(TextField))

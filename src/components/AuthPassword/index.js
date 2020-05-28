@@ -14,8 +14,10 @@ import { withTranslation } from 'react-i18next'
 const AuthPassword = ({
   t,
   theme,
+  formErrorMessage,
   handleFormSubmit,
   handleFormTransform,
+  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -24,8 +26,8 @@ const AuthPassword = ({
   const navigation = useNavigation()
 
   return (
-    <React.Fragment>
-      <View style={styling.root}>
+    <View testID="components/AuthPassword" style={styling.root}>
+      <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Secure Your Account')}
           subtitle={t('Password must be at least 8 characters')}
@@ -41,28 +43,30 @@ const AuthPassword = ({
           />
         </View>
       </View>
-    </React.Fragment>
+    </View>
   )
 }
 
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,
+  },
+  component: {
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    flex: 1,
   },
   content: {
     flex: 1,
-  },
-  footer: {
   },
 })
 
 AuthPassword.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
+  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
   handleFormTransform: PropTypes.any,
+  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

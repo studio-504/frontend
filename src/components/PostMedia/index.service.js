@@ -3,6 +3,7 @@ import { InteractionManager } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as postsServices from 'store/ducks/posts/services'
+import * as postsSelector from 'store/ducks/posts/selectors'
 import { useNavigation, useScrollToTop, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
@@ -13,15 +14,10 @@ const PostMediaService = ({ children, ...props }) => {
   const route = useRoute()
   const postId = path(['params', 'post', 'postId'])(route)
   const postUserId = path(['params', 'post', 'postedBy', 'userId'])(route)
-  const postsSingleGet = useSelector(state => state.posts.postsSingleGet)
+  const navigationParamPost = path(['params', 'post'])(route)
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(navigationParamPost))
   const postsDelete = useSelector(state => state.posts.postsDelete)
-  const postsGetTrendingPosts = useSelector(state => state.posts.postsGetTrendingPosts)
-  const postsGetCache = useSelector(state => state.posts.postsGetCache)
-
-  const postsSingleGetCache = postsServices.cachedPostsSingleGet(
-    postsSingleGet,
-    path(['params', 'post'])(route)
-  )
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
 
   navigation.setOptions({
     title: path(['params', 'post', 'postedBy', 'username'])(route),
@@ -105,13 +101,11 @@ const PostMediaService = ({ children, ...props }) => {
   })
 
   return children({
-    postsSingleGet: postsSingleGetCache,
-    postsGetTrendingPosts: postsServices.cachedPostsGetTrendingPosts(postsGetTrendingPosts, postId),
+    postsSingleGet,
+    postsGetTrendingPosts,
     postsSingleGetRequest,
     ...props,
-    postsMediaFeedGet: postsServices.cachedPostsMediaFeedGet(postsGetCache, postUserId, postId),
     feedRef,
-    routeName: route.name,
     handleScrollPrev,
     handleScrollNext,
     

@@ -29,7 +29,7 @@ const AuthEmailConfirm = ({
   const navigation = useNavigation()
 
   return (
-    <React.Fragment>
+    <View testID="components/AuthEmailConfirm" style={styling.root}>
       {formErrorMessage ?
         <AuthErrorTemplate
           text={formErrorMessage}
@@ -37,9 +37,9 @@ const AuthEmailConfirm = ({
         />
       : null}
 
-      <View style={styling.root}>
+      <View style={styling.component}>
         <AuthHeaderTemplate
-          title={t('Enter 6 digit code')}
+          title={t('Enter 6-digit code')}
           subtitle={t('Sent to {{cognitoUsername}}', formInitialValues)}
         />
 
@@ -53,24 +53,20 @@ const AuthEmailConfirm = ({
           />
         </View>
       </View>
-
-      <AuthActionTemplate onPress={navigationActions.navigateAuthPhone(navigation)}>
-        {t('Signup with Phone Number')}
-      </AuthActionTemplate>
-    </React.Fragment>
+    </View>
   )
 }
 
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,
+  },
+  component: {
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    flex: 1,
   },
   content: {
     flex: 1,
-  },
-  footer: {
   },
 })
 
