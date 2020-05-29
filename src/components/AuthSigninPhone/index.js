@@ -54,7 +54,7 @@ const AuthSigninPhone = ({
         </View>
       </View>
 
-      <AuthActionTemplate onPress={navigationActions.navigateAuthForgot(navigation)}>
+      <AuthActionTemplate onPress={navigationActions.navigateAuthForgot(navigation)} testID="components/AuthActionPhone/ResetPassword">
         {t('Reset your Password')}
       </AuthActionTemplate>
     </View>

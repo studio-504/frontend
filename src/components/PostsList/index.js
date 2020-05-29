@@ -119,7 +119,7 @@ const PostsList = ({
   ))
 
   return (
-    <View style={styling.root}>
+    <View style={styling.root} testID="components/PostsList">
       <NativeError
         handleCancelPress={() => {}}
         titleText={t('All good!')}

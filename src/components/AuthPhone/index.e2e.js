@@ -44,13 +44,13 @@ const AuthPhone = ({
         />
 
         <View style={styling.content}>
-          <FormComponent
+          {/* <FormComponent
             handleFormSubmit={handleFormSubmit}
             handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
-          />
+          /> */}
         </View>
       </View>
 

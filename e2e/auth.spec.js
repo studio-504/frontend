@@ -11,123 +11,123 @@ describe('Example', () => {
   /**
    *
    */
-  it('AuthHome', async () => {
-    await expect(element(by.id('components/AuthHome'))).toBeVisible()
-    await element(by.id('components/AuthHome/Actions/signin')).tap()
-    await expect(element(by.id('components/AuthUsername'))).toBeVisible()
-  })
+  // it('AuthHome', async () => {
+  //   await expect(element(by.id('components/AuthHome'))).toBeVisible()
+  //   await element(by.id('components/AuthHome/Actions/signin')).tap()
+  //   await expect(element(by.id('components/AuthUsername'))).toBeVisible()
+  // })
 
   /**
    *
    */
-  it('AuthUsername', async () => {
-    await expect(element(by.id('components/AuthUsername'))).toBeVisible()
+  // it('AuthUsername', async () => {
+  //   await expect(element(by.id('components/AuthUsername'))).toBeVisible()
 
-    /**
-     * Username exists validation 
-     */
-    // await element(by.id('components/AuthUsername/Form/username')).typeText('real')
-    // await element(by.id('components/AuthUsername/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
+  //   /**
+  //    * Username exists validation 
+  //    */
+  //   await element(by.id('components/AuthUsername/Form/username')).typeText('real')
+  //   await element(by.id('components/AuthUsername/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
 
-    /**
-     * Username length constraint validation 
-     */
-    // await element(by.id('components/AuthUsername/Form/username')).clearText()
-    // await element(by.id('components/AuthUsername/Form/username')).typeText('aa')
-    // await element(by.id('components/AuthUsername/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
+  //   /**
+  //    * Username length constraint validation 
+  //    */
+  //   await element(by.id('components/AuthUsername/Form/username')).clearText()
+  //   await element(by.id('components/AuthUsername/Form/username')).typeText('aa')
+  //   await element(by.id('components/AuthUsername/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
 
-    /**
-     * Username chars constraint validation 
-     */
-    // await element(by.id('components/AuthUsername/Form/username')).clearText()
-    // await element(by.id('components/AuthUsername/Form/username')).typeText('asd-.')
-    // await element(by.id('components/AuthUsername/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
+  //   /**
+  //    * Username chars constraint validation 
+  //    */
+  //   await element(by.id('components/AuthUsername/Form/username')).clearText()
+  //   await element(by.id('components/AuthUsername/Form/username')).typeText('asd-.')
+  //   await element(by.id('components/AuthUsername/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPassword'))).toBeNotVisible()
 
-    /**
-     * Username reservation
-     */
-    const username = `detox${Date.now()}`
-    await element(by.id('components/AuthUsername/Form/username')).clearText()
-    await element(by.id('components/AuthUsername/Form/username')).typeText(username)
-    await element(by.id('components/AuthUsername/Form/submit')).tap()
-    await expect(element(by.id('components/AuthPassword'))).toBeVisible()
-  })
-
-  /**
-   *
-   */
-  it('AuthPassword', async () => {
-    await expect(element(by.id('components/AuthPassword'))).toBeVisible()
-
-    /**
-     * Password length constraint validation 
-     */
-    // await element(by.id('components/AuthPassword/Form/password')).clearText()
-    // await element(by.id('components/AuthPassword/Form/password')).typeText('aa')
-    // await element(by.id('components/AuthPassword/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPhone'))).toBeNotVisible()
-
-    /**
-     * Password chars constraint validation 
-     */
-    // await element(by.id('components/AuthPassword/Form/password')).clearText()
-    // await element(by.id('components/AuthPassword/Form/password')).typeText('asd-.')
-    // await element(by.id('components/AuthPassword/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPhone'))).toBeNotVisible()
-
-    /**
-     * Password reservation
-     */
-    const password = `123123123`
-    await element(by.id('components/AuthPassword/Form/password')).clearText()
-    await element(by.id('components/AuthPassword/Form/password')).typeText(password)
-    await element(by.id('components/AuthPassword/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthPhone'))).toBeVisible()
-  })
+  //   /**
+  //    * Username reservation
+  //    */
+  //   const username = `detox${Date.now()}`
+  //   await element(by.id('components/AuthUsername/Form/username')).clearText()
+  //   await element(by.id('components/AuthUsername/Form/username')).typeText(username)
+  //   await element(by.id('components/AuthUsername/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPassword'))).toBeVisible()
+  // })
 
   /**
    *
    */
-  it('AuthPhone', async () => {
-    await expect(element(by.id('components/AuthPhone'))).toBeVisible()
+  // it('AuthPassword', async () => {
+  //   await expect(element(by.id('components/AuthPassword'))).toBeVisible()
 
-    /**
-     * Phone length constraint validation 
-     */
-    await element(by.id('components/AuthPhone/Form/phone')).clearText()
-    await element(by.id('components/AuthPhone/Form/phone')).typeText('aa')
-    await element(by.id('components/AuthPhone/Form/submit')).tap()
-    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
+  //   /**
+  //    * Password length constraint validation 
+  //    */
+  //   await element(by.id('components/AuthPassword/Form/password')).clearText()
+  //   await element(by.id('components/AuthPassword/Form/password')).typeText('aa')
+  //   await element(by.id('components/AuthPassword/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPhone'))).toBeNotVisible()
 
-    /**
-     * Phone chars constraint validation 
-     */
-    await element(by.id('components/AuthPhone/Form/phone')).clearText()
-    await element(by.id('components/AuthPhone/Form/phone')).typeText('asd-.')
-    await element(by.id('components/AuthPhone/Form/submit')).tap()
-    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
+  //   /**
+  //    * Password chars constraint validation 
+  //    */
+  //   await element(by.id('components/AuthPassword/Form/password')).clearText()
+  //   await element(by.id('components/AuthPassword/Form/password')).typeText('asd-.')
+  //   await element(by.id('components/AuthPassword/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPhone'))).toBeNotVisible()
 
-    /**
-     * Tap to change region
-    */
-    await element(by.id('components/Formik/PhoneField/Flag')).tap()
-    await element(by.type('UIPickerView')).setColumnToValue(0, 'Turkmenistan')
-    await element(by.text('Confirm')).tap()
-    /**
-     * Phone reservation
-     */
-    const phone = `65809290`
-    await element(by.id('components/AuthPhone/Form/phone')).clearText()
-    await element(by.id('components/AuthPhone/Form/phone')).typeText(phone)
-    await element(by.id('components/AuthPhone/Form/submit')).tap()
-    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeVisible()
+  //   /**
+  //    * Password reservation
+  //    */
+  //   const password = `123123123`
+  //   await element(by.id('components/AuthPassword/Form/password')).clearText()
+  //   await element(by.id('components/AuthPassword/Form/password')).typeText(password)
+  //   await element(by.id('components/AuthPassword/Form/submit')).tap()
+  //   // await expect(element(by.id('components/AuthPhone'))).toBeVisible()
+  // })
 
-  })
+  /**
+   *
+   */
+  // it('AuthPhone Registration flow', async () => {
+  //   await expect(element(by.id('components/AuthPhone'))).toBeVisible()
 
-  // it('AuthEmail', async () => {
+  //   /**
+  //    * Phone length constraint validation 
+  //    */
+  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
+  //   await element(by.id('components/AuthPhone/Form/phone')).typeText('aa')
+  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
+
+  //   /**
+  //    * Phone chars constraint validation 
+  //    */
+  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
+  //   await element(by.id('components/AuthPhone/Form/phone')).typeText('asd-.')
+  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
+
+  //   /**
+  //    * Tap to change region
+  //   */
+  //   await element(by.id('components/Formik/PhoneField/Flag')).tap()
+  //   await element(by.type('UIPickerView')).setColumnToValue(0, 'Turkmenistan')
+  //   await element(by.text('Confirm')).tap()
+  //   /**
+  //    * Phone reservation
+  //    */
+  //   const phone = `65809290`
+  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
+  //   await element(by.id('components/AuthPhone/Form/phone')).typeText(phone)
+  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeVisible()
+
+  // })
+
+  // it('AuthEmail SignUp flow', async () => {
   //   await element(by.id('navigation/AuthNavigator/Signup/email')).tap()
   //   await expect(element(by.id('components/AuthEmail'))).toBeVisible()
 
@@ -173,4 +173,81 @@ describe('Example', () => {
   //   await expect(element(by.id('components/Camera/Shutter'))).toBeVisible()
   //   await element(by.id('components/Camera/Shutter/Snap')).tap()
   // })
+
+  // it('Login Flow', async () => {
+  //   /**
+  //    * Login Flow by Email
+  //   */
+  //   await expect(element(by.id('components/AuthHome'))).toBeVisible()
+  //   await element(by.id('templates/Auth/Action/Login')).tap()
+  //   await expect(element(by.id('components/AuthSigninPhone'))).toBeVisible()
+  //   await element(by.id('navigation/AuthNavigator/Signin/email')).tap()
+  //   await expect(element(by.id('components/AuthSigninEmail'))).toBeVisible()
+
+  //   await element(by.id('components/AuthSignin/Form/username')).tap()
+  //   await element(by.id('components/AuthSignin/Form/username')).typeText('mayoldmail')
+  //   await element(by.id('components/AuthSignin/Form/submit')).tap()
+  //   await expect(element(by.id('components/PostsList'))).toBeNotVisible()
+
+  //   await element(by.id('components/AuthSignin/Form/password')).tap()
+  //   await element(by.id('components/AuthSignin/Form/password')).typeText('password')
+  //   await element(by.id('components/AuthSignin/Form/submit')).tap()
+  //   await expect(element(by.id('components/PostsList'))).toBeNotVisible()
+
+  //   await element(by.id('components/AuthSignin/Form/username')).tap()
+  //   await element(by.id('components/AuthSignin/Form/username')).typeText('@gmail.com')
+  //   await element(by.id('components/AuthSignin/Form/submit')).tap()
+  //   await expect(element(by.id('components/PostsList'))).toBeNotVisible()
+
+  //   /**
+  //    * Correct Enter
+  //   */
+  //   await element(by.id('components/AuthSignin/Form/username')).tap()
+  //   await element(by.id('components/AuthSignin/Form/username')).clearText()
+  //   await element(by.id('components/AuthSignin/Form/username')).typeText('qq@mailforspam.com')
+  //   await element(by.id('components/AuthSignin/Form/password')).tap()
+  //   await element(by.id('components/AuthSignin/Form/password')).clearText()
+  //   await element(by.id('components/AuthSignin/Form/password')).typeText('!Testing1234!')
+  //   await element(by.id('components/AuthSignin/Form/submit')).tap()
+  //   await expect(element(by.id('components/PostsList'))).toBeNotVisible()
+  // })
+
+  it('Request Password reset Flow', async () => {
+    /**
+     * Wrong input shouldnt pass to next screen
+    */
+    // await expect(element(by.id('components/AuthHome'))).toBeVisible()
+    // await element(by.id('components/AuthAction/Login')).tap()
+    // await expect(element(by.id('components/AuthSigninPhone'))).toBeVisible()
+    // await element(by.id('components/AuthActionPhone/ResetPassword')).tap()
+
+    // await expect(element(by.id('components/AuthForgot'))).toBeVisible()
+    // await element(by.id('components/AuthForgot/Form/username')).tap()
+    // await element(by.id('components/AuthForgot/Form/username')).typeText('givemypassword')
+    // await element(by.id('components/AuthForgot/Form/submit')).tap()
+    // await expect(element(by.id('components/AuthForgotConfirm'))).toBeNotVisible()
+
+    /**
+     * Real
+     * 
+    */
+    await expect(element(by.id('components/AuthHome'))).toBeVisible()
+    await element(by.id('components/AuthAction/Login')).tap()
+    await expect(element(by.id('components/AuthSigninPhone'))).toBeVisible()
+    await element(by.id('components/AuthActionPhone/ResetPassword')).tap()
+
+    await expect(element(by.id('components/AuthForgot'))).toBeVisible()
+    await element(by.id('components/AuthForgot/Form/username')).tap()
+    await element(by.id('components/AuthForgot/Form/username')).typeText('4bf15cac-916c-4a5b-8a01-4366d9624e41@mailslurp.com')
+    await element(by.id('components/AuthForgot/Form/submit')).tap()
+    await expect(element(by.id('components/AuthForgotConfirm'))).toBeVisible()
+
+    const code = await emailHelpers.getPasswordResetCode('4bf15cac-916c-4a5b-8a01-4366d9624e41')
+    await element(by.id('components/AuthForgotConfirm/Form/confirmationCode')).tap()
+    await element(by.id('components/AuthForgotConfirm/Form/confirmationCode')).typeText(code)
+    await element(by.id('components/AuthForgotConfirm/Form/password')).tap()
+    await element(by.id('components/AuthForgotConfirm/Form/password')).typeText('password')
+    await element(by.id('components/AuthForgotConfirm/Form/submit')).tap()
+
+  })
 }) 
