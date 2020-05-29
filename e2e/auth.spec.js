@@ -91,83 +91,86 @@ describe('Example', () => {
   /**
    *
    */
-  // it('AuthPhone', async () => {
-  //   await expect(element(by.id('components/AuthPhone'))).toBeVisible()
-
-  //   /**
-  //    * Phone length constraint validation 
-  //    */
-  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
-  //   await element(by.id('components/AuthPhone/Form/phone')).typeText('aa')
-  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
-  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
-
-  //   /**
-  //    * Phone chars constraint validation 
-  //    */
-  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
-  //   await element(by.id('components/AuthPhone/Form/phone')).typeText('asd-.')
-  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
-  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
-
-  //   /**
-  //    * Phone reservation
-  //    */
-  //   const phone = `+123123123`
-  //   await element(by.id('components/AuthPhone/Form/phone')).clearText()
-  //   await element(by.id('components/AuthPhone/Form/phone')).typeText(phone)
-  //   await element(by.id('components/AuthPhone/Form/submit')).tap()
-  //   await expect(element(by.id('components/AuthPhoneConfirm'))).toBeVisible()
-  // })
-
-  /**
-   *
-   */
-  it('AuthEmail', async () => {
-    await element(by.id('navigation/AuthNavigator/Signup/email')).tap()
-    // await expect(element(by.id('components/AuthEmail'))).toBeVisible()
+  it('AuthPhone', async () => {
+    await expect(element(by.id('components/AuthPhone'))).toBeVisible()
 
     /**
-     * Email length constraint validation 
+     * Phone length constraint validation 
      */
-    // await element(by.id('components/AuthEmail/Form/email')).clearText()
-    // await element(by.id('components/AuthEmail/Form/email')).typeText('aa')
-    // await element(by.id('components/AuthEmail/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthEmailConfirm'))).toBeNotVisible()
+    await element(by.id('components/AuthPhone/Form/phone')).clearText()
+    await element(by.id('components/AuthPhone/Form/phone')).typeText('aa')
+    await element(by.id('components/AuthPhone/Form/submit')).tap()
+    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
 
     /**
-     * Email chars constraint validation 
+     * Phone chars constraint validation 
      */
-    // await element(by.id('components/AuthEmail/Form/email')).clearText()
-    // await element(by.id('components/AuthEmail/Form/email')).typeText('asd-.')
-    // await element(by.id('components/AuthEmail/Form/submit')).tap()
-    // await expect(element(by.id('components/AuthEmailConfirm'))).toBeNotVisible()
+    await element(by.id('components/AuthPhone/Form/phone')).clearText()
+    await element(by.id('components/AuthPhone/Form/phone')).typeText('asd-.')
+    await element(by.id('components/AuthPhone/Form/submit')).tap()
+    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeNotVisible()
 
     /**
-     * Email reservation
-     */
-    const inbox = await emailHelpers.createInbox()
-    const email = inbox.emailAddress
-    await element(by.id('components/AuthEmail/Form/email')).clearText()
-    await element(by.id('components/AuthEmail/Form/email')).typeText(email)
-    await element(by.id('components/AuthEmail/Form/submit')).tap()
-    await expect(element(by.id('components/AuthEmailConfirm'))).toBeVisible()
-
-    /**
-     * Email confirmation
-     */
-    const lastEmail = await emailHelpers.getLatestEmail(inbox)
-    const confirmationCode = await emailHelpers.extractConfirmationCode(lastEmail)
-    await element(by.id('components/AuthEmailConfirm/Form/confirmationCode')).clearText()
-    await element(by.id('components/AuthEmailConfirm/Form/confirmationCode')).typeText(confirmationCode)
-    // await element(by.id('components/AuthEmailConfirm/Form/submit')).tap()
-    await expect(element(by.id('components/AuthPhoto'))).toBeVisible()
-    
-    /**
-     * Take a photo for avatar
+     * Tap to change region
     */
-    await element(by.id('components/AuthPhoto/Actions/photo')).tap()
-    await expect(element(by.id('components/Camera/Shutter'))).toBeVisible()
-    await element(by.id('components/Camera/Shutter/Snap')).tap()
+    await element(by.id('components/Formik/PhoneField/Flag')).tap()
+    await element(by.type('UIPickerView')).setColumnToValue(0, 'Turkmenistan')
+    await element(by.text('Confirm')).tap()
+    /**
+     * Phone reservation
+     */
+    const phone = `65809290`
+    await element(by.id('components/AuthPhone/Form/phone')).clearText()
+    await element(by.id('components/AuthPhone/Form/phone')).typeText(phone)
+    await element(by.id('components/AuthPhone/Form/submit')).tap()
+    await expect(element(by.id('components/AuthPhoneConfirm'))).toBeVisible()
+
   })
+
+  // it('AuthEmail', async () => {
+  //   await element(by.id('navigation/AuthNavigator/Signup/email')).tap()
+  //   await expect(element(by.id('components/AuthEmail'))).toBeVisible()
+
+  //   /**
+  //    * Email length constraint validation 
+  //    */
+  //   await element(by.id('components/AuthEmail/Form/email')).clearText()
+  //   await element(by.id('components/AuthEmail/Form/email')).typeText('aa')
+  //   await element(by.id('components/AuthEmail/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthEmailConfirm'))).toBeNotVisible()
+
+  //   /**
+  //    * Email chars constraint validation 
+  //    */
+  //   await element(by.id('components/AuthEmail/Form/email')).clearText()
+  //   await element(by.id('components/AuthEmail/Form/email')).typeText('asd-.')
+  //   await element(by.id('components/AuthEmail/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthEmailConfirm'))).toBeNotVisible()
+
+  //   /**
+  //    * Email reservation
+  //    */
+  //   const inbox = await emailHelpers.createInbox()
+  //   const email = inbox.emailAddress
+  //   await element(by.id('components/AuthEmail/Form/email')).clearText()
+  //   await element(by.id('components/AuthEmail/Form/email')).typeText(email)
+  //   await element(by.id('components/AuthEmail/Form/submit')).tap()
+  //   await expect(element(by.id('components/AuthEmailConfirm'))).toBeVisible()
+
+  //   /**
+  //    * Email confirmation
+  //    */
+  //   const lastEmail = await emailHelpers.getLatestEmail(inbox)
+  //   const confirmationCode = await emailHelpers.extractConfirmationCode(lastEmail)
+  //   await element(by.id('components/AuthEmailConfirm/Form/confirmationCode')).clearText()
+  //   await element(by.id('components/AuthEmailConfirm/Form/confirmationCode')).typeText(confirmationCode)
+  //   await expect(element(by.id('components/AuthPhoto'))).toBeVisible()
+    
+  //   /**
+  //    * Take a photo for avatar
+  //   */
+  //   await element(by.id('components/AuthPhoto/Actions/photo')).tap()
+  //   await expect(element(by.id('components/Camera/Shutter'))).toBeVisible()
+  //   await element(by.id('components/Camera/Shutter/Snap')).tap()
+  // })
 }) 

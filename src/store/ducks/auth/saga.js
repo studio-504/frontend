@@ -97,12 +97,10 @@ function* authSigninRequest(req) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninFailure({
         message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_CONFIRMED'),
-        nextRoute: 'Signup',
       }))
     } else if (error.code === 'UserNotFoundException') {
       yield put(actions.authSigninFailure({
         message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_FOUND'),
-        nextRoute: 'Signup',
       }))
     } else if (error.code === 'NotAuthorizedException') {
       yield put(actions.authSigninFailure({

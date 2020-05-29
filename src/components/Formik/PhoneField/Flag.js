@@ -20,7 +20,7 @@ const PhoneField = ({
   const styling = styles(theme)
 
   return (
-    <TouchableOpacity style={styling.root} onPress={inputRef.current.onPressFlag}>
+    <TouchableOpacity style={styling.root} onPress={inputRef.current.onPressFlag} testID="components/Formik/PhoneField/Flag">
       <View style={styling.flag}>
         <Image
           style={styling.image}
