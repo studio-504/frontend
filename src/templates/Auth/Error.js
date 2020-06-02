@@ -25,7 +25,7 @@ const Error = ({
       <View style={styling.content}>
         <Text style={styling.text}>{text}</Text>
       </View>
-      <TouchableOpacity style={styling.action} onPress={onClose}>
+      <TouchableOpacity style={styling.action} onPress={onClose} testID="templates/Auth/Error/Close">
         <CloseIcon fill="#ffffff" />
       </TouchableOpacity>
     </View>

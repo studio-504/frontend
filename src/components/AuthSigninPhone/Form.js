@@ -51,7 +51,7 @@ const SigninForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID="components/AuthSignin/Form/username" name="username" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" autoFocus />
+        <Field testID="components/AuthSignin/Form/username" name="username" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" /*autoFocus*/ />
       </View>
       <View style={styling.input}>
         <Field testID="components/AuthSignin/Form/password" name="password" component={TextField} placeholder={t('Password')} secureTextEntry keyboardType="default" textContentType="password" autoCompleteType="password" />

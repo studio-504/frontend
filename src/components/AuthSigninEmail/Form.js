@@ -47,7 +47,7 @@ const SigninForm = ({
   )
 
   return (
-    <View style={styling.root} testID='components/AuthSigninEmail'>
+    <View style={styling.root}>
       <View style={styling.input}>
         <Field testID="components/AuthSignin/Form/username" name="username" component={TextField} placeholder={t('Email')} keyboardType="default" textContentType="username" autoCompleteType="username" />
       </View>

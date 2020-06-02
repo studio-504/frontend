@@ -34,7 +34,7 @@ const EmailConfirmForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID="components/AuthEmailConfirm/Form/confirmationCode" name="confirmationCode" component={TextField} placeholder={t('Confirmation Code')} keyboardType="number-pad" textContentType="oneTimeCode" autoCompleteType="off" autoFocus maxLength={6} />
+        <Field testID="components/AuthEmailConfirm/Form/confirmationCode" name="confirmationCode" component={TextField} placeholder={t('Confirmation Code')} keyboardType="number-pad" textContentType="oneTimeCode" autoCompleteType="off" /*autoFocus*/ maxLength={6} />
       </View>
 
       {loading ?

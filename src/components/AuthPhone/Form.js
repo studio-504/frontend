@@ -32,7 +32,7 @@ const PhoneForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID="components/AuthPhone/Form/phone" name="phone" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" autoFocus />
+        <Field testID="components/AuthPhone/Form/phone" name="phone" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" /*autoFocus*/ />
       </View>
       <View style={styling.input}>
         <DefaultButton testID="components/AuthPhone/Form/submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />

@@ -23,7 +23,7 @@ const Actions = ({
   return (
     <View style={styling.root}>
       <View style={styling.item}>
-        <DefaultButton testID="components/AuthHome/Actions/signin" label={t('Use Phone or Email')} onPress={navigationActions.navigateAuthUsername(navigation)} loading={false} />
+        <DefaultButton testID="components/AuthHome/Actions/signup" label={t('Use Phone or Email')} onPress={navigationActions.navigateAuthUsername(navigation)} loading={false} />
       </View>
       <View style={styling.item}>
         <DefaultButton testID="components/AuthHome/Actions/google" label={t('Login with Google')} onPress={authGoogleRequest} loading={authGoogle.status === 'loading'} />

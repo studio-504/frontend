@@ -18,6 +18,7 @@ const formSchema = Yup.object().shape({
   username: Yup.string()
     .min(3)
     .max(50)
+    .email()
     .trim()
     .required(),
 })
@@ -47,7 +48,7 @@ const ForgotForm = ({
         <Field testID="components/AuthForgot/Form/username" name="username" component={TextField} placeholder={t('Email or Phone number')} keyboardType="default" textContentType="username" autoCompleteType="username" />
       </View>
       <View style={styling.input}>
-        <DefaultButton testID="components/AuthForgot/Form/submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
+        <DefaultButton testID="components/AuthForgotEmail/Form/submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
       </View>
     </View>
   )

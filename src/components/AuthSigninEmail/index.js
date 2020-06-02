@@ -54,7 +54,7 @@ const AuthSigninEmail = ({
         </View>
       </View>
 
-      <AuthActionTemplate onPress={navigationActions.navigateAuthForgot(navigation)} testID="components/AuthActionEmail/ResetPassword">
+      <AuthActionTemplate onPress={navigationActions.navigateForgot(navigation)} testID="components/AuthActionEmail/ResetPassword">
         {t('Reset your Password')}
       </AuthActionTemplate>
     </View>
