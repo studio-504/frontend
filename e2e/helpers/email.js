@@ -1,7 +1,7 @@
 import { MailSlurp } from 'mailslurp-client'
 // const mailslurp = new MailSlurp({ apiKey: '4d066a5ab39edc3f5be220c0b211b29290468611b4af39baa4dd16a48110eddb' })
 //Bayram
-const mailslurp = new MailSlurp({ apiKey: 'e68c599dd2e69b9de02d3758bbdacee41a081793fcbd79edf3e094c623eee49c' })
+const mailslurp = new MailSlurp({ apiKey: '24bd2575fc206fcfe6e7d1226ffa69991c7eaf056d905564ae29cfea57587700' })
 
 export const createInbox = async () => {
 	const inbox = await mailslurp.createInbox()

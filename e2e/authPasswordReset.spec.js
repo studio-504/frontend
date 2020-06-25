@@ -8,7 +8,7 @@ describe('Example', () => {
 
   it('Request Password reset Flow', async () => {
 
-    const mailslurpMail = '2bbab268-6588-4b80-b616-4b6736eaf899@mailslurp.com'
+    const mailslurpMail = 'aebbb3ce-e99c-498b-bc69-eb715f0f5fd9@mailslurp.com'
     const inboxId = mailslurpMail.split('@')[0]
     const newPassword = '!Testing1234!'
 
@@ -75,7 +75,7 @@ describe('Example', () => {
     /**
      * Write valid password 
     */
-    await element(by.id('templates/Auth/Error/Close')).tap()
+    // await element(by.id('templates/Auth/Error/Close')).tap()
     await element(by.id('components/AuthForgotConfirm/Form/password')).clearText()
     await element(by.id('components/AuthForgotConfirm/Form/password')).typeText(newPassword)
     await element(by.id('components/AuthForgotConfirm/Form/submit')).tap()
