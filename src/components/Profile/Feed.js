@@ -7,8 +7,7 @@ import {
 import PostsGridComponent from 'components/PostsGrid'
 import PostsGridServiceComponent from 'components/PostsGrid/index.service'
 import path from 'ramda/src/path'
-import PostsLoadingComponent from 'components/PostsList/PostsLoading'
-import ContextComponent from 'components/Cache/Context'
+import PostsLoadingComponent from 'components/Feed/PostsLoading'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -24,17 +23,12 @@ const ProfileFeed = ({
     <PostsGridServiceComponent postsGetRequestOnMount={true}>
       {(postsProps) => (
         <View style={styling.root}>
-          <ContextComponent.Consumer>
-            {(contextProps) => (
-              <PostsGridComponent
-                postsGet={postsProps.postsGet}
-                themeFetch={postsProps.themeFetch}
-                themeCode={path(['data', 'themeCode'])(postsProps.user)}
-                themes={postsProps.themes}
-                priorityQueueInstance={contextProps.feedImages}
-              />
-            )}
-          </ContextComponent.Consumer>
+          <PostsGridComponent
+            postsGet={postsProps.postsGet}
+            themeFetch={postsProps.themeFetch}
+            themeCode={path(['data', 'themeCode'])(postsProps.user)}
+            thread="posts/profile"
+          />
 
           {(path(['status'])(postsProps.postsGet) === 'loading' && !path(['data', 'length'])(postsProps.postsGet)) ?
             <PostsLoadingComponent />

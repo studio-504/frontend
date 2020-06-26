@@ -1,5 +1,5 @@
 import {
-  imageFragment,
+  cardFragment,
   postFragment,
   userFragment,
 } from 'store/fragments'
@@ -28,6 +28,15 @@ export const followUser = `
 export const unfollowUser = `
   mutation UnfollowUser($userId: ID!) {
     unfollowUser (userId: $userId) {
+      ...userFragment
+    }
+  }
+  ${userFragment}
+`
+
+export const deleteUser = `
+  mutation deleteUser {
+    deleteUser {
       ...userFragment
     }
   }
@@ -189,4 +198,47 @@ export const trendingUsers = `
     }
   }
   ${userFragment}
+`
+
+export const getCards = `
+  query getCards($limit: Int, $nextToken: String) {
+    self {
+      cards(limit: $limit, nextToken: $nextToken) {
+        items {
+          ...cardFragment
+        }
+        nextToken
+      }
+    }
+  }
+  ${cardFragment}
+`
+
+export const deleteCard = `
+  mutation deleteCard($cardId: ID!) {
+    deleteCard(cardId: $cardId) {
+      ...cardFragment
+    }
+  }
+  ${cardFragment}
+`
+
+export const setUserAPNSToken = `
+  mutation setUserAPNSToken($token: String!) {
+    setUserAPNSToken(token: $token) {
+      userId
+    }
+  }
+`
+
+export const onCardNotification = `
+  subscription onCardNotification ($userId: ID!) {
+    onCardNotification (userId: $userId) {
+      userId
+      type
+      card {
+        cardId
+      }
+    }
+  }
 `

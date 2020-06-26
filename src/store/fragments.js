@@ -234,7 +234,6 @@ export const chatFragment = `
     createdAt
     lastMessageActivityAt
     userCount
-    messageCount
   }
 
   fragment chatFragment on Chat {
@@ -253,4 +252,18 @@ export const chatFragment = `
     }
   }
   ${chatMessageFragment}
+`
+
+export const cardFragment = `
+  fragment cardFragment on Card {
+    cardId
+    title
+    subTitle
+    action
+    thumbnail {
+      ...imageFragment
+    }
+  }
+ 
+  ${imageFragment}
 `

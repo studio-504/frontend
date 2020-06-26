@@ -2,7 +2,7 @@ import { handleActions } from 'redux-actions'
 import update from 'immutability-helper'
 import * as constants from 'store/ducks/albums/constants'
 
-const initialState = {
+export const initialState = {
   albumsGet: {
     data: [],
     status: 'idle',
@@ -35,10 +35,6 @@ const initialState = {
  *
  */
 const albumsGetRequest = (state, action) => update(state, {
-  albumsGet: {
-    status: { $set: 'loading' },
-    payload: { $set: action.payload },
-  },
   albumsGetCache: {
     $resourceCacheSetRequest: {
       ...action,
@@ -49,10 +45,6 @@ const albumsGetRequest = (state, action) => update(state, {
 })
 
 const albumsGetSuccess = (state, action) => update(state, {
-  albumsGet: {
-    status: { $set: 'success' },
-    payload: { $set: action.payload.payload },
-  },
   albumsGetCache: {
     $resourceCacheSetSuccess: {
       ...action,
@@ -63,10 +55,6 @@ const albumsGetSuccess = (state, action) => update(state, {
 })
 
 const albumsGetFailure = (state, action) => update(state, {
-  albumsGet: {
-    status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
-  },
   albumsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
@@ -77,10 +65,6 @@ const albumsGetFailure = (state, action) => update(state, {
 })
 
 const albumsGetIdle = (state, action) => update(state, {
-  albumsGet: {
-    status: { $set: 'idle' },
-    payload: { $set: action.payload.payload },
-  },
   albumsGetCache: {
     $resourceCacheSetIdle: {
       ...action,

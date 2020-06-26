@@ -23,7 +23,6 @@ const PostMedia = ({
   postsFlag,
   postsFlagRequest,
   postsDeleteRequest,
-  postsAnonymouslyLikeRequest,
   postsOnymouslyLikeRequest,
   postsDislikeRequest,
   postsSingleGet,
@@ -36,10 +35,11 @@ const PostMedia = ({
   textPostRefs,
   onViewableItemsChangedRef,
   viewabilityConfigRef,
-  priorityQueueInstance,
 }) => {
   const styling = styles(theme)
-  
+
+  const data = postsSingleGet.data ? [postsSingleGet.data] : []
+
   return (
     <View style={styling.root}>
       <NativeError
@@ -55,7 +55,7 @@ const PostMedia = ({
         bounces={false}
         ref={feedRef}
         keyExtractor={item => item.postId}
-        data={[postsSingleGet.data]}
+        data={data}
         onViewableItemsChanged={onViewableItemsChangedRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
         renderItem={({ item: post, index }) => (
@@ -68,7 +68,6 @@ const PostMedia = ({
             postsFlagRequest={postsFlagRequest}
             postsDeleteRequest={postsDeleteRequest}
             postsShareRequest={postsShareRequest}
-            postsAnonymouslyLikeRequest={postsAnonymouslyLikeRequest}
             postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
             postsDislikeRequest={postsDislikeRequest}
             priorityIndex={index}
@@ -79,7 +78,6 @@ const PostMedia = ({
             actionSheetRef={actionSheetRefs.current[post.postId]}
             createTextPostRef={element => textPostRefs.current[post.postId] = element}
             textPostRef={textPostRefs.current[post.postId]}
-            priorityQueueInstance={priorityQueueInstance}
           />
         )}
       />
@@ -110,7 +108,6 @@ PostMedia.propTypes = {
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,
   postsDeleteRequest: PropTypes.any,
-  postsAnonymouslyLikeRequest: PropTypes.any,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
   usersGetFollowedUsersWithStories: PropTypes.any,
@@ -125,7 +122,6 @@ PostMedia.propTypes = {
   textPostRefs: PropTypes.any,
   onViewableItemsChangedRef: PropTypes.any,
   viewabilityConfigRef: PropTypes.any,
-  priorityQueueInstance: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(PostMedia))

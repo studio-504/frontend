@@ -13,7 +13,7 @@ import ResultComponent from 'components/Search/Result'
 import PostsGridComponent from 'components/PostsGrid'
 import { Subheading } from 'react-native-paper'
 import path from 'ramda/src/path'
-import PostsLoadingComponent from 'components/PostsList/PostsLoading'
+import PostsLoadingComponent from 'components/Feed/PostsLoading'
 import ContextComponent from 'components/Cache/Context'
 import ScrollService from 'services/Scroll'
 
@@ -24,7 +24,6 @@ import { withTranslation } from 'react-i18next'
 const SearchComponent = ({
   t,
   theme,
-  themes,
   feedRef,
   user,
   usersSearchRequest,
@@ -50,7 +49,8 @@ const SearchComponent = ({
   const scroll = ScrollService({
     resource: postsGetTrendingPosts,
     loadInit: postsGetTrendingPostsRequest,
-    loadMore: postsGetTrendingPostsMoreRequest
+    loadMore: postsGetTrendingPostsMoreRequest,
+    extra: { limit: path(['payload', 'limit'])(postsGetTrendingPosts) },
   })
 
   return (
@@ -82,17 +82,12 @@ const SearchComponent = ({
           onScroll={scroll.handleScrollChange}
           scrollEventThrottle={400}
         >
-          <ContextComponent.Consumer>
-            {(contextProps) => (
-              <PostsGridComponent
-                themes={themes}
-                postsGet={postsGetTrendingPosts}
-                themeFetch={themeFetch}
-                themeCode={path(['themeCode'])(user)}
-                priorityQueueInstance={contextProps.searchImages}
-              />
-            )}
-          </ContextComponent.Consumer>
+          <PostsGridComponent
+            postsGet={postsGetTrendingPosts}
+            themeFetch={themeFetch}
+            themeCode={path(['themeCode'])(user)}
+            thread="posts/trending"
+          />
 
           {scroll.loadingmore ?
             <View style={styling.activity}>
@@ -176,7 +171,6 @@ SearchComponent.propTypes = {
   usersUnfollow: PropTypes.any,
   usersUnfollowRequest: PropTypes.any,
   t: PropTypes.any,
-  themes: PropTypes.any,
   feedRef: PropTypes.any,
   user: PropTypes.any,
   usersAcceptFollowerUser: PropTypes.any,

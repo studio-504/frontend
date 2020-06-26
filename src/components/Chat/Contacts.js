@@ -53,7 +53,7 @@ const Contacts = ({
           <RowsItemComponent>
             <UserRowComponent
               avatar={
-                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { chat, user: path(['users', 'items', '0'])(chat) })}>
+                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: path(['users', 'items', '0', 'userId'])(chat), chatId: chat.chatId })}>
                   <Avatar
                     active={path(['users', 'items', '0', 'stories', 'items', 'length'])(chat) || false}
                     thumbnailSource={{ uri: path(['users', 'items', '0', 'photo', 'url64p'])(chat) }}
@@ -63,13 +63,20 @@ const Contacts = ({
                 </TouchableOpacity>
               }
               content={
-                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { chat, user: path(['users', 'items', '0'])(chat) })} style={styling.user}>
+                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: path(['users', 'items', '0', 'userId'])(chat), chatId: chat.chatId })} style={styling.user}>
                   <Text style={styling.username}>{path(['users', 'items', '0', 'username'])(chat)}</Text>
-                  <Caption style={styling.fullname}>{path(['messages', 'items', '0', 'text'])(chat)}</Caption>
+
+                  {path(['messages', 'items', '0', 'viewedStatus'])(chat) === 'NOT_VIEWED' ?
+                    <Caption style={styling.notViewed}>{path(['messages', 'items', '0', 'text'])(chat)}</Caption>
+                  : null}
+
+                  {path(['messages', 'items', '0', 'viewedStatus'])(chat) === 'VIEWED' ?
+                    <Caption style={styling.viewed}>{path(['messages', 'items', '0', 'text'])(chat)}</Caption>
+                  : null}
                 </TouchableOpacity>
               }
               action={(
-                <DefaultButton label={t('Chat')} onPress={navigationActions.navigateChatDirect(navigation, { chat, user: path(['users', 'items', '0'])(chat) })} loading={false} mode="outlined" size="compact" />
+                <DefaultButton label={t('Chat')} onPress={navigationActions.navigateChatDirect(navigation, { userId: path(['users', 'items', '0', 'userId'])(chat), chatId: chat.chatId })} loading={false} mode="outlined" size="compact" />
               )}
             />
           </RowsItemComponent>
@@ -89,7 +96,11 @@ const styles = theme => StyleSheet.create({
   },
   username: {
   },
-  fullname: {
+  viewed: {
+  },
+  notViewed: {
+    color: theme.colors.text,
+    fontWeight: '600',
   },
 })
 

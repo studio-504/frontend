@@ -27,7 +27,6 @@ import { withTranslation } from 'react-i18next'
 const PostComponent = ({
   t,
   theme,
-  themes,
   user,
   post,
   postsShareRequest,
@@ -35,7 +34,6 @@ const PostComponent = ({
   postsArchiveRequest,
   postsFlagRequest,
   postsDeleteRequest,
-  postsAnonymouslyLikeRequest,
   postsOnymouslyLikeRequest,
   postsDislikeRequest,
   postsRestoreArchivedRequest,
@@ -49,7 +47,6 @@ const PostComponent = ({
   textPostRef,
 
   feedRef,
-  priorityQueueInstance,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -112,9 +109,9 @@ const PostComponent = ({
           feedRef={feedRef}
         >
           <CacheComponent
-            priorityQueueInstance={priorityQueueInstance}
+            thread="post"
             images={[
-              [path(['image', 'url64p'])(post), true],
+              [path(['image', 'url480p'])(post), true],
               [path(['image', 'url4k'])(post), true],
               [path(['image', 'url'])(post), false],
             ]}
@@ -139,7 +136,6 @@ const PostComponent = ({
         user={user}
         post={post}
         postsShareRequest={postsShareRequest}
-        postsAnonymouslyLikeRequest={postsAnonymouslyLikeRequest}
         postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
         postsDislikeRequest={postsDislikeRequest}
         handlePostShare={handlePostShare}
@@ -196,7 +192,6 @@ PostComponent.propTypes = {
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,
   postsDeleteRequest: PropTypes.any,
-  postsAnonymouslyLikeRequest: PropTypes.any,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
   usersGetFollowedUsersWithStories: PropTypes.any,
@@ -211,7 +206,6 @@ PostComponent.propTypes = {
   actionSheetRef: PropTypes.any,
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
-  priorityQueueInstance: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(PostComponent))

@@ -13,10 +13,31 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'services/Logger'
 import { enableScreens } from 'react-native-screens'
-import PinchZoomComponent from 'components/PostsList/PinchZoom'
-import PostsListContextComponent from 'components/PostsList/Context'
+import PinchZoomComponent from 'components/Feed/PinchZoom'
+import FeedContextComponent from 'components/Feed/Context'
 import UIContextComponent from 'components/UI/Context'
 import ErrorTemplate from 'templates/Error'
+
+const linking = {
+  prefixes: ['real.app://', 'https://real.app/'],
+  config: {
+    AuthEmailConfirm: 'email/confirm/:userId/:confirmationCode',
+    AuthForgotConfirm: 'forgot/confirm/:userId/:confirmationCode',
+    Chat: {
+      screens: {
+        Chat: 'chat',
+        ChatDirect: 'chat/:chatId',
+      },
+    },
+    Root: {
+      screens: {
+        Profile: 'user/:userId',
+        PostMedia: 'user/:userId/post/:postId',
+        Comments: 'user/:userId/post/:postId/comments',
+      },
+    },
+  },
+}
 
 enableScreens()
 
@@ -36,14 +57,6 @@ const Routes = ({
   handleErrorClose,
 }) => {
   const { theme, themes } = useContext(ThemesContext)
-
-  const linking = {
-    prefixes: ['real.app://'],
-    config: {
-      AuthEmailConfirm: 'email/confirm/:userId/:confirmationCode',
-      AuthForgotConfirm: 'forgot/confirm/:userId/:confirmationCode',
-    },
-  }
 
   return (
     <NavigationContainer theme={theme} linking={linking}>
@@ -85,7 +98,7 @@ const App = () => {
             handleErrorClose,
           }) => (
             <ThemesContext.Provider value={{ theme, themes }}>
-              <PostsListContextComponent.Provider value={{ draggedImage, setDraggedImage }}>
+              <FeedContextComponent.Provider value={{ draggedImage, setDraggedImage }}>
                 <UIContextComponent.Provider value={{ uiNotifications, uiNotificationIdle }}>
                   <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
                   <PinchZoomComponent />
@@ -95,7 +108,7 @@ const App = () => {
                     handleErrorClose={handleErrorClose}
                   />
                 </UIContextComponent.Provider>
-              </PostsListContextComponent.Provider>
+              </FeedContextComponent.Provider>
             </ThemesContext.Provider>
           )}
         </AuthProvider>

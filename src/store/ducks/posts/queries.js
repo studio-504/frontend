@@ -18,6 +18,20 @@ export const getPosts = `
   ${postFragment}
 `
 
+export const getPostsUnreadComments = `
+  query GetPosts($limit: Int, $nextToken: String = null) {
+    self {
+      postsByNewCommentActivity(limit: $limit, nextToken: $nextToken) {
+        items {
+          ...postFragment
+        }
+        nextToken
+      }
+    }
+  }
+  ${postFragment}
+`
+
 export const getPost = `
   query GetPost($postId: ID!) {
     post(postId: $postId) {
@@ -226,9 +240,9 @@ export const reportCommentViews = `
 `
 
 export const trendingPosts = `
-  query trendingPosts($limit: Int, $nextToken: String = null) {
+  query trendingPosts($viewedStatus: ViewedStatus, $limit: Int, $nextToken: String = null) {
     trendingPosts(limit: $limit, nextToken: $nextToken) {
-      items {
+      items(viewedStatus: $viewedStatus) {
         ...postFragment
       }
       nextToken

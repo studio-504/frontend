@@ -19,7 +19,7 @@ extend('$postsResourceCacheSetSuccess', ({ payload, resourceKey, initialState },
 
   return update(nextState, {
     [resourceKey]: {
-      data: { $set: pathOr([], ['data'])(payload).map(post => post.postId) },
+      data: { $set: payload.data },
       status: { $set: 'success' },
       error: { $set: {} },
       payload: { $set: payload.payload || {} },
@@ -39,7 +39,7 @@ extend('$postsResourceCachePushSuccess', ({ payload, resourceKey, initialState }
 
   return update(nextState, {
     [resourceKey]: {
-      data: { $push: pathOr([], ['data'])(payload).map(post => post.postId) },
+      data: { $push: payload.data },
       status: { $set: 'success' },
       error: { $set: {} },
       payload: { $set: payload.payload || {} },
@@ -52,19 +52,19 @@ extend('$postsResourceCachePushSuccess', ({ payload, resourceKey, initialState }
  *
  */
 extend('$postsResourceSetSuccess', ({ payload }, original) => {
-  return update(original, { $set: pathOr([], ['data'])(payload).map(post => post.postId) })
+  return update(original, { $set: payload.data })
 })
 
 /**
  *
  */
 extend('$postsResourcePushSuccess', ({ payload }, original) => {
-  return update(original, { $push: pathOr([], ['data'])(payload).map(post => post.postId) })
+  return update(original, { $push: payload.data })
 })
 
 extend('$postsResourceRemoveSuccess', ({ payload }, original) => {
   return update(original, {
-    $set: without([payload.data.postId], original),
+    $set: without([payload.data[selector]], original),
   })
 })
 
@@ -74,7 +74,7 @@ extend('$postsResourceRemoveSuccess', ({ payload }, original) => {
  */
 extend('$postsResourcePoolHash', ({ payload }, original) => {
   return update(original, {
-    $set: pathOr([], ['data'])(payload).map(post => post.postId)
+    $set: payload.data
   })
 })
 
@@ -83,25 +83,10 @@ extend('$postsResourcePoolHash', ({ payload }, original) => {
  */
 extend('$postsResourcePoolSet', ({ payload }, original) => {
   return update(original, {
-    [payload.data.postId]: {
+    [payload.data[selector]]: {
       data: { $set: payload.data },
       status: { $set: 'success' },
     },
-  })
-})
-
-/**
- * Resource pool merge
- */
-extend('$postsResourcePoolMerge', ({ payload, initialState }, original) => {
-  return update(original, {
-    $merge: pathOr([], ['data'])(payload).reduce((acc, post) => {
-      acc[post.postId] = update(initialState, {
-        data: { $set: post },
-        status: { $set: 'success' },
-      })
-      return acc
-    }, {})
   })
 })
 

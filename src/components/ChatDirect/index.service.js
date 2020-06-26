@@ -5,7 +5,7 @@ import * as chatActions from 'store/ducks/chat/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { v4 as uuid } from 'uuid'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import * as chatSelector from 'store/ducks/chat/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
@@ -15,11 +15,8 @@ const ChatDirectService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
 
-  const chatId = (
-    path(['params', 'chat', 'chatId'])(route) ||
-    path(['params', 'user', 'directChat', 'chatId'])(route)
-  )
-  const userId = path(['params', 'user', 'userId'])(route)
+  const chatId = route.params.chatId
+  const userId = route.params.userId
 
   const user = useSelector(authSelector.authUserSelector)
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
@@ -32,6 +29,16 @@ const ChatDirectService = ({ children }) => {
   }, [])
 
   useEffect(() => {
+    if (chatGetChat.status !== 'success') {
+      return
+    }
+
+    const messageIds = pathOr([], ['data', 'messages', 'items'])(chatGetChat)
+      .map(message => message.messageId)
+    dispatch(chatActions.chatReportMessageViewRequest({ messageIds }))
+  }, [chatGetChat.status])
+
+  useEffect(() => {
     if (chatAddMessage.status === 'success') {
       dispatch(chatActions.chatGetChatRequest({ chatId }))
       dispatch(chatActions.chatAddMessageIdle({}))
@@ -40,9 +47,7 @@ const ChatDirectService = ({ children }) => {
 
   useEffect(() => {
     if (chatCreateDirect.status === 'success') {
-      navigation.setParams({
-        chat: { chatId: chatCreateDirect.payload.chatId },
-      })
+      navigation.setParams({ chatId: chatCreateDirect.payload.chatId })
       dispatch(chatActions.chatGetChatRequest({ chatId: chatCreateDirect.payload.chatId }))
       dispatch(chatActions.chatGetChatsRequest())
       dispatch(chatActions.chatCreateDirectIdle({}))

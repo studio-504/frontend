@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -11,61 +11,30 @@ import GridItemComponent from 'templates/GridItem'
 import CacheComponent from 'components/Cache'
 import CheckedIcon from 'assets/svg/other/Checked'
 import UncheckedIcon from 'assets/svg/other/Unchecked'
-import { Caption } from 'react-native-paper'
-import HeaderRight from 'navigation/HeaderRight'
-import ProfilePhotoComponent from 'components/ProfilePhoto/ProfilePhoto'
-import UploadingComponent from 'components/PostsList/Uploading'
+import { useHeader } from 'components/ProfilePhotoGrid/header'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
-const ProfilePhoto = ({
+const ProfilePhotoGrid = ({
   t,
   theme,
   usersImagePostsGet,
   handlePostPress,
   selectedPost,
   usersEditProfileRequest,
-
-  user,
-  postsCreateRequest,
-  postsCreateQueue,
-  cameraCapture,
-  postsCreateIdle,
 }) => {
   const styling = styles(theme)
-  const navigation = useNavigation()
 
-  navigation.setOptions({
-    headerRight: () => <HeaderRight onPress={usersEditProfileRequest} title="Update" hidden={!selectedPost.postId} />,
-  })
+  useHeader({
+    title: 'Update',
+    onPress: usersEditProfileRequest,
+    hidden: !selectedPost.postId,
+  }, [selectedPost.postId])
 
   return (
     <View style={styling.root}>
-      {!cameraCapture.data.length ?
-        <View style={styling.info}>
-          <Caption>{t('You can only set profile photo from your existing posts')}</Caption>
-        </View>
-      : null}
-
-      {cameraCapture.data.length ?
-        <ProfilePhotoComponent
-          cameraCapture={cameraCapture}
-          postsCreateRequest={postsCreateRequest}
-        />
-      : null}
-
-      {Object.values(postsCreateQueue).map((post, key) => (
-        <UploadingComponent
-          key={key}
-          user={user}
-          post={post}
-          postsCreateRequest={postsCreateRequest}
-          postsCreateIdle={postsCreateIdle}
-        />
-      ))}
-
       <ScrollView>
         <GridComponent items={path(['data'])(usersImagePostsGet)}>
           {(post, priorityIndex) => (
@@ -76,6 +45,7 @@ const ProfilePhoto = ({
               inactiveIcon={<UncheckedIcon fill={theme.colors.iconPrimary} />}
             >
               <CacheComponent
+                thread="default"
                 images={[
                   [path(['image', 'url64p'])(post), true],
                   [path(['image', 'url480p'])(post), true],
@@ -103,11 +73,11 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-ProfilePhoto.defaultProps = {
+ProfilePhotoGrid.defaultProps = {
   usersImagePostsGet: {},
 }
 
-ProfilePhoto.propTypes = {
+ProfilePhotoGrid.propTypes = {
   theme: PropTypes.any,
   usersImagePostsGet: PropTypes.any,
   handlePostPress: PropTypes.any,
@@ -121,4 +91,4 @@ ProfilePhoto.propTypes = {
   postsCreateIdle: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(ProfilePhoto))
+export default withTranslation()(withTheme(ProfilePhotoGrid))

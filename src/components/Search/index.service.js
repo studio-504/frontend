@@ -4,11 +4,9 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useScrollToTop } from '@react-navigation/native'
 import toLower from 'ramda/src/toLower'
-import path from 'ramda/src/path'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
-import useS3ExpiryState from 'services/S3ExpiryState'
 
 const SearchService = ({ children }) => {
   const dispatch = useDispatch()
@@ -20,7 +18,6 @@ const SearchService = ({ children }) => {
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
-  const themes = useSelector(state => state.theme.themeFetch.data)
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
@@ -44,7 +41,7 @@ const SearchService = ({ children }) => {
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
   const postsGetTrendingPostsRequest = () =>
-    dispatch(postsActions.postsGetTrendingPostsRequest({ limit: 30 }))
+    dispatch(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
   
   const postsGetTrendingPostsMoreRequest = (payload) =>
     dispatch(postsActions.postsGetTrendingPostsMoreRequest(payload))
@@ -65,7 +62,6 @@ const SearchService = ({ children }) => {
   const [formChange, handleFormChange] = useState(false)
 
   return children({
-    themes,
     feedRef,
     user,
     themeFetch,

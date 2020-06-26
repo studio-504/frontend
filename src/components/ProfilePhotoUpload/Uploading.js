@@ -11,7 +11,6 @@ import path from 'ramda/src/path'
 import TickIcon from 'assets/svg/post/Tick'
 import CloseIcon from 'assets/svg/post/Close'
 import VerificationIcon from 'assets/svg/post/Verification'
-import * as navigationActions from 'navigation/actions'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -20,28 +19,12 @@ import { withTranslation } from 'react-i18next'
 const Uploading = ({
   t,
   theme,
-  user,
   post,
-  postsCreateRequest,
-  postsCreateIdle,
 }) => {
   const styling = styles(theme)
-  const navigation = useNavigation()
 
   if (!['loading', 'failure', 'success'].includes(post.status)) {
     return null
-  }
-
-  /**
-   * Immitating post object
-   */
-  const pseudoPost = {
-    image: {
-      url64p: path(['payload', 'images', '0'])(post),
-      url1080p: path(['payload', 'images', '0'])(post),
-    },
-    postedBy: user,
-    postedAt: Date.now(),
   }
 
   return (
@@ -52,39 +35,39 @@ const Uploading = ({
       />
 
       {post.status === 'loading' ?
-        <View style={styling.status}>
-          <TouchableOpacity style={styling.content} onPress={navigationActions.navigatePostError(navigation, { post: pseudoPost })}>
+        <View testID="components/AuthPhotoUpload/Uploading/loading" style={styling.status}>
+          <TouchableOpacity style={styling.content}>
             <Text style={styling.title}>Uploading {post.meta.progress || 0}%</Text>
             <View style={styling.caption}>
               <Caption style={styling.subtitle}>{t('Pending Verification')} - {t('Learn More')}</Caption>
               <VerificationIcon fill="#676767" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styling.icon} onPress={() => postsCreateIdle(post)}>
+          <TouchableOpacity style={styling.icon}>
             <CloseIcon fill="#ffffff" />
           </TouchableOpacity>
         </View>
       : null}
 
       {post.status === 'failure' ?
-        <View style={styling.status}>
-          <TouchableOpacity style={styling.content} onPress={() => postsCreateRequest(post.payload)}>
+        <View testID="components/AuthPhotoUpload/Uploading/failure" style={styling.status}>
+          <TouchableOpacity style={styling.content}>
             <Text style={styling.title}>{t('Failed to create your post')}</Text>
             <Caption style={styling.subtitle}>{t('Tap here to reupload')}</Caption>
           </TouchableOpacity>
-          <TouchableOpacity style={styling.icon} onPress={() => postsCreateIdle(post)}>
+          <TouchableOpacity style={styling.icon}>
             <CloseIcon fill="#ffffff" />
           </TouchableOpacity>
         </View>
       : null}
       
       {post.status === 'success' ?
-        <View style={styling.status}>
-          <TouchableOpacity style={styling.content} onPress={() => postsCreateIdle(post)}>
+        <View testID="components/AuthPhotoUpload/Uploading/success" style={styling.status}>
+          <TouchableOpacity style={styling.content}>
             <Text style={styling.title}>Done</Text>
             <Caption style={styling.subtitle}>{t('Successfully created')}</Caption>
           </TouchableOpacity>
-          <TouchableOpacity style={styling.icon} onPress={() => postsCreateIdle(post)}>
+          <TouchableOpacity style={styling.icon}>
             <TickIcon fill="#ffffff" />
           </TouchableOpacity>
         </View>

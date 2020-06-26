@@ -36,6 +36,7 @@ const Settings = ({
   t,
   theme,
   authSignoutRequest,
+  handleLibrarySnap,
   user,
 }) => {
   const styling = styles(theme)
@@ -48,7 +49,7 @@ const Settings = ({
       'Your photo will be uploaded as post',
       [{
         text: 'Take a Photo',
-        onPress: navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhoto' }),
+        onPress: navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhotoUpload' }),
       }],
       { cancelable: true }
     )
@@ -72,7 +73,7 @@ const Settings = ({
 
   return (
     <ScrollView style={styling.root}>
-      <TouchableOpacity onPress={() => navigation.navigate('ProfilePhoto')}>
+      <TouchableOpacity onPress={() => navigation.navigate('ProfilePhotoGrid')}>
         <Avatar
           size="large"
           thumbnailSource={{ uri: path(['photo', 'url64p'])(user) }}
@@ -82,14 +83,17 @@ const Settings = ({
 
       <ActionSheet
         ref={actionSheetRef}
-        options={[t('Take a Photo'), t('Choose From Gallery'), t('Cancel')]}
-        cancelButtonIndex={2}
+        options={[t('Take a Photo'), t('Choose From Gallery'), t('Choose From Existing'), t('Cancel')]}
+        cancelButtonIndex={3}
         onPress={(index) => {
           if (index === 0) {
             handleProfilePhotoUpload()
           }
           if (index === 1) {
-            navigation.navigate('ProfilePhoto')
+            handleLibrarySnap()
+          }
+          if (index === 2) {
+            navigation.navigate('ProfilePhotoGrid')
           }
         }}
       />

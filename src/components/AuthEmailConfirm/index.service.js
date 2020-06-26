@@ -1,11 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { Keyboard } from 'react-native'
+import * as authActions from 'store/ducks/auth/actions'
 import * as signupActions from 'store/ducks/signup/actions'
 import * as navigationActions from 'navigation/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import { logEvent } from 'services/Analytics'
+import { pageHeaderLeft } from 'navigation/options'
 
 const AuthEmailConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -19,14 +21,20 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const signupCognitoIdentity = useSelector(state => state.signup.signupCognitoIdentity)
 
   /**
-   *
+   * Navigation state reset on back button press
    */
+  const handleGoBack = useCallback(() => {
+    dispatch(signupActions.signupConfirmIdle({}))
+    navigationActions.navigateAuthPassword(navigation)()
+  }, [])
+
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(signupActions.signupConfirmIdle({}))
+    const tabNavigator = navigation.dangerouslyGetParent();
+    if (!tabNavigator) return
+    tabNavigator.setOptions({
+      headerLeft: (props) => pageHeaderLeft({ ...props, onPress: handleGoBack }),
     })
-    return unsubscribe
-  }, [navigation])
+  }, [])
 
   const handleFormSubmit = (payload) => {
     logEvent('SIGNUP_CONFIRM_REQUEST')
@@ -75,7 +83,7 @@ const AuthEmailConfirmComponentService = ({ children }) => {
     dispatch(signupActions.signupPasswordIdle({}))
 
     Keyboard.dismiss()
-    navigationActions.navigateAuthPhoto(navigation)()
+    dispatch(authActions.authCheckRequest({ type: 'FIRST_MOUNT' }))
   }, [
     signupConfirm.status,
   ])

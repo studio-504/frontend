@@ -62,10 +62,6 @@ const initialState = {
   },
 }
 
-const globalAuthUserTrigger = (state, action) => update(state, {
-  user: { $set: action.payload.data },
-})
-
 /**
  *
  */
@@ -83,6 +79,7 @@ const authCheckSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
     nextRoute: { $set: action.payload.nextRoute },
+    meta: { $set: action.payload.meta },
   },
 })
 
@@ -285,8 +282,6 @@ const authForgotConfirmIdle = (state, action) => update(state, {
 })
 
 export default handleActions({
-  ['GLOBAL_AUTH_USER_TRIGGER']: globalAuthUserTrigger,
-
   [constants.AUTH_CHECK_REQUEST]: authCheckRequest,
   [constants.AUTH_CHECK_SUCCESS]: authCheckSuccess,
   [constants.AUTH_CHECK_FAILURE]: authCheckFailure,

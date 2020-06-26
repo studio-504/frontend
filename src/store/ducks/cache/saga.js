@@ -4,8 +4,6 @@ import * as actions from 'store/ducks/cache/actions'
 import * as constants from 'store/ducks/cache/constants'
 import * as service from 'store/ducks/cache/service'
 import path from 'ramda/src/path'
-import * as Logger from 'services/Logger'
-import update from 'immutability-helper'
 
 /**
  * 
@@ -50,11 +48,12 @@ const failureCallback = (signature, emitter) => (data) => emitter({
 /**
  * 
  */
-function cacheFetchRequestChannel({ signature, priorityQueueInstance }) {
+function cacheFetchRequestChannel({ signature, priority, thread }) {
   return eventChannel(emitter => {
     service.priorotizedRemoteImageFetch({
       signature,
-      queueInstance: priorityQueueInstance,
+      priority,
+      thread,
       progressCallback: progressCallback(signature, emitter),
       requestCallback: requestCallback(signature, emitter),
       successCallback: successCallback(signature, emitter),
@@ -88,8 +87,8 @@ function* cacheFetchRequest(req) {
     return
   }
 
-  const nextBuffer = yield select(state => state.cache.buffer[req.payload.signature.partial])
-  if (nextBuffer) {
+  const nextProgress = yield select(state => state.cache.progress[req.payload.signature.partial])
+  if (nextProgress) {
     return
   }
 
@@ -99,7 +98,7 @@ function* cacheFetchRequest(req) {
   const channel = yield call(cacheFetchRequestChannel, {
     signature: req.payload.signature,
     priority: req.payload.priority,
-    priorityQueueInstance: req.payload.priorityQueueInstance,
+    thread: req.payload.thread,
   })
 
   function* channelListener(eventData) {
@@ -124,10 +123,20 @@ function* cacheFetchIdle(req) {
   try {
     yield service.removeLocalFolder(req.payload.signature.pathFolder)
   } catch (error) {
+    // handler
+  }
+}
+
+function* cacheFetchFailure(req) {
+  try {
+    yield service.removeLocalFolder(req.payload.signature.pathFolder)
+  } catch (error) {
+    // handler
   }
 }
 
 export default () => [
   takeEvery(constants.CACHE_FETCH_REQUEST, cacheFetchRequest),
+  takeEvery(constants.CACHE_FETCH_FAILURE, cacheFetchFailure),
   takeEvery(constants.CACHE_FETCH_IDLE, cacheFetchIdle),
 ]

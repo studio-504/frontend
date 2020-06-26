@@ -1,8 +1,6 @@
 import { createAction } from 'redux-actions'
 import * as constants from 'store/ducks/posts/constants'
 
-export const postsResourcePoolMerge = createAction('POSTS_RESOURCE_POOL_MERGE')
-
 /**
  * 
  */
@@ -15,6 +13,11 @@ export const postsGetMoreIdle = createAction(constants.POSTS_GET_MORE_IDLE)
 export const postsGetMoreRequest = createAction(constants.POSTS_GET_MORE_REQUEST)
 export const postsGetMoreSuccess = createAction(constants.POSTS_GET_MORE_SUCCESS)
 export const postsGetMoreFailure = createAction(constants.POSTS_GET_MORE_FAILURE)
+
+export const postsGetUnreadCommentsIdle = createAction(constants.POSTS_GET_UNREAD_COMMENTS_IDLE)
+export const postsGetUnreadCommentsRequest = createAction(constants.POSTS_GET_UNREAD_COMMENTS_REQUEST)
+export const postsGetUnreadCommentsSuccess = createAction(constants.POSTS_GET_UNREAD_COMMENTS_SUCCESS)
+export const postsGetUnreadCommentsFailure = createAction(constants.POSTS_GET_UNREAD_COMMENTS_FAILURE)
 
 export const postsViewsGetIdle = createAction(constants.POSTS_VIEWS_GET_IDLE)
 export const postsViewsGetRequest = createAction(constants.POSTS_VIEWS_GET_REQUEST)
@@ -124,15 +127,6 @@ export const postsCreateSchedulerRequest = createAction(constants.POSTS_CREATE_S
 export const postsCreateSchedulerSuccess = createAction(constants.POSTS_CREATE_SCHEDULER_SUCCESS)
 export const postsCreateSchedulerFailure = createAction(constants.POSTS_CREATE_SCHEDULER_FAILURE)
 export const postsCreateSchedulerIdle = createAction(constants.POSTS_CREATE_SCHEDULER_IDLE)
-
-
-/**
- * 
- */
-export const postsAnonymouslyLikeIdle = createAction(constants.POSTS_ANONYMOUSLY_LIKE_IDLE)
-export const postsAnonymouslyLikeRequest = createAction(constants.POSTS_ANONYMOUSLY_LIKE_REQUEST)
-export const postsAnonymouslyLikeSuccess = createAction(constants.POSTS_ANONYMOUSLY_LIKE_SUCCESS)
-export const postsAnonymouslyLikeFailure = createAction(constants.POSTS_ANONYMOUSLY_LIKE_FAILURE)
 
 /**
  * 

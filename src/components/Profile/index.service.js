@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
-import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 
 const ProfileService = ({ children }) => {
@@ -11,8 +10,7 @@ const ProfileService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
 
-  const user = path(['params', 'user'])(route)
-  const userId = user.userId
+  const { userId } = route.params
 
   const usersGetProfile = useSelector(usersSelector.usersGetProfileSelector(userId))
   const usersBlock = useSelector(state => state.users.usersBlock)
@@ -22,9 +20,11 @@ const ProfileService = ({ children }) => {
 
   const profileRef = useRef(null)
 
-  navigation.setOptions({
-    title: path(['data', 'username'])(usersGetProfile),
-  })
+  useEffect(() => {
+    navigation.setOptions({
+      title: path(['data', 'username'])(usersGetProfile),
+    })
+  }, [path(['data', 'username'])(usersGetProfile)])
 
   const usersGetProfileRequest = ({ userId }) => 
     dispatch(usersActions.usersGetProfileRequest({ userId }))
@@ -60,7 +60,6 @@ const ProfileService = ({ children }) => {
 
   return children({
     profileRef,
-    user,
     usersGetProfile,
     usersGetProfileRequest,
     usersUnblock,

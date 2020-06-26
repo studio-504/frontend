@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useRoute } from '@react-navigation/native'
-import path from 'ramda/src/path'
-import useS3ExpiryState from 'services/S3ExpiryState'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
 
@@ -11,12 +9,10 @@ const PostsGridService = ({ children, postsGetRequestOnMount }) => {
   const dispatch = useDispatch()
   const route = useRoute()
 
-  const user = path(['params', 'user'])(route) || useSelector(authSelector.authUserSelector)
-  const userId = user.userId
-
+  const { userId } = route.params || useSelector(authSelector.authUserSelector)
   const postsGet = useSelector(postsSelector.postsGetSelector(userId))
 
-  const postsGetRequest = ({ nextToken }) =>
+  const postsGetRequest = ({ userId, nextToken }) =>
     dispatch(postsActions.postsGetRequest({ userId, nextToken }))
 
   const postsGetMoreRequest = ({ nextToken }) =>
@@ -29,7 +25,6 @@ const PostsGridService = ({ children, postsGetRequestOnMount }) => {
   }, [userId])
 
   return children({
-    user,
     postsGet,
     postsGetRequest,
     postsGetMoreRequest,

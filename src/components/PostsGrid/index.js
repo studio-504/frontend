@@ -20,7 +20,7 @@ const PostsGrid = ({
   t,
   theme,
   postsGet,
-  priorityQueueInstance,
+  thread,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -35,21 +35,21 @@ const PostsGrid = ({
       <GridComponent items={path(['data'])(postsGet)}>
         {(post, priorityIndex) => (
           <GridItemComponent
-            onPress={navigationActions.navigatePostMedia(navigation, { post })}
+            onPress={navigationActions.navigatePostMedia(navigation, { postId: post.postId, userId: post.postedBy.userId })}
             active={path(['hasNewCommentActivity'])(post)}
             activeIcon={activeIcon}
             inactiveIcon={null}
           >
             {post.postType === 'IMAGE' ?
               <CacheComponent
+                thread={thread}
                 images={[
-                  [path(['image', 'url64p'])(post), true],
                   [path(['image', 'url480p'])(post), true],
                 ]}
                 fallback={path(['image', 'url480p'])(post)}
                 priorityIndex={priorityIndex}
                 resizeMode="cover"
-                priorityQueueInstance={priorityQueueInstance}
+                hideProgress={true}
               />
             : null}
 
@@ -80,13 +80,10 @@ PostsGrid.defaultProps = {
 }
 
 PostsGrid.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
   postsGet: PropTypes.any,
-  t: PropTypes.any,
-  themes: PropTypes.any,
-  themeFetch: PropTypes.any,
-  themeCode: PropTypes.any,
-  priorityQueueInstance: PropTypes.any,
+  thread: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(PostsGrid))

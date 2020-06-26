@@ -1,10 +1,6 @@
 import { createAction } from 'redux-actions'
 import * as constants from 'store/ducks/users/constants'
 
-export const usersResourcePoolMerge = createAction('USERS_RESOURCE_POOL_MERGE')
-
-export const globalAuthUserTrigger = createAction('GLOBAL_AUTH_USER_TRIGGER')
-
 /**
  * 
  */
@@ -12,6 +8,14 @@ export const usersSearchIdle = createAction(constants.USERS_SEARCH_IDLE)
 export const usersSearchRequest = createAction(constants.USERS_SEARCH_REQUEST)
 export const usersSearchSuccess = createAction(constants.USERS_SEARCH_SUCCESS)
 export const usersSearchFailure = createAction(constants.USERS_SEARCH_FAILURE)
+
+/**
+ * 
+ */
+export const usersDeleteIdle = createAction(constants.USERS_DELETE_IDLE)
+export const usersDeleteRequest = createAction(constants.USERS_DELETE_REQUEST)
+export const usersDeleteSuccess = createAction(constants.USERS_DELETE_SUCCESS)
+export const usersDeleteFailure = createAction(constants.USERS_DELETE_FAILURE)
 
 /**
  * 
@@ -133,3 +137,27 @@ export const usersGetTrendingUsersIdle = createAction(constants.USERS_GET_TRENDI
 export const usersGetTrendingUsersRequest = createAction(constants.USERS_GET_TRENDING_USERS_REQUEST)
 export const usersGetTrendingUsersSuccess = createAction(constants.USERS_GET_TRENDING_USERS_SUCCESS)
 export const usersGetTrendingUsersFailure = createAction(constants.USERS_GET_TRENDING_USERS_FAILURE)
+
+/**
+ * 
+ */
+export const usersGetCardsIdle = createAction(constants.USERS_GET_CARDS_IDLE)
+export const usersGetCardsRequest = createAction(constants.USERS_GET_CARDS_REQUEST)
+export const usersGetCardsSuccess = createAction(constants.USERS_GET_CARDS_SUCCESS)
+export const usersGetCardsFailure = createAction(constants.USERS_GET_CARDS_FAILURE)
+
+/**
+ * 
+ */
+export const usersDeleteCardIdle = createAction(constants.USERS_DELETE_CARD_IDLE)
+export const usersDeleteCardRequest = createAction(constants.USERS_DELETE_CARD_REQUEST)
+export const usersDeleteCardSuccess = createAction(constants.USERS_DELETE_CARD_SUCCESS)
+export const usersDeleteCardFailure = createAction(constants.USERS_DELETE_CARD_FAILURE)
+
+/**
+ * 
+ */
+export const usersSetApnsTokenIdle = createAction(constants.USERS_SET_APNS_TOKEN_IDLE)
+export const usersSetApnsTokenRequest = createAction(constants.USERS_SET_APNS_TOKEN_REQUEST)
+export const usersSetApnsTokenSuccess = createAction(constants.USERS_SET_APNS_TOKEN_SUCCESS)
+export const usersSetApnsTokenFailure = createAction(constants.USERS_SET_APNS_TOKEN_FAILURE)

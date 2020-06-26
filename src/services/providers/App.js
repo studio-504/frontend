@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import * as usersActions from 'store/ducks/users/actions'
 import * as uiActions from 'store/ducks/ui/actions'
 import * as themeActions from 'store/ducks/theme/actions'
 import * as authActions from 'store/ducks/auth/actions'
@@ -14,7 +14,7 @@ import * as Logger from 'services/Logger'
 import * as Updates from 'services/Updates'
 import useAppState from 'services/AppState'
 import LoadingComponent from 'components/Loading'
-import BackgroundTimer from 'react-native-background-timer'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 /**
  * 
@@ -23,6 +23,7 @@ export const AuthProvider = ({
   children,
 }) => {
   const dispatch = useDispatch()
+  const user = useSelector(authSelector.authUserSelector)
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const nextRoute = useSelector(state => state.auth.authCheck.nextRoute)
   const status = useSelector(state => state.auth.authCheck.status)
@@ -30,7 +31,6 @@ export const AuthProvider = ({
   const languageCode = useSelector(authSelector.languageCodeSelector)
   const theme = useSelector(authSelector.themeSelector)
   const uiNotifications = useSelector(state => state.ui.notifications)
-  const authUserId = useSelector(state => path(['userId'])(state.auth.user))
   const authGoogle = useSelector(state => state.auth.authGoogle)
   const authCheck = useSelector(state => state.auth.authCheck)
 
@@ -50,34 +50,16 @@ export const AuthProvider = ({
     .filter(error => error.appErrorMessage && !error.appErrorMessage.includes('Failed to authorize'))
     .pop() || {}
 
-  const user = useSelector(
-    authSelector.authUserSelector,
-    (prevProps = {}, nextProps = {}) => prevProps.userId === nextProps.userId
-  )
-
-  const authCheckRequest = (payload) =>
-    dispatch(authActions.authCheckRequest(payload))
-  const themeFetchRequest = (payload) =>
-    dispatch(themeActions.themeFetchRequest(payload))
-  const translationFetchRequest = (payload) =>
-    dispatch(translationActions.translationFetchRequest(payload))
-  const postsCreateSchedulerRequest = (payload) =>
-    dispatch(postsActions.postsCreateSchedulerRequest(payload))
   const uiNotificationIdle = (payload) =>
     dispatch(uiActions.uiNotificationIdle(payload))
-  // useEffect(() => {
-  //   BackgroundTimer.runBackgroundTimer(() => { 
-  //     dispatch(postsActions.postsCreateSchedulerRequest({}))
-  //   }, 60000)
-  // }, [])
-
+  
   /**
    * Constructor function to fetch: Translations, Themes and Auth data
    */
   useEffect(() => {
-    themeFetchRequest({})
-    translationFetchRequest({})
-    authCheckRequest({})
+    dispatch(themeActions.themeFetchRequest())
+    dispatch(translationActions.translationFetchRequest())
+    dispatch(authActions.authCheckRequest({ type: 'FIRST_MOUNT' }))
   }, [])
 
   /**
@@ -86,8 +68,7 @@ export const AuthProvider = ({
    */
   useAppState({
     onForeground: () => {
-      authCheckRequest({})
-      postsCreateSchedulerRequest({})
+      dispatch(authActions.authCheckRequest({ type: 'STATE_CHANGE' }))
       Updates.versionCheck()
     },
   })
@@ -116,8 +97,17 @@ export const AuthProvider = ({
    * Sentry specific logger to map partial user data to error log
    */
   useEffect(() => {
+    if (!user.userId) {
+      return
+    }
     Logger.setUser(user)
-  }, [path(['userId'])(user)])
+    PushNotificationIOS.addEventListener('register', (token) => {
+      dispatch(usersActions.usersSetApnsTokenRequest({ token }))
+    })
+    PushNotificationIOS.requestPermissions()
+    dispatch(usersActions.usersGetCardsRequest({}))
+    dispatch(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
+  }, [user.userId])
 
   useEffect(() => {
     if (postsDelete.status === 'success') {
@@ -144,19 +134,14 @@ export const AuthProvider = ({
 
   if (
     !path(['data', 'en'])(translationFetch) ||
-    !path(['data', 'length'])(themeFetch)
+    !path(['data', 'length'])(themeFetch) ||
+    !nextRoute
   ) {
     return <LoadingComponent />
   }
 
-  if (!nextRoute) {
-    return (
-      <ActivityIndicator size="small" color="#ffffff" />
-    )
-  }
-
   const authenticated = (
-    authUserId && (
+    user.userId && (
       nextRoute === null ||
       nextRoute === 'Root'
     ) && (

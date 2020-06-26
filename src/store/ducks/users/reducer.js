@@ -2,8 +2,14 @@ import { handleActions } from 'redux-actions'
 import update from 'immutability-helper'
 import * as constants from 'store/ducks/users/constants'
 
-const initialState = {
+export const initialState = {
   usersSearch: {
+    data: [],
+    status: 'idle',
+    error: {},
+    payload: {},
+  },
+  usersDelete: {
     data: [],
     status: 'idle',
     error: {},
@@ -93,26 +99,28 @@ const initialState = {
     error: {},
     payload: {},
   },
-
-  usersPool: {
-
+  usersGetCards: {
+    data: [],
+    status: 'idle',
+    error: {},
+    payload: {},
+  },
+  usersDeleteCard: {
+    data: [],
+    status: 'idle',
+    error: {},
+    payload: {},
+  },
+  usersSetApnsToken: {
+    data: [],
+    status: 'idle',
+    error: {},
+    payload: {},
   },
 
   usersGetFollowerUsersCache: {},
   usersGetFollowedUsersCache: {},
 }
-
-const usersResourcePoolMerge = (state, action) => update(state, {
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
-  },
-})
 
 /**
  *
@@ -126,18 +134,8 @@ const usersSearchRequest = (state, action) => update(state, {
 
 const usersSearchSuccess = (state, action) => update(state, {
   usersSearch: {
-    data: { $usersResourceSetSuccess: action },
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
   },
 })
 
@@ -159,6 +157,38 @@ const usersSearchIdle = (state, action) => update(state, {
 /**
  *
  */
+const usersDeleteRequest = (state, action) => update(state, {
+  usersDelete: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersDeleteSuccess = (state, action) => update(state, {
+  usersDelete: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const usersDeleteFailure = (state, action) => update(state, {
+  usersDelete: {
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+  },
+})
+
+const usersDeleteIdle = (state, action) => update(state, {
+  usersDelete: {
+    data: { $set: initialState.usersDelete.data },
+    error: { $set: initialState.usersDelete.error },
+    status: { $set: 'idle' },
+  },
+})
+
+/**
+ *
+ */
 const usersGetFollowedUsersWithStoriesRequest = (state, action) => update(state, {
   usersGetFollowedUsersWithStories: {
     status: { $set: 'loading' },
@@ -168,18 +198,8 @@ const usersGetFollowedUsersWithStoriesRequest = (state, action) => update(state,
 
 const usersGetFollowedUsersWithStoriesSuccess = (state, action) => update(state, {
   usersGetFollowedUsersWithStories: {
-    data: { $usersResourceSetSuccess: action },
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
   },
 })
 
@@ -202,10 +222,6 @@ const usersGetFollowedUsersWithStoriesIdle = (state, action) => update(state, {
  *
  */
 const usersGetFollowedUsersRequest = (state, action) => update(state, {
-  usersGetFollowedUsers: {
-    status: { $set: 'loading' },
-    payload: { $set: action.payload },
-  },
   usersGetFollowedUsersCache: {
     $resourceCacheSetRequest: {
       ...action,
@@ -216,10 +232,6 @@ const usersGetFollowedUsersRequest = (state, action) => update(state, {
 })
 
 const usersGetFollowedUsersSuccess = (state, action) => update(state, {
-  usersGetFollowedUsers: {
-    data: { $usersResourceSetSuccess: action },
-    status: { $set: 'success' },
-  },
   usersGetFollowedUsersCache: {
     $resourceCacheSetSuccess: {
       ...action,
@@ -227,23 +239,9 @@ const usersGetFollowedUsersSuccess = (state, action) => update(state, {
       initialState: initialState.usersGetFollowedUsers,
     },
   },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
-  },
 })
 
 const usersGetFollowedUsersFailure = (state, action) => update(state, {
-  usersGetFollowedUsers: {
-    status: { $set: 'failure' },
-    error: { $set: action.payload.message },
-  },
   usersGetFollowedUsersCache: {
     $resourceCacheSetFailure: {
       ...action,
@@ -254,11 +252,6 @@ const usersGetFollowedUsersFailure = (state, action) => update(state, {
 })
 
 const usersGetFollowedUsersIdle = (state, action) => update(state, {
-  usersGetFollowedUsers: {
-    data: { $set: initialState.usersGetFollowedUsers.data },
-    error: { $set: initialState.usersGetFollowedUsers.error },
-    status: { $set: 'idle' },
-  },
   usersGetFollowedUsersCache: {
     $resourceCacheSetIdle: {
       ...action,
@@ -272,10 +265,6 @@ const usersGetFollowedUsersIdle = (state, action) => update(state, {
  *
  */
 const usersGetFollowerUsersRequest = (state, action) => update(state, {
-  usersGetFollowerUsers: {
-    status: { $set: 'loading' },
-    payload: { $set: action.payload },
-  },
   usersGetFollowerUsersCache: {
     $resourceCacheSetRequest: {
       ...action,
@@ -286,10 +275,6 @@ const usersGetFollowerUsersRequest = (state, action) => update(state, {
 })
 
 const usersGetFollowerUsersSuccess = (state, action) => update(state, {
-  usersGetFollowerUsers: {
-    data: { $usersResourceSetSuccess: action },
-    status: { $set: 'success' },
-  },
   usersGetFollowerUsersCache: {
     $resourceCacheSetSuccess: {
       ...action,
@@ -297,23 +282,9 @@ const usersGetFollowerUsersSuccess = (state, action) => update(state, {
       initialState: initialState.usersGetFollowerUsers,
     },
   },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
-  },
 })
 
 const usersGetFollowerUsersFailure = (state, action) => update(state, {
-  usersGetFollowerUsers: {
-    status: { $set: 'failure' },
-    error: { $set: action.payload.message },
-  },
   usersGetFollowerUsersCache: {
     $resourceCacheSetFailure: {
       ...action,
@@ -324,11 +295,6 @@ const usersGetFollowerUsersFailure = (state, action) => update(state, {
 })
 
 const usersGetFollowerUsersIdle = (state, action) => update(state, {
-  usersGetFollowerUsers: {
-    data: { $set: initialState.usersGetFollowerUsers.data },
-    error: { $set: initialState.usersGetFollowerUsers.error },
-    status: { $set: 'idle' },
-  },
   usersGetFollowerUsersCache: {
     $resourceCacheSetIdle: {
       ...action,
@@ -346,36 +312,12 @@ const usersGetPendingFollowersRequest = (state, action) => update(state, {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
-  usersGetFollowerUsersCache: {
-    $resourceCacheSetRequest: {
-      ...action,
-      resourceKey: action.payload.userId,
-      initialState: initialState.usersGetPendingFollowers,
-    },
-  },
 })
 
 const usersGetPendingFollowersSuccess = (state, action) => update(state, {
   usersGetPendingFollowers: {
-    data: { $usersResourceSetSuccess: action },
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-  usersGetFollowerUsersCache: {
-    $resourceCacheSetSuccess: {
-      ...action,
-      resourceKey: action.payload.payload.userId,
-      initialState: initialState.usersGetPendingFollowers,
-    },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
   },
 })
 
@@ -384,13 +326,6 @@ const usersGetPendingFollowersFailure = (state, action) => update(state, {
     status: { $set: 'failure' },
     error: { $set: action.payload.message },
   },
-  usersGetFollowerUsersCache: {
-    $resourceCacheSetFailure: {
-      ...action,
-      resourceKey: action.payload.payload.userId,
-      initialState: initialState.usersGetPendingFollowers,
-    },
-  },
 })
 
 const usersGetPendingFollowersIdle = (state, action) => update(state, {
@@ -398,13 +333,6 @@ const usersGetPendingFollowersIdle = (state, action) => update(state, {
     data: { $set: initialState.usersGetPendingFollowers.data },
     error: { $set: initialState.usersGetPendingFollowers.error },
     status: { $set: 'idle' },
-  },
-  usersGetFollowerUsersCache: {
-    $resourceCacheSetIdle: {
-      ...action,
-      resourceKey: action.payload.payload.userId,
-      initialState: initialState.usersGetPendingFollowers,
-    },
   },
 })
 
@@ -420,14 +348,8 @@ const usersFollowRequest = (state, action) => update(state, {
 
 const usersFollowSuccess = (state, action) => update(state, {
   usersFollow: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -458,14 +380,8 @@ const usersUnfollowRequest = (state, action) => update(state, {
 
 const usersUnfollowSuccess = (state, action) => update(state, {
   usersUnfollow: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -496,14 +412,8 @@ const usersAcceptFollowerUserRequest = (state, action) => update(state, {
 
 const usersAcceptFollowerUserSuccess = (state, action) => update(state, {
   usersAcceptFollowerUser: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -534,14 +444,8 @@ const usersBlockRequest = (state, action) => update(state, {
 
 const usersBlockSuccess = (state, action) => update(state, {
   usersBlock: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -575,13 +479,6 @@ const usersUnblockSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
-  },
 })
 
 const usersUnblockFailure = (state, action) => update(state, {
@@ -611,14 +508,8 @@ const usersGetProfileRequest = (state, action) => update(state, {
 
 const usersGetProfileSuccess = (state, action) => update(state, {
   usersGetProfile: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -649,14 +540,8 @@ const usersGetProfileSelfRequest = (state, action) => update(state, {
 
 const usersGetProfileSelfSuccess = (state, action) => update(state, {
   usersGetProfileSelf: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -687,14 +572,8 @@ const usersEditProfileRequest = (state, action) => update(state, {
 
 const usersEditProfileSuccess = (state, action) => update(state, {
   usersEditProfile: {
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  /**
-   * User pool entry
-   */
-  usersPool: {
-    $usersResourcePoolSet: action,
   },
 })
 
@@ -757,15 +636,8 @@ const usersGetTrendingUsersRequest = (state, action) => update(state, {
 
 const usersGetTrendingUsersSuccess = (state, action) => update(state, {
   usersGetTrendingUsers: {
-    data: { $usersResourceSetSuccess: action },
+    data: { $set: action.payload.data },
     status: { $set: 'success' },
-  },
-
-  usersPool: {
-    $usersResourcePoolMerge: {
-      ...action,
-      initialState: initialState.usersGetProfile,
-    },
   },
 })
 
@@ -784,11 +656,117 @@ const usersGetTrendingUsersIdle = (state, action) => update(state, {
   },
 })
 
+/**
+ *
+ */
+const usersGetCardsRequest = (state, action) => update(state, {
+  usersGetCards: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersGetCardsSuccess = (state, action) => update(state, {
+  usersGetCards: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const usersGetCardsFailure = (state, action) => update(state, {
+  usersGetCards: {
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+  },
+})
+
+const usersGetCardsIdle = (state, action) => update(state, {
+  usersGetCards: {
+    data: { $set: initialState.usersGetCards.data },
+    error: { $set: initialState.usersGetCards.error },
+    status: { $set: 'idle' },
+  },
+})
+
+/**
+ *
+ */
+const usersDeleteCardRequest = (state, action) => update(state, {
+  usersDeleteCard: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersDeleteCardSuccess = (state, action) => update(state, {
+  usersDeleteCard: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const usersDeleteCardFailure = (state, action) => update(state, {
+  usersDeleteCard: {
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+  },
+})
+
+const usersDeleteCardIdle = (state, action) => update(state, {
+  usersDeleteCard: {
+    data: { $set: initialState.usersGetCards.data },
+    error: { $set: initialState.usersGetCards.error },
+    status: { $set: 'idle' },
+  },
+})
+
+/**
+ *
+ */
+const usersSetApnsTokenRequest = (state, action) => update(state, {
+  usersSetApnsToken: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersSetApnsTokenSuccess = (state, action) => update(state, {
+  usersSetApnsToken: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const usersSetApnsTokenFailure = (state, action) => update(state, {
+  usersSetApnsToken: {
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+  },
+})
+
+const usersSetApnsTokenIdle = (state, action) => update(state, {
+  usersSetApnsToken: {
+    data: { $set: initialState.usersSetApnsToken.data },
+    error: { $set: initialState.usersSetApnsToken.error },
+    status: { $set: 'idle' },
+  },
+})
+
 export default handleActions({
   [constants.USERS_SEARCH_REQUEST]: usersSearchRequest,
   [constants.USERS_SEARCH_SUCCESS]: usersSearchSuccess,
   [constants.USERS_SEARCH_FAILURE]: usersSearchFailure,
   [constants.USERS_SEARCH_IDLE]: usersSearchIdle,
+
+  [constants.USERS_GET_TRENDING_USERS_REQUEST]: usersGetTrendingUsersRequest,
+  [constants.USERS_GET_TRENDING_USERS_SUCCESS]: usersGetTrendingUsersSuccess,
+  [constants.USERS_GET_TRENDING_USERS_FAILURE]: usersGetTrendingUsersFailure,
+  [constants.USERS_GET_TRENDING_USERS_IDLE]: usersGetTrendingUsersIdle,
+
+  [constants.USERS_DELETE_REQUEST]: usersDeleteRequest,
+  [constants.USERS_DELETE_SUCCESS]: usersDeleteSuccess,
+  [constants.USERS_DELETE_FAILURE]: usersDeleteFailure,
+  [constants.USERS_DELETE_IDLE]: usersDeleteIdle,
 
   [constants.USERS_GET_FOLLOWED_USERS_WITH_STORIES_REQUEST]: usersGetFollowedUsersWithStoriesRequest,
   [constants.USERS_GET_FOLLOWED_USERS_WITH_STORIES_SUCCESS]: usersGetFollowedUsersWithStoriesSuccess,
@@ -855,12 +833,20 @@ export default handleActions({
   [constants.USERS_IMAGE_POSTS_GET_FAILURE]: usersImagePostsGetFailure,
   [constants.USERS_IMAGE_POSTS_GET_IDLE]: usersImagePostsGetIdle,
 
-  [constants.USERS_GET_TRENDING_USERS_REQUEST]: usersGetTrendingUsersRequest,
-  [constants.USERS_GET_TRENDING_USERS_SUCCESS]: usersGetTrendingUsersSuccess,
-  [constants.USERS_GET_TRENDING_USERS_FAILURE]: usersGetTrendingUsersFailure,
-  [constants.USERS_GET_TRENDING_USERS_IDLE]: usersGetTrendingUsersIdle,
+  [constants.USERS_GET_CARDS_REQUEST]: usersGetCardsRequest,
+  [constants.USERS_GET_CARDS_SUCCESS]: usersGetCardsSuccess,
+  [constants.USERS_GET_CARDS_FAILURE]: usersGetCardsFailure,
+  [constants.USERS_GET_CARDS_IDLE]: usersGetCardsIdle,
 
-  [constants.USERS_RESOURCE_POOL_MERGE]: usersResourcePoolMerge,
+  [constants.USERS_DELETE_CARD_REQUEST]: usersDeleteCardRequest,
+  [constants.USERS_DELETE_CARD_SUCCESS]: usersDeleteCardSuccess,
+  [constants.USERS_DELETE_CARD_FAILURE]: usersDeleteCardFailure,
+  [constants.USERS_DELETE_CARD_IDLE]: usersDeleteCardIdle,
+
+  [constants.USERS_SET_APNS_TOKEN_REQUEST]: usersSetApnsTokenRequest,
+  [constants.USERS_SET_APNS_TOKEN_SUCCESS]: usersSetApnsTokenSuccess,
+  [constants.USERS_SET_APNS_TOKEN_FAILURE]: usersSetApnsTokenFailure,
+  [constants.USERS_SET_APNS_TOKEN_IDLE]: usersSetApnsTokenIdle,
 
   /**
    * Clear on logout
