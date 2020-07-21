@@ -13,6 +13,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import path from 'ramda/src/path'
 import 'store/updates'
+import devState from '../../real-dev.state.js'
 
 const persistConfig = {
   key: '/v2/root',
@@ -80,6 +81,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(
   persistedReducer,
+  devState,
   composeEnhancers(applyMiddleware(sagaMiddleware))
 )
 

@@ -45,7 +45,7 @@ export const AuthProvider = ({
   useEffect(() => {
     dispatch(themeActions.themeFetchRequest())
     dispatch(translationActions.translationFetchRequest())
-    dispatch(authActions.authCheckRequest({ type: 'FIRST_MOUNT' }))
+    // dispatch(authActions.authCheckRequest({ type: 'FIRST_MOUNT' }))
   }, [])
 
   /**
@@ -54,7 +54,7 @@ export const AuthProvider = ({
    */
   useAppState({
     onForeground: () => {
-      dispatch(authActions.authCheckRequest({ type: 'STATE_CHANGE' }))
+      // dispatch(authActions.authCheckRequest({ type: 'STATE_CHANGE' }))
       Updates.versionCheck()
     },
   })
@@ -87,19 +87,19 @@ export const AuthProvider = ({
     return <LoadingComponent />
   }
 
-  const authenticated = (
-    userId && (
-      nextRoute === null ||
-      nextRoute === 'Root'
-    ) && (
-      status !== 'failure'
-    )
-  )
+  // const authenticated = (
+  //   userId && (
+  //     nextRoute === null ||
+  //     nextRoute === 'Root'
+  //   ) && (
+  //     status !== 'failure'
+  //   )
+  // )
 
   return children({
     theme,
     themes: themeFetch.data,
-    authenticated,
+    authenticated: true,
     appErrorMessage,
     handleErrorClose,
   })
