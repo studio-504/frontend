@@ -6,17 +6,17 @@ import pick from 'ramda/src/pick'
  * By including and configuring Sentry, the SDK will automatically attach global handlers
  * to capture uncaught exceptions and unhandled rejections.
  */
-Sentry.init({
-  environment: Config.ENVIRONMENT,
-  dsn: Config.SENTRY_DSN,
-})
+// Sentry.init({
+//   environment: Config.ENVIRONMENT,
+//   dsn: Config.SENTRY_DSN,
+// })
 
 /**
  * Used for Error object 
  */
 export const captureException = (error) => {
   try {
-    Sentry.captureException(error)
+    // Sentry.captureException(error)
   } catch (error) {
   }
 }
@@ -26,7 +26,7 @@ export const captureException = (error) => {
  */
 export const captureMessage = (error) => {
   try {
-    Sentry.captureMessage(error)
+    // Sentry.captureMessage(error)
   } catch (error) {
   }
 }
@@ -35,8 +35,10 @@ export const captureMessage = (error) => {
  * Attach user to error log
  */
 export const setUser = (payload) => {
-  const user = pick(['id', 'username', 'email'], payload)
-  Sentry.setUser(user)
+  // const user = pick(['id', 'username', 'email'], payload)
+  // Sentry.setUser(user)
 }
 
-export const withScope = Sentry.withScope
+export const withScope = (input) => {
+  input({ setExtra: () => {} })
+}
