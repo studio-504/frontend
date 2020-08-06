@@ -5,13 +5,23 @@ import { RectButton } from 'react-native-gesture-handler'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import DeleteIcon from 'assets/svg/comment/Delete'
 import ReportIcon from 'assets/svg/comment/Report'
+import path from 'ramda/src/path'
 
 const RenderRightActions = (rowProps) => (progress, dragX) => {
-  const trans = dragX.interpolate({
+  const interpolateProps = (
+    rowProps.handleReportPress &&
+    rowProps.handleDeletePress
+  ) ? ({
     inputRange: [-120, 0],
     outputRange: [0, 120],
     extrapolate: 'clamp',
+  }) : ({
+    inputRange: [-60, 0],
+    outputRange: [0, 60],
+    extrapolate: 'clamp',
   })
+
+  const trans = dragX.interpolate(interpolateProps)
 
   return (
     <View>
@@ -19,18 +29,30 @@ const RenderRightActions = (rowProps) => (progress, dragX) => {
         [{ transform: [{ translateX: trans }] }],
         [styles.swipeable]
       ]}>
-        <RectButton style={[styles.button, styles.report]} onPress={rowProps.handleReportPress}>
-          <ReportIcon fill="#ffffff" />
-        </RectButton>
-        <RectButton style={[styles.button, styles.delete]} onPress={rowProps.handleDeletePress}>
-          <DeleteIcon fill="#ffffff" />
-        </RectButton>
+        {rowProps.handleReportPress ?
+          <RectButton style={[styles.button, styles.report]} onPress={rowProps.handleReportPress}>
+            <ReportIcon fill="#ffffff" />
+          </RectButton>
+        : null}
+
+        {rowProps.handleDeletePress ?
+          <RectButton style={[styles.button, styles.delete]} onPress={rowProps.handleDeletePress}>
+            <DeleteIcon fill="#ffffff" />
+          </RectButton>
+        : null}
       </Animated.View>
     </View>
   )
 }
 
 const AppleStyleSwipeableRow = ({ rowProps, rowRef, children }) => {
+  if (
+    !path(['handleReportPress'], rowProps) &&
+    !path(['handleDeletePress'], rowProps)
+  ) {
+    return children
+  }
+
   return (
     <Swipeable
       renderRightActions={RenderRightActions(rowProps)}

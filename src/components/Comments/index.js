@@ -95,32 +95,41 @@ const Comments = ({
             : null}
           </React.Fragment>
         )}
-        renderItem={({ item: comment, index }) => (
-          <SwipableTemplate
-            rowRef={commentRefs.createRef(comment)}
-            rowProps={{
-              handleReportPress: () => {
-                commentsFlagRequest({ commentId: comment.commentId })
-                commentRefs.getRef(comment).close()
-              },
-              handleDeletePress: () => {
-                commentsDeleteRequest({ commentId: comment.commentId })
-                commentRefs.getRef(comment).close()
-              },
-            }}>
-            <View style={styling.comment}>
-              <CommentComponent
-                comment={comment}
-                handleTap={() => commentRefs.getRef(comment).openRight()}
-                handleUserReply={handleUserReply}
-                tappable={(
-                  path(['postedBy', 'userId'])(postsSingleGet.data) === user.userId ||
-                  path(['commentedBy', 'userId'])(comment) === user.userId
-                )}
-              />
-            </View>
-          </SwipableTemplate>
-        )}
+        renderItem={({ item: comment, index }) => {
+          const tappable = (
+            path(['postedBy', 'userId'])(postsSingleGet.data) === user.userId ||
+            path(['commentedBy', 'userId'])(comment) === user.userId
+          )
+          const handleDeletePress = () => {
+            commentsDeleteRequest({ commentId: comment.commentId })
+            commentRefs.getRef(comment).close()
+          }
+          const handleReportPress = () => {
+            commentsFlagRequest({ commentId: comment.commentId })
+            commentRefs.getRef(comment).close()
+          }
+          const rowProps = tappable ? ({
+            handleReportPress,
+            handleDeletePress,
+          }) : ({
+            handleReportPress,
+          })
+          return (
+            <SwipableTemplate
+              rowRef={commentRefs.createRef(comment)}
+              rowProps={rowProps}
+            >
+              <View style={styling.comment}>
+                <CommentComponent
+                  comment={comment}
+                  handleTap={() => commentRefs.getRef(comment).openRight()}
+                  handleUserReply={handleUserReply}
+                  tappable={true}
+                />
+              </View>
+            </SwipableTemplate>
+          )}
+        }
       />
       <View style={{ marginBottom }}>
         <FormComponent

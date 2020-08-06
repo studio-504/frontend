@@ -23,7 +23,7 @@ const Verification = ({
   return (
     <BlurView style={styling.root}>
       <TouchableOpacity onPress={navigationActions.navigateVerification(navigation, { actionType: 'BACK' })}>
-        <Text>{t('Failed Verification, tap to learn more.')}</Text>
+        <Text style={styling.text}>{t('Failed Verification, tap to learn more.')}</Text>
       </TouchableOpacity>
     </BlurView>
   )
@@ -40,6 +40,11 @@ const styles = theme => StyleSheet.create({
     zIndex: 1,
   },
   blur: {
+    width: '100%',
+    height: '100%',
+  },
+  text: {
+    color: 'red',
     width: '100%',
     height: '100%',
   },
