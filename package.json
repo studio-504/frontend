@@ -38,6 +38,7 @@
     "amazon-cognito-identity-js": "^4.3.3",
     "async": "^3.2.0",
     "aws-sdk": "^2.724.0",
+    "color": "^3.1.2",
     "dayjs": "^1.8.31",
     "es6-promisify": "^6.1.1",
     "formik": "^2.1.5",

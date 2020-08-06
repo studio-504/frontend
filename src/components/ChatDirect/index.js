@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import { GiftedChat, MessageText, Bubble } from 'react-native-gifted-chat'
 import pathOr from 'ramda/src/pathOr'
 import FormComponent from 'components/ChatDirect/Form'
 import { useHeader } from 'components/ChatDirect/header'
@@ -60,8 +60,17 @@ const ChatDirect = ({
       <GiftedChat
         messages={messagesAdapter}
         onSend={message => chatAddMessageRequest({ text: message[0].text })}
-        renderBubble={(props) => (
-          <Bubble {...props} wrapperStyle={{ left: styling.receivedMessage, right: styling.sentMessage }} />
+        renderBubble={(bubbleProps) => (
+          <Bubble
+            {...bubbleProps}
+            renderMessageText={(messageProps) => (
+              <MessageText
+                {...messageProps}
+                customTextStyle={styling.customTextStyle}
+              />
+            )}
+            wrapperStyle={{ left: styling.receivedMessage, right: styling.sentMessage }}
+          />
         )}
         user={userAdapter}
         renderInputToolbar={() => null}
@@ -134,6 +143,9 @@ const styles = theme => StyleSheet.create({
     backgroundColor: theme.colors.backgroundSecondary,
   },
   sentMessage: {
+  },
+  customTextStyle: {
+    color: '#ffffff',
   },
 })
 
