@@ -8,11 +8,8 @@ import {
 } from 'react-native'
 
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { withTranslation } from 'react-i18next'
 
 const Button = ({
-  t,
   theme,
   children,
   style,
@@ -72,7 +69,6 @@ Button.propTypes = {
   children: PropTypes.any,
   style: PropTypes.any,
   loading: PropTypes.any,
-  t: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(Button))
+export default withTheme(Button)

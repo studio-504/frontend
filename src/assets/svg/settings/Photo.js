@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Polyline, Path } from 'react-native-svg'
 
-const Photo = ({ fill = '#333', style = {} }) => (
+const Photo = ({ fill = '#333' }) => (
   <Svg height={22} width={22} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
     <Polyline fill="none" points=" 5,1 2,1 2,4 "/>

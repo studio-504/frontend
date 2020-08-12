@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { HeaderStyleInterpolators, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack'
 import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
@@ -13,7 +13,7 @@ import CameraIcon from 'assets/svg/header/Camera'
 import DirectIcon from 'assets/svg/header/Direct'
 import BackIcon from 'assets/svg/header/Back'
 
-export const pageHeaderLeft = ({ onPress, label, labelStyle }) => {
+export const pageHeaderLeft = ({ onPress }) => {
   if (!onPress) { return null }
   return (
     <TouchableOpacity style={{ paddingHorizontal: 12 }} onPress={onPress}>
@@ -22,7 +22,7 @@ export const pageHeaderLeft = ({ onPress, label, labelStyle }) => {
   )
 }
 
-export const chatHeaderLeft = ({ theme, navigation }) => () => (
+export const chatHeaderLeft = ({ navigation }) => () => (
   <TouchableOpacity style={{ paddingHorizontal: 12 }} onPress={navigationActions.navigateHome(navigation)}>
     <BackIcon fill="#fff" />
   </TouchableOpacity>
@@ -56,7 +56,7 @@ const homeHeaderRight = ({ theme, navigation }) => () => (
   </UIContextComponent.Consumer>
 )
 
-const AuthNavigationComponent = ({ navigation, theme }) => ({
+const AuthNavigationComponent = ({ theme }) => ({
   headerStyle: {
     backgroundColor: theme.colors.backgroundPrimary,
     shadowRadius: 0,
@@ -201,7 +201,7 @@ export const stackScreenOnboardProps = ({ theme }) => ({
  * Used for Camera without header
  */
 export const stackScreenBlankProps = ({ theme }) => ({
-  options: (props) => ({
+  options: () => ({
     gestureResponseDistance: {
       horizontal: Layout.window.width,
       vertical: Layout.window.height,
@@ -216,8 +216,8 @@ export const stackScreenBlankProps = ({ theme }) => ({
 /**
  * Used for Camera without header
  */
-export const stackScreenModalProps = ({ theme }) => ({
-  options: (props) => ({
+export const stackScreenModalProps = () => ({
+  options: () => ({
     gestureDirection: 'vertical',
     gestureResponseDistance: {
       horizontal: Layout.window.width,
@@ -234,7 +234,7 @@ export const stackScreenModalProps = ({ theme }) => ({
 
 
 export const stackScreenAuthModalProps = ({ theme }) => ({
-  options: (props) => ({
+  options: () => ({
     gestureDirection: 'vertical',
     gestureResponseDistance: {
       horizontal: Layout.window.width,
@@ -263,8 +263,8 @@ export const stackScreenAuthModalProps = ({ theme }) => ({
 /**
  * Used for Profile Screens without application logo but text
  */
-export const stackScreenPageProps = ({ theme, themes }) => ({ options } = {}) => ({
-  options: (props) => {
+export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
+  options: () => {
     const backgroundColor = path(['colors', 'backgroundPrimary'])(theme)
     const color = path(['colors', 'text'])(theme)
 
@@ -302,7 +302,7 @@ export const stackScreenPageProps = ({ theme, themes }) => ({ options } = {}) =>
  * Used for Card Screens without application logo but text
  */
 export const stackScreenCardProps = ({ theme }) => ({
-  options: (props) => ({
+  options: () => ({
     gestureResponseDistance: {
       horizontal: Layout.window.width,
       vertical: Layout.window.height,
@@ -315,7 +315,7 @@ export const stackScreenCardProps = ({ theme }) => ({
   }),
 })
 
-export const tabNavigatorProps = ({ theme, themes, route }) => {
+export const tabNavigatorProps = ({ theme }) => {
   const activeTintColor = path(['colors', 'primaryIcon'])(theme)
   const inactiveTintColor = `${activeTintColor}90`
   const backgroundColor = path(['colors', 'backgroundPrimary'])(theme)

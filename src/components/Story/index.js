@@ -23,17 +23,13 @@ import * as navigationActions from 'navigation/actions'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
-import { withTranslation } from 'react-i18next'
 
 const StoryCarousel = ({
-  ref,
   theme,
-  countStories,
   currentStory,
   onNextStory,
   onPrevStory,
   onCloseStory,
-  createTextPostRef,
   getTextPostRef,
   textPostRefs,
   navigation,
@@ -42,7 +38,6 @@ const StoryCarousel = ({
   postsDislikeRequest,
 }) => ({
   item: user,
-  index,
 }) => {
   const styling = styles(theme)
 
@@ -135,7 +130,6 @@ const StoryCarousel = ({
 }
 
 const Story = ({
-  t,
   theme,
   userId,
   stories,
@@ -267,11 +261,10 @@ Story.propTypes = {
   onNextStory: PropTypes.any,
   onPrevStory: PropTypes.any,
   onCloseStory: PropTypes.any,
-  t: PropTypes.any,
   userId: PropTypes.any,
   stories: PropTypes.any,
   storyRef: PropTypes.any,
   onSnapItem: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(Story))
+export default withTheme(Story)

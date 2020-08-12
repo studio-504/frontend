@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Path, Polyline } from 'react-native-svg'
 
-const Flip = ({ fill = '#333', style = {} }) => (
+const Flip = ({ fill = '#333' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="2">
       <Path d="M2,12C2,6.5,6.5,2,12,2 c3.9,0,7.3,2.2,8.9,5.5" fill="none" stroke={fill}/>

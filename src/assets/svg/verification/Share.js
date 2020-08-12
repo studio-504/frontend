@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Line, Path } from 'react-native-svg'
 
-const Search = ({ fill = '#333', style = {} }) => (
+const Search = ({ fill = '#333' }) => (
   <Svg height={28} width={28} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="square" strokeWidth="1.5">
       <Path d="M11.5,5.5l2.075-2.075a5.011,5.011,0,0,1,7,0h0a5.011,5.011,0,0,1,0,7L18.5,12.5" fill="none" stroke={fill}/>

@@ -117,6 +117,7 @@
     "babel-plugin-optional-require": "^0.3.1",
     "detox": "^17.3.4",
     "eslint": "^7.6.0",
+    "eslint-plugin-detox": "^1.0.0",
     "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-native": "^3.8.1",

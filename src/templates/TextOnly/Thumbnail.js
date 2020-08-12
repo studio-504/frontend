@@ -8,11 +8,8 @@ import { Text } from 'react-native-paper'
 import LinearGradient from 'react-native-linear-gradient'
 
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { withTranslation } from 'react-i18next'
 
 const TextOnlyComponent = ({
-  t,
   theme,
   text,
 }) => {
@@ -52,4 +49,4 @@ TextOnlyComponent.propTypes = {
   post: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(TextOnlyComponent))
+export default withTheme(TextOnlyComponent)

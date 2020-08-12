@@ -35,7 +35,7 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
     return image
   }
 
-  const getFiletype = (image) => {
+  const getFiletype = () => {
     if (toLower(payload.imageFormat) === 'heic') {
       return 'image/heic'
     }
@@ -70,12 +70,12 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
     emitter(END)
   }
 
-  const handleFailure = (emitter) => (error) => {
+  const handleFailure = (emitter) => () => {
     emitter({ status: 'failure', progress: 0 })
     emitter(END)
   }
 
-  const initUpload = (emitter) => (begin, progress) =>
+  const initUpload = () => (begin, progress) =>
     RNFS.uploadFiles({
       binaryStreamOnly: true,
       toUrl: uploadUrl,
@@ -146,13 +146,10 @@ function* handlePostsCreateRequest(payload) {
  *
  */
 function* handleTextOnlyPost(req) {
-  const AwsAPI = yield getContext('AwsAPI')
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
-    const data = yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
-    const userIdSelector = path(['data', 'addPost', 'postedBy', 'userId'])
-    const meta = { attempt: 1, progress: 100 }
+    
   } catch (error) {
     yield put(actions.postsCreateFailure({
       message: errorWrapper(error),
@@ -267,12 +264,6 @@ function* postsCreateSchedulerRequest() {
         mediaId,
       }))
       return post
-    }
-
-    function* storePost(post) {
-      const source = path(['payload', 'images', '0'])(post)
-      const desination = `${RNFS.DocumentDirectory}/REAL/${path(['payload', 'mediaId'])(post)}.jpg`
-      return RNFS.copyFile(source, desination)
     }
 
     function* recreatePost(post) {

@@ -1,6 +1,6 @@
 import { graphqlOperation } from '@aws-amplify/api'
-import { call, put, take, takeEvery, takeLatest, cancel, getContext } from 'redux-saga/effects'
-import { eventChannel, END } from 'redux-saga'
+import { call, put, take, takeEvery, getContext } from 'redux-saga/effects'
+import { eventChannel } from 'redux-saga'
 import path from 'ramda/src/path'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
@@ -73,7 +73,7 @@ function* cardSubscription(req) {
     subscription,
   })
 
-  yield takeEvery(channel, function *(eventData) {
+  yield takeEvery(channel, function *() {
     yield put(usersActions.usersGetCardsRequest({}))
     yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
     yield put(usersActions.usersGetProfileSelfRequest({ userId }))

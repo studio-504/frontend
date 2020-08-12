@@ -10,7 +10,6 @@ import FormComponent from 'components/ChatDirect/Form'
 import { useHeader } from 'components/ChatDirect/header'
 import * as navigationActions from 'navigation/actions'
 import ActionSheet from 'react-native-actionsheet'
-import color from 'color'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'

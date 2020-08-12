@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import Svg, { G, Path, Line } from 'react-native-svg'
+import Svg, { G, Path } from 'react-native-svg'
 
 const style = {
   icon: {

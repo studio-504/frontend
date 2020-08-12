@@ -9,18 +9,16 @@ import AuthHeaderTemplate from 'templates/Auth/Header'
 import AuthPhotoTemplate from 'templates/Auth/Photo'
 import HeaderRight from 'navigation/HeaderRight'
 
-import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
 const AuthPhoto = ({
   t,
-  theme,
   handleLibrarySnap,
   handleCameraSnap,
   skipPhotoUpload,
 }) => {
-  const styling = styles(theme)
+  const styling = styles
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const AuthPhoto = ({
   )
 }
 
-const styles = theme => StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
@@ -65,10 +63,9 @@ const styles = theme => StyleSheet.create({
 
 AuthPhoto.propTypes = {
   t: PropTypes.any,
-  theme: PropTypes.any,
   handleLibrarySnap: PropTypes.any,
   handleCameraSnap: PropTypes.any,
   skipPhotoUpload: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(AuthPhoto))
+export default withTranslation()(AuthPhoto)

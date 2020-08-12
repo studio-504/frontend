@@ -9,9 +9,7 @@ import Layout from 'constants/Layout'
 
 import PropTypes from 'prop-types'
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
-import { Props } from 'react-native-image-zoom-viewer/built/image-viewer.type'
 
 const trackerWidth = (Layout.window.width - 24) - 28
 

@@ -119,7 +119,7 @@ const RootNavigator = () => {
   )
 }
 
-const AppNavigator = withTheme(({ theme }) => {
+const AppNavigator = withTheme(() => {
   const Tab = createMaterialTopTabNavigator()
   const tabNavigatorDefaultProps = navigationOptions.tabNavigatorDefaultProps()
   return (

@@ -9,10 +9,8 @@ import Layout from 'constants/Layout'
 import Carousel from 'react-native-snap-carousel'
 
 import { withTheme } from 'react-native-paper'
-import { withTranslation } from 'react-i18next'
 
 const ChatCards = ({
-  t,
   theme,
   postsGetUnreadComments,
   handleCardPress,
@@ -50,7 +48,6 @@ const ChatCards = ({
 }
 
 ChatCards.propTypes = {
-  t: PropTypes.any,
   theme: PropTypes.any,
   postsGetUnreadComments: PropTypes.any,
   handleCardPress: PropTypes.any,
@@ -63,4 +60,4 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-export default withTranslation()(withTheme(ChatCards))
+export default withTheme(ChatCards)

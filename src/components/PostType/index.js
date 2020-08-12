@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 import TextIcon from 'assets/svg/types/Text'
 import PhotoIcon from 'assets/svg/types/Photo'
 import GalleryIcon from 'assets/svg/types/Gallery'

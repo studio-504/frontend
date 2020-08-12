@@ -33,10 +33,10 @@ export const navigateNestedPostLikes = (navigation, params) => () =>
  * Root -> Home -> Feed -> Feed
  */
 
-export const navigateBack = (navigation, params) => () =>
+export const navigateBack = (navigation) => () =>
   navigation.goBack()
 
-export const navigatePop = (navigation, params) => () =>
+export const navigatePop = (navigation) => () =>
   navigation.popToTop()
 
 export const navigateHome = (navigation, params) => () =>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Path, Polyline } from 'react-native-svg'
 
-const Like = ({ fill = '#333', style = {} }) => (
+const Like = ({ fill = '#333' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
       <Polyline fill="none" points="6 23 1 23 1 12 6 12" fill={fill} />

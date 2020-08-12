@@ -6,18 +6,12 @@ import {
 } from 'react-native'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 
-import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { withTranslation } from 'react-i18next'
-
 const ThemeRowActionTemplate = ({
-  t,
-  theme,
   enabled,
   onEnablePress,
   onDisablePress,
 }) => {
-  const styling = styles(theme)
+  const styling = styles
   
   return (
     <View style={styling.root}>
@@ -34,7 +28,7 @@ const ThemeRowActionTemplate = ({
   )
 }
 
-const styles = theme => StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
   },
   component: {
@@ -52,9 +46,8 @@ ThemeRowActionTemplate.defaultProps = {
 }
 
 ThemeRowActionTemplate.propTypes = {
-  theme: PropTypes.any,
   size: PropTypes.any,
   colors: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(ThemeRowActionTemplate))
+export default ThemeRowActionTemplate

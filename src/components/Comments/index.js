@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -11,7 +11,6 @@ import { ifIphoneX } from 'react-native-iphone-x-helper'
 import CommentComponent from 'components/Comments/Comment'
 import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
-import dayjs from 'dayjs'
 import SwipableTemplate from 'templates/Swipable'
 import useRefs from 'services/providers/Refs'
 
@@ -20,15 +19,10 @@ import PreviewPostComponent from 'components/Preview/Post'
 import PreviewUserComponent from 'components/Preview/User'
 
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { withTranslation } from 'react-i18next'
 
 const Comments = ({
-  t,
   theme,
   user,
-  commentsAdd,
-  commentsAddRequest,
   commentsDeleteRequest,
   commentsFlagRequest,
   postsCommentsGet,
@@ -45,7 +39,6 @@ const Comments = ({
   formSubmitDisabled,
   formInitialValues,
   inputRefs,
-  rowRefs,
 }) => {
   const styling = styles(theme)
   const commentRefs = useRefs({ keyPath: ['commentId'] })
@@ -95,7 +88,7 @@ const Comments = ({
             : null}
           </React.Fragment>
         )}
-        renderItem={({ item: comment, index }) => {
+        renderItem={({ item: comment }) => {
           const tappable = (
             path(['postedBy', 'userId'])(postsSingleGet.data) === user.userId ||
             path(['commentedBy', 'userId'])(comment) === user.userId
@@ -171,7 +164,6 @@ const styles = theme => StyleSheet.create({
 
 Comments.propTypes = {
   theme: PropTypes.any,
-  t: PropTypes.any,
   user: PropTypes.any,
   commentsAdd: PropTypes.any,
   commentsAddRequest: PropTypes.any,
@@ -190,4 +182,4 @@ Comments.propTypes = {
   formInitialValues: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(Comments))
+export default withTheme(Comments)

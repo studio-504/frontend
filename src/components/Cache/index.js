@@ -1,11 +1,8 @@
-import React, { useState, useEffect, memo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import * as actions from 'store/ducks/cache/actions'
 import {
   StyleSheet,
   Image,
-  ActivityIndicator,
   View,
 } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -23,8 +20,6 @@ const CacheComponent = ({
   hideLabel,
   filename,
 }) => {
-  const dispatch = useDispatch()
-
   return (
     <View style={styles.root}>
       <View style={[styles.image, style]}>

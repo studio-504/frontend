@@ -26,7 +26,7 @@ import AuthCognitoScreen from 'screens/AuthCognitoScreen'
 
 const SignupNavigator = () => {
   const Tab = createMaterialTopTabNavigator()
-  const { theme, themes } = useContext(ThemesContext)
+  const { theme } = useContext(ThemesContext)
   const tabNavigatorAuthProps = navigationOptions.tabNavigatorAuthProps({ theme })
   return (
     <Tab.Navigator {...tabNavigatorAuthProps}>
@@ -52,7 +52,7 @@ const SignupNavigator = () => {
 
 const SigninNavigator = () => {
   const Tab = createMaterialTopTabNavigator()
-  const { theme, themes } = useContext(ThemesContext)
+  const { theme } = useContext(ThemesContext)
   const tabNavigatorAuthProps = navigationOptions.tabNavigatorAuthProps({ theme })
   return (
     <Tab.Navigator {...tabNavigatorAuthProps}>
@@ -78,7 +78,7 @@ const SigninNavigator = () => {
 
 const ForgotNavigator = () => {
   const Tab = createMaterialTopTabNavigator()
-  const { theme, themes } = useContext(ThemesContext)
+  const { theme } = useContext(ThemesContext)
   const tabNavigatorAuthProps = navigationOptions.tabNavigatorAuthProps({ theme })
   return (
     <Tab.Navigator {...tabNavigatorAuthProps}>

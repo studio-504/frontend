@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Line } from 'react-native-svg'
 
-const Create = ({ fill = '#333', style = {} }) => (
+const Create = ({ fill = '#333' }) => (
   <Svg height={42} width={42} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="3">
       <Line fill="none" stroke={fill} x1="12" x2="12" y1="2" y2="22"/>

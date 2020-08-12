@@ -1,11 +1,9 @@
 import { useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import useToggle from 'react-use/lib/useToggle'
-import { useNavigation, useRoute } from '@react-navigation/native'
 import CropPicker from 'react-native-image-crop-picker'
 import { getScreenAspectRatio } from 'services/Dimensions'
 import mapSeries from 'async/mapSeries'
-import path from 'ramda/src/path'
 import * as AssetService from 'services/Asset'
 
 export const useCameraState = () => {
@@ -51,7 +49,7 @@ const useCamera = ({
     compressImageQuality: 1,
   })
 
-  const requestPayload = (type = gallery) => (state, snappedPhoto, croppedPhoto) => ({
+  const requestPayload = (type) => (state, snappedPhoto, croppedPhoto) => ({
     uri: (snappedPhoto.uri || snappedPhoto.path).replace('file://', ''),
     preview: (croppedPhoto.path || croppedPhoto.path).replace('file://', ''),
     originalFormat: snappedPhoto.extension || 'jpg',

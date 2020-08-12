@@ -6,12 +6,11 @@ import {
 } from 'react-native'
 import { getDimensionsFromPostSize } from 'services/Dimensions'
 import CacheComponent from 'components/Cache'
-import { withTheme } from 'react-native-paper'
 import ContextComponent from 'components/Feed/Context'
 
 export class PinchZoom extends React.Component {
   render() {
-    const styling = styles(this.props.theme)
+    const styling = styles
 
     if (!this.props.draggedImage || !this.props.draggedImage.image) {
       return null
@@ -51,7 +50,7 @@ PinchZoom.defaultProps = {
 PinchZoom.propTypes = {
 }
 
-const styles = theme => StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
     zIndex: 4,
     justifyContent: 'center',
@@ -60,11 +59,11 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-export default withTheme((props) => (
+export default (props) => (
   <ContextComponent.Consumer>
     {(contextProps) => (
       <PinchZoom {...contextProps} {...props} />
     )}
   </ContextComponent.Consumer>
-))
+)
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Line, Polyline } from 'react-native-svg'
 
-const Crop = ({ fill = '#333', style = {} }) => (
+const Crop = ({ fill = '#333' }) => (
   <Svg height={28} width={28} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
       <Line fill="none" x1="6" x2="6" y1="1" y2="7" />

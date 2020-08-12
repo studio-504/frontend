@@ -1,18 +1,15 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
   View,
-  Keyboard,
 } from 'react-native'
 import TextGrowing from 'components/Formik/TextGrowing'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
-import path from 'ramda/src/path'
 
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
@@ -24,19 +21,10 @@ const CommentsForm = ({
   theme,
   handleSubmit,
   loading,
-  disabled,
-  dirty,
-  isValid,
-  isValidating,
   inputRefs,
 }) => {
   const styling = styles(theme)
 
-  const submitDisabled = (
-    disabled ||
-    !isValid ||
-    isValidating
-  )
 
   return (
     <View style={styling.root}>
@@ -87,7 +75,6 @@ CommentsForm.propTypes = {
 
 export default withTranslation()(withTheme(({
   handleFormSubmit,
-  handleFormTransform,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,

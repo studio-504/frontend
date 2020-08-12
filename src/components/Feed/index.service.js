@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { InteractionManager } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
-import { useNavigation, useScrollToTop } from '@react-navigation/native'
+import { useScrollToTop } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -10,7 +10,6 @@ import * as postsSelector from 'store/ducks/posts/selectors'
 
 const FeedService = ({ children }) => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
   const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
   const postsCreate = useSelector(state => state.posts.postsCreate)

@@ -95,7 +95,7 @@ function* handlePostsShareRequest(payload) {
     yield Share.open(shareOptions)
   }
 
-  function* handleRepost({ url, title, post }) {
+  function* handleRepost({ url }) {
     return yield put(cameraActions.cameraCaptureRequest([{
       uri: url,
       takenInReal: false,

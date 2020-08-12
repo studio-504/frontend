@@ -18,14 +18,12 @@ const Icon = () => (
 )
 
 const AvatarTemplate = ({
-  t,
   theme,
   thumbnailSource,
   imageSource,
   active,
   size,
   icon,
-  themeCode,
 }) => {
   const styling = styles(theme)
 

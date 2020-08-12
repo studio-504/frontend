@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Circle, Line, Path } from 'react-native-svg'
 
-const Search = ({ fill = '#F9F9F9', style = {} }) => (
+const Search = ({ fill = '#F9F9F9' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="square" strokeWidth="2">
       <Line fill="none" x1="22" x2="18" y1="22" y2="18"/>

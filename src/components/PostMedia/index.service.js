@@ -49,7 +49,7 @@ const PostMediaService = ({ children }) => {
     postsArchive.status,
   ])
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
+  const onViewableItemsChanged = () => {
   }
 
   const handleScrollPrev = (index) => () => {

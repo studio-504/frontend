@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { G, Path, Line } from 'react-native-svg'
 
-const Pending = ({ fill = '#333', style = {} }) => (
+const Pending = ({ fill = '#333' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1">
       <Path d="M15,11L15,11 c-2.209,0-4-1.791-4-4V5c0-2.209,1.791-4,4-4h0c2.209,0,4,1.791,4,4v2C19,9.209,17.209,11,15,11z" fill="none" stroke={fill}/>

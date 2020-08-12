@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   View,
@@ -19,7 +19,6 @@ import { Text, Caption, Switch } from 'react-native-paper'
 import { useHeader } from 'components/PostCreate/header'
 
 import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
@@ -41,7 +40,6 @@ const PostCreateForm = ({
   cameraCaptureLength,
 }) => {
   const styling = styles(theme)
-  const navigation = useNavigation()
 
   const image = {
     url4k: values.preview[0],
@@ -194,7 +192,6 @@ PostCreateForm.propTypes = {
 }
 
 const FormWrapper = ({
-  postsCreate,
   postsCreateRequest,
   cameraCapture,
   ...props
