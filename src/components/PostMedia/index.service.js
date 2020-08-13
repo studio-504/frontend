@@ -57,7 +57,9 @@ const PostMediaService = ({ children }) => {
       feedRef.current.scrollToIndex({
         index: index - 1,
       })
-    } catch (error) {}
+    } catch (error) {
+      // ignore
+    }
   }
 
   const handleScrollNext = (index) => () => {
@@ -65,7 +67,9 @@ const PostMediaService = ({ children }) => {
       feedRef.current.scrollToIndex({
         index: index + 1,
       })
-    } catch (error) {}
+    } catch (error) {
+      // ignore
+    }
   }
 
   /**

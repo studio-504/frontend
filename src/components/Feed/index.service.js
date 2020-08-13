@@ -48,7 +48,9 @@ const FeedService = ({ children }) => {
         index: index - 1,
         viewPosition: 0.5,
       })
-    } catch (error) {}
+    } catch (error) {
+      // ignore
+    }
   }
 
   const handleScrollNext = (index) => () => {
@@ -57,7 +59,9 @@ const FeedService = ({ children }) => {
         index: index + 1,
         viewPosition: 0.5,
       })
-    } catch (error) {}
+    } catch (error) {
+      // ignore
+    }
   }
 
   /**

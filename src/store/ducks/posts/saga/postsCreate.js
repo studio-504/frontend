@@ -149,7 +149,7 @@ function* handleTextOnlyPost(req) {
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
-    
+    // ignore
   } catch (error) {
     yield put(actions.postsCreateFailure({
       message: errorWrapper(error),
