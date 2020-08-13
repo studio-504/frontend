@@ -56,11 +56,6 @@ const Settings = ({
   }
 
   // {
-  //   label: t('Join Diamond'),
-  //   onPress: () => navigation.navigate('Membership'),
-  //   icon: <DiamondIcon fill={theme.colors.text} />,
-  // }
-  // {
   //   label: t('Change Language'),
   //   onPress: () => navigation.navigate('Translation'),
   //   icon: <LanguageIcon fill={theme.colors.text} />,
@@ -118,6 +113,10 @@ const Settings = ({
         label: t('Mental Health & Privacy Settings'),
         onPress: () => navigation.navigate('Privacy'),
         icon: <PrivacyIcon fill={theme.colors.text} />,
+      }, {
+        label: t('Join Diamond'),
+        onPress: () => navigation.navigate('Membership'),
+        icon: <DiamondIcon fill={theme.colors.text} />,
       }, {
         label: t('Signout'),
         onPress: () => authSignoutRequest(),

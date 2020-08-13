@@ -155,7 +155,7 @@ const styles = theme => StyleSheet.create({
     borderTopWidth: 1,
   },
   action: {
-    padding: theme.spacing.base,
+    paddingHorizontal: theme.spacing.base,
   },
   headingTitle: {
     fontSize: 22,

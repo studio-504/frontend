@@ -1,10 +1,10 @@
 import React from 'react'
-import Svg, { G, Line, Polygon } from 'react-native-svg'
+import Svg, { G, Polygon, Line } from 'react-native-svg'
 
-const Diamond = ({ fill = '#333', style = {} }) => (
-  <Svg height={22} width={22} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+const Boost = ({ fill = '#333', style = {} }) => (
+  <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
-      <Polygon fill="none" points="8 18 6 16 6 8 8 6 16 6 18 8 18 16 16 18 8 18"/>
+			<Polygon fill="none" points="8 18 6 16 6 8 8 6 16 6 18 8 18 16 16 18 8 18"/>
 			<Line fill="none" x1="6" x2="1" y1="8" y2="5.343"/>
 			<Line fill="none" x1="8" x2="5.343" y1="6" y2="1"/>
 			<Line fill="none" x1="16" x2="19" y1="6" y2="1"/>
@@ -18,4 +18,4 @@ const Diamond = ({ fill = '#333', style = {} }) => (
   </Svg>
 )
 
-export default Diamond
+export default Boost
