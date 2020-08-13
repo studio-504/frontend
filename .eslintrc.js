@@ -45,6 +45,5 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
     'jest/no-jasmine-globals': 0,
-    'react/jsx-no-duplicate-props': 0
   }
 }
