@@ -133,7 +133,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                                 fetchCompletionHandler:^void (UIBackgroundFetchResult result){}];
 
   // hide push notification
-  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+  completionHandler(UNAuthorizationOptionAlert);
 }
 
 @end
