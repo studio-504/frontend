@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   env: {
     'jest/globals': true,
     'detox/detox': true,

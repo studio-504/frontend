@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Animated,
@@ -27,12 +28,12 @@ export class PinchZoom extends React.Component {
 
   onPinchGestureEvent = Animated.event(
     [{ nativeEvent: { scale: this.pinchScale } }],
-    { useNativeDriver: false }
+    { useNativeDriver: false },
   )
 
   onPanGestureEvent = Animated.event(
-    [{ nativeEvent: { translationX: this.translateX, translationY: this.translateY }, }],
-    { useNativeDriver: false }
+    [{ nativeEvent: { translationX: this.translateX, translationY: this.translateY } }],
+    { useNativeDriver: false },
   )
 
   onPinchHandlerStateChange = event => {
@@ -96,7 +97,7 @@ export class PinchZoom extends React.Component {
     }
   }
 
-  onLayout = event => {
+  onLayout = () => {
     this.viewRef.current.measureInWindow((_, y) => this.offsetY = y)
   }
 
@@ -118,7 +119,7 @@ export class PinchZoom extends React.Component {
             maxPointers={2}
             ref={this.pinchRef}
           >
-            <View style={[this.props.style]} onLayout={this.onLayout} ref={this.viewRef}>
+            <View style={this.props.style} onLayout={this.onLayout} ref={this.viewRef}>
               {this.props.children}
             </View>
           </PinchGestureHandler>
@@ -132,6 +133,10 @@ PinchZoom.defaultProps = {
 }
 
 PinchZoom.propTypes = {
+  setDraggedImage: PropTypes.any,
+  image: PropTypes.any,
+  style: PropTypes.any,
+  children: PropTypes.any,
 }
 
 export default (props) => (
