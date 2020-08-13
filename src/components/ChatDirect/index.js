@@ -93,6 +93,7 @@ const ChatDirect = ({
       : null}
 
       {!chatId ?
+        // eslint-disable-next-line react-native/no-inline-styles
         <View style={{ marginBottom, paddingHorizontal: 12 }}>
           <FormComponent
             chatAddMessage={chatCreateDirect}

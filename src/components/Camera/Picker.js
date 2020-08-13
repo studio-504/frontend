@@ -63,13 +63,8 @@ const Picker = ({
         itemHeight={30}
         itemWidth={110}
         removeClippedSubviews={false}
-        contentContainerCustomStyle={{
-          height: 30,
-        }}
-        slideStyle={{
-          margin: 0,
-          padding: 0,
-        }}
+        contentContainerCustomStyle={styling.contentContainerCustomStyle}
+        slideStyle={styling.slideStyle}
         onSnapToItem={(index) => {
           if (index === 1) setPhotoSize('1:1')
           if (index === 0) setPhotoSize('4:3')
@@ -132,6 +127,13 @@ const styles = StyleSheet.create({
   sliderItemIcon: {
     marginRight: 4,
   },
+  slideStyle: {
+    margin: 0,
+    padding: 0,
+  },
+  contentContainerCustomStyle: {
+    height: 30,
+  }
 })
 
 export default withTranslation()(Picker)

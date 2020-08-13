@@ -23,7 +23,7 @@ const AuthPhoto = ({
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderRight onPress={skipPhotoUpload} title="Skip" style={{ color: '#ffffff' }} />,
+      headerRight: () => <HeaderRight onPress={skipPhotoUpload} title="Skip" style={styling.headerRight} />,
     })
   }, [])
 
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  headerRight: {
+    color: '#ffffff'
+  }
 })
 
 AuthPhoto.propTypes = {

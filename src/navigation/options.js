@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import { HeaderStyleInterpolators, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack'
 import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
 import UIContextComponent from 'components/UI/Context'
@@ -16,20 +16,20 @@ import BackIcon from 'assets/svg/header/Back'
 export const pageHeaderLeft = ({ onPress }) => {
   if (!onPress) { return null }
   return (
-    <TouchableOpacity style={{ paddingHorizontal: 12 }} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
       <BackIcon fill="#fff" />
     </TouchableOpacity>
   )
 }
 
 export const chatHeaderLeft = ({ navigation }) => () => (
-  <TouchableOpacity style={{ paddingHorizontal: 12 }} onPress={navigationActions.navigateHome(navigation)}>
+  <TouchableOpacity style={styles.button} onPress={navigationActions.navigateHome(navigation)}>
     <BackIcon fill="#fff" />
   </TouchableOpacity>
 )
 
 const homeHeaderLeft = ({ theme, navigation }) => () => (
-  <TouchableOpacity style={{ paddingHorizontal: 12 }} onPress={navigationActions.navigateCamera(navigation)}>
+  <TouchableOpacity style={styles.button} onPress={navigationActions.navigateCamera(navigation)}>
     <CameraIcon
       fill={theme.colors.primaryIcon}
     />
@@ -46,7 +46,7 @@ const homeHeaderTitle = ({ theme }) => () => (
 const homeHeaderRight = ({ theme, navigation }) => () => (
   <UIContextComponent.Consumer>
     {(props) => (
-      <TouchableOpacity style={{ paddingHorizontal: 12, height: 24 }} onPress={navigationActions.navigateChat(navigation)}>
+      <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation)}>
         <DirectIcon
           fill={theme.colors.primaryIcon}
           user={props.user}
@@ -335,3 +335,13 @@ export const tabNavigatorProps = ({ theme }) => {
     },
   })
 }
+
+const styles = StyleSheet.create({
+  button: {
+    paddingHorizontal: 12 
+  },
+  chatButton: {
+    paddingHorizontal: 12, 
+    height: 24 
+  }
+})

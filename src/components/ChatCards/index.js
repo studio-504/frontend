@@ -35,10 +35,7 @@ const ChatCards = ({
         sliderWidth={Layout.window.width}
         itemWidth={Layout.window.width}
         removeClippedSubviews={false}
-        slideStyle={{
-          margin: 0,
-          padding: 0,
-        }}
+        slideStyle={styling.slideStyle}
         inactiveSlideScale={1}
         inactiveSlideOpacity={1}
         layout="stack"
@@ -58,6 +55,10 @@ const styles = theme => StyleSheet.create({
     height: 120,
     backgroundColor: theme.colors.secondary,
   },
+  slideStyle: {
+    margin: 0,
+    padding: 0,
+  }
 })
 
 export default withTheme(ChatCards)

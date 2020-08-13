@@ -37,7 +37,6 @@ module.exports = {
     'react-native/sort-styles': 0,
     'react/prop-types': 0,
     'react-native/no-color-literals': 0,
-    'react-native/no-inline-styles': 0,
     'no-inner-declarations': 0,
     'react-native/no-raw-text': 0,
     'react/no-unescaped-entities': 0,
