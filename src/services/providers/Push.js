@@ -82,13 +82,16 @@ export const usePushNotification = () => {
     if (user.userId) {
       PushNotificationIOS.checkPermissions(handlePermissions)
       PushNotificationIOS.getInitialNotification().then(handleNotificationEvent)
+
       PushNotificationIOS.addEventListener('notification', handleNotificationEvent)
+      PushNotificationIOS.addEventListener('localNotification', handleNotificationEvent)
       PushNotificationIOS.addEventListener('register', handleRegistrationEvent)
       PushNotificationIOS.addEventListener('registrationError', handleRegistrationError)
     }
 
     return () => {
       PushNotificationIOS.removeEventListener('notification', handleNotificationEvent)
+      PushNotificationIOS.removeEventListener('localNotification', handleNotificationEvent)
       PushNotificationIOS.removeEventListener('register', handleRegistrationEvent)
       PushNotificationIOS.removeEventListener('registrationError', handleRegistrationError)
     }
