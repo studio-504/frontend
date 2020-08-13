@@ -71,8 +71,11 @@ export const usePushNotification = () => {
     dispatch(usersActions.usersSetApnsTokenRequest({ token }))
   }
 
-  const handleRegistrationError = (error) => {
-    Logger.captureException(error)
+  const handleRegistrationError = (payload) => {
+    Logger.withScope(scope => {
+      scope.setExtra('payload', JSON.stringify(payload))
+      Logger.captureMessage('PUSH_NOTIFICATION_REGISTER_ERROR')
+    })
   }
 
   /**
