@@ -41,7 +41,6 @@ module.exports = {
     'no-inner-declarations': 0,
     'no-mixed-spaces-and-tabs': 0,
     'react-native/no-raw-text': 0,
-    'no-dupe-keys': 0,
     'react-native/no-single-element-style-arrays': 0,
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
