@@ -43,8 +43,10 @@ export const usePushNotification = () => {
 
     /**
      * Let ios know that push notification is handled succesfully
+     * Reset application badge number on completion
      */
     try {
+      PushNotificationIOS.setApplicationIconBadgeNumber(0)
       notification.finish(PushNotificationIOS.FetchResult.NewData)
     } catch (error) {
       Logger.captureException(error)
