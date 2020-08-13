@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 25ead1a..fc6a2c0 100644
+index 25ead1a..f554267 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 @@ -453,6 +453,7 @@ - (void) handleVideo:(AVAsset*)asset withFileName:(NSString*)fileName withLocalI
@@ -122,3 +122,54 @@ index 25ead1a..fc6a2c0 100644
  
      // save cropped file
      BOOL status = [data writeToFile:filePath atomically:YES];
+@@ -860,31 +872,31 @@ + (NSDictionary *)cgRectToDictionary:(CGRect)rect {
+ 
+ #pragma mark - TOCCropViewController Implementation
+ - (void)cropImage:(UIImage *)image {
+-    TOCropViewController *cropVC;
+-    if ([[[self options] objectForKey:@"cropperCircleOverlay"] boolValue]) {
+-        cropVC = [[TOCropViewController alloc] initWithCroppingStyle:TOCropViewCroppingStyleCircular image:image];
+-    } else {
+-        cropVC = [[TOCropViewController alloc] initWithImage:image];
+-        CGFloat widthRatio = [[self.options objectForKey:@"width"] floatValue];
+-        CGFloat heightRatio = [[self.options objectForKey:@"height"] floatValue];
+-        if (widthRatio > 0 && heightRatio > 0){
+-            CGSize aspectRatio = CGSizeMake(widthRatio, heightRatio);
+-            cropVC.customAspectRatio = aspectRatio;
++    dispatch_async(dispatch_get_main_queue(), ^{
++        TOCropViewController *cropVC;
++        if ([[[self options] objectForKey:@"cropperCircleOverlay"] boolValue]) {
++            cropVC = [[TOCropViewController alloc] initWithCroppingStyle:TOCropViewCroppingStyleCircular image:image];
++        } else {
++            cropVC = [[TOCropViewController alloc] initWithImage:image];
++            CGFloat widthRatio = [[self.options objectForKey:@"width"] floatValue];
++            CGFloat heightRatio = [[self.options objectForKey:@"height"] floatValue];
++            if (widthRatio > 0 && heightRatio > 0){
++                CGSize aspectRatio = CGSizeMake(widthRatio, heightRatio);
++                cropVC.customAspectRatio = aspectRatio;
+                 
++            }
++            cropVC.aspectRatioLockEnabled = ![[self.options objectForKey:@"freeStyleCropEnabled"] boolValue];
++            cropVC.resetAspectRatioEnabled = !cropVC.aspectRatioLockEnabled;
+         }
+-        cropVC.aspectRatioLockEnabled = ![[self.options objectForKey:@"freeStyleCropEnabled"] boolValue];
+-        cropVC.resetAspectRatioEnabled = !cropVC.aspectRatioLockEnabled;
+-    }
+ 
+-    cropVC.title = [[self options] objectForKey:@"cropperToolbarTitle"];
+-    cropVC.delegate = self;
++        cropVC.title = [[self options] objectForKey:@"cropperToolbarTitle"];
++        cropVC.delegate = self;
+         
+-    cropVC.doneButtonTitle = [self.options objectForKey:@"cropperChooseText"];
+-    cropVC.cancelButtonTitle = [self.options objectForKey:@"cropperCancelText"];
++        cropVC.doneButtonTitle = [self.options objectForKey:@"cropperChooseText"];
++        cropVC.cancelButtonTitle = [self.options objectForKey:@"cropperCancelText"];
+         
+-    cropVC.modalPresentationStyle = UIModalPresentationFullScreen;
++        cropVC.modalPresentationStyle = UIModalPresentationFullScreen;
+             
+-    dispatch_async(dispatch_get_main_queue(), ^{
+         [[self getRootVC] presentViewController:cropVC animated:FALSE completion:nil];
+     });
+ }
