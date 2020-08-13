@@ -39,7 +39,6 @@ module.exports = {
     'react-native/no-color-literals': 0,
     'react-native/no-inline-styles': 0,
     'no-inner-declarations': 0,
-    'no-mixed-spaces-and-tabs': 0,
     'react-native/no-raw-text': 0,
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
