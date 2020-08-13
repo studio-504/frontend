@@ -146,10 +146,11 @@ function* handlePostsCreateRequest(payload) {
  *
  */
 function* handleTextOnlyPost(req) {
+  const AwsAPI = yield getContext('AwsAPI')
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
-    // ignore
+    yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
   } catch (error) {
     yield put(actions.postsCreateFailure({
       message: errorWrapper(error),
