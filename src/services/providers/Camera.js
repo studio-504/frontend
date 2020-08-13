@@ -95,7 +95,7 @@ const useCamera = ({
   const handleLibrarySnap = async (multiple = false) => {
     const selectedMedia = await CropPicker.openPicker(pickerOptions(multiple))
     const payloadSeries = await mapCropperResponse(selectedMedia, async (selectedPhoto, callback) => {
-      const tempPhoto = await AssetService.getAssetFileAbsolutePath(selectedPhoto.localIdentifier, selectedPhoto.filename)
+      const tempPhoto = AssetService.getAssetFileAbsolutePath(selectedPhoto)
       const snappedPhoto = ({ ...selectedPhoto, ...tempPhoto })
       const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, selectedPhoto))
       const payload = requestPayload('gallery')(cameraState, snappedPhoto, croppedPhoto)
