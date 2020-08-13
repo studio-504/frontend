@@ -1,39 +1,39 @@
 module.exports = {
-	env: {
+  env: {
     'jest/globals': true,
     'detox/detox': true,
-    'react-native/react-native': true
-	},
-	extends: [
-		'eslint:recommended',
+    'react-native/react-native': true,
+  },
+  extends: [
+    'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react-native/all',
     'plugin:jest/recommended',
-    'plugin:jest/style'
-	],
-	parserOptions: {
-		'ecmaFeatures': {
-			'jsx': true
-		},
-		'ecmaVersion': 11,
-		'sourceType': 'module'
-	},
-	plugins: [
-    'jest',
-    'detox',
-    'react',
-    'react-native'
+    'plugin:jest/style',
+    'prettier',
+    'prettier/react',
   ],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 11,
+    sourceType: 'module',
+  },
+  plugins: ['jest', 'detox', 'react', 'react-native'],
   settings: {
     react: {
       version: 'detect',
     },
     jest: {
-      version: 26
-    }
+      version: 26,
+    },
   },
   rules: {
-    "react-native/no-unused-styles": 0,
+    semi: ['error', 'never'],
+    quotes: ['error', 'single'],
+    'comma-dangle': ['error', 'always-multiline'],
+    'react-native/no-unused-styles': 0,
     'react-native/sort-styles': 0,
     'react-native/no-color-literals': 0,
     'no-inner-declarations': 0,
@@ -41,5 +41,5 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
     'jest/no-jasmine-globals': 0,
-  }
+  },
 }
