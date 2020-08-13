@@ -41,7 +41,6 @@ module.exports = {
     'no-inner-declarations': 0,
     'no-mixed-spaces-and-tabs': 0,
     'react-native/no-raw-text': 0,
-    'react-native/no-single-element-style-arrays': 0,
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
     'jest/no-jasmine-globals': 0,

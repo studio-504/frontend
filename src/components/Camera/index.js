@@ -57,7 +57,7 @@ const CameraComponent = ({
           />
         )}
         content={(
-          <View style={[styling.cameraWrapper]}>
+          <View style={styling.cameraWrapper}>
             <Animated.View style={[{ top: 0, height: topHeight }, styling.overflow]}>
               <BlurView style={styling.blur} />
             </Animated.View>
