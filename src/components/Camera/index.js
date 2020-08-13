@@ -144,7 +144,6 @@ CameraComponent.propTypes = {
   postsCreate: PropTypes.any,
   photoSize: PropTypes.any,
   setPhotoSize: PropTypes.any,
-  handleLibrarySnap: PropTypes.any,
   cameraEnabled: PropTypes.any,
   libraryEnabled: PropTypes.any,
 }

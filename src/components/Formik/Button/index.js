@@ -50,9 +50,6 @@ const styles = theme => StyleSheet.create({
     position: 'relative',
   },
   loading: {
-    opacity: 0.5,
-  },
-  loading: {
     position: 'absolute',
     top: 0,
     bottom: 0,

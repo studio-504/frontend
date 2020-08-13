@@ -179,7 +179,6 @@ Profile.propTypes = {
   usersFollowRequest: PropTypes.any,
   usersUnfollow: PropTypes.any,
   usersUnfollowRequest: PropTypes.any,
-  postsGet: PropTypes.any,
   t: PropTypes.any,
   profileRef: PropTypes.any,
   postsGet: PropTypes.any,

@@ -61,8 +61,6 @@ const PostsPreview = ({
 PostsPreview.propTypes = {
   selectedPost: PropTypes.any,
   handlePostClose: PropTypes.any,
-  selectedPost: PropTypes.any,
-  handlePostClose: PropTypes.any,
 }
 
 const styles = StyleSheet.create({
