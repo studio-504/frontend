@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle, Polyline } from 'react-native-svg'
 
 const Checked = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Checked = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Checked.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Checked

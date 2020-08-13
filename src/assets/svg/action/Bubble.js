@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Bubble = ({ fill = '#333' }) => (
@@ -8,5 +9,9 @@ const Bubble = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Bubble.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Bubble

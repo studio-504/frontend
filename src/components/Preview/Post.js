@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
 
 PostPreview.propTypes = {
   theme: PropTypes.any,
-  thumbnailSource: PropTypes.any,
-  imageSource: PropTypes.any,
+  text: PropTypes.any,
+  image: PropTypes.any,
   renderUri: PropTypes.any,
 }
 

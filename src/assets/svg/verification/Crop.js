@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Line, Polyline } from 'react-native-svg'
 
 const Crop = ({ fill = '#333' }) => (
@@ -11,5 +12,9 @@ const Crop = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Crop.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Crop

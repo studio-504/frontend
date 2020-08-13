@@ -50,6 +50,7 @@ FeedCards.propTypes = {
   theme: PropTypes.any,
   filteredCardsData: PropTypes.any,
   handleCardPress: PropTypes.any,
+  usersDeleteCardRequest: PropTypes.any,
 }
 
 const styles = theme => StyleSheet.create({

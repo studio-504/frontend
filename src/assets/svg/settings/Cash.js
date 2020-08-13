@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polyline, Path, Ellipse, Circle } from 'react-native-svg'
 
 const Cash = ({ fill = '#333' }) => (
@@ -13,5 +14,9 @@ const Cash = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Cash.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Cash

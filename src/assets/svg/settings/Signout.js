@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polyline, Line } from 'react-native-svg'
 
 const Signout = ({ fill = '#333' }) => (
@@ -11,5 +12,9 @@ const Signout = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Signout.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Signout

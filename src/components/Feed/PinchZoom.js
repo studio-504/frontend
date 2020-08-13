@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   StyleSheet,
@@ -48,6 +49,7 @@ PinchZoom.defaultProps = {
 }
 
 PinchZoom.propTypes = {
+  draggedImage: PropTypes.any
 }
 
 const styles = StyleSheet.create({

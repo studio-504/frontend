@@ -47,7 +47,8 @@ const styles = theme => StyleSheet.create({
 
 TextComponent.propTypes = {
   theme: PropTypes.any,
-  post: PropTypes.any,
+  children: PropTypes.any,
+  text: PropTypes.any,
 }
 
 export default withTheme(TextComponent)

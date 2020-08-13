@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polygon } from 'react-native-svg'
 
 const FlashOn = ({ fill = '#333' }) => (
@@ -8,5 +9,9 @@ const FlashOn = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+FlashOn.propTypes = {
+  fill: PropTypes.string
+}
 
 export default FlashOn

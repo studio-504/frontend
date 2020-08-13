@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle, Path } from 'react-native-svg'
 
 const Photo = ({ fill = '#333' }) => (
@@ -10,5 +11,9 @@ const Photo = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Photo.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Photo

@@ -53,6 +53,7 @@ DefaultButton.propTypes = {
   label: PropTypes.any,
   size: PropTypes.any,
   mode: PropTypes.any,
+  labelStyle: PropTypes.any
 }
 
 DefaultButton.defaultProps = {

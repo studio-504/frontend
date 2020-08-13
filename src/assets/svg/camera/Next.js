@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Line, Polyline } from 'react-native-svg'
 
 const Next = ({ fill = '#ffffff' }) => (
@@ -9,5 +10,9 @@ const Next = ({ fill = '#ffffff' }) => (
     </G>
   </Svg>
 )
+
+Next.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Next

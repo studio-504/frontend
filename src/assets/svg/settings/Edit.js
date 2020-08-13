@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { Path, G } from 'react-native-svg'
 
 const Edit = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Edit = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Edit.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Edit

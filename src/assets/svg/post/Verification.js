@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle, Line } from 'react-native-svg'
 
 const Refresh = ({ fill = '#333' }) => (
@@ -10,5 +11,9 @@ const Refresh = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Refresh.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Refresh

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Profile = ({ fill = '#333' }) => (
@@ -10,5 +11,9 @@ const Profile = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Profile.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Profile

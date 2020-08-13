@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Google = ({ fill = '#fff' }) => (
@@ -8,5 +9,9 @@ const Google = ({ fill = '#fff' }) => (
     </G>
   </Svg>
 )
+
+Google.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Google

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Line } from 'react-native-svg'
 
 const Pending = ({ fill = '#333' }) => (
@@ -11,5 +12,9 @@ const Pending = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Pending.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Pending

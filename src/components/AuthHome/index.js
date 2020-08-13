@@ -67,6 +67,8 @@ AuthHome.propTypes = {
   t: PropTypes.any,
   authGoogle: PropTypes.any,
   authGoogleRequest: PropTypes.any,
+  authApple: PropTypes.any,
+  authAppleRequest: PropTypes.any,
 }
 
 export default withTranslation()(AuthHome)

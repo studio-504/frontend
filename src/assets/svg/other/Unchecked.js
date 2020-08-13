@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle } from 'react-native-svg'
 
 const Unchecked = ({ fill = '#333' }) => (
@@ -8,5 +9,9 @@ const Unchecked = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Unchecked.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Unchecked

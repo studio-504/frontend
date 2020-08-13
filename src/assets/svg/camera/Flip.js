@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Polyline } from 'react-native-svg'
 
 const Flip = ({ fill = '#333' }) => (
@@ -11,5 +12,9 @@ const Flip = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Flip.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Flip

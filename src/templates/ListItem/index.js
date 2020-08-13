@@ -73,6 +73,8 @@ ListItemTemplate.defaultProps = {
 ListItemTemplate.propTypes = {
   theme: PropTypes.any,
   children: PropTypes.any,
+  post: PropTypes.any,
+  feedRef: PropTypes.any,
 }
 
 export default withTheme(ListItemTemplate)

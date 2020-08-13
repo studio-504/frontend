@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polyline, Line } from 'react-native-svg'
 
 const Language = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Language = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Language.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Language

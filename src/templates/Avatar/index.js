@@ -150,11 +150,11 @@ AvatarTemplate.defaultProps = {
 
 AvatarTemplate.propTypes = {
   theme: PropTypes.any,
-  uri: PropTypes.any,
+  thumbnailSource: PropTypes.any,
+  imageSource: PropTypes.any,
   active: PropTypes.any,
   size: PropTypes.any,
   icon: PropTypes.any,
-  themeCode: PropTypes.any,
 }
 
 export default withTheme(AvatarTemplate)

@@ -35,7 +35,6 @@ module.exports = {
   rules: {
     "react-native/no-unused-styles": 0,
     'react-native/sort-styles': 0,
-    'react/prop-types': 0,
     'react-native/no-color-literals': 0,
     'no-inner-declarations': 0,
     'react-native/no-raw-text': 0,

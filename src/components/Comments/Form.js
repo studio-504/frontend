@@ -60,17 +60,11 @@ const styles = theme => StyleSheet.create({
 })
 
 CommentsForm.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
   handleSubmit: PropTypes.any,
-  submitErrors: PropTypes.any,
-  dirtySinceLastSubmit: PropTypes.any,
   loading: PropTypes.any,
-  t: PropTypes.any,
-  handleFormFocus: PropTypes.any,
-  handleFormChange: PropTypes.any,
-  getFieldMeta: PropTypes.any,
-  handleReset: PropTypes.any,
-  values: PropTypes.any,
+  inputRefs: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(({

@@ -48,8 +48,7 @@ const styles = theme => StyleSheet.create({
 
 UserPreview.propTypes = {
   theme: PropTypes.any,
-  thumbnailSource: PropTypes.any,
-  imageSource: PropTypes.any,
+  image: PropTypes.any,
   title: PropTypes.any,
   subtitle: PropTypes.any,
 }

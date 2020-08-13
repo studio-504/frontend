@@ -75,6 +75,9 @@ UsernameForm.propTypes = {
   t: PropTypes.any,
   handleSubmit: PropTypes.any,
   loading: PropTypes.any,
+  disabled: PropTypes.any,
+  isValid: PropTypes.any,
+  isValidating: PropTypes.any,
 }
 
 export default withTranslation()(({

@@ -169,11 +169,11 @@ const styles = theme => StyleSheet.create({
 })
 
 Settings.propTypes = {
-  theme: PropTypes.any,
-  authSignout: PropTypes.any,
-  authSignoutRequest: PropTypes.any,
-  user: PropTypes.any,
   t: PropTypes.any,
+  theme: PropTypes.any,
+  authSignoutRequest: PropTypes.any,
+  handleLibrarySnap: PropTypes.any,
+  user: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(Settings))

@@ -46,8 +46,9 @@ ThemeRowActionTemplate.defaultProps = {
 }
 
 ThemeRowActionTemplate.propTypes = {
-  size: PropTypes.any,
-  colors: PropTypes.any,
+  enabled: PropTypes.any,
+  onEnablePress: PropTypes.any,
+  onDisablePress: PropTypes.any,
 }
 
 export default ThemeRowActionTemplate

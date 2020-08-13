@@ -32,7 +32,6 @@ const Comments = ({
   viewabilityConfigRef,
   handleUserReply,
   commentsRef,
-
   handleFormSubmit,
   handleFormTransform,
   formSubmitLoading,
@@ -165,21 +164,21 @@ const styles = theme => StyleSheet.create({
 Comments.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
-  commentsAdd: PropTypes.any,
-  commentsAddRequest: PropTypes.any,
   commentsDeleteRequest: PropTypes.any,
+  commentsFlagRequest: PropTypes.any,
   postsCommentsGet: PropTypes.any,
   marginBottom: PropTypes.any,
   postsSingleGet: PropTypes.any,
   onViewableItemsChangedRef: PropTypes.any,
   viewabilityConfigRef: PropTypes.any,
   handleUserReply: PropTypes.any,
-
+  commentsRef: PropTypes.any,
   handleFormSubmit: PropTypes.any,
   handleFormTransform: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
+  inputRefs: PropTypes.any,
 }
 
 export default withTheme(Comments)

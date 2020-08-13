@@ -66,7 +66,7 @@ UserRowActionTemplate.defaultProps = {
 }
 
 UserRowActionTemplate.propTypes = {
-  theme: PropTypes.any,
+  t: PropTypes.any,
   followActive: PropTypes.any,
   followloading: PropTypes.any,
   onFollowPress: PropTypes.any,
@@ -76,6 +76,9 @@ UserRowActionTemplate.propTypes = {
   requestActive: PropTypes.any,
   requestloading: PropTypes.any,
   onRequestedPress: PropTypes.any,
+  replyActive: PropTypes.any,
+  onReplyPress: PropTypes.any,
+  replyloading: PropTypes.any,
 }
 
 export default withTranslation()(UserRowActionTemplate)

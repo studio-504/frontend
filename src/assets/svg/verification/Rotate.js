@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Rect, Polyline, Circle, Path, Polygon } from 'react-native-svg'
 
 const Rotate = ({ fill = '#333' }) => (
@@ -13,5 +14,9 @@ const Rotate = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Rotate.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Rotate

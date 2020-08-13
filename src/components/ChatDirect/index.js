@@ -151,10 +151,11 @@ const styles = theme => StyleSheet.create({
 })
 
 ChatDirect.propTypes = {
-  theme: PropTypes.any,
   t: PropTypes.any,
+  theme: PropTypes.any,
   user: PropTypes.any,
   chatGetChat: PropTypes.any,
+  chatCreateDirect: PropTypes.any,
   chatCreateDirectRequest: PropTypes.any,
   chatAddMessage: PropTypes.any,
   chatAddMessageRequest: PropTypes.any,

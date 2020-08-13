@@ -67,8 +67,9 @@ const styles = StyleSheet.create({
 })
 
 ModalPreview.propTypes = {
-  thumbnailSource: PropTypes.any,
-  imageSource: PropTypes.any,
+  theme: PropTypes.any,
+  post: PropTypes.any,
+  renderUri: PropTypes.any,
 }
 
 export default ModalPreview

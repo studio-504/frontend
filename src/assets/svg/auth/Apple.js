@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Apple = ({ fill = '#fff' }) => (
@@ -9,5 +10,9 @@ const Apple = ({ fill = '#fff' }) => (
     </G>
   </Svg>
 )
+
+Apple.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Apple

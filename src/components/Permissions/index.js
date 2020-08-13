@@ -58,7 +58,9 @@ const styles = theme => StyleSheet.create({
 })
 
 Permissions.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
+  openSettings: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(Permissions))

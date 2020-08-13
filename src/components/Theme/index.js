@@ -81,12 +81,12 @@ const styles = theme => StyleSheet.create({
 })
 
 Theme.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
-  initialValues: PropTypes.any,
+  user: PropTypes.any,
   themeFetch: PropTypes.any,
   themePreviewRequest: PropTypes.any,
   themePreviewIdle: PropTypes.any,
-  t: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(Theme))

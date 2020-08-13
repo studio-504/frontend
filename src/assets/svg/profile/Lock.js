@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Circle, Line } from 'react-native-svg'
 
 const Lock = ({ fill = '#333' }) => (
@@ -11,5 +12,9 @@ const Lock = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Lock.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Lock

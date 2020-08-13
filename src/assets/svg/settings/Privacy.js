@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle, Polygon, Polyline, Path } from 'react-native-svg'
 
 const User = ({ fill = '#333' }) => (
@@ -12,5 +13,9 @@ const User = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+User.propTypes = {
+  fill: PropTypes.string
+}
 
 export default User

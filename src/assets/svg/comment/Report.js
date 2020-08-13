@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Line, Circle } from 'react-native-svg'
 
 const Report = ({ fill = '#333' }) => (
@@ -10,5 +11,9 @@ const Report = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Report.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Report

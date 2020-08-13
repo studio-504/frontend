@@ -66,15 +66,14 @@ const CacheComponent = ({
 }
 
 CacheComponent.propTypes = {
-  images: PropTypes.any,
-  fallback: PropTypes.any,
+  uri: PropTypes.any,
   resizeMode: PropTypes.any,
-  priorityIndex: PropTypes.any,
   style: PropTypes.any,
+  handleError: PropTypes.any,
+  progress: PropTypes.any,
   hideProgress: PropTypes.any,
   hideLabel: PropTypes.any,
-  ages: PropTypes.any,
-  prio: PropTypes.any,
+  filename: PropTypes.any,
 }
 
 CacheComponent.defaultProps = {

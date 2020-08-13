@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Circle, Path } from 'react-native-svg'
 
 const Camera = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Camera = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Camera.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Camera

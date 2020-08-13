@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Line } from 'react-native-svg'
 
 const Delete = ({ fill = '#333' }) => (
@@ -10,5 +11,9 @@ const Delete = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Delete.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Delete

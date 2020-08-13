@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Line } from 'react-native-svg'
 
 const Close = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Close = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Close.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Close

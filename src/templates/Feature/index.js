@@ -48,6 +48,9 @@ const styles = theme => StyleSheet.create({
 
 Feature.propTypes = {
   theme: PropTypes.any,
+  children: PropTypes.any,
+  active: PropTypes.any,
+  disabled: PropTypes.any,
 }
 
 export default withTheme(Feature)

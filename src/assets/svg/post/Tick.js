@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polyline } from 'react-native-svg'
 
 const Tick = ({ fill = '#333' }) => (
@@ -8,5 +9,9 @@ const Tick = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Tick.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Tick

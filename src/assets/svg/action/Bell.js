@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Bell = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Bell = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Bell.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Bell

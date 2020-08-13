@@ -257,15 +257,21 @@ const styles = theme => StyleSheet.create({
 
 Story.propTypes = {
   theme: PropTypes.any,
+  userId: PropTypes.any,
+  stories: PropTypes.any,
+  storyRef: PropTypes.any,
   countStories: PropTypes.any,
   currentStory: PropTypes.any,
   onNextStory: PropTypes.any,
   onPrevStory: PropTypes.any,
   onCloseStory: PropTypes.any,
-  userId: PropTypes.any,
-  stories: PropTypes.any,
-  storyRef: PropTypes.any,
   onSnapItem: PropTypes.any,
+  createTextPostRef: PropTypes.any,
+  getTextPostRef: PropTypes.any,
+  textPostRefs: PropTypes.any,
+  postsShareRequest: PropTypes.any,
+  postsOnymouslyLikeRequest: PropTypes.any,
+  postsDislikeRequest: PropTypes.any,
 }
 
 export default withTheme(Story)

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Circle } from 'react-native-svg'
 
 const Theme = ({ fill = '#333' }) => (
@@ -12,5 +13,9 @@ const Theme = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Theme.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Theme

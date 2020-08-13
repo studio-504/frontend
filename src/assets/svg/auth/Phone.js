@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path } from 'react-native-svg'
 
 const Phone = ({ fill = '#fff' }) => (
@@ -8,5 +9,9 @@ const Phone = ({ fill = '#fff' }) => (
     </G>
   </Svg>
 )
+
+Phone.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Phone

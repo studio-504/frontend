@@ -46,7 +46,7 @@ const styles = theme => StyleSheet.create({
 
 TextOnlyComponent.propTypes = {
   theme: PropTypes.any,
-  post: PropTypes.any,
+  text: PropTypes.any,
 }
 
 export default withTheme(TextOnlyComponent)

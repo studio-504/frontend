@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Line, Polygon } from 'react-native-svg'
 
 const Diamond = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Diamond = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Diamond.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Diamond

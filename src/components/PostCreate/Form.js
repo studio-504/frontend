@@ -177,10 +177,9 @@ const styles = theme => StyleSheet.create({
 })
 
 PostCreateForm.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
   handleSubmit: PropTypes.any,
-  postsCreate: PropTypes.any,
-  t: PropTypes.any,
   values: PropTypes.any,
   loading: PropTypes.any,
   handlePostPress: PropTypes.any,
@@ -225,5 +224,12 @@ const FormWrapper = ({
     )}
   </Formik>
 )
+
+FormWrapper.propTypes = {
+  postsCreateRequest: PropTypes.any,
+  cameraCapture: PropTypes.any,
+  user: PropTypes.any,
+  postType: PropTypes.any,
+}
 
 export default withTranslation()(withTheme(FormWrapper))

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Polyline } from 'react-native-svg'
 
 const Heart = ({ fill = '#333' }) => (
@@ -9,5 +10,9 @@ const Heart = ({ fill = '#333' }) => (
     </G>
   </Svg>
 )
+
+Heart.propTypes = {
+  fill: PropTypes.string
+}
 
 export default Heart
