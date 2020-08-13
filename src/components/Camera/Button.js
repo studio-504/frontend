@@ -26,7 +26,7 @@ const Button = ({
         handleCameraRecordStop()
       }
     },
-    isRunning ? 100 : null
+    isRunning ? 100 : null,
   )
 
   const handlePress = () => {

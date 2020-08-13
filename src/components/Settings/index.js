@@ -51,7 +51,7 @@ const Settings = ({
         text: 'Take a Photo',
         onPress: navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhotoUpload' }),
       }],
-      { cancelable: true }
+      { cancelable: true },
     )
   }
 
@@ -165,7 +165,7 @@ const styles = theme => StyleSheet.create({
   helper: {
     paddingVertical: 8,
     paddingBottom: 32,
-  }
+  },
 })
 
 Settings.propTypes = {

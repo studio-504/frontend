@@ -11,7 +11,7 @@ const Tick = ({ fill = '#333' }) => (
 )
 
 Tick.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Tick

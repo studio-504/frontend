@@ -13,7 +13,7 @@ const FlashOff = ({ fill = '#333' }) => (
 )
 
 FlashOff.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default FlashOff

@@ -11,7 +11,7 @@ const Portrait = ({ fill = '#ffffff' }) => (
 )
 
 Portrait.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Portrait

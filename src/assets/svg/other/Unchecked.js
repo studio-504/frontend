@@ -11,7 +11,7 @@ const Unchecked = ({ fill = '#333' }) => (
 )
 
 Unchecked.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Unchecked

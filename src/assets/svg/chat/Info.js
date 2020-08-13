@@ -13,7 +13,7 @@ const Info = ({ fill = '#333' }) => (
 )
 
 Info.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Info

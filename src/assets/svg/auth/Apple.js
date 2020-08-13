@@ -12,7 +12,7 @@ const Apple = ({ fill = '#fff' }) => (
 )
 
 Apple.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Apple

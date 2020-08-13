@@ -11,7 +11,7 @@ const Bullet = ({ fill = '#333' }) => (
 )
 
 Bullet.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Bullet

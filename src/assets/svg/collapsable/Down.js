@@ -11,7 +11,7 @@ const Down = ({ fill = '#333' }) => (
 )
 
 Down.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Down

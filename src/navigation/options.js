@@ -338,10 +338,10 @@ export const tabNavigatorProps = ({ theme }) => {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 12 
+    paddingHorizontal: 12, 
   },
   chatButton: {
     paddingHorizontal: 12, 
-    height: 24 
-  }
+    height: 24, 
+  },
 })

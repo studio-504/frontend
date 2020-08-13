@@ -27,7 +27,7 @@ const ProfileDelete = ({
         text: 'Delete now',
         onPress: usersDeleteRequest,
       }],
-      { cancelable: true }
+      { cancelable: true },
     )
   }
 

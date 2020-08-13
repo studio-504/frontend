@@ -13,7 +13,7 @@ const Swipe = ({ fill = '#333' }) => (
 )
 
 Swipe.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Swipe

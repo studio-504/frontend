@@ -58,7 +58,7 @@ const styles = theme => StyleSheet.create({
   slideStyle: {
     margin: 0,
     padding: 0,
-  }
+  },
 })
 
 export default withTheme(ChatCards)

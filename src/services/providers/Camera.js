@@ -107,7 +107,7 @@ const useCamera = ({
     handleCameraSnap,
     handleLibrarySnap,
     cameraRef,
-    ...cameraState
+    ...cameraState,
   })
 }
 

@@ -12,7 +12,7 @@ const Camera = ({ fill = '#333' }) => (
 )
 
 Camera.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Camera

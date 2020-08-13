@@ -14,7 +14,7 @@ const Flip = ({ fill = '#333' }) => (
 )
 
 Flip.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Flip

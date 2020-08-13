@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerRight: {
-    color: '#ffffff'
-  }
+    color: '#ffffff',
+  },
 })
 
 AuthPhoto.propTypes = {

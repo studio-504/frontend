@@ -9,7 +9,7 @@ const Heart = ({ fill = '#333' }) => (
 )
 
 Heart.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Heart

@@ -12,7 +12,7 @@ const Language = ({ fill = '#333' }) => (
 )
 
 Language.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Language

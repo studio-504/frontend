@@ -14,7 +14,7 @@ const User = ({ fill = '#333' }) => (
 )
 
 User.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default User

@@ -46,7 +46,7 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
   }, [
     signupUsername.status,
     signupPhone.status,
-    signupPassword.status
+    signupPassword.status,
   ])
 
   /**

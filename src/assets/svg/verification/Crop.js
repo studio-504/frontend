@@ -14,7 +14,7 @@ const Crop = ({ fill = '#333' }) => (
 )
 
 Crop.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Crop

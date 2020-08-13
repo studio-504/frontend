@@ -13,7 +13,7 @@ const Create = ({ fill = '#333' }) => (
 )
 
 Create.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Create

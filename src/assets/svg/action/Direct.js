@@ -13,7 +13,7 @@ const Direct = ({ fill = '#333' }) => (
 )
 
 Direct.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Direct

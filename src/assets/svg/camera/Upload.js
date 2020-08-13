@@ -13,7 +13,7 @@ const Upload = ({ fill = '#333' }) => (
 )
 
 Upload.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Upload

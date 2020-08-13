@@ -12,7 +12,7 @@ const Close = ({ fill = '#333' }) => (
 )
 
 Close.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Close

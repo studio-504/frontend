@@ -13,7 +13,7 @@ const Profile = ({ fill = '#333' }) => (
 )
 
 Profile.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Profile

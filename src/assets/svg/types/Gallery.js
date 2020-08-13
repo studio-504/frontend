@@ -14,7 +14,7 @@ const Gallery = ({ fill = '#333' }) => (
 )
 
 Gallery.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Gallery

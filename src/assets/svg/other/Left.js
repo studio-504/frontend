@@ -11,7 +11,7 @@ const Left = ({ fill = '#333' }) => (
 )
 
 Left.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Left

@@ -11,7 +11,7 @@ const Up = ({ fill = '#333' }) => (
 )
 
 Up.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Up

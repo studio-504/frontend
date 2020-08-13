@@ -11,7 +11,7 @@ const Next = ({ fill = '#333' }) => (
 )
 
 Next.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Next

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   contentContainerCustomStyle: {
     height: 30,
-  }
+  },
 })
 
 export default withTranslation()(Picker)

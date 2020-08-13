@@ -11,7 +11,7 @@ const Back = ({ fill = '#333' }) => (
 )
 
 Back.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Back

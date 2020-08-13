@@ -14,7 +14,7 @@ const Refresh = ({ fill = '#333' }) => (
 )
 
 Refresh.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Refresh

@@ -12,7 +12,7 @@ const Diamond = ({ fill = '#333' }) => (
 )
 
 Diamond.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Diamond

@@ -49,7 +49,7 @@ PinchZoom.defaultProps = {
 }
 
 PinchZoom.propTypes = {
-  draggedImage: PropTypes.any
+  draggedImage: PropTypes.any,
 }
 
 const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     zIndex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000095'
+    backgroundColor: '#00000095',
   },
 })
 

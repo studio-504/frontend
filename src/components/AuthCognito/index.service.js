@@ -39,7 +39,7 @@ const AuthCognitoComponentService = ({ children }) => {
     ) return
 
     const nextPayload = {
-      username: signupUsername.payload.username
+      username: signupUsername.payload.username,
     }
 
     dispatch(signupActions.signupCognitoRequest(nextPayload))

@@ -16,7 +16,7 @@ const Rotate = ({ fill = '#333' }) => (
 )
 
 Rotate.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Rotate

@@ -16,7 +16,7 @@ const Cash = ({ fill = '#333' }) => (
 )
 
 Cash.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Cash

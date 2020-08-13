@@ -12,7 +12,7 @@ const Checked = ({ fill = '#333' }) => (
 )
 
 Checked.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Checked

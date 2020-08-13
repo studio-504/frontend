@@ -12,7 +12,7 @@ const Like = ({ fill = '#333' }) => (
 )
 
 Like.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Like

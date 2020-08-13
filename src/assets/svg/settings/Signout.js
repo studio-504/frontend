@@ -14,7 +14,7 @@ const Signout = ({ fill = '#333' }) => (
 )
 
 Signout.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Signout

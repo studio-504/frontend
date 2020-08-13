@@ -13,7 +13,7 @@ const Home = ({ fill = '#333' }) => (
 )
 
 Home.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Home

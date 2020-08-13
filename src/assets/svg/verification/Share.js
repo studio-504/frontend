@@ -15,7 +15,7 @@ const Share = ({ fill = '#333' }) => (
 )
 
 Share.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Share

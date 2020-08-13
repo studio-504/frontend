@@ -12,7 +12,7 @@ const Notification = ({ fill = '#333' }) => (
 )
 
 Notification.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Notification

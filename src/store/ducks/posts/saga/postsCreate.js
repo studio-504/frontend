@@ -20,14 +20,14 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
       replace('.heic', ''),
       replace('.jpg', ''),
       toLower,
-      filePath.basename
+      filePath.basename,
     )(image)
   }
 
   const getFilename = (image) => {
     return compose(
       toLower,
-      filePath.basename
+      filePath.basename,
     )(image)
   }
 
@@ -51,7 +51,7 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
 
   const handleRequest = (emitter) => (response) => {
     const jobId = response.jobId
-    emitter({ status: 'retry', progress: 0, jobId, })
+    emitter({ status: 'retry', progress: 0, jobId })
   }
 
   const handleProgress = (emitter) => (response) => {
@@ -94,7 +94,7 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   return eventChannel((emitter) => {
     const uploader = initUpload(emitter)(
       handleRequest(emitter),
-      handleProgress(emitter)
+      handleProgress(emitter),
     )
 
     const next = (response) => {
@@ -275,11 +275,11 @@ function* postsCreateSchedulerRequest() {
      * Cleanup
      */
     yield all(
-      successPosts.map((post) => call(removePost, post))
+      successPosts.map((post) => call(removePost, post)),
     )
 
     yield all(
-      idlePosts.map((post) => call(removePost, post))
+      idlePosts.map((post) => call(removePost, post)),
     )
 
     /**
@@ -287,12 +287,12 @@ function* postsCreateSchedulerRequest() {
      */
     yield all(
       loadingPosts
-      .map((post) => call(recreatePost, post))
+      .map((post) => call(recreatePost, post)),
     )
 
     yield all(
       failedPosts
-      .map((post) => call(recreatePost, post))
+      .map((post) => call(recreatePost, post)),
     )
   } catch (error) {
     Logger.withScope(scope => {

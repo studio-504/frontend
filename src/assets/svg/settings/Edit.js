@@ -12,7 +12,7 @@ const Edit = ({ fill = '#333' }) => (
 )
 
 Edit.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Edit

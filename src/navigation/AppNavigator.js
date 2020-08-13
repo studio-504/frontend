@@ -65,7 +65,7 @@ const ChatNavigator = ({ navigation }) => {
 }
 
 ChatNavigator.propTypes = {
-  navigation: PropTypes.any
+  navigation: PropTypes.any,
 }
 
 const RootNavigator = () => {

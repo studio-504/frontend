@@ -13,7 +13,7 @@ const Text = ({ fill = '#333' }) => (
 )
 
 Text.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Text

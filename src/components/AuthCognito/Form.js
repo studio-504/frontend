@@ -30,7 +30,7 @@ const formSchema = Yup.object().shape({
         .then((resp) => resp.json())
         .then((resp) => resolve(resp.status === 'AVAILABLE'))
         .catch(() => resolve(true))
-      })
+      }),
     ),
 })
 

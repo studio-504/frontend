@@ -14,7 +14,7 @@ const Lock = ({ fill = '#333' }) => (
 )
 
 Lock.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Lock

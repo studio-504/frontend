@@ -73,7 +73,7 @@ extend('$postsResourceRemoveSuccess', ({ payload }, original) => {
  */
 extend('$postsResourcePoolHash', ({ payload }, original) => {
   return update(original, {
-    $set: payload.data
+    $set: payload.data,
   })
 })
 

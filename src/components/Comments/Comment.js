@@ -60,7 +60,7 @@ const Comment = ({
               }
               
               return <Text style={styling.textDefault}>{`@${match}`}</Text>
-            })
+            }),
           ]}
         </Paragraph>
         <Caption>{dayjs(path(['commentedAt'])(comment)).from(dayjs())} | Reply</Caption>

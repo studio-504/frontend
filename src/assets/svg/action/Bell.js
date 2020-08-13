@@ -12,7 +12,7 @@ const Bell = ({ fill = '#333' }) => (
 )
 
 Bell.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Bell

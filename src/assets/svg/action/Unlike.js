@@ -12,7 +12,7 @@ const Unlike = ({ fill = '#333' }) => (
 )
 
 Unlike.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Unlike

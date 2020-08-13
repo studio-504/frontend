@@ -13,7 +13,7 @@ const Search = ({ fill = '#F9F9F9' }) => (
 )
 
 Search.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Search

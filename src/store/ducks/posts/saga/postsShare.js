@@ -23,7 +23,7 @@ function* handlePostsShareRequest(payload) {
 
     const firstLine = yield Marker.markText({
       src: url,
-      text: `REAL`,
+      text: 'REAL',
       color: '#ffffff',
       fontName: 'AppleSDGothicNeo-Bold',
       fontSize: fontSizeFirstLine,

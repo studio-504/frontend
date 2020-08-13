@@ -15,7 +15,7 @@ const Theme = ({ fill = '#333' }) => (
 )
 
 Theme.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Theme

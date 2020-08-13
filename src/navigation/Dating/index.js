@@ -23,7 +23,7 @@ const DatingNavigator = ({ theme }) => {
 }
 
 DatingNavigator.propTypes = {
-  theme: PropTypes.any
+  theme: PropTypes.any,
 }
 
 export default withTheme(DatingNavigator)

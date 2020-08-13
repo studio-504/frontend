@@ -48,7 +48,7 @@ const Description = ({
             }
             
             return <Text key="matched" style={styling.textDefault}>{`@${match}`}</Text>
-          })
+          }),
         ]}
       </Text>
     </TouchableOpacity>

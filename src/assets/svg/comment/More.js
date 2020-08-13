@@ -13,7 +13,7 @@ const More = ({ fill = '#333' }) => (
 )
 
 More.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default More

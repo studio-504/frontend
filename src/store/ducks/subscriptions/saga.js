@@ -66,7 +66,7 @@ function* cardSubscription(req) {
   const userId = path(['payload', 'userId'])(req)
 
   const subscription = AwsAPI.graphql(
-    graphqlOperation(usersQueries.onCardNotification, { userId })
+    graphqlOperation(usersQueries.onCardNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {
@@ -95,7 +95,7 @@ function* chatMessageSubscription(req) {
   const userId = path(['payload', 'userId'])(req)
 
   const subscription = AwsAPI.graphql(
-    graphqlOperation(chatQueries.onChatMessageNotification, { userId })
+    graphqlOperation(chatQueries.onChatMessageNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {
@@ -126,7 +126,7 @@ function* subscriptionNotificationStart(req) {
   const userId = path(['payload', 'userId'])(req)
 
   const subscription = AwsAPI.graphql(
-    graphqlOperation(usersQueries.onNotification, { userId })
+    graphqlOperation(usersQueries.onNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {

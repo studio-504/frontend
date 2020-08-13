@@ -215,7 +215,7 @@ function* postsFeedGetRequest(req) {
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetFailure({ message: errorWrapper(error), payload: req.payload, }))
+    yield put(actions.postsFeedGetFailure({ message: errorWrapper(error), payload: req.payload }))
   }
 }
 
@@ -227,7 +227,7 @@ function* postsFeedGetMoreRequest(req) {
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetMoreFailure({ message: errorWrapper(error), payload: req.payload, }))
+    yield put(actions.postsFeedGetMoreFailure({ message: errorWrapper(error), payload: req.payload }))
   }
 }
 
@@ -558,7 +558,7 @@ function* postsDislikeRequest(req) {
     const next = yield postsDislikeRequestData(req, data)
     yield put(actions.postsDislikeSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsDislikeFailure({ message: errorWrapper(error), payload: req.payload, }))
+    yield put(actions.postsDislikeFailure({ message: errorWrapper(error), payload: req.payload }))
   }
 }
 

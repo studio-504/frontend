@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 
 PhoneField.propTypes = {
   field: PropTypes.any,
-  form: PropTypes.any
+  form: PropTypes.any,
 }
 
 export default PhoneField

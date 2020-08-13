@@ -11,7 +11,7 @@ const Square = ({ fill = '#ffffff' }) => (
 )
 
 Square.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Square

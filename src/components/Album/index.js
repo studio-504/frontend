@@ -146,5 +146,5 @@ Album.propTypes = {
 }
 
 export default withTranslation()(
-  withTheme(Album)
+  withTheme(Album),
 )

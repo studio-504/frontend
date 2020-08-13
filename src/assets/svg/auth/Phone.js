@@ -11,7 +11,7 @@ const Phone = ({ fill = '#fff' }) => (
 )
 
 Phone.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Phone

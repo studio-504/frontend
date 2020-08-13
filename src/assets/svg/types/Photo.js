@@ -13,7 +13,7 @@ const Photo = ({ fill = '#333' }) => (
 )
 
 Photo.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Photo

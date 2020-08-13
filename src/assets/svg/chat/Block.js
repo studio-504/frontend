@@ -12,7 +12,7 @@ const Block = ({ fill = '#333' }) => (
 )
 
 Block.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Block

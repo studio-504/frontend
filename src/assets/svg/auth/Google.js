@@ -11,7 +11,7 @@ const Google = ({ fill = '#fff' }) => (
 )
 
 Google.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Google

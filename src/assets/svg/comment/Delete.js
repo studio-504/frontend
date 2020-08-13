@@ -13,7 +13,7 @@ const Delete = ({ fill = '#333' }) => (
 )
 
 Delete.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Delete

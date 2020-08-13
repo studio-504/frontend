@@ -14,7 +14,7 @@ const Pending = ({ fill = '#333' }) => (
 )
 
 Pending.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Pending

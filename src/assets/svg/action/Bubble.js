@@ -11,7 +11,7 @@ const Bubble = ({ fill = '#333' }) => (
 )
 
 Bubble.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Bubble

@@ -11,7 +11,7 @@ const FlashOn = ({ fill = '#333' }) => (
 )
 
 FlashOn.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default FlashOn

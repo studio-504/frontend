@@ -13,7 +13,7 @@ const Report = ({ fill = '#333' }) => (
 )
 
 Report.propTypes = {
-  fill: PropTypes.string
+  fill: PropTypes.string,
 }
 
 export default Report

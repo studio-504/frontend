@@ -12,7 +12,7 @@ const generateAssetFormat = (extension) => {
   if (extension && extension.includes('HEIC')) {
     return 'HEIC'
   }
-  return `JPEG`
+  return 'JPEG'
 }
 
 const generateAssetDestination = (assetSource, assetFilename) => {
