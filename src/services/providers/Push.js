@@ -57,10 +57,7 @@ export const usePushNotification = () => {
    * Check if push notification permissions are enabled, request them if not
    * once permissions are enabled, handleRegistrationEvent will be called
    */
-  const handlePermissions = (permissions) => {
-    if (permissions && permissions.alert && permissions.badge) {
-      return
-    }
+  const handlePermissions = () => {
     PushNotificationIOS.requestPermissions()
   }
 
