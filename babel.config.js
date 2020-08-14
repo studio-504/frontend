@@ -13,5 +13,8 @@ module.exports = {
     ['optional-require', {
       blacklist: ['react-native-vector-icons'],
     }],
+    ['babel-plugin-transform-builtin-extend', {
+      globals: ['Error'],
+    }],
   ],
 }

@@ -48,7 +48,7 @@ function intervalEmitter({ frequency }) {
  * 
  */
 function* appSubscription(req) {
-  const userId = path(['payload', 'userId'])(req)
+  const userId = path(['payload'])(req)
 
   yield put(usersActions.usersGetCardsRequest({}))
   yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
@@ -63,7 +63,7 @@ function* appSubscription(req) {
  */
 function* cardSubscription(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  const userId = path(['payload', 'userId'])(req)
+  const userId = path(['payload'])(req)
 
   const subscription = AwsAPI.graphql(
     graphqlOperation(usersQueries.onCardNotification, { userId }),
@@ -92,7 +92,7 @@ function* cardSubscription(req) {
  */
 function* chatMessageSubscription(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  const userId = path(['payload', 'userId'])(req)
+  const userId = path(['payload'])(req)
 
   const subscription = AwsAPI.graphql(
     graphqlOperation(chatQueries.onChatMessageNotification, { userId }),
@@ -123,7 +123,7 @@ function* chatMessageSubscription(req) {
  */
 function* subscriptionNotificationStart(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  const userId = path(['payload', 'userId'])(req)
+  const userId = path(['payload'])(req)
 
   const subscription = AwsAPI.graphql(
     graphqlOperation(usersQueries.onNotification, { userId }),
