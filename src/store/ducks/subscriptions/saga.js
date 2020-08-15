@@ -1,5 +1,5 @@
 import { graphqlOperation } from '@aws-amplify/api'
-import { call, put, take, takeEvery, getContext } from 'redux-saga/effects'
+import { call, put, take, takeEvery, getContext, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import path from 'ramda/src/path'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -8,26 +8,73 @@ import * as postsQueries from 'store/ducks/posts/queries'
 import * as usersQueries from 'store/ducks/users/queries'
 import * as chatQueries from 'store/ducks/chat/queries'
 import * as chatActions from 'store/ducks/chat/actions'
+import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as constants from 'store/ducks/subscriptions/constants'
 import * as queryService from 'services/Query'
 import * as Logger from 'services/Logger'
 
 /**
+ * Subscription state handler, used for preventing multiple subscriptions on the same topic
+ */
+function* subscriptionStateHandler({ identifier }) {
+  const isRunning = yield select(state => state.subscriptions.subscriptionsMain.data.find(item => item === identifier))
+
+  function* successHandler() {
+    yield put(subscriptionsActions.subscriptionsMainSuccess({ data: identifier }))
+  }
+
+  function* failureHandler() {
+    yield put(subscriptionsActions.subscriptionsMainFailure({ data: identifier }))
+  }
+
+  function* idleHandler() {
+    yield put(subscriptionsActions.subscriptionsMainIdle({ data: identifier }))
+  }
+
+  return {
+    isRunning,
+    successHandler,
+    failureHandler,
+    idleHandler,
+  }
+}
+
+/**
  * Apollo subscription channel messagee emitter, used for graphql subscriptions
  */
-function subscriptionEmitter({ subscription }) {
+function* subscriptionEmitter({ subscription, subscriptionState }) {
+  yield subscriptionState.successHandler()
+
+  /**
+   * graphql error handler, possible errors are:
+   * - connection closed
+   * - connection timeout
+   */
+  function* handleFailure({ error }) {
+    yield subscriptionState.failureHandler()
+
+    Logger.withScope(scope => {
+      scope.setExtra('payload', JSON.stringify(error))
+      Logger.captureMessage('SUBSCRIPTIONS_EMITTER_ERROR')
+    })
+  }
+
+  /**
+   * triggered on redux-saga channel close event
+   */
+  function* handleIdle({ api }) {
+    yield subscriptionState.idleHandler()
+
+    api.unsubscribe()
+  }
+
   return eventChannel(emitter => {
     const api = subscription.subscribe({
       next: emitter,
-      error: ({ error }) => {
-        Logger.withScope(scope => {
-          scope.setExtra('payload', JSON.stringify(error))
-          Logger.captureMessage('SUBSCRIPTION_EMITTER_ERROR')
-        })
-      },
+      error: handleFailure,
     })
 
-    return () => api.unsubscribe()
+    return handleIdle.bind(null, api)
   })
 }
 
@@ -45,7 +92,8 @@ function intervalEmitter({ frequency }) {
 }
 
 /**
- * 
+ * main application state pre-loader
+ * to be triggered when app just opened or switched background/foreground state
  */
 function* appSubscription(req) {
   const userId = path(['payload'])(req)
@@ -65,12 +113,22 @@ function* cardSubscription(req) {
   const AwsAPI = yield getContext('AwsAPI')
   const userId = path(['payload'])(req)
 
+  /**
+   * check if subscription is already running
+   */
+  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onCardNotification' })
+
+  if (subscriptionState.isRunning) {
+    return
+  }
+
   const subscription = AwsAPI.graphql(
     graphqlOperation(usersQueries.onCardNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {
     subscription,
+    subscriptionState,
   })
 
   yield takeEvery(channel, function *() {
@@ -83,7 +141,7 @@ function* cardSubscription(req) {
   /**
    * Close channel subscription on application toggle
    */
-  yield take(constants.SUBSCRIPTION_POLL_STOP)
+  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
   channel.close()
 }
 
@@ -94,12 +152,22 @@ function* chatMessageSubscription(req) {
   const AwsAPI = yield getContext('AwsAPI')
   const userId = path(['payload'])(req)
 
+  /**
+   * check if subscription is already running
+   */
+  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onChatMessageNotification' })
+
+  if (subscriptionState.isRunning) {
+    return
+  }
+
   const subscription = AwsAPI.graphql(
     graphqlOperation(chatQueries.onChatMessageNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {
     subscription,
+    subscriptionState,
   })
 
   yield takeEvery(channel, function *(eventData) {
@@ -114,7 +182,7 @@ function* chatMessageSubscription(req) {
   /**
    * Close channel subscription on application toggle
    */
-  yield take(constants.SUBSCRIPTION_POLL_STOP)
+  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
   channel.close()
 }
 
@@ -125,12 +193,22 @@ function* subscriptionNotificationStart(req) {
   const AwsAPI = yield getContext('AwsAPI')
   const userId = path(['payload'])(req)
 
+  /**
+   * check if subscription is already running
+   */
+  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onNotification' })
+
+  if (subscriptionState.isRunning) {
+    return
+  }
+
   const subscription = AwsAPI.graphql(
     graphqlOperation(usersQueries.onNotification, { userId }),
   )
 
   const channel = yield call(subscriptionEmitter, {
     subscription,
+    subscriptionState,
   })
 
   yield takeEvery(channel, function *(eventData) {
@@ -184,7 +262,7 @@ function* subscriptionNotificationStart(req) {
   /**
    * Close channel subscription on application toggle
    */
-  yield take(constants.SUBSCRIPTION_POLL_STOP)
+  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
   channel.close()
 }
 
@@ -203,14 +281,14 @@ function* subscriptionPollStart() {
   /**
    * Close channel subscription on application toggle
    */
-  yield take(constants.SUBSCRIPTION_POLL_STOP)
+  yield take(constants.SUBSCRIPTIONS_POLL_IDLE)
   channel.close()
 }
 
 export default () => [
-  takeEvery(constants.SUBSCRIPTION_MAIN_START, subscriptionNotificationStart),
-  takeEvery(constants.SUBSCRIPTION_MAIN_START, chatMessageSubscription),
-  takeEvery(constants.SUBSCRIPTION_MAIN_START, cardSubscription),
-  takeEvery(constants.SUBSCRIPTION_MAIN_START, appSubscription),
-  takeEvery(constants.SUBSCRIPTION_POLL_START, subscriptionPollStart),
+  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, subscriptionNotificationStart),
+  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, chatMessageSubscription),
+  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, cardSubscription),
+  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, appSubscription),
+  takeEvery(constants.SUBSCRIPTIONS_POLL_REQUEST, subscriptionPollStart),
 ]
