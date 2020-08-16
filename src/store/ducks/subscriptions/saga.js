@@ -1,5 +1,5 @@
 import { graphqlOperation } from '@aws-amplify/api'
-import { call, put, take, takeEvery, getContext, select } from 'redux-saga/effects'
+import { call, put, take, takeEvery, takeLatest, getContext, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import path from 'ramda/src/path'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -19,16 +19,27 @@ import * as Logger from 'services/Logger'
 function* subscriptionStateHandler({ identifier }) {
   const isRunning = yield select(state => state.subscriptions.subscriptionsMain.data.find(item => item === identifier))
 
+  /**
+   * graphql error handler, possible errors are:
+   * - connection closed
+   * - connection timeout
+   * - handshake error
+   */
+  function* failureHandler(error) {
+    yield put(subscriptionsActions.subscriptionsMainFailure({ data: identifier }))
+    Logger.withScope(scope => {
+      scope.setExtra('payload', JSON.stringify(error))
+      Logger.captureMessage('SUBSCRIPTIONS_EMITTER_ERROR')
+    })
+  }
+
+  function* idleHandler(api) {
+    yield put(subscriptionsActions.subscriptionsMainIdle({ data: identifier }))
+    api.unsubscribe()
+  }
+
   function* successHandler() {
     yield put(subscriptionsActions.subscriptionsMainSuccess({ data: identifier }))
-  }
-
-  function* failureHandler() {
-    yield put(subscriptionsActions.subscriptionsMainFailure({ data: identifier }))
-  }
-
-  function* idleHandler() {
-    yield put(subscriptionsActions.subscriptionsMainIdle({ data: identifier }))
   }
 
   return {
@@ -42,39 +53,24 @@ function* subscriptionStateHandler({ identifier }) {
 /**
  * Apollo subscription channel messagee emitter, used for graphql subscriptions
  */
-function* subscriptionEmitter({ subscription, subscriptionState }) {
-  yield subscriptionState.successHandler()
-
-  /**
-   * graphql error handler, possible errors are:
-   * - connection closed
-   * - connection timeout
-   */
-  function* handleFailure({ error }) {
-    yield subscriptionState.failureHandler()
-
-    Logger.withScope(scope => {
-      scope.setExtra('payload', JSON.stringify(error))
-      Logger.captureMessage('SUBSCRIPTIONS_EMITTER_ERROR')
-    })
-  }
-
+function subscriptionEmitter({ subscription }) {
   /**
    * triggered on redux-saga channel close event
    */
-  function* handleIdle({ api }) {
-    yield subscriptionState.idleHandler()
-
-    api.unsubscribe()
-  }
 
   return eventChannel(emitter => {
     const api = subscription.subscribe({
-      next: emitter,
-      error: handleFailure,
+      next: (args) => emitter({ eventType: 'next', eventData: args }),
+      error: (args) => emitter({ eventType: 'error', eventData: args }),
     })
 
-    return handleIdle.bind(null, api)
+    if (api._state === 'ready') {
+      emitter({ eventType: 'start', eventData: api })
+    } else if (api._state === 'closed') {
+      emitter({ eventType: 'idle', eventData: api })
+    }
+
+    return () => emitter({ eventType: 'close', eventData: api })
   })
 }
 
@@ -116,7 +112,7 @@ function* cardSubscription(req) {
   /**
    * check if subscription is already running
    */
-  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onCardNotification' })
+  const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onCardNotification' })
 
   if (subscriptionState.isRunning) {
     return
@@ -131,7 +127,19 @@ function* cardSubscription(req) {
     subscriptionState,
   })
 
-  yield takeEvery(channel, function *() {
+  yield takeEvery(channel, function *({ eventType, eventData }) {
+    if (eventType === 'start') {
+      return yield call(subscriptionState.successHandler, eventData)
+    }
+
+    else if (eventType === 'error') {
+      return yield call(subscriptionState.failureHandler, eventData)
+    }
+
+    else if (eventType === 'close') {
+      return yield call(subscriptionState.idleHandler, eventData)
+    }
+
     yield put(usersActions.usersGetCardsRequest({}))
     yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
     yield put(usersActions.usersGetProfileSelfRequest({ userId }))
@@ -155,7 +163,7 @@ function* chatMessageSubscription(req) {
   /**
    * check if subscription is already running
    */
-  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onChatMessageNotification' })
+  const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onChatMessageNotification' })
 
   if (subscriptionState.isRunning) {
     return
@@ -170,7 +178,19 @@ function* chatMessageSubscription(req) {
     subscriptionState,
   })
 
-  yield takeEvery(channel, function *(eventData) {
+  yield takeEvery(channel, function *({ eventType, eventData }) {
+    if (eventType === 'start') {
+      return yield call(subscriptionState.successHandler, eventData)
+    }
+
+    else if (eventType === 'error') {
+      return yield call(subscriptionState.failureHandler, eventData)
+    }
+
+    else if (eventType === 'close') {
+      return yield call(subscriptionState.idleHandler, eventData)
+    }
+
     const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
     const chatId = path(['message', 'chat', 'chatId'])(data)
 
@@ -196,7 +216,7 @@ function* subscriptionNotificationStart(req) {
   /**
    * check if subscription is already running
    */
-  const subscriptionState = yield subscriptionStateHandler({ identifier: 'onNotification' })
+  const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onNotification' })
 
   if (subscriptionState.isRunning) {
     return
@@ -211,7 +231,19 @@ function* subscriptionNotificationStart(req) {
     subscriptionState,
   })
 
-  yield takeEvery(channel, function *(eventData) {
+  yield takeEvery(channel, function *({ eventType, eventData }) {
+    if (eventType === 'start') {
+      return yield call(subscriptionState.successHandler, eventData)
+    }
+
+    else if (eventType === 'error') {
+      return yield call(subscriptionState.failureHandler, eventData)
+    }
+
+    else if (eventType === 'close') {
+      return yield call(subscriptionState.idleHandler, eventData)
+    }
+
     const postId = path(['value', 'data', 'onNotification', 'postId'])(eventData)
     const userId = path(['value', 'data', 'onNotification', 'userId'])(eventData)
     const type = path(['value', 'data', 'onNotification', 'type'])(eventData)
@@ -227,6 +259,7 @@ function* subscriptionNotificationStart(req) {
      * Fires when a post is added to User.feed
      */
     if (type === 'USER_FEED_POST_ADDED') {
+      console.log(type)
       yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
     }
 
@@ -286,9 +319,9 @@ function* subscriptionPollStart() {
 }
 
 export default () => [
-  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, subscriptionNotificationStart),
-  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, chatMessageSubscription),
-  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, cardSubscription),
-  takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, appSubscription),
-  takeEvery(constants.SUBSCRIPTIONS_POLL_REQUEST, subscriptionPollStart),
+  takeLatest(constants.SUBSCRIPTIONS_MAIN_REQUEST, subscriptionNotificationStart),
+  takeLatest(constants.SUBSCRIPTIONS_MAIN_REQUEST, chatMessageSubscription),
+  takeLatest(constants.SUBSCRIPTIONS_MAIN_REQUEST, cardSubscription),
+  takeLatest(constants.SUBSCRIPTIONS_MAIN_REQUEST, appSubscription),
+  takeLatest(constants.SUBSCRIPTIONS_POLL_REQUEST, subscriptionPollStart),
 ]
