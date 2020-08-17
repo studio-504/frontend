@@ -55,7 +55,7 @@ function* subscriptionStateHandler({ identifier }) {
    * event emitter unsubscribe handler
    */
   function* disconnectHandler() {
-    yield put(subscriptionsActions.subscriptionsMainConnect({ data: identifier }))
+    yield put(subscriptionsActions.subscriptionsMainDisconnect({ data: identifier }))
   }
 
   return {
@@ -85,15 +85,13 @@ function subscriptionEmitter({ subscription }) {
       error: (args) => emitter({ eventType: 'error', eventData: args }),
     })
 
-    if (api._state === 'ready') {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (api._state === 'ready') {
         emitter({ eventType: 'connect', eventData: api })
-      }, 0)
-    } else if (api._state === 'closed') {
-      setTimeout(() => {
+      } else if (api._state === 'closed') {
         emitter({ eventType: 'disconnect', eventData: api })
-      }, 0)
-    }
+      }
+    }, 0)
 
     return () => {
       api.unsubscribe()
