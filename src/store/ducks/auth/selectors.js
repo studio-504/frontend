@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import pathOr from 'ramda/src/pathOr'
 import path from 'ramda/src/path'
+import is from 'ramda/src/is'
 import * as normalizer from 'normalizer/schemas'
 
 const entities = () => path(['entities'])
@@ -12,14 +13,14 @@ export const authUserSelector = createSelector(
   [authUser(), usersEditProfile(), usersGetProfileSelf(), entities()],
   (authUser, usersEditProfile, usersGetProfileSelf, entities) => {
     return normalizer.denormalizeUserGet(authUser, entities)
-  }
+  },
 )
 
 export const authUserIdSelector = createSelector(
   [authUser()],
   (authUser) => {
-    return authUser
-  }
+    return is(String, authUser) && authUser
+  },
 )
 
 export const languageCodeSelector = 
@@ -37,5 +38,5 @@ export const themeSelector = createSelector(
   (authUser, themeFetch) => {
     const activeTheme = (authUser.themeCode || 'black.green')
     return (themeFetch.find(theme => theme.key === activeTheme) || {}).theme
-  }
+  },
 )

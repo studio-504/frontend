@@ -18,10 +18,10 @@ import * as queries from 'store/ducks/auth/queries'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 import * as entitiesActions from 'store/ducks/entities/actions'
-import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as normalizer from 'normalizer/schemas'
 import Config from 'react-native-config'
 import * as queryService from 'services/Query'
+import * as Logger from 'services/Logger'
 
 /**
  * AwsAuth.currentAuthenticatedUser method is used to check if a user is logged in.
@@ -38,9 +38,28 @@ function* handleAuthCheckRequest() {
 }
 
 function* handleAuthCheckValidation(self) {
+  /**
+   * Define user for sentry logger, authorized users will be re-defined at services/providers/App
+   * But some users might not reach that step due to missing profile photo
+   */
+  Logger.setUser({
+    id: path(['data', 'self', 'id'])(self),
+    username: path(['data', 'self', 'username'])(self),
+    email: path(['data', 'self', 'email'])(self),
+  })
+
+  /**
+   * Checks if user dismissed photo validation against asyncstorage skip validation flag
+   * Failed photo verification info should never appear anymore once dismissed manually
+   */
   if (yield checkPhotoValidation()) {
     return false
   }
+
+  /**
+   * Check if user has profile photo set
+   * only photos that passed backend verification could be set as profile photos
+   */
   const photoUrl = path(['data', 'self', 'photo', 'url'])(self)
   return (!photoUrl || photoUrl.includes('placeholder-photos'))
 }
@@ -79,8 +98,6 @@ function* authCheckRequest(req) {
     const nextRoute = authValidation ? 'AuthPhoto' : 'Root'
     const next = yield authCheckRequestData(req, data)
     yield put(actions.authCheckSuccess({ data: next.data, payload: next.payload, meta: credentials, nextRoute }))
-    yield put(subscriptionsActions.subscriptionMainStart(next.data))
-    yield put(subscriptionsActions.subscriptionPollStart(next.data))
   } catch (error) {
     if (pathOr('', ['message'])(error).includes('Network request failed')) {
       yield put(actions.authCheckFailure({
@@ -271,7 +288,9 @@ function* handleAuthSignoutRequest() {
   try {
     yield resetPhotoValidation()
     yield federatedGoogleSignout()
-  } catch (error) {}
+  } catch (error) {
+    // ignore
+  }
 
   yield AwsAuth.signOut({ global: true })
   yield AwsCredentials.clear()
