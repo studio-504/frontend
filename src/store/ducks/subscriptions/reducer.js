@@ -4,7 +4,10 @@ import * as constants from 'store/ducks/subscriptions/constants'
 
 const initialState = {
   subscriptionsMain: {
-    data: [],
+    data: {
+      pending: [],
+      connect: [],
+    },
     status: 'idle',
   },
   subscriptionsPoll: {
@@ -22,23 +25,47 @@ const subscriptionsMainRequest = (state) => update(state, {
   },
 })
 
-const subscriptionsMainSuccess = (state, action) => update(state, {
+const subscriptionsMainSuccess = (state) => update(state, {
   subscriptionsMain: {
-    data: { $set: state.subscriptionsMain.data.filter(item => item !== action.payload.data).concat(action.payload.data) },
     status: { $set: 'success' },
   },
 })
 
 const subscriptionsMainFailure = (state, action) => update(state, {
   subscriptionsMain: {
-    data: { $set: state.subscriptionsMain.data.filter(item => item !== action.payload.data) },
+    data: {
+      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
+      connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data) },
+    },
     status: { $set: 'failure' },
   },
 })
 
 const subscriptionsMainIdle = (state, action) => update(state, {
   subscriptionsMain: {
-    data: { $set: state.subscriptionsMain.data.filter(item => item !== action.payload.data) },
+    data: {
+      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
+      connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data) },
+    },
+    status: { $set: 'idle' },
+  },
+})
+
+const subscriptionsMainPending = (state, action) => update(state, {
+  subscriptionsMain: {
+    data: {
+      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data).concat(action.payload.data) },
+    },
+    status: { $set: 'failure' },
+  },
+})
+
+const subscriptionsMainConnect = (state, action) => update(state, {
+  subscriptionsMain: {
+    data: {
+      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
+      connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data).concat(action.payload.data) },
+    },
     status: { $set: 'idle' },
   },
 })
@@ -77,6 +104,8 @@ export default handleActions({
   [constants.SUBSCRIPTIONS_MAIN_SUCCESS]: subscriptionsMainSuccess,
   [constants.SUBSCRIPTIONS_MAIN_FAILURE]: subscriptionsMainFailure,
   [constants.SUBSCRIPTIONS_MAIN_IDLE]: subscriptionsMainIdle,
+  [constants.SUBSCRIPTIONS_MAIN_PENDING]: subscriptionsMainPending,
+  [constants.SUBSCRIPTIONS_MAIN_CONNECT]: subscriptionsMainConnect,
 
   [constants.SUBSCRIPTIONS_POLL_REQUEST]: subscriptionsPollRequest,
   [constants.SUBSCRIPTIONS_POLL_SUCCESS]: subscriptionsPollSuccess,

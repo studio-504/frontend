@@ -2,6 +2,7 @@ import { graphqlOperation } from '@aws-amplify/api'
 import { call, put, take, takeEvery, takeLatest, getContext, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as postsQueries from 'store/ducks/posts/queries'
@@ -17,7 +18,10 @@ import * as Logger from 'services/Logger'
  * Subscription state handler, used for preventing multiple subscriptions on the same topic
  */
 function* subscriptionStateHandler({ identifier }) {
-  const isRunning = yield select(state => state.subscriptions.subscriptionsMain.data.find(item => item === identifier))
+  const isRunning = yield select(state => (
+    pathOr([], ['subscriptions', 'subscriptionsMain', 'data', 'pending'], state).find(item => item === identifier) ||
+    pathOr([], ['subscriptions', 'subscriptionsMain', 'data', 'connect'], state).find(item => item === identifier)
+  ))
 
   /**
    * graphql error handler, possible errors are:
@@ -25,7 +29,7 @@ function* subscriptionStateHandler({ identifier }) {
    * - connection timeout
    * - handshake error
    */
-  function* failureHandler(error) {
+  function* errorHandler(error) {
     yield put(subscriptionsActions.subscriptionsMainFailure({ data: identifier }))
     Logger.withScope(scope => {
       scope.setExtra('payload', JSON.stringify(error))
@@ -33,20 +37,33 @@ function* subscriptionStateHandler({ identifier }) {
     })
   }
 
-  function* idleHandler(api) {
+  /**
+   * event emitter unsubscribe handler
+   */
+  function* closeHandler() {
     yield put(subscriptionsActions.subscriptionsMainIdle({ data: identifier }))
-    api.unsubscribe()
   }
 
-  function* successHandler() {
-    yield put(subscriptionsActions.subscriptionsMainSuccess({ data: identifier }))
+  /**
+   * graphql connection started
+   */
+  function* pendingHandler() {
+    yield put(subscriptionsActions.subscriptionsMainPending({ data: identifier }))
+  }
+
+  /**
+   * graphql connection connected
+   */
+  function* connectHandler() {
+    yield put(subscriptionsActions.subscriptionsMainConnect({ data: identifier }))
   }
 
   return {
     isRunning,
-    successHandler,
-    failureHandler,
-    idleHandler,
+    errorHandler,
+    closeHandler,
+    pendingHandler,
+    connectHandler,
   }
 }
 
@@ -59,18 +76,29 @@ function subscriptionEmitter({ subscription }) {
    */
 
   return eventChannel(emitter => {
+    setTimeout(() => {
+      emitter({ eventType: 'pending', eventData: {} })
+    }, 0)
+
     const api = subscription.subscribe({
       next: (args) => emitter({ eventType: 'next', eventData: args }),
       error: (args) => emitter({ eventType: 'error', eventData: args }),
     })
 
     if (api._state === 'ready') {
-      emitter({ eventType: 'start', eventData: api })
+      setTimeout(() => {
+        emitter({ eventType: 'connect', eventData: api })
+      }, 0)
     } else if (api._state === 'closed') {
-      emitter({ eventType: 'idle', eventData: api })
+      setTimeout(() => {
+        emitter({ eventType: 'close', eventData: api })
+      }, 0)
     }
 
-    return () => emitter({ eventType: 'close', eventData: api })
+    return () => {
+      api.unsubscribe()
+      emitter({ eventType: 'close', eventData: api })
+    }
   })
 }
 
@@ -128,16 +156,20 @@ function* cardSubscription(req) {
   })
 
   yield takeEvery(channel, function *({ eventType, eventData }) {
-    if (eventType === 'start') {
-      return yield call(subscriptionState.successHandler, eventData)
+    if (eventType === 'connect') {
+      return yield call(subscriptionState.connectHandler, eventData)
+    }
+
+    else if (eventType === 'pending') {
+      return yield call(subscriptionState.pendingHandler, eventData)
     }
 
     else if (eventType === 'error') {
-      return yield call(subscriptionState.failureHandler, eventData)
+      return yield call(subscriptionState.errorHandler, eventData)
     }
 
     else if (eventType === 'close') {
-      return yield call(subscriptionState.idleHandler, eventData)
+      return yield call(subscriptionState.closeHandler, eventData)
     }
 
     yield put(usersActions.usersGetCardsRequest({}))
@@ -179,16 +211,20 @@ function* chatMessageSubscription(req) {
   })
 
   yield takeEvery(channel, function *({ eventType, eventData }) {
-    if (eventType === 'start') {
-      return yield call(subscriptionState.successHandler, eventData)
+    if (eventType === 'connect') {
+      return yield call(subscriptionState.connectHandler, eventData)
+    }
+
+    if (eventType === 'pending') {
+      return yield call(subscriptionState.pendingHandler, eventData)
     }
 
     else if (eventType === 'error') {
-      return yield call(subscriptionState.failureHandler, eventData)
+      return yield call(subscriptionState.errorHandler, eventData)
     }
 
     else if (eventType === 'close') {
-      return yield call(subscriptionState.idleHandler, eventData)
+      return yield call(subscriptionState.closeHandler, eventData)
     }
 
     const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
@@ -232,16 +268,20 @@ function* subscriptionNotificationStart(req) {
   })
 
   yield takeEvery(channel, function *({ eventType, eventData }) {
-    if (eventType === 'start') {
-      return yield call(subscriptionState.successHandler, eventData)
+    if (eventType === 'connect') {
+      return yield call(subscriptionState.connectHandler, eventData)
+    }
+
+    if (eventType === 'pending') {
+      return yield call(subscriptionState.pendingHandler, eventData)
     }
 
     else if (eventType === 'error') {
-      return yield call(subscriptionState.failureHandler, eventData)
+      return yield call(subscriptionState.errorHandler, eventData)
     }
 
     else if (eventType === 'close') {
-      return yield call(subscriptionState.idleHandler, eventData)
+      return yield call(subscriptionState.closeHandler, eventData)
     }
 
     const postId = path(['value', 'data', 'onNotification', 'postId'])(eventData)
@@ -259,7 +299,6 @@ function* subscriptionNotificationStart(req) {
      * Fires when a post is added to User.feed
      */
     if (type === 'USER_FEED_POST_ADDED') {
-      console.log(type)
       yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
     }
 

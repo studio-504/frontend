@@ -54,6 +54,16 @@ export const AuthProvider = ({
     if (userId) {
       dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
       dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+
+      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
+      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+      
     }
   }, [userId])
 
