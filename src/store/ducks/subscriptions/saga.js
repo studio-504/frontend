@@ -38,13 +38,6 @@ function* subscriptionStateHandler({ identifier }) {
   }
 
   /**
-   * event emitter unsubscribe handler
-   */
-  function* closeHandler() {
-    yield put(subscriptionsActions.subscriptionsMainIdle({ data: identifier }))
-  }
-
-  /**
    * graphql connection started
    */
   function* pendingHandler() {
@@ -58,12 +51,19 @@ function* subscriptionStateHandler({ identifier }) {
     yield put(subscriptionsActions.subscriptionsMainConnect({ data: identifier }))
   }
 
+  /**
+   * event emitter unsubscribe handler
+   */
+  function* disconnectHandler() {
+    yield put(subscriptionsActions.subscriptionsMainConnect({ data: identifier }))
+  }
+
   return {
     isRunning,
     errorHandler,
-    closeHandler,
     pendingHandler,
     connectHandler,
+    disconnectHandler,
   }
 }
 
@@ -91,13 +91,13 @@ function subscriptionEmitter({ subscription }) {
       }, 0)
     } else if (api._state === 'closed') {
       setTimeout(() => {
-        emitter({ eventType: 'close', eventData: api })
+        emitter({ eventType: 'disconnect', eventData: api })
       }, 0)
     }
 
     return () => {
       api.unsubscribe()
-      emitter({ eventType: 'close', eventData: api })
+      emitter({ eventType: 'disconnect', eventData: api })
     }
   })
 }
@@ -168,8 +168,8 @@ function* cardSubscription(req) {
       return yield call(subscriptionState.errorHandler, eventData)
     }
 
-    else if (eventType === 'close') {
-      return yield call(subscriptionState.closeHandler, eventData)
+    else if (eventType === 'disconnect') {
+      return yield call(subscriptionState.disconnectHandler, eventData)
     }
 
     yield put(usersActions.usersGetCardsRequest({}))
@@ -223,8 +223,8 @@ function* chatMessageSubscription(req) {
       return yield call(subscriptionState.errorHandler, eventData)
     }
 
-    else if (eventType === 'close') {
-      return yield call(subscriptionState.closeHandler, eventData)
+    else if (eventType === 'disconnect') {
+      return yield call(subscriptionState.disconnectHandler, eventData)
     }
 
     const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
@@ -280,8 +280,8 @@ function* subscriptionNotificationStart(req) {
       return yield call(subscriptionState.errorHandler, eventData)
     }
 
-    else if (eventType === 'close') {
-      return yield call(subscriptionState.closeHandler, eventData)
+    else if (eventType === 'disconnect') {
+      return yield call(subscriptionState.disconnectHandler, eventData)
     }
 
     const postId = path(['value', 'data', 'onNotification', 'postId'])(eventData)

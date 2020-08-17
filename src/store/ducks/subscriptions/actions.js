@@ -7,6 +7,7 @@ export const subscriptionsMainFailure = createAction(constants.SUBSCRIPTIONS_MAI
 export const subscriptionsMainIdle = createAction(constants.SUBSCRIPTIONS_MAIN_IDLE)
 export const subscriptionsMainPending = createAction(constants.SUBSCRIPTIONS_MAIN_PENDING)
 export const subscriptionsMainConnect = createAction(constants.SUBSCRIPTIONS_MAIN_CONNECT)
+export const subscriptionsMainDisconnect = createAction(constants.SUBSCRIPTIONS_MAIN_DISCONNECT)
 
 export const subscriptionsPollRequest = createAction(constants.SUBSCRIPTIONS_POLL_REQUEST)
 export const subscriptionsPollSuccess = createAction(constants.SUBSCRIPTIONS_POLL_SUCCESS)
@@ -14,3 +15,4 @@ export const subscriptionsPollFailure = createAction(constants.SUBSCRIPTIONS_POL
 export const subscriptionsPollIdle = createAction(constants.SUBSCRIPTIONS_POLL_IDLE)
 export const subscriptionsPollPending = createAction(constants.SUBSCRIPTIONS_POLL_PENDING)
 export const subscriptionsPollConnect = createAction(constants.SUBSCRIPTIONS_POLL_CONNECT)
+export const subscriptionsPollDisconnect = createAction(constants.SUBSCRIPTIONS_POLL_DISCONNECT)

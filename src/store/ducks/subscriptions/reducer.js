@@ -41,12 +41,8 @@ const subscriptionsMainFailure = (state, action) => update(state, {
   },
 })
 
-const subscriptionsMainIdle = (state, action) => update(state, {
+const subscriptionsMainIdle = (state) => update(state, {
   subscriptionsMain: {
-    data: {
-      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
-      connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data) },
-    },
     status: { $set: 'idle' },
   },
 })
@@ -56,7 +52,6 @@ const subscriptionsMainPending = (state, action) => update(state, {
     data: {
       pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data).concat(action.payload.data) },
     },
-    status: { $set: 'failure' },
   },
 })
 
@@ -66,7 +61,15 @@ const subscriptionsMainConnect = (state, action) => update(state, {
       pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
       connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data).concat(action.payload.data) },
     },
-    status: { $set: 'idle' },
+  },
+})
+
+const subscriptionsMainDisconnect = (state, action) => update(state, {
+  subscriptionsMain: {
+    data: {
+      pending: { $set: state.subscriptionsMain.data.pending.filter(item => item !== action.payload.data) },
+      connect: { $set: state.subscriptionsMain.data.connect.filter(item => item !== action.payload.data) },
+    },
   },
 })
 
@@ -106,6 +109,7 @@ export default handleActions({
   [constants.SUBSCRIPTIONS_MAIN_IDLE]: subscriptionsMainIdle,
   [constants.SUBSCRIPTIONS_MAIN_PENDING]: subscriptionsMainPending,
   [constants.SUBSCRIPTIONS_MAIN_CONNECT]: subscriptionsMainConnect,
+  [constants.SUBSCRIPTIONS_MAIN_DISCONNECT]: subscriptionsMainDisconnect,
 
   [constants.SUBSCRIPTIONS_POLL_REQUEST]: subscriptionsPollRequest,
   [constants.SUBSCRIPTIONS_POLL_SUCCESS]: subscriptionsPollSuccess,

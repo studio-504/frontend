@@ -54,16 +54,6 @@ export const AuthProvider = ({
     if (userId) {
       dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
       dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
-
-      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
-      dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
-      
     }
   }, [userId])
 
@@ -83,8 +73,8 @@ export const AuthProvider = ({
     },
     onBackground: () => {
       if (userId) {
-        // dispatch(subscriptionsActions.subscriptionsMainRequest(userId))
-        // dispatch(subscriptionsActions.subscriptionsPollRequest(userId))
+        dispatch(subscriptionsActions.subscriptionsMainIdle(userId))
+        dispatch(subscriptionsActions.subscriptionsPollIdle(userId))
       }
     },
   })
