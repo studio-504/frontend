@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { InteractionManager } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useScrollToTop } from '@react-navigation/native'
@@ -37,9 +36,7 @@ const FeedService = ({ children }) => {
       return
     }
 
-    InteractionManager.runAfterInteractions(() => {
-      dispatch(postsActions.postsReportPostViewsRequest({ postIds }))
-    })
+    dispatch(postsActions.postsReportPostViewsRequest({ postIds }))
   }
 
   const handleScrollPrev = (index) => () => {
@@ -91,9 +88,8 @@ const FeedService = ({ children }) => {
    */
   const onViewableItemsChangedRef = useRef(onViewableItemsChanged)
   const viewabilityConfigRef = useRef({
-    minimumViewTime: 3000,
-    viewAreaCoveragePercentThreshold: 90,
-    waitForInteraction: true,
+    viewAreaCoveragePercentThreshold: 30,
+    waitForInteraction: false,
   })
 
   const createActionSheetRef = post => element => {

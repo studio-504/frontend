@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {
   View,
   StyleSheet,
+  FlatList,
   ScrollView,
   RefreshControl,
   ActivityIndicator,
@@ -10,7 +11,7 @@ import {
 import HeaderComponent from 'components/Search/Header'
 import FormComponent from 'components/Search/Form'
 import ResultComponent from 'components/Search/Result'
-import PostsGridComponent from 'components/PostsGrid'
+import PostsGridThumbnailComponent from 'components/PostsGrid/Thumbnail'
 import { Subheading } from 'react-native-paper'
 import path from 'ramda/src/path'
 import PostsLoadingComponent from 'components/Feed/PostsLoading'
@@ -23,7 +24,6 @@ const SearchComponent = ({
   t,
   theme,
   feedRef,
-  user,
   usersSearchRequest,
   usersSearch,
   usersFollow,
@@ -40,7 +40,8 @@ const SearchComponent = ({
   formFocus,
   handleFormChange,
   formChange,
-  themeFetch,
+  onViewableItemsChangedRef,
+  viewabilityConfigRef,
 }) => {
   const styling = styles(theme)
 
@@ -67,32 +68,36 @@ const SearchComponent = ({
       : null}
 
       {!formFocus ?
-        <ScrollView
-          keyboardShouldPersistTaps="never"
-          ref={feedRef}
-          refreshControl={
+        <FlatList
+          data={postsGetTrendingPosts.data}
+          numColumns={3}
+          keyExtractor={item => item.postId}
+          renderItem={({ item: post, index: priorityIndex }) => (
+            <PostsGridThumbnailComponent
+              post={post}
+              priorityIndex={priorityIndex}
+              thread="posts/trending"
+            />
+          )}
+          refreshControl={(
             <RefreshControl
               tintColor={theme.colors.border}
               onRefresh={scroll.handleRefresh}
               refreshing={scroll.refreshing}
             />
-          }
-          onScroll={scroll.handleScrollChange}
-          scrollEventThrottle={400}
-        >
-          <PostsGridComponent
-            postsGet={postsGetTrendingPosts}
-            themeFetch={themeFetch}
-            themeCode={path(['themeCode'])(user)}
-            thread="posts/trending"
-          />
-
-          {scroll.loadingmore ?
-            <View style={styling.activity}>
-              <ActivityIndicator color={theme.colors.border} />
-            </View>
-          : null}
-        </ScrollView>
+          )}
+          ListFooterComponent={(
+            <ActivityIndicator
+              animating={scroll.loadingmore}
+              color={theme.colors.border}
+            />
+          )}
+          ListFooterComponentStyle={styling.activity}
+          onEndReached={scroll.handleLoadMore}
+          onEndReachedThreshold={0.5}
+          onViewableItemsChanged={onViewableItemsChangedRef.current}
+          viewabilityConfig={viewabilityConfigRef.current}
+        />
       : null}
 
       {formFocus && formChange ?
@@ -170,7 +175,6 @@ SearchComponent.propTypes = {
   usersUnfollowRequest: PropTypes.any,
   t: PropTypes.any,
   feedRef: PropTypes.any,
-  user: PropTypes.any,
   usersAcceptFollowerUser: PropTypes.any,
   usersAcceptFollowerUserRequest: PropTypes.any,
   usersGetTrendingUsers: PropTypes.any,
@@ -181,7 +185,8 @@ SearchComponent.propTypes = {
   formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
-  themeFetch: PropTypes.any,
+  onViewableItemsChangedRef: PropTypes.any,
+  viewabilityConfigRef: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(SearchComponent))

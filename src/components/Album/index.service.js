@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as albumsActions from 'store/ducks/albums/actions'
+import * as postsActions from 'store/ducks/posts/actions'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
+import path from 'ramda/src/path'
 
 const AlbumService = ({ children }) => {
   const dispatch = useDispatch()
@@ -38,6 +40,23 @@ const AlbumService = ({ children }) => {
     }
   }, [albumsDelete.status])
 
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    const postIds = viewableItems.map(viewable => path(['item', 'postId'])(viewable))
+      .filter(item => item)
+
+    if (!Array.isArray(postIds) || !postIds.length) {
+      return
+    }
+
+    dispatch(postsActions.postsReportPostViewsRequest({ postIds }))
+  }
+
+  const onViewableItemsChangedRef = useRef(onViewableItemsChanged)
+  const viewabilityConfigRef = useRef({
+    viewAreaCoveragePercentThreshold: 30,
+    waitForInteraction: false,
+  })
+
   return children({
     user,
     themeFetch,
@@ -46,6 +65,8 @@ const AlbumService = ({ children }) => {
     albumsPostsGetRequest,
     albumsPostsGetMoreRequest,
     albumsDeleteRequest,
+    onViewableItemsChangedRef,
+    viewabilityConfigRef,
   })
 }
 

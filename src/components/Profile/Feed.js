@@ -22,14 +22,13 @@ const ProfileFeed = ({
         <View style={styling.root}>
           <PostsGridComponent
             postsGet={postsProps.postsGet}
-            themeFetch={postsProps.themeFetch}
-            themeCode={path(['data', 'themeCode'])(postsProps.user)}
             thread="posts/profile"
+            listProps={{
+              ListFooterComponent: ((path(['status'])(postsProps.postsGet) === 'loading' && !path(['data', 'length'])(postsProps.postsGet)) ?
+              <PostsLoadingComponent />
+            : null),
+            }}
           />
-
-          {(path(['status'])(postsProps.postsGet) === 'loading' && !path(['data', 'length'])(postsProps.postsGet)) ?
-            <PostsLoadingComponent />
-          : null}
         </View>
       )}
     </PostsGridServiceComponent>

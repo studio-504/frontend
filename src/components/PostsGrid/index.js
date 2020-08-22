@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {
   StyleSheet,
   View,
+  FlatList,
 } from 'react-native'
-import GridComponent from 'templates/Grid'
 import GridItemComponent from 'templates/GridItem'
 import CacheComponent from 'components/Cache'
 import TextOnlyComponent from 'templates/TextOnly/Thumbnail'
@@ -19,6 +19,7 @@ const PostsGrid = ({
   theme,
   postsGet,
   thread,
+  listProps,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -31,8 +32,12 @@ const PostsGrid = ({
 
   return (
     <View style={styling.root}>
-      <GridComponent items={path(['data'])(postsGet)}>
-        {(post, priorityIndex) => (
+      <FlatList
+        {...listProps}
+        data={path(['data'])(postsGet)}
+        numColumns={3}
+        keyExtractor={item => item.postId}
+        renderItem={({ item: post, index: priorityIndex }) => (
           <GridItemComponent
             onPress={navigationActions.navigatePostMedia(navigation, { postId: post.postId, userId: post.postedBy.userId })}
             active={path(['commentsUnviewedCount'])(post) > 0}
@@ -59,18 +64,14 @@ const PostsGrid = ({
             : null}
           </GridItemComponent>
         )}
-      </GridComponent>
+      />
     </View>
   )
 }
 const styles = theme => StyleSheet.create({
   root: {
-    flex: 1,
     backgroundColor: theme.colors.backgroundPrimary,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  item: {
+    height: '100%',
   },
 })
 
@@ -82,6 +83,7 @@ PostsGrid.propTypes = {
   theme: PropTypes.any,
   postsGet: PropTypes.any,
   thread: PropTypes.any,
+  listProps: PropTypes.any,
 }
 
 export default withTheme(PostsGrid)
