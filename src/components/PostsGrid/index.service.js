@@ -1,11 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useRoute } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
+import path from 'ramda/src/path'
 
-const PostsGridService = ({ children, postsGetRequestOnMount }) => {
+const PostsGridService = ({ children }) => {
   const dispatch = useDispatch()
   const route = useRoute()
 
@@ -19,15 +20,32 @@ const PostsGridService = ({ children, postsGetRequestOnMount }) => {
     dispatch(postsActions.postsGetMoreRequest({ userId, nextToken }))
 
   useEffect(() => {
-    if (!postsGetRequestOnMount) return
-
     dispatch(postsActions.postsGetRequest({ userId }))
   }, [userId])
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    const postIds = viewableItems.map(viewable => path(['item', 'postId'])(viewable))
+      .filter(item => item)
+
+    if (!Array.isArray(postIds) || !postIds.length) {
+      return
+    }
+
+    dispatch(postsActions.postsReportPostViewsRequest({ postIds }))
+  }
+
+  const onViewableItemsChangedRef = useRef(onViewableItemsChanged)
+  const viewabilityConfigRef = useRef({
+    viewAreaCoveragePercentThreshold: 30,
+    waitForInteraction: false,
+  })
 
   return children({
     postsGet,
     postsGetRequest,
     postsGetMoreRequest,
+    onViewableItemsChangedRef,
+    viewabilityConfigRef,
   })
 }
 
