@@ -4,7 +4,6 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useScrollToTop } from '@react-navigation/native'
 import toLower from 'ramda/src/toLower'
-import path from 'ramda/src/path'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
@@ -62,23 +61,6 @@ const SearchService = ({ children }) => {
   const [formFocus, handleFormFocus] = useState(false)
   const [formChange, handleFormChange] = useState(false)
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    const postIds = viewableItems.map(viewable => path(['item', 'postId'])(viewable))
-      .filter(item => item)
-
-    if (!Array.isArray(postIds) || !postIds.length) {
-      return
-    }
-
-    dispatch(postsActions.postsReportPostViewsRequest({ postIds }))
-  }
-
-  const onViewableItemsChangedRef = useRef(onViewableItemsChanged)
-  const viewabilityConfigRef = useRef({
-    viewAreaCoveragePercentThreshold: 30,
-    waitForInteraction: false,
-  })
-
   return children({
     feedRef,
     user,
@@ -99,8 +81,6 @@ const SearchService = ({ children }) => {
     handleFormFocus,
     formChange,
     handleFormChange,
-    onViewableItemsChangedRef,
-    viewabilityConfigRef,
   })
 }
 

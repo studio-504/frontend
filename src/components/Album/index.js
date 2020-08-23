@@ -14,6 +14,7 @@ import * as navigationActions from 'navigation/actions'
 import ActionSheet from 'react-native-actionsheet'
 import { useHeader } from 'components/Album/header'
 import ScrollService from 'services/Scroll'
+import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -28,8 +29,6 @@ const Album = ({
   albumsPostsGetRequest,
   albumsPostsGetMoreRequest,
   albumsDeleteRequest,
-  onViewableItemsChangedRef,
-  viewabilityConfigRef,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -48,6 +47,11 @@ const Album = ({
     loadMore: albumsPostsGetMoreRequest,
     extra: { albumId: path(['data', 'albumId'])(albumsSingleGet) },
   })
+
+  const {
+    onViewableItemsChangedRef,
+    viewabilityConfigRef,
+  } = useViewable()
 
   return (
     <View style={styling.root}>
@@ -145,8 +149,6 @@ Album.propTypes = {
   albumsPostsGetRequest: PropTypes.any,
   albumsPostsGetMoreRequest: PropTypes.any,
   albumsDeleteRequest: PropTypes.any,
-  onViewableItemsChangedRef: PropTypes.any,
-  viewabilityConfigRef: PropTypes.any,
 }
 
 export default withTranslation()(

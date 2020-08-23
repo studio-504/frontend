@@ -20,6 +20,7 @@ import pathOr from 'ramda/src/pathOr'
 import * as navigationActions from 'navigation/actions'
 import ScrollService from 'services/Scroll'
 import * as UserService from 'services/User'
+import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -47,8 +48,6 @@ const Profile = ({
   usersFollowRequest,
   usersUnfollow,
   usersUnfollowRequest,
-  onViewableItemsChangedRef,
-  viewabilityConfigRef,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -73,6 +72,11 @@ const Profile = ({
     loadMore: postsGetMoreRequest,
     extra: { userId: path(['data', 'userId'])(usersGetProfile) },
   })
+
+  const {
+    onViewableItemsChangedRef,
+    viewabilityConfigRef,
+  } = useViewable()
 
   const ProfileHeader = () => (
     <React.Fragment>
@@ -216,8 +220,6 @@ Profile.propTypes = {
   albumsGet: PropTypes.any,
   albumsGetRequest: PropTypes.any,
   albumsGetMoreRequest: PropTypes.any,
-  onViewableItemsChangedRef: PropTypes.any,
-  viewabilityConfigRef: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(Profile))

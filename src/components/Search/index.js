@@ -16,6 +16,7 @@ import { Subheading } from 'react-native-paper'
 import path from 'ramda/src/path'
 import PostsLoadingComponent from 'components/Feed/PostsLoading'
 import ScrollService from 'services/Scroll'
+import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
@@ -40,8 +41,6 @@ const SearchComponent = ({
   formFocus,
   handleFormChange,
   formChange,
-  onViewableItemsChangedRef,
-  viewabilityConfigRef,
 }) => {
   const styling = styles(theme)
 
@@ -51,6 +50,11 @@ const SearchComponent = ({
     loadMore: postsGetTrendingPostsMoreRequest,
     extra: { limit: path(['payload', 'limit'])(postsGetTrendingPosts) },
   })
+
+  const {
+    onViewableItemsChangedRef,
+    viewabilityConfigRef,
+  } = useViewable()
 
   return (
     <View style={styling.root}>
@@ -185,8 +189,6 @@ SearchComponent.propTypes = {
   formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
-  onViewableItemsChangedRef: PropTypes.any,
-  viewabilityConfigRef: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(SearchComponent))
