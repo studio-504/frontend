@@ -30,6 +30,7 @@ const ProfileAlbums = ({
       <FlatList
         data={albumsGet.data}
         horizontal
+        keyExtractor={item => item.albumId}
         renderItem={({ item: album }) => (
           <TouchableOpacity style={styling.column} onPress={navigationActions.navigateAlbum(navigation, { album: album })}>
             <Avatar
