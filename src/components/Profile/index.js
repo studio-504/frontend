@@ -142,6 +142,7 @@ const Profile = ({
         data={postsGet.data}
         numColumns={3}
         keyExtractor={item => item.postId}
+        testID={testIDs.root}
         renderItem={({ item: post, index: priorityIndex }) => (
           <PostsGridThumbnailComponent
             post={post}

@@ -12,11 +12,13 @@ import AppNavigator from 'navigation/AppNavigator'
 import store, { persistor } from 'store/index'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import codePush from 'react-native-code-push' 
 import 'services/Logger'
 import { enableScreens } from 'react-native-screens'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
 import ErrorTemplate from 'templates/Error'
+import Config from 'react-native-config' 
 
 const linking = {
   prefixes: ['real.app://', 'https://real.app/'],
@@ -38,6 +40,15 @@ const linking = {
     },
   },
 }
+
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_RESTART,
+  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+  deploymentKey: Config.CODE_PUSH_DEPLOYMENT_KEY,
+}
+
+codePush.sync(codePushOptions)
 
 enableScreens()
 
@@ -120,4 +131,4 @@ const App = () => {
   )
 }
 
-export default App
+ export default codePush(codePushOptions)(App) 
