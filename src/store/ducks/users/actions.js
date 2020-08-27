@@ -162,3 +162,11 @@ export const usersSetApnsTokenIdle = createAction(constants.USERS_SET_APNS_TOKEN
 export const usersSetApnsTokenRequest = createAction(constants.USERS_SET_APNS_TOKEN_REQUEST)
 export const usersSetApnsTokenSuccess = createAction(constants.USERS_SET_APNS_TOKEN_SUCCESS)
 export const usersSetApnsTokenFailure = createAction(constants.USERS_SET_APNS_TOKEN_FAILURE)
+
+/**
+ * 
+ */
+export const usersReportScreenViewsIdle = createAction(constants.USERS_REPORT_SCREEN_VIEWS_IDLE)
+export const usersReportScreenViewsRequest = createAction(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST)
+export const usersReportScreenViewsSuccess = createAction(constants.USERS_REPORT_SCREEN_VIEWS_SUCCESS)
+export const usersReportScreenViewsFailure = createAction(constants.USERS_REPORT_SCREEN_VIEWS_FAILURE)

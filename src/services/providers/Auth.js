@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as themeActions from 'store/ducks/theme/actions'
 import * as authActions from 'store/ducks/auth/actions'
+import * as usersActions from 'store/ducks/users/actions'
 import * as translationActions from 'store/ducks/translation/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -99,6 +100,25 @@ export const AuthProvider = ({
     languageCode,
   ])
 
+  /**
+   *
+   */
+  const handleRouteInit = (routeNameRef, navigationRef) => () => {
+    routeNameRef.current = navigationRef.current.getCurrentRoute().name
+  }
+
+  const onStateChange = (routeNameRef, navigationRef) => () => {
+    const previousRouteName = routeNameRef.current
+    const currentRouteName = navigationRef.current.getCurrentRoute().name
+
+    if (previousRouteName !== currentRouteName && userId) {
+      dispatch(usersActions.usersReportScreenViewsRequest({ screens: [currentRouteName] }))
+    }
+
+    // Save the current route name for later comparision
+    routeNameRef.current = currentRouteName
+  }
+
   if (
     !path(['data', 'en'])(translationFetch) ||
     !path(['data', 'length'])(themeFetch) ||
@@ -122,5 +142,7 @@ export const AuthProvider = ({
     authenticated,
     appErrorMessage,
     handleErrorClose,
+    handleRouteInit,
+    onStateChange,
   })
 }
