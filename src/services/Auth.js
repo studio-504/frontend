@@ -35,3 +35,23 @@ export const getAppleSigninPersist = async () => {
 		return {}
 	}
 }
+
+/**
+ *
+ */
+export const resetAuthUserPersist = async () => {
+	await AsyncStorage.removeItem('@real:auth:user')
+}
+
+export const saveAuthUserPersist = async (payload) => {
+	await AsyncStorage.setItem('@real:auth:user', JSON.stringify(payload))
+}
+
+export const getAuthUserPersist = async () => {
+	try {
+		const response = await AsyncStorage.getItem('@real:auth:user')
+		return JSON.parse(response)
+	} catch (error) {
+		return {}
+	}
+}
