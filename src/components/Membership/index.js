@@ -21,7 +21,7 @@ import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
-const PostType = ({
+const Membership = ({
   t,
   theme,
   requestSubscription,
@@ -187,7 +187,7 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-PostType.propTypes = {
+Membership.propTypes = {
   theme: PropTypes.any,
   t: PropTypes.any,
   handleBackAction: PropTypes.any,
@@ -196,4 +196,4 @@ PostType.propTypes = {
   requestSubscription: PropTypes.func,
 }
 
-export default withTranslation()(withTheme(PostType))
+export default withTranslation()(withTheme(Membership))
