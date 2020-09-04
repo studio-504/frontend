@@ -117,6 +117,12 @@ export const initialState = {
     error: {},
     payload: {},
   },
+  usersMembershipUpgrade: {
+    data: [],
+    status: 'idle',
+    error: {},
+    payload: {},
+  },
 
   usersGetFollowerUsersCache: {},
   usersGetFollowedUsersCache: {},
@@ -758,6 +764,38 @@ const usersSetApnsTokenIdle = (state) => update(state, {
   },
 })
 
+/**
+ *
+ */
+const usersMembershipUpgradeRequest = (state, action) => update(state, {
+  usersMembershipUpgrade: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersMembershipUpgradeSuccess = (state, action) => update(state, {
+  usersMembershipUpgrade: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const usersMembershipUpgradeFailure = (state, action) => update(state, {
+  usersMembershipUpgrade: {
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+  },
+})
+
+const usersMembershipUpgradeIdle = (state) => update(state, {
+  usersMembershipUpgrade: {
+    data: { $set: initialState.usersMembershipUpgrade.data },
+    error: { $set: initialState.usersMembershipUpgrade.error },
+    status: { $set: 'idle' },
+  },
+})
+
 export default handleActions({
   [constants.USERS_SEARCH_REQUEST]: usersSearchRequest,
   [constants.USERS_SEARCH_SUCCESS]: usersSearchSuccess,
@@ -854,6 +892,11 @@ export default handleActions({
   [constants.USERS_SET_APNS_TOKEN_SUCCESS]: usersSetApnsTokenSuccess,
   [constants.USERS_SET_APNS_TOKEN_FAILURE]: usersSetApnsTokenFailure,
   [constants.USERS_SET_APNS_TOKEN_IDLE]: usersSetApnsTokenIdle,
+
+  [constants.USERS_MEMBERSHIP_UPGRADE_REQUEST]: usersMembershipUpgradeRequest,
+  [constants.USERS_MEMBERSHIP_UPGRADE_SUCCESS]: usersMembershipUpgradeSuccess,
+  [constants.USERS_MEMBERSHIP_UPGRADE_FAILURE]: usersMembershipUpgradeFailure,
+  [constants.USERS_MEMBERSHIP_UPGRADE_IDLE]: usersMembershipUpgradeIdle,
 
   /**
    * Clear on logout

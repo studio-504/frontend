@@ -686,6 +686,21 @@ function* usersSetApnsTokenRequest(req) {
   }
 }
 
+/**
+ *
+ */
+function* usersMembershipUpgradeRequest(req) {
+  const errorWrapper = yield getContext('errorWrapper')
+
+  try {
+    const data = yield queryService.apiRequest(queries.addAppStoreReceipt, req.payload)
+
+    yield put(actions.usersMembershipUpgradeSuccess({ payload: req.payload, data, meta: {} }))
+  } catch (error) {
+    yield put(actions.usersMembershipUpgradeFailure({ payload: req.payload, message: errorWrapper(error) }))
+  }
+}
+
 export default () => [
   takeLatest(constants.USERS_SEARCH_REQUEST, usersSearchRequest),
   takeLatest(constants.USERS_DELETE_REQUEST, usersDeleteRequest),
@@ -707,4 +722,5 @@ export default () => [
   takeLatest(constants.USERS_GET_CARDS_REQUEST, usersGetCardsRequest),
   takeLatest(constants.USERS_DELETE_CARD_REQUEST, usersDeleteCardRequest),
   takeLatest(constants.USERS_SET_APNS_TOKEN_REQUEST, usersSetApnsTokenRequest),
+  takeLatest(constants.USERS_MEMBERSHIP_UPGRADE_REQUEST, usersMembershipUpgradeRequest),
 ]

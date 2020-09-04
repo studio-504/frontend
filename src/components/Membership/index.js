@@ -24,6 +24,7 @@ import { withTranslation } from 'react-i18next'
 const PostType = ({
   t,
   theme,
+  requestSubscription,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -106,7 +107,7 @@ const PostType = ({
         </View>
 
         <View style={styling.action}>
-          <DefaultButton label={t('Subscribe for $9.99 month')} icon={AppleIcon} />
+          <DefaultButton label={t('Subscribe for $9.99 month')} icon={AppleIcon} onPress={requestSubscription} />
         </View>
       </SafeAreaView>
     </View>
@@ -192,6 +193,7 @@ PostType.propTypes = {
   handleBackAction: PropTypes.any,
   handleHideAction: PropTypes.any,
   handleHomeAction: PropTypes.any,
+  requestSubscription: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(PostType))

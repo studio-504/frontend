@@ -162,3 +162,11 @@ export const usersSetApnsTokenIdle = createAction(constants.USERS_SET_APNS_TOKEN
 export const usersSetApnsTokenRequest = createAction(constants.USERS_SET_APNS_TOKEN_REQUEST)
 export const usersSetApnsTokenSuccess = createAction(constants.USERS_SET_APNS_TOKEN_SUCCESS)
 export const usersSetApnsTokenFailure = createAction(constants.USERS_SET_APNS_TOKEN_FAILURE)
+
+/**
+ * 
+ */
+export const usersMembershipUpgradeIdle = createAction(constants.USERS_MEMBERSHIP_UPGRADE_IDLE)
+export const usersMembershipUpgradeRequest = createAction(constants.USERS_MEMBERSHIP_UPGRADE_REQUEST)
+export const usersMembershipUpgradeSuccess = createAction(constants.USERS_MEMBERSHIP_UPGRADE_SUCCESS)
+export const usersMembershipUpgradeFailure = createAction(constants.USERS_MEMBERSHIP_UPGRADE_FAILURE)
