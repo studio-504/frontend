@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Polygon, Line } from 'react-native-svg'
 
-const Boost = ({ fill = '#333', style = {} }) => (
+const Diamond = ({ fill = '#333' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
 			<Polygon fill="none" points="8 18 6 16 6 8 8 6 16 6 18 8 18 16 16 18 8 18"/>
@@ -18,4 +19,8 @@ const Boost = ({ fill = '#333', style = {} }) => (
   </Svg>
 )
 
-export default Boost
+Diamond.propTypes = {
+  fill: PropTypes.string,
+}
+
+export default Diamond

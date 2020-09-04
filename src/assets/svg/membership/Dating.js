@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Svg, { G, Path, Circle } from 'react-native-svg'
 
-const Boost = ({ fill = '#333', style = {} }) => (
+const Dating = ({ fill = '#333' }) => (
   <Svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <G fill={fill} stroke={fill} strokeLinecap="round" strokeWidth="1.5">
 			<Path d="M10,21.836 c0-0.604-0.265-1.179-0.738-1.554C8.539,19.708,7.285,19,5.5,19s-3.039,0.708-3.762,1.282C1.265,20.657,1,21.232,1,21.836V23h9 V21.836z" fill="none" stroke={fill}/>
@@ -13,4 +14,8 @@ const Boost = ({ fill = '#333', style = {} }) => (
   </Svg>
 )
 
-export default Boost
+Dating.propTypes = {
+  fill: PropTypes.string,
+}
+
+export default Dating
