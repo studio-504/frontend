@@ -26,12 +26,10 @@ import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import DeviceInfo from 'react-native-device-info'
 
-// import LanguageIcon from 'assets/svg/settings/Language'
-// import CashIcon from 'assets/svg/settings/Cash'
-
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
+import testIDs from './test-ids'
 
 const Settings = ({
   t,
@@ -56,19 +54,8 @@ const Settings = ({
     )
   }
 
-  // {
-  //   label: t('Change Language'),
-  //   onPress: () => navigation.navigate('Translation'),
-  //   icon: <LanguageIcon fill={theme.colors.text} />,
-  // }
-  // {
-  //   label: t('Diamond Payout'),
-  //   onPress: () => navigation.navigate('Payout'),
-  //   icon: <CashIcon fill={theme.colors.text} />,
-  // }
-
   return (
-    <ScrollView style={styling.root}>
+    <ScrollView testID={testIDs.root} style={styling.root}>
       <TouchableOpacity onPress={() => navigation.navigate('ProfilePhotoGrid')}>
         <Avatar
           size="large"
@@ -119,6 +106,7 @@ const Settings = ({
         onPress: () => navigation.navigate('Membership'),
         icon: <DiamondIcon fill={theme.colors.text} />,
       }, {
+        testID: testIDs.actions.signOutBtn,
         label: t('Signout'),
         onPress: () => authSignoutRequest(),
         icon: <SignoutIcon fill={theme.colors.text} />,
@@ -126,6 +114,7 @@ const Settings = ({
         {(settings) => (
           <RowsItemComponent hasBorders>
             <UserRowComponent
+              testID={settings.testID}
               onPress={path(['onPress'])(settings)}
               avatar={
                 <SettingsAvatar icon={path(['icon'])(settings)} />

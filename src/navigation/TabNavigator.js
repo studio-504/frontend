@@ -10,14 +10,15 @@ import * as navigationActions from 'navigation/actions'
 
 import FeedNavigator from 'navigation/Feed'
 import SearchNavigator from 'navigation/Search'
-import DatingNavigator from 'navigation/Dating'
+import ChatNavigator from 'navigation/Chat'
 import ProfileNavigator from 'navigation/Profile'
 
 import HomeIcon from 'assets/svg/footer/Home'
 import SearchIcon from 'assets/svg/footer/Search'
 import CreateIcon from 'assets/svg/footer/Create'
-import HeartIcon from 'assets/svg/footer/Heart'
+import DirectIcon from 'assets/svg/footer/Direct'
 import UserIcon from 'assets/svg/footer/User'
+import testIDs from './test-ids'
 
 const TabNavigator = ({ navigation, route }) => {
   const { theme, themes } = useContext(ThemesContext)
@@ -49,17 +50,18 @@ const TabNavigator = ({ navigation, route }) => {
     },
   }
 
-  const DatingTabIconComponent = ({ color }) => <HeartIcon fill={color} />
+  const ChatTabIconComponent = ({ color }) => <DirectIcon fill={color} />
   const datingTabScreenPropsCard = {
     options: {
-      tabBarIcon: DatingTabIconComponent,
-      tabBarLabel: 'Dating',
+      tabBarIcon: ChatTabIconComponent,
+      tabBarLabel: 'Chat',
     },
   }
 
   const ProfileTabIconComponent = ({ color }) => <UserIcon fill={color} />
   const profileTabScreenPropsCard = {
     options: {
+      tabBarTestID: testIDs.tabNavigator.profile,
       tabBarIcon: ProfileTabIconComponent,
       tabBarLabel: 'Profile',
     },
@@ -87,8 +89,8 @@ const TabNavigator = ({ navigation, route }) => {
         {...cameraTabScreenPropsCard}
       />
       <Tab.Screen
-        name="Dating"
-        component={DatingNavigator}
+        name="Chat"
+        component={ChatNavigator}
         {...datingTabScreenPropsCard}
       />
       <Tab.Screen

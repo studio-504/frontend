@@ -1,11 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-} from 'react-native'
-import { Button } from 'react-native-paper'
-
-import { withTheme } from 'react-native-paper'
+import { StyleSheet } from 'react-native'
+import { Button, withTheme } from 'react-native-paper'
 
 const DefaultButton = ({
   theme,
@@ -13,6 +9,7 @@ const DefaultButton = ({
   size,
   mode,
   labelStyle,
+  style,
   ...props
 }) => {
   const styling = styles
@@ -22,7 +19,7 @@ const DefaultButton = ({
   const colorStyle = (mode === 'contained') ? { color: theme.colors.buttonText } : {}
 
   return (
-    <Button {...props} contentStyle={contentStyle} uppercase={false} compact mode={mode} labelStyle={[styling.text, colorStyle, labelStyle]} style={styling.root}>
+    <Button {...props} contentStyle={contentStyle} uppercase={false} compact mode={mode} labelStyle={[styling.text, colorStyle, labelStyle]} style={[styling.root, style]}>
       {label}
     </Button>
   )
@@ -30,9 +27,7 @@ const DefaultButton = ({
 
 const styles = StyleSheet.create({
   root: {
-    // backgroundColor: 'rgb(10, 132, 255)',
     overflow: 'hidden',
-    borderRadius: 8,
   },
   compactContent: {
     height: 34,
@@ -53,6 +48,7 @@ DefaultButton.propTypes = {
   label: PropTypes.any,
   size: PropTypes.any,
   mode: PropTypes.any,
+  style: PropTypes.any,
   labelStyle: PropTypes.any,
 }
 
@@ -60,6 +56,7 @@ DefaultButton.defaultProps = {
   mode: 'contained',
   size: 'default',
   labelStyle: {},
+  style: {},
 }
 
 export default withTheme(DefaultButton)

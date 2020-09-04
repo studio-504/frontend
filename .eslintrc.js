@@ -1,5 +1,6 @@
 module.exports = {
   parser: 'babel-eslint',
+  reportUnusedDisableDirectives: true,
   env: {
     'jest/globals': true,
     'detox/detox': true,
@@ -42,5 +43,12 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
     'jest/no-jasmine-globals': 0,
+    'jest/expect-expect': [
+      'error',
+      {
+        assertFunctionNames: ['expect', 'element', 'toBeVisible', 'tap', 'waitForElement', 'getByText'],
+      },
+    ],
+    'object-curly-spacing': ['error', 'always'],
   },
 }

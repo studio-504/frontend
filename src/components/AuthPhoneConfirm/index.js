@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  StyleSheet,
-} from 'react-native'
+import has from 'ramda/src/has'
+import { View, StyleSheet } from 'react-native'
 import FormComponent from 'components/AuthPhoneConfirm/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
 import AuthErrorTemplate from 'templates/Auth/Error'
@@ -24,17 +22,16 @@ const AuthPhoneConfirm = ({
 
   return (
     <View testID="components/AuthPhoneConfirm" style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
+      {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
 
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
-          subtitle={t('Sent to {{cognitoUsername}}', formInitialValues)}
+          subtitle={
+            has('cognitoUsername', formInitialValues)
+              ? t('Sent to {{cognitoUsername}}', formInitialValues)
+              : t('You’ve been sent a password reset token')
+          }
         />
 
         <View style={styling.content}>

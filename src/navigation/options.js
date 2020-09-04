@@ -13,10 +13,14 @@ import CameraIcon from 'assets/svg/header/Camera'
 import DirectIcon from 'assets/svg/header/Direct'
 import BackIcon from 'assets/svg/header/Back'
 
-export const pageHeaderLeft = ({ onPress }) => {
-  if (!onPress) { return null }
+const getInitialRouteName = path(['route', 'params', 'initialRouteName'])
+
+export const pageHeaderLeft = ({ onPress, testID = null }) => {
+  if (!onPress) {
+    return null
+  }
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity testID={testID} style={styles.button} onPress={onPress}>
       <BackIcon fill="#fff" />
     </TouchableOpacity>
   )
@@ -30,27 +34,17 @@ export const chatHeaderLeft = ({ navigation }) => () => (
 
 const homeHeaderLeft = ({ theme, navigation }) => () => (
   <TouchableOpacity style={styles.button} onPress={navigationActions.navigateCamera(navigation)}>
-    <CameraIcon
-      fill={theme.colors.primaryIcon}
-    />
+    <CameraIcon fill={theme.colors.primaryIcon} />
   </TouchableOpacity>
 )
 
-const homeHeaderTitle = ({ theme }) => () => (
-  <LogoIcon
-    height="28"
-    fill={theme.colors.primaryIcon}
-  />
-)
+const homeHeaderTitle = ({ theme }) => () => <LogoIcon height="28" fill={theme.colors.primaryIcon} />
 
 const homeHeaderRight = ({ theme, navigation }) => () => (
   <UIContextComponent.Consumer>
-    {(props) => (
+    {({ user }) => (
       <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation)}>
-        <DirectIcon
-          fill={theme.colors.primaryIcon}
-          user={props.user}
-        />
+        <DirectIcon fill={theme.colors.primaryIcon} user={user} />
       </TouchableOpacity>
     )}
   </UIContextComponent.Consumer>
@@ -86,13 +80,11 @@ const HomeNavigationComponent = ({ navigation, theme }) => ({
   headerRight: homeHeaderRight({ navigation, theme }),
 })
 
-const pager = props => {
+const pager = (props) => {
   const currentIndex = path(['navigationState', 'index'])(props)
   const nextIndex = path(['navigationState', 'routes', currentIndex, 'state', 'index'])(props)
   const swipeEnabled = !nextIndex || nextIndex === 0
-  return (
-    <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled} />
-  )
+  return <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled} />
 }
 
 export const tabNavigatorDefaultProps = () => ({
@@ -105,8 +97,8 @@ export const tabNavigatorDefaultProps = () => ({
   pager,
 })
 
-export const tabNavigatorAuthProps = ({ theme }) => ({
-  initialRouteName: 'Root',
+export const tabNavigatorAuthProps = ({ theme, props }) => ({
+  initialRouteName: getInitialRouteName(props),
   sceneContainerStyle: {
     backgroundColor: 'white',
   },
@@ -232,7 +224,6 @@ export const stackScreenModalProps = () => ({
   }),
 })
 
-
 export const stackScreenAuthModalProps = ({ theme }) => ({
   options: () => ({
     gestureDirection: 'vertical',
@@ -268,7 +259,7 @@ export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
     const backgroundColor = path(['colors', 'backgroundPrimary'])(theme)
     const color = path(['colors', 'text'])(theme)
 
-    return ({
+    return {
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       gestureDirection: 'horizontal',
       gestureResponseDistance: {
@@ -294,7 +285,7 @@ export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
       headerRight: () => null,
       headerTintColor: 'red',
       ...options,
-    })
+    }
   },
 })
 
@@ -320,7 +311,7 @@ export const tabNavigatorProps = ({ theme }) => {
   const inactiveTintColor = `${activeTintColor}90`
   const backgroundColor = path(['colors', 'backgroundPrimary'])(theme)
 
-  return ({
+  return {
     tabBarOptions: {
       activeTintColor,
       inactiveTintColor,
@@ -333,15 +324,15 @@ export const tabNavigatorProps = ({ theme }) => {
         borderTopWidth: 0,
       },
     },
-  })
+  }
 }
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 12, 
+    paddingHorizontal: 12,
   },
   chatButton: {
-    paddingHorizontal: 12, 
-    height: 24, 
+    paddingHorizontal: 12,
+    height: 24,
   },
 })
