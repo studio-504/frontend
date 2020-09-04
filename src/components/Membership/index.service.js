@@ -1,21 +1,23 @@
 import { useEffect } from 'react'
 import { Alert, Linking } from 'react-native'
+import { useDispatch } from 'react-redux'
 import RNIap, {
   finishTransaction,
   finishTransactionIOS,
   purchaseErrorListener,
   purchaseUpdatedListener,
 } from 'react-native-iap'
+import * as usersActions from 'store/ducks/users/actions'
 
 const PRIMARY_SUBSCRIPTION = 'diamond_subscription'
 
 const MembershipService = ({ children }) => {
+  const dispatch = useDispatch()
+
 	useEffect(() => {
 		RNIap.initConnection()
     RNIap.getSubscriptions([PRIMARY_SUBSCRIPTION])
 	}, [])
-
-
 
   /**
    *
@@ -26,12 +28,11 @@ const MembershipService = ({ children }) => {
       return
     }
 
-    console.log(purchase, 'purchase')
+    dispatch(usersActions.usersMembershipUpgradeRequest({ receiptData: purchase.transactionReceipt }))
 
     try {
       finishTransactionIOS(purchase.transactionId)
-      const ackResult = await finishTransaction(purchase)
-      console.log(ackResult, 'ackResult')
+      await finishTransaction(purchase)
     } catch (error) {
       console.warn('ackErr', error)
     }
