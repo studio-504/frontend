@@ -42,11 +42,10 @@ export function* getCognitoCredentials() {
   const AwsAuth = yield getContext('AwsAuth')
 
   try {
-    console.log(yield AwsAuth.currentAuthenticatedUser(), 1)
-    console.log(yield AwsAuth.currentCredentials(), 2)
-    console.log(yield AwsAuth.currentUserPoolUser(), 3)
+    yield AwsAuth.currentAuthenticatedUser(),
+    yield AwsAuth.currentCredentials()
+    yield AwsAuth.currentUserPoolUser()
   } catch (error) {
-    console.log('getCognitoCredentials error', error)
     if (typeof error === 'string' && error.includes('Network request failed')) {
       return 
     }

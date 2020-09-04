@@ -16,14 +16,15 @@ GoogleSignin.configure({
 })
 
 /**
- * 
+ * Generate expiry time which is 10mins
+ */
+const generateTokenExpiry = () => Math.floor(Date.now() / 1000 + 60 * 1000 * 10)
+
+/**
+ * Validate identity token returned from google-signin package
+ * Handle offline scenario by returing access token expiry time of 10mins
  */
 const checkTokenExpiry = async (idToken) => {
-  /**
-   *
-   */
-  const generateTokenExpiry = () => Math.floor(Date.now() / 1000 + 60 * 1000 * 10)
-
   try {
     const data = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`)
     const response = await data.json()
