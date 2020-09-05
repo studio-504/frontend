@@ -59,7 +59,11 @@ const styles = StyleSheet.create({
 
 Network.propTypes = {
   t: PropTypes.any,
-  networkIsConnected: PropTypes.any,
+  networkIsConnected: PropTypes.bool,
+}
+
+Network.defaultProps = {
+  networkIsConnected: true,
 }
 
 export default withTranslation()(Network)
