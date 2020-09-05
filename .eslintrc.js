@@ -1,5 +1,6 @@
 module.exports = {
   parser: 'babel-eslint',
+  reportUnusedDisableDirectives: true,
   env: {
     'jest/globals': true,
     'detox/detox': true,
@@ -45,8 +46,9 @@ module.exports = {
     'jest/expect-expect': [
       'error',
       {
-        assertFunctionNames: ['expect', 'element', 'toBeVisible', 'tap', 'waitForElement'],
+        assertFunctionNames: ['expect', 'element', 'toBeVisible', 'tap', 'waitForElement', 'getByText', 'expectSaga', 'testSaga'],
       },
     ],
+    'object-curly-spacing': ['error', 'always'],
   },
 }
