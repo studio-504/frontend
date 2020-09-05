@@ -19,6 +19,7 @@ import NetworkComponent from 'components/Network'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
 import ErrorTemplate from 'templates/Error'
+import LoadingComponent from 'components/Loading'
 
 const linking = {
   prefixes: ['real.app://', 'https://real.app/'],
@@ -96,7 +97,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <ReduxNetworkProvider>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={(<LoadingComponent />)} persistor={persistor}>
           <AuthProvider>
             {({
               theme,

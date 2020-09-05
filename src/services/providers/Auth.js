@@ -51,8 +51,10 @@ export const AuthProvider = ({
 
 
   useEffect(() => {
-    dispatch(subscriptionsActions.subscriptionsMainRequest())
-    dispatch(subscriptionsActions.subscriptionsPollRequest())
+    if (userId) {
+      dispatch(subscriptionsActions.subscriptionsMainRequest())
+      dispatch(subscriptionsActions.subscriptionsPollRequest())
+    }
   }, [userId])
 
   /**
