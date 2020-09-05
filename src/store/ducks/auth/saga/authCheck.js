@@ -13,6 +13,7 @@ import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import * as queryService from 'services/Query'
 import * as Logger from 'services/Logger'
+import { isAvatarEmpty } from 'components/Settings/helpers' 
 
 export function getPrimaryGraphqlError(error) {
   const firstError = path(['errors', '0'])(error)
@@ -86,8 +87,7 @@ export function* handleAuthCheckValidation(self) {
    * Check if user has profile photo set
    * only photos that passed backend verification could be set as profile photos
    */
-  const photoUrl = path(['data', 'self', 'photo', 'url'])(self)
-  return (!photoUrl || photoUrl.includes('placeholder-photos'))
+  return isAvatarEmpty(path(['data', 'self'])(self))
 }
 
 export function* authCheckRequestData(req, api) {
