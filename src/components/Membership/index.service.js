@@ -9,7 +9,7 @@ import RNIap, {
 } from 'react-native-iap'
 import * as usersActions from 'store/ducks/users/actions'
 
-const PRIMARY_SUBSCRIPTION = 'diamond_subscription'
+const PRIMARY_SUBSCRIPTION = 'app.real.mobile.diamond3M'
 
 const MembershipService = ({ children }) => {
   const dispatch = useDispatch()
