@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StyleSheet,
+  ScrollView,
   View,
 } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -30,7 +31,7 @@ const Membership = ({
   const navigation = useNavigation()
 
   return (
-    <View style={styling.root}>
+    <ScrollView style={styling.root}>
       <TouchableOpacity style={styling.backdrop} onPress={navigationActions.navigateBack(navigation)} />
     
       <SafeAreaView style={styling.component}>
@@ -110,7 +111,7 @@ const Membership = ({
           <DefaultButton label={t('Subscribe for $9.99 month')} icon={AppleIcon} onPress={requestSubscription} />
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   )
 }
 
