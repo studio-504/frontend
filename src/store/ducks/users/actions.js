@@ -170,3 +170,11 @@ export const usersMembershipUpgradeIdle = createAction(constants.USERS_MEMBERSHI
 export const usersMembershipUpgradeRequest = createAction(constants.USERS_MEMBERSHIP_UPGRADE_REQUEST)
 export const usersMembershipUpgradeSuccess = createAction(constants.USERS_MEMBERSHIP_UPGRADE_SUCCESS)
 export const usersMembershipUpgradeFailure = createAction(constants.USERS_MEMBERSHIP_UPGRADE_FAILURE)
+
+/**
+ * 
+ */
+export const usersDeleteAvatarIdle = createAction(constants.USERS_DELETE_AVATAR_IDLE)
+export const usersDeleteAvatarRequest = createAction(constants.USERS_DELETE_AVATAR_REQUEST)
+export const usersDeleteAvatarSuccess = createAction(constants.USERS_DELETE_AVATAR_SUCCESS)
+export const usersDeleteAvatarFailure = createAction(constants.USERS_DELETE_AVATAR_FAILURE)
