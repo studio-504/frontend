@@ -11,6 +11,7 @@ import {
 import HeaderComponent from 'components/Search/Header'
 import FormComponent from 'components/Search/Form'
 import ResultComponent from 'components/Search/Result'
+import FilterComponent from 'components/Search/Filter'
 import PostsGridThumbnailComponent from 'components/PostsGrid/Thumbnail'
 import { Subheading } from 'react-native-paper'
 import path from 'ramda/src/path'
@@ -35,18 +36,18 @@ const SearchComponent = ({
   usersAcceptFollowerUserRequest,
   usersGetTrendingUsers,
   postsGetTrendingPosts,
-  postsGetTrendingPostsRequest,
   postsGetTrendingPostsMoreRequest,
   handleFormFocus,
   formFocus,
   handleFormChange,
   formChange,
+  trendingFilters,
 }) => {
   const styling = styles(theme)
 
   const scroll = ScrollService({
     resource: postsGetTrendingPosts,
-    loadInit: postsGetTrendingPostsRequest,
+    loadInit: () => {},
     loadMore: postsGetTrendingPostsMoreRequest,
     extra: { limit: path(['payload', 'limit'])(postsGetTrendingPosts) },
   })
@@ -69,7 +70,9 @@ const SearchComponent = ({
       </HeaderComponent>
 
       {!formFocus && (path(['status'])(postsGetTrendingPosts) === 'loading' && !path(['data', 'length'])(postsGetTrendingPosts)) ?
-        <PostsLoadingComponent />
+        <View style={styling.overlay}>
+          <PostsLoadingComponent />
+        </View>
       : null}
 
       <FlatList
@@ -90,6 +93,12 @@ const SearchComponent = ({
             refreshing={scroll.refreshing}
           />
         )}
+        ListHeaderComponent={(
+          <FilterComponent
+            trendingFilters={trendingFilters}
+          />
+        )}
+        ListHeaderComponentStyle={styling.header}
         ListFooterComponent={(
           <ActivityIndicator
             animating={scroll.loadingmore}
@@ -170,6 +179,10 @@ const styles = theme => StyleSheet.create({
   activity: {
     padding: theme.spacing.base * 2,
   },
+  header: {
+    padding: theme.spacing.base,
+    paddingBottom: theme.spacing.base / 2,
+  },
   overlay: {
     ...StyleSheet.absoluteFill,
     top: 64,
@@ -192,12 +205,12 @@ SearchComponent.propTypes = {
   usersAcceptFollowerUserRequest: PropTypes.any,
   usersGetTrendingUsers: PropTypes.any,
   postsGetTrendingPosts: PropTypes.any,
-  postsGetTrendingPostsRequest: PropTypes.any,
   postsGetTrendingPostsMoreRequest: PropTypes.any,
   handleFormFocus: PropTypes.any,
   formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
+  trendingFilters: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(SearchComponent))

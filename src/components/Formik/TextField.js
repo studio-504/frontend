@@ -89,16 +89,16 @@ TextField.propTypes = {
   disabled: PropTypes.any,
   hideError: PropTypes.any,
   autoCompleteType: PropTypes.any,
-  secureTextEntry: PropTypes.any,
-  textContentType: PropTypes.any,
-  autoFocus: PropTypes.any,
+  secureTextEntry: PropTypes.bool,
+  textContentType: PropTypes.string,
+  autoFocus: PropTypes.bool,
   maxLength: PropTypes.any,
   testID: PropTypes.any,
   handleFieldFocus: PropTypes.func,
   handleFieldBlur: PropTypes.func,
-  autoCapitalize: PropTypes.func,
-  mode: PropTypes.func,
-  returnKeyType: PropTypes.func,
+  autoCapitalize: PropTypes.string,
+  mode: PropTypes.string,
+  returnKeyType: PropTypes.string,
 }
 
 TextField.defaultProps = {

@@ -566,14 +566,14 @@ function* postsDislikeRequest(req) {
  *
  */
 function* handlePostsGetTrendingPostsRequest(payload, extraData = []) {
-  const api = yield queryService.apiRequest(queries.trendingPosts, { ...payload, viewedStatus: 'NOT_VIEWED' })
+  const api = yield queryService.apiRequest(queries.trendingPosts, payload)
   const dataSelector = path(['data', 'trendingPosts', 'items'])
   const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
   
   const data = [...extraData, ...dataSelector(api)]
   const meta = metaSelector(api)
 
-  if (data.length < 60 && meta.nextToken) {
+  if (data.length < 99 && meta.nextToken) {
     return yield handlePostsGetTrendingPostsRequest({ ...payload, ...meta }, data)
   }
 
