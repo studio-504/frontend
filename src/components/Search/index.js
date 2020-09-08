@@ -64,6 +64,7 @@ const SearchComponent = ({
           usersSearchRequest={usersSearchRequest}
           handleFormFocus={handleFormFocus}
           handleFormChange={handleFormChange}
+          formFocus={formFocus}
         />
       </HeaderComponent>
 
@@ -71,85 +72,87 @@ const SearchComponent = ({
         <PostsLoadingComponent />
       : null}
 
-      {!formFocus ?
-        <FlatList
-          data={postsGetTrendingPosts.data}
-          numColumns={3}
-          keyExtractor={item => item.postId}
-          renderItem={({ item: post, index: priorityIndex }) => (
-            <PostsGridThumbnailComponent
-              post={post}
-              priorityIndex={priorityIndex}
-              thread="posts/trending"
-            />
-          )}
-          refreshControl={(
-            <RefreshControl
-              tintColor={theme.colors.border}
-              onRefresh={scroll.handleRefresh}
-              refreshing={scroll.refreshing}
-            />
-          )}
-          ListFooterComponent={(
-            <ActivityIndicator
-              animating={scroll.loadingmore}
-              color={theme.colors.border}
-            />
-          )}
-          ListFooterComponentStyle={styling.activity}
-          onEndReached={scroll.handleLoadMore}
-          onEndReachedThreshold={0.5}
-          onViewableItemsChanged={onViewableItemsChangedRef.current}
-          viewabilityConfig={viewabilityConfigRef.current}
-        />
-      : null}
+      <FlatList
+        data={postsGetTrendingPosts.data}
+        numColumns={3}
+        keyExtractor={item => item.postId}
+        renderItem={({ item: post, index: priorityIndex }) => (
+          <PostsGridThumbnailComponent
+            post={post}
+            priorityIndex={priorityIndex}
+            thread="posts/trending"
+          />
+        )}
+        refreshControl={(
+          <RefreshControl
+            tintColor={theme.colors.border}
+            onRefresh={scroll.handleRefresh}
+            refreshing={scroll.refreshing}
+          />
+        )}
+        ListFooterComponent={(
+          <ActivityIndicator
+            animating={scroll.loadingmore}
+            color={theme.colors.border}
+          />
+        )}
+        ListFooterComponentStyle={styling.activity}
+        onEndReached={scroll.handleLoadMore}
+        onEndReachedThreshold={0.5}
+        onViewableItemsChanged={onViewableItemsChangedRef.current}
+        viewabilityConfig={viewabilityConfigRef.current}
+      />
 
       {formFocus && formChange ?
-        <ScrollView
-          keyboardShouldPersistTaps="never"
-          ref={feedRef}
-          refreshControl={
-            <RefreshControl
-              tintColor={theme.colors.border}
-              refreshing={usersSearch.status === 'loading'}
+        <View style={styling.overlay}>
+          <ScrollView
+            keyboardShouldPersistTaps="never"
+            ref={feedRef}
+            refreshControl={
+              <RefreshControl
+                tintColor={theme.colors.border}
+                refreshing={usersSearch.status === 'loading'}
+              />
+            }
+          >
+            <Subheading style={styling.subheading}>{t('Search Result')}</Subheading>
+            <ResultComponent
+              usersSearch={usersSearch}
+              usersFollow={usersFollow}
+              usersFollowRequest={usersFollowRequest}
+              usersUnfollow={usersUnfollow}
+              usersUnfollowRequest={usersUnfollowRequest}
+              usersAcceptFollowerUser={usersAcceptFollowerUser}
+              usersAcceptFollowerUserRequest={usersAcceptFollowerUserRequest}
             />
-          }
-        >
-          <Subheading style={styling.subheading}>{t('Search Result')}</Subheading>
-          <ResultComponent
-            usersSearch={usersSearch}
-            usersFollow={usersFollow}
-            usersFollowRequest={usersFollowRequest}
-            usersUnfollow={usersUnfollow}
-            usersUnfollowRequest={usersUnfollowRequest}
-            usersAcceptFollowerUser={usersAcceptFollowerUser}
-            usersAcceptFollowerUserRequest={usersAcceptFollowerUserRequest}
-          />
-        </ScrollView>
+          </ScrollView>
+        </View>
       : null}
 
       {formFocus && !formChange ?
-        <ScrollView
-          keyboardShouldPersistTaps="never"
-          ref={feedRef}
-          refreshControl={
-            <RefreshControl
-              tintColor={theme.colors.border}
-              refreshing={usersGetTrendingUsers.status === 'loading'}
+        <View style={styling.overlay}>
+          <ScrollView
+            keyboardShouldPersistTaps="never"
+            ref={feedRef}
+            refreshControl={
+              <RefreshControl
+                tintColor={theme.colors.border}
+                refreshing={usersGetTrendingUsers.status === 'loading'}
+              />
+            }
+          >
+            <Subheading style={styling.subheading}>{t('Trending Users')}</Subheading>
+            <ResultComponent
+              usersSearch={usersGetTrendingUsers}
+              usersFollow={usersFollow}
+              usersFollowRequest={usersFollowRequest}
+              usersUnfollow={usersUnfollow}
+              usersUnfollowRequest={usersUnfollowRequest}
+              usersAcceptFollowerUser={usersAcceptFollowerUser}
+              usersAcceptFollowerUserRequest={usersAcceptFollowerUserRequest}
             />
-          }
-        >
-          <Subheading style={styling.subheading}>{t('Trending Users')}</Subheading>
-          <ResultComponent
-            usersSearch={usersGetTrendingUsers}
-            usersFollow={usersFollow}
-            usersFollowRequest={usersFollowRequest}
-            usersUnfollow={usersUnfollow}
-            usersUnfollowRequest={usersUnfollowRequest}
-            usersAcceptFollowerUser={usersAcceptFollowerUser}
-            usersAcceptFollowerUserRequest={usersAcceptFollowerUserRequest}
-          />
-        </ScrollView>
+          </ScrollView>
+        </View>
       : null}
     </View>
   )
@@ -166,6 +169,12 @@ const styles = theme => StyleSheet.create({
   },
   activity: {
     padding: theme.spacing.base * 2,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFill,
+    top: 64,
+    zIndex: 1,
+    backgroundColor: theme.colors.backgroundPrimary,
   },
 })
 
