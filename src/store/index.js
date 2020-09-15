@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import { createNetworkMiddleware } from 'react-native-offline'
 import createSagaMiddleware from 'redux-saga'
+import reactotron from 'services/Reactotron'
 import rootReducer from 'store/reducers'
 import rootSaga from 'store/sagas'
 import { Credentials } from '@aws-amplify/core'
@@ -40,6 +41,7 @@ const errorWrapper = (error) => {
   }
 }
 
+const sagaMonitor = reactotron.createSagaMonitor()
 const networkMiddleware = createNetworkMiddleware({
   queueReleaseThrottle: 200,
 })
@@ -53,6 +55,7 @@ const sagaMiddleware = createSagaMiddleware({
     errorWrapper,
   },
   onError: Logger.captureException,
+  sagaMonitor,
 })
 
 const composeEnhancers = composeWithDevTools({
@@ -85,7 +88,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(
   persistedReducer,
-  composeEnhancers(applyMiddleware(networkMiddleware, sagaMiddleware)),
+  composeEnhancers(applyMiddleware(networkMiddleware, sagaMiddleware), reactotron.createEnhancer()),
 )
 
 export const persistor = persistStore(store)
