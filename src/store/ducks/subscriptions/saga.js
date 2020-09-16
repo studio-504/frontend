@@ -144,12 +144,10 @@ function* cardSubscription(req) {
    */
   const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onCardNotification' })
 
+  if (subscriptionState.isRunning) return
+
   if (!userId) {
     return yield call(subscriptionState.errorHandler, { error: 'required userId param was not passed' })
-  }
-
-  if (subscriptionState.isRunning) {
-    return yield call(subscriptionState.errorHandler, { error: 'onCardNotification subscription is already running' })
   }
 
   if (subscriptionState.isOffline) {
@@ -207,12 +205,10 @@ function* chatMessageSubscription(req) {
    */
   const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onChatMessageNotification' })
 
+  if (subscriptionState.isRunning) return
+
   if (!userId) {
     return yield call(subscriptionState.errorHandler, { error: 'required userId param was not passed' })
-  }
-
-  if (subscriptionState.isRunning) {
-    return yield call(subscriptionState.errorHandler, { error: 'onChatMessageNotification subscription is already running' })
   }
 
   if (subscriptionState.isOffline) {
@@ -272,12 +268,10 @@ function* subscriptionNotificationStart(req) {
    */
   const subscriptionState = yield call(subscriptionStateHandler, { identifier: 'onNotification' })
 
+  if (subscriptionState.isRunning) return
+
   if (!userId) {
     return yield call(subscriptionState.errorHandler, { error: 'required userId param was not passed' })
-  }
-
-  if (subscriptionState.isRunning) {
-    return yield call(subscriptionState.errorHandler, { error: 'onNotification subscription is already running' })
   }
 
   if (subscriptionState.isOffline) {
