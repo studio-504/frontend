@@ -118,7 +118,7 @@ export function intervalEmitter({ frequency }) {
 
 export function* createChannel({ query, identifier }) {
   const AwsAPI = yield getContext('AwsAPI')
-  const userId = yield select(authSelector.authUserIdSelector) || path(['payload'])(req)
+  const userId = yield select(authSelector.authUserIdSelector)
   const subscriptionState = yield call(subscriptionStateHandler, { identifier })
 
   if (subscriptionState.isRunning) return

@@ -1,7 +1,7 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "createSaga"] }] */
 import { expectSaga } from 'redux-saga-test-plan'
 import { getContext } from 'redux-saga/effects'
 import * as matchers from 'redux-saga-test-plan/matchers'
-import { throwError } from 'redux-saga-test-plan/providers'
 import chatMessageSubscription from 'store/ducks/subscriptions/saga/chat'
 import * as usersActions from 'store/ducks/users/actions'
 import * as chatActions from 'store/ducks/chat/actions'
@@ -81,7 +81,7 @@ describe('chatMessageSubscription', () => {
         .dispatch(subscriptionsActions.subscriptionsMainIdle())
         .silentRun()
 
-      expect(unsubscribe).toBeCalled()
+      expect(unsubscribe).toHaveBeenCalled()
     })
 
     it('on error event', () => {
@@ -92,7 +92,7 @@ describe('chatMessageSubscription', () => {
       const { error } = subscription.subscribe.mock.calls[0][0]
       error()
 
-      expect(unsubscribe).toBeCalled()
+      expect(unsubscribe).toHaveBeenCalled()
 
       return promise
     })

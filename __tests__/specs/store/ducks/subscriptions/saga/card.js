@@ -1,7 +1,7 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "createSaga"] }] */
 import { expectSaga } from 'redux-saga-test-plan'
 import { getContext } from 'redux-saga/effects'
 import * as matchers from 'redux-saga-test-plan/matchers'
-import { throwError } from 'redux-saga-test-plan/providers'
 import cardSubscription from 'store/ducks/subscriptions/saga/card'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
@@ -77,7 +77,7 @@ describe('cardSubscription', () => {
         .dispatch(subscriptionsActions.subscriptionsMainIdle())
         .silentRun()
 
-      expect(unsubscribe).toBeCalled()
+      expect(unsubscribe).toHaveBeenCalled()
     })
 
     it('on error event', () => {
@@ -88,7 +88,7 @@ describe('cardSubscription', () => {
       const { error } = subscription.subscribe.mock.calls[0][0]
       error()
 
-      expect(unsubscribe).toBeCalled()
+      expect(unsubscribe).toHaveBeenCalled()
 
       return promise
     })
