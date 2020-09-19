@@ -13,26 +13,6 @@ import * as normalizer from 'normalizer/schemas'
 import * as queryService from 'services/Query'
 import * as Logger from 'services/Logger'
 
-export function getPrimaryGraphqlError(error) {
-  const firstError = path(['errors', '0'])(error)
-
-  if (!firstError || firstError.name !== 'GraphQLError') {
-    return false
-  }
-
-  return firstError
-}
-
-export function getPrimaryClientError(error) {
-  const firstError = path(['errors', '0'])(error)
-
-  if (!firstError || firstError.errorType !== 'ClientError') {
-    return false
-  }
-
-  return firstError
-}
-
 /**
  * AwsAuth.currentAuthenticatedUser method is used to check if a user is logged in.
  * It will throw an error if there is no user logged in.
@@ -94,7 +74,7 @@ export function* handleAuthCheckRequest() {
     yield saveAuthUserPersist(response)
     return response
   } catch (error) {
-    const primaryGraphqlError = getPrimaryGraphqlError(error)
+    const primaryGraphqlError = queryService.getPrimaryGraphqlError(error)
 
     if (!primaryGraphqlError || !primaryGraphqlError.message === 'Network Error') {
       throw error
@@ -135,8 +115,8 @@ export function* authCheckRequest(req) {
       email: path(['data', 'self', 'email'])(data),
     })
   } catch (error) {
-    const primaryGraphqlError = yield call(getPrimaryGraphqlError, error)
-    const primaryClientError = yield call(getPrimaryClientError, error)
+    const primaryGraphqlError = yield call(queryService.getPrimaryGraphqlError, error)
+    const primaryClientError = yield call(queryService.getPrimaryClientError, error)
 
     if (primaryGraphqlError && primaryGraphqlError.message === 'Network Error') {
       yield put(actions.authCheckFailure({

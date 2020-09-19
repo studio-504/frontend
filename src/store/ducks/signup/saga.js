@@ -1,9 +1,6 @@
-import * as AWS from 'aws-sdk/global'
-import { put, takeLatest, getContext } from 'redux-saga/effects'
-import * as CognitoIdentity from 'amazon-cognito-identity-js'
+import { call, put, takeLatest, getContext } from 'redux-saga/effects'
 import Config from 'react-native-config'
 import path from 'ramda/src/path'
-import { promisify } from 'es6-promisify'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
@@ -58,98 +55,85 @@ function* signupPasswordRequest(req) {
   yield put(actions.signupPasswordSuccess({ payload: req.payload }))
 }
 
-/**
- * Links identity pool with user pool. Linking will be done at:
- * - handleSignupConfirmRequest for code based signup confirmation
- * - handleAuthSigninRequest for deeplink based signup confirmation
- */
-function* linkUserIdentities(payload) {
-  const authenticationDetails = new CognitoIdentity.AuthenticationDetails({
-    Username: payload.cognitoUserId,
-    Password: payload.password,
-  })
-
-  const userPool = new CognitoIdentity.CognitoUserPool({
-    UserPoolId: Config.AWS_COGNITO_USER_POOL_ID,
-    ClientId: Config.AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
-  })
-
-  const cognitoUser = new CognitoIdentity.CognitoUser({
-    Username: payload.cognitoUserId,
-    Pool: userPool,
-  })
-
-  const authenticateUser = yield new Promise((onSuccess, onFailure) =>
-    cognitoUser.authenticateUser(authenticationDetails, { onSuccess, onFailure }),
-  )
-
-  AWS.config.region = Config.AWS_COGNITO_REGION
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityId: payload.cognitoUserId,
-    IdentityPoolId: Config.AWS_COGNITO_IDENTITY_POOL_ID,
-    Logins: {
-      [`cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`]: authenticateUser.getIdToken().getJwtToken(),
-    },
-  })
-  
-  yield promisify(AWS.config.credentials.refresh.bind(AWS.config.credentials))()
-  yield cognitoUser.signOut()
-}
-
-/**
- * Signup works in a following way:
- * - creates new entry [credentials] using AWS.CognitoIdentity (in Identity Pool)
- * - creates new entry [user] using AwsAuth.signUp (in User Pool) with username === identityId
- * 
- * Allows same username in both identiyId and userId. identityId generated at authSignupRequest
- * will later be passed to signupConfirmRequest to confirm this user. Loosing identiyId between transition
- * will fail signup process!
- */
 function* handleSignupCreateRequest(payload) {
-  const AwsAuth = yield getContext('AwsAuth')
+  /**
+   *
+   */
+  function* generateCredentials() {
+    const AwsAuth = yield getContext('AwsAuth')
+    const AwsStorage = yield getContext('AwsStorage')
 
-  const cognitoIndentityPoolClient = new AWS.CognitoIdentity({
-    params: {
-      IdentityPoolId: Config.AWS_COGNITO_IDENTITY_POOL_ID,
-    },
-    region: Config.AWS_COGNITO_REGION,
-  })
-  const credentials = yield cognitoIndentityPoolClient.getId().promise()
-  const username = credentials.IdentityId
+    const credentials = yield call([AwsAuth, 'currentCredentials'])
 
-  const attributes = (() => {
-    if (payload.usernameType === 'email') return { email: payload.email }
-    if (payload.usernameType === 'phone') return { phone_number: payload.phone }
-    return {}
-  })()
+    if (credentials.message && credentials.message.includes('Access to Identity') && credentials.message.includes('is forbidden')) {
+      yield call([AwsStorage, 'removeItem'], `CognitoIdentityId-${Config.AWS_COGNITO_IDENTITY_POOL_ID}`)
+      return yield call([AwsAuth, 'currentCredentials'])
+    }
 
-  const signup = yield AwsAuth.signUp({
-    username: username,
-    password: payload.password,
-    attributes: attributes,
-    validationData: [],
-  })
-
-  if (!path(['codeDeliveryDetails', 'DeliveryMedium'])(signup)) {
-    throw new Error('USER_CONFIRMATION_DELIVERY')
+    return credentials
   }
 
-  return {
-    username: payload.username,
-    password: payload.password,
-    cognitoUserId: path(['user', 'username'])(signup),
-    cognitoUsername: payload.email || payload.phone,
-    cognitoDelivery: path(['codeDeliveryDetails', 'DeliveryMedium'])(signup),
+  /**
+   * Check current guest credentials have associated entry against backend
+   */
+  // function* checkNoUserCreatedForGuestCredentials() {
+  //   function* catchSelfRequestError() {
+  //     try {
+  //       const user = yield queryService.apiRequest(queries.self)
+  //       throw user
+  //     } catch (error) {
+  //       return error
+  //     }
+  //   }
+
+  //   const requestError = yield call(catchSelfRequestError)
+  //   const primaryClientError = yield call(queryService.getPrimaryClientError, requestError)
+    
+  //   /**
+  //    * Throw an error for any other condition, e.g. User was already Created or Network Error
+  //    */
+  //   if (!primaryClientError || primaryClientError.message !== 'User does not exist') {
+  //     throw primaryClientError
+  //   }
+  // }
+
+  /**
+   *
+   */
+  function* createUsereForGuestCredentials() {
+    yield queryService.apiRequest(queries.createAnonymousUser)
+  }
+
+  /**
+   *
+   */
+  function* queryBasedOnSignupType() {
+    if (payload.usernameType === 'email') {
+      return yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
+    }
+    if (payload.usernameType === 'phone') {
+      return yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber: payload.phone })
+    }
+    return {}
+  }
+
+  try {
+    yield call(generateCredentials)
+    // yield call(checkNoUserCreatedForGuestCredentials)
+    yield call(createUsereForGuestCredentials)
+    yield call(queryBasedOnSignupType)
+  } catch (error) {
+    console.log(error)
   }
 }
 
 function* signupCreateRequest(req) {
   try {
-    const data = yield handleSignupCreateRequest(req.payload)
+    yield handleSignupCreateRequest(req.payload)
     yield put(actions.signupCreateSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC'),
       payload: req.payload,
-      data,
+      data: { cognitoDelivery: req.payload.usernameType },
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
@@ -190,7 +174,10 @@ function* signupCreateRequest(req) {
  * will fail signup process!
  */
 function* handleSignupConfirmRequestData(req, api) {
-  const dataSelector = path(['data', 'createCognitoOnlyUser'])
+  const dataSelector = (
+    path(['data', 'finishChangeUserEmail']) ||
+    path(['data', 'finishChangeUserPhoneNumber'])
+  )
 
   const data = dataSelector(api)
   const meta = {}
@@ -211,52 +198,42 @@ function* handleSignupConfirmRequestData(req, api) {
 }
 
 function* handleSignupConfirmRequest(payload) {
-  const AwsAuth = yield getContext('AwsAuth')
-
-  yield AwsAuth.confirmSignUp(payload.cognitoUserId, payload.confirmationCode, {
-    forceAliasCreation: false,
-  })
-
   /**
-   * user will get user pool and identity pool linked only if he used code verification
-   * in which we persist username and password in reducers. If user confirmed his account
-   * via deeplink his identites will not be linked. Linking will be moved to authSignin
-   * handler, which will know linking status by asyncStorage entry called @real:signup:${id}
-   * therefore we should clear that entry if confirm and linking were successful.
+   *
    */
-  yield linkUserIdentities({
-    cognitoUserId: payload.cognitoUserId,
-    cognitoUsername: payload.cognitoUsername,
-    password: payload.password,
-  })
+  function* queryBasedOnSignupType() {
+    if (payload.usernameType === 'email') {
+      return yield queryService.apiRequest(queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
+    }
+    if (payload.usernameType === 'phone') {
+      return yield queryService.apiRequest(queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
+    }
+    return {}
+  }
 
-  yield AwsAuth.signIn(payload.cognitoUsername, payload.password)
-
-  const data = yield queryService.apiRequest(queries.createCognitoOnlyUser, {
-    username: payload.username,
-    fullName: payload.username,
-  })
-  const next = yield handleSignupConfirmRequestData({ payload }, data)
+  const data = yield queryBasedOnSignupType()
+  yield handleSignupConfirmRequestData({ payload }, data)
 
   /**
    * Define user for sentry logger, authorized users will be re-defined at services/providers/App
    * But user won't reach that part until profile photo is puloaded
    */
-  Logger.setUser({
-    id: path(['data', 'createCognitoOnlyUser', 'userId'])(data),
-    username: path(['data', 'createCognitoOnlyUser', 'username'])(data),
-    email: path(['data', 'createCognitoOnlyUser', 'email'])(data),
-  })
+  // Logger.setUser({
+  //   id: path(['data', 'createCognitoOnlyUser', 'userId'])(data),
+  //   username: path(['data', 'createCognitoOnlyUser', 'username'])(data),
+  //   email: path(['data', 'createCognitoOnlyUser', 'email'])(data),
+  // })
 
   /**
    * Api subscriptions initialization, most important one we need at this stage
    * is postsCreate subscription listener. Which won't let user proceed to main screen
    * if photo is uploaded and verified but postsCreateSuccess was not triggered
    */
-  yield put(subscriptionsActions.subscriptionsMainRequest(next.data))
-  yield put(subscriptionsActions.subscriptionsPollRequest(next.data))
+  // yield put(subscriptionsActions.subscriptionsMainRequest(next.data))
+  // yield put(subscriptionsActions.subscriptionsPollRequest(next.data))
 
-  yield queryService.apiRequest(queries.setUserAcceptedEULAVersion, { version: '15-11-2019' })
+  // yield queryService.apiRequest(queries.setUserAcceptedEULAVersion, { version: '15-11-2019' })
+  return data
 }
 
 /**

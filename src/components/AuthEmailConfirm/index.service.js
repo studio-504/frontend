@@ -40,6 +40,7 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const handleFormSubmit = (payload) => {
     logEvent('SIGNUP_CONFIRM_REQUEST')
     const nextPayload = {
+      usernameType: 'email',
       confirmationCode: payload.confirmationCode,
       cognitoUsername: signupCognitoIdentity.cognitoUsername,
       cognitoUserId: signupCognitoIdentity.cognitoUserId,

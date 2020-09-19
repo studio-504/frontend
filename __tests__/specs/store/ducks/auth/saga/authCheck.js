@@ -1,6 +1,7 @@
 import * as authCheckSaga from 'store/ducks/auth/saga/authCheck'
 import * as actions from 'store/ducks/auth/actions'
 import * as Logger from 'services/Logger'
+import * as queryService from 'services/Query'
 import { testSaga } from 'redux-saga-test-plan'
 
 describe('authCheckRequest saga', () => {
@@ -74,9 +75,9 @@ describe('authCheckRequest saga', () => {
 	    .call(authCheckSaga.getCognitoCredentials)
 	    .next()
       .throw(getCognitoCredentialsError)
-      .call(authCheckSaga.getPrimaryGraphqlError, getCognitoCredentialsError)
+      .call(queryService.getPrimaryGraphqlError, getCognitoCredentialsError)
       .next()
-      .call(authCheckSaga.getPrimaryClientError, getCognitoCredentialsError)
+      .call(queryService.getPrimaryClientError, getCognitoCredentialsError)
       .next()
 	    .put(actions.authCheckFailure(authCheckFailureResponse))
       .next(authCheckFailureResponse)
@@ -100,10 +101,10 @@ describe('authCheckRequest saga', () => {
       .call(authCheckSaga.getCognitoCredentials)
       .next()
       .throw(getCognitoCredentialsError)
-      .call(authCheckSaga.getPrimaryGraphqlError, getCognitoCredentialsError)
-      .next(authCheckSaga.getPrimaryGraphqlError(getCognitoCredentialsError))
-      .call(authCheckSaga.getPrimaryClientError, getCognitoCredentialsError)
-      .next(authCheckSaga.getPrimaryClientError(getCognitoCredentialsError))
+      .call(queryService.getPrimaryGraphqlError, getCognitoCredentialsError)
+      .next(queryService.getPrimaryGraphqlError(getCognitoCredentialsError))
+      .call(queryService.getPrimaryClientError, getCognitoCredentialsError)
+      .next(queryService.getPrimaryClientError(getCognitoCredentialsError))
       .put(actions.authCheckFailure(authCheckFailureResponse))
       .next(authCheckFailureResponse)
       .isDone()
@@ -137,10 +138,10 @@ describe('authCheckRequest saga', () => {
       .next(getCognitoCredentialsResponse)
       .call(authCheckSaga.handleAuthCheckRequest, getCognitoCredentialsResponse)
       .throw(handleAuthCheckRequestError)
-      .call(authCheckSaga.getPrimaryGraphqlError, handleAuthCheckRequestError)
-      .next(authCheckSaga.getPrimaryGraphqlError(handleAuthCheckRequestError))
-      .call(authCheckSaga.getPrimaryClientError, handleAuthCheckRequestError)
-      .next(authCheckSaga.getPrimaryClientError(handleAuthCheckRequestError))
+      .call(queryService.getPrimaryGraphqlError, handleAuthCheckRequestError)
+      .next(queryService.getPrimaryGraphqlError(handleAuthCheckRequestError))
+      .call(queryService.getPrimaryClientError, handleAuthCheckRequestError)
+      .next(queryService.getPrimaryClientError(handleAuthCheckRequestError))
       .put(actions.authCheckFailure(authCheckFailureResponse))
       .next(authCheckFailureResponse)
       .isDone()
