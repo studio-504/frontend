@@ -10,33 +10,37 @@ import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
  *
  */
 function* chatMessageSubscription() {
-  const { channel, subscriptionState, userId } = yield call(createChannel, {
-    query: chatQueries.onChatMessageNotification,
-    identifier: 'onChatMessageNotification',
-  })
+  try {
+    const { channel, subscriptionState, userId } = yield call(createChannel, {
+      query: chatQueries.onChatMessageNotification,
+      identifier: 'onChatMessageNotification',
+    })
 
-  yield takeEvery(channel, function* ({ eventType, eventData }) {
-    if (eventType === 'connect') {
-      return yield call(subscriptionState.connectHandler, eventData)
-    } else if (eventType === 'pending') {
-      return yield call(subscriptionState.pendingHandler, eventData)
-    } else if (eventType === 'disconnect') {
-      return yield call(subscriptionState.disconnectHandler, eventData)
-    }
+    yield takeEvery(channel, function* ({ eventType, eventData }) {
+      if (eventType === 'connect') {
+        return yield call(subscriptionState.connectHandler, eventData)
+      } else if (eventType === 'pending') {
+        return yield call(subscriptionState.pendingHandler, eventData)
+      } else if (eventType === 'disconnect') {
+        return yield call(subscriptionState.disconnectHandler, eventData)
+      }
 
-    const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
-    const chatId = path(['message', 'chat', 'chatId'])(data)
+      const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
+      const chatId = path(['message', 'chat', 'chatId'])(data)
 
-    yield put(chatActions.chatGetChatRequest({ chatId }))
-    yield put(chatActions.chatGetChatsRequest())
-    yield put(usersActions.usersGetProfileSelfRequest({ userId }))
-  })
+      yield put(chatActions.chatGetChatRequest({ chatId }))
+      yield put(chatActions.chatGetChatsRequest())
+      yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+    })
 
-  /**
-   * Close channel subscription on application toggle
-   */
-  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
-  channel.close()
+    /**
+     * Close channel subscription on application toggle
+     */
+    yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
+    channel.close()
+  } catch (error) {
+    // ignore
+  }
 }
 
 export default chatMessageSubscription

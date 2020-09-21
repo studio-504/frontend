@@ -121,14 +121,18 @@ export function* createChannel({ query, identifier }) {
   const userId = yield select(authSelector.authUserIdSelector)
   const subscriptionState = yield call(subscriptionStateHandler, { identifier })
 
-  if (subscriptionState.isRunning) return
+  if (subscriptionState.isRunning) {
+    throw new Error('subscription already running')
+  }
 
   if (!userId) {
-    return yield call(subscriptionState.errorHandler, { error: 'required userId param was not passed' })
+    yield call(subscriptionState.errorHandler, { error: 'required userId param was not passed' })
+    throw new Error('required userId param was not passed')
   }
 
   if (subscriptionState.isOffline) {
-    return yield call(subscriptionState.errorHandler, { error: 'no internet connection' })
+    yield call(subscriptionState.errorHandler, { error: 'no internet connection' })
+    throw new Error('no internet connection')
   }
 
   const subscription = AwsAPI.graphql(graphqlOperation(query, { userId }))

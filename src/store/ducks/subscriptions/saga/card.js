@@ -9,31 +9,35 @@ import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
  * Cards subscription channel
  */
 function* cardSubscription() {
-  const { channel, subscriptionState, userId } = yield call(createChannel, {
-    query: usersQueries.onCardNotification,
-    identifier: 'onCardNotification',
-  })
+  try {
+    const { channel, subscriptionState, userId } = yield call(createChannel, {
+      query: usersQueries.onCardNotification,
+      identifier: 'onCardNotification',
+    })
 
-  yield takeEvery(channel, function* ({ eventType, eventData }) {
-    if (eventType === 'connect') {
-      return yield call(subscriptionState.connectHandler, eventData)
-    } else if (eventType === 'pending') {
-      return yield call(subscriptionState.pendingHandler, eventData)
-    } else if (eventType === 'disconnect') {
-      return yield call(subscriptionState.disconnectHandler, eventData)
-    }
+    yield takeEvery(channel, function* ({ eventType, eventData }) {
+      if (eventType === 'connect') {
+        return yield call(subscriptionState.connectHandler, eventData)
+      } else if (eventType === 'pending') {
+        return yield call(subscriptionState.pendingHandler, eventData)
+      } else if (eventType === 'disconnect') {
+        return yield call(subscriptionState.disconnectHandler, eventData)
+      }
 
-    yield put(usersActions.usersGetCardsRequest({}))
-    yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-    yield put(usersActions.usersGetProfileSelfRequest({ userId }))
-    yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
-  })
+      yield put(usersActions.usersGetCardsRequest({}))
+      yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
+      yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+      yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
+    })
 
-  /**
-   * Close channel subscription on application toggle
-   */
-  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
-  channel.close()
+    /**
+     * Close channel subscription on application toggle
+     */
+    yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
+    channel.close()
+  } catch (error) {
+    // ignore
+  }
 }
 
 export default cardSubscription
