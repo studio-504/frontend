@@ -15,7 +15,6 @@ import translation from 'store/ducks/translation/reducer'
 import ui from 'store/ducks/ui/reducer'
 import cache from 'store/ducks/cache/reducer'
 import entities from 'store/ducks/entities/reducer'
-import subscriptions from 'store/ducks/subscriptions/reducer'
 import { reducer as network } from 'react-native-offline'
 
 import 'store/ducks/posts/updates'
@@ -84,5 +83,4 @@ export default combineReducers({
   ui,
   cache,
   entities,
-  subscriptions,
 })
