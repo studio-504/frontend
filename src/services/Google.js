@@ -53,7 +53,7 @@ export const signin = async () => {
 
     return {
       token: userInfo.idToken,
-      expires_at: tokeninfo.exp,
+      expires_at: parseInt(tokeninfo.exp, 10),
       user: userInfo.user,
     }
   } catch (error) {
@@ -93,7 +93,7 @@ export const refresh = async () => {
 
     return {
       token: userInfo.idToken,
-      expires_at: tokeninfo.exp,
+      expires_at: parseInt(tokeninfo.exp, 10),
       user: userInfo.user,
     }
   } catch (error) {
