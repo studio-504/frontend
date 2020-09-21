@@ -32,13 +32,13 @@ const messageCodes = {
   /**
    * 
    */
-  [constants.AUTH_SIGNIN_SUCCESS]: {
+  [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Successfully signed in',
     },
   },
-  [constants.AUTH_SIGNIN_FAILURE]: {
+  [constants.AUTH_SIGNIN_COGNITO_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to signin',

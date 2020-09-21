@@ -20,7 +20,7 @@ const initialState = {
     payload: {},
     nextRoute: null,
   },
-  authSignin: {
+  authSigninCognito: {
     data: [],
     status: 'idle',
     error: {},
@@ -118,15 +118,15 @@ const authCheckReset = (state) => update(state, {
 /**
  *
  */
-const authSigninRequest = (state, action) => update(state, {
-  authSignin: {
+const authSigninCognitoRequest = (state, action) => update(state, {
+  authSigninCognito: {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
   },
 })
 
-const authSigninSuccess = (state, action) => update(state, {
-  authSignin: {
+const authSigninCognitoSuccess = (state, action) => update(state, {
+  authSigninCognito: {
     message: { $set: action.payload.message },
     data: { $set: action.payload.data },
     status: { $set: 'success' },
@@ -134,8 +134,8 @@ const authSigninSuccess = (state, action) => update(state, {
   },
 })
 
-const authSigninFailure = (state, action) => update(state, {
-  authSignin: {
+const authSigninCognitoFailure = (state, action) => update(state, {
+  authSigninCognito: {
     message: { $set: action.payload.message },
     error: { $set: action.payload.message },
     status: { $set: 'failure' },
@@ -143,12 +143,12 @@ const authSigninFailure = (state, action) => update(state, {
   },
 })
 
-const authSigninIdle = (state) => update(state, {
-  authSignin: {
-    data: { $set: initialState.authSignin.data },
+const authSigninCognitoIdle = (state) => update(state, {
+  authSigninCognito: {
+    data: { $set: initialState.authSigninCognito.data },
     status: { $set: 'idle' },
-    error: { $set: initialState.authSignin.error },
-    message: { $set: initialState.authSignin.message },
+    error: { $set: initialState.authSigninCognito.error },
+    message: { $set: initialState.authSigninCognito.message },
   },
 })
 
@@ -330,10 +330,10 @@ export default handleActions({
   [constants.AUTH_CHECK_IDLE]: authCheckIdle,
   [constants.AUTH_CHECK_RESET]: authCheckReset,
 
-  [constants.AUTH_SIGNIN_REQUEST]: authSigninRequest,
-  [constants.AUTH_SIGNIN_SUCCESS]: authSigninSuccess,
-  [constants.AUTH_SIGNIN_FAILURE]: authSigninFailure,
-  [constants.AUTH_SIGNIN_IDLE]: authSigninIdle,
+  [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
+  [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,
+  [constants.AUTH_SIGNIN_COGNITO_FAILURE]: authSigninCognitoFailure,
+  [constants.AUTH_SIGNIN_COGNITO_IDLE]: authSigninCognitoIdle,
 
   [constants.AUTH_GOOGLE_REQUEST]: authGoogleRequest,
   [constants.AUTH_GOOGLE_SUCCESS]: authGoogleSuccess,

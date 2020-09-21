@@ -9,10 +9,10 @@ import pathOr from 'ramda/src/pathOr'
 const AuthSigninComponentService = ({ children }) => {
   const dispatch = useDispatch()
 
-  const authSignin = useSelector(state => state.auth.authSignin)
+  const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
 
   const handleFormSubmit = (payload) => {
-    dispatch(authActions.authSigninRequest({
+    dispatch(authActions.authSigninCognitoRequest({
       usernameType: 'phone',
       countryCode: payload.countryCode,
       username: `${payload.countryCode}${payload.username}`,
@@ -20,14 +20,14 @@ const AuthSigninComponentService = ({ children }) => {
     }))
   }
 
-  const formSubmitLoading = authSignin.status === 'loading'
-  const formSubmitDisabled = authSignin.status === 'loading'
-  const formErrorMessage = authSignin.error.text
+  const formSubmitLoading = authSigninCognito.status === 'loading'
+  const formSubmitDisabled = authSigninCognito.status === 'loading'
+  const formErrorMessage = authSigninCognito.error.text
 
   const formInitialValues = {
     countryCode: '+1',
-    username: replace(pathOr('', ['payload', 'countryCode'])(authSignin), '', pathOr('', ['payload', 'username'])(authSignin)),
-    password: pathOr('', ['payload', 'password'])(authSignin),
+    username: replace(pathOr('', ['payload', 'countryCode'])(authSigninCognito), '', pathOr('', ['payload', 'username'])(authSigninCognito)),
+    password: pathOr('', ['payload', 'password'])(authSigninCognito),
   }
 
   const handleFormTransform = (values) => ({
@@ -36,7 +36,7 @@ const AuthSigninComponentService = ({ children }) => {
     password: values.password,
   })
 
-  const handleErrorClose = () => dispatch(authActions.authSigninIdle({}))
+  const handleErrorClose = () => dispatch(authActions.authSigninCognitoIdle({}))
 
   return children({
     formErrorMessage,

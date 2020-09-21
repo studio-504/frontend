@@ -24,30 +24,30 @@ function* handleAuthSigninRequest(payload) {
   return yield AwsAuth.signIn(payload.username, payload.password)
 }
 
-function* authSigninRequest(req) {
+function* authSigninCognitoRequest(req) {
   try {
     const data = yield handleAuthSigninRequest(req.payload)
-    yield put(actions.authSigninSuccess({ data, nextRoute: 'Root' }))
+    yield put(actions.authSigninCognitoSuccess({ data, nextRoute: 'Root' }))
   } catch (error) {
     if (error.code === 'UserNotConfirmedException') {
-      yield put(actions.authSigninFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_CONFIRMED'),
+      yield put(actions.authSigninCognitoFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED'),
       }))
     } else if (error.code === 'UserNotFoundException') {
-      yield put(actions.authSigninFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_FOUND'),
+      yield put(actions.authSigninCognitoFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND'),
       }))
     } else if (error.code === 'NotAuthorizedException') {
-      yield put(actions.authSigninFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'USER_NOT_AUTHORIZED'),
+      yield put(actions.authSigninCognitoFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED'),
       }))
     } else if (error.code === 'InvalidParameterException') {
-      yield put(actions.authSigninFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'INVALID_PARAMETER'),
+      yield put(actions.authSigninCognitoFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER'),
       }))
     } else {
-      yield put(actions.authSigninFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'GENERIC', error.message),
+      yield put(actions.authSigninCognitoFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error.message),
       }))
     }
   }
@@ -270,7 +270,7 @@ function* authForgotConfirmRequest(req) {
 }
 
 export default (persistor) => [
-  takeEvery(constants.AUTH_SIGNIN_REQUEST, authSigninRequest),
+  takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
   takeEvery(constants.AUTH_GOOGLE_REQUEST, authGoogleRequest),
   takeEvery(constants.AUTH_APPLE_REQUEST, authAppleRequest),
   takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest, persistor),
