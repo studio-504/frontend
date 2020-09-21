@@ -25,16 +25,16 @@ export const AuthProvider = ({
   const translationFetch = useSelector(state => state.translation.translationFetch)
   const languageCode = useSelector(authSelector.languageCodeSelector)
   const theme = useSelector(authSelector.themeSelector)
-  const authGoogle = useSelector(state => state.auth.authGoogle)
-  const authApple = useSelector(state => state.auth.authApple)
+  const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
+  const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const networkIsConnected = useSelector(state => state.network.isConnected)
 
   const errorsPool = [{
-    appErrorMessage: authGoogle.error.text,
-    handleErrorClose: () => dispatch(authActions.authGoogleIdle()),
+    appErrorMessage: authSigninGoogle.error.text,
+    handleErrorClose: () => dispatch(authActions.authSigninGoogleIdle()),
   }, {
-    appErrorMessage: authApple.error.text,
-    handleErrorClose: () => dispatch(authActions.authAppleIdle()),
+    appErrorMessage: authSigninApple.error.text,
+    handleErrorClose: () => dispatch(authActions.authSigninAppleIdle()),
   }]
   const { appErrorMessage, handleErrorClose } = errorsPool
     .filter(error => error.appErrorMessage && !error.appErrorMessage.length)

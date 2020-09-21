@@ -19,15 +19,15 @@ const AuthHomeComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const authCheck = useSelector(state => state.auth.authCheck)
-  const authGoogle = useSelector(state => state.auth.authGoogle)
-  const authApple = useSelector(state => state.auth.authApple)
+  const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
+  const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
 
-  const authGoogleRequest = () => 
-    dispatch(authActions.authGoogleRequest())
+  const authSigninGoogleRequest = () => 
+    dispatch(authActions.authSigninGoogleRequest())
 
-  const authAppleRequest = () => 
-    dispatch(authActions.authAppleRequest())
+  const authSigninAppleRequest = () => 
+    dispatch(authActions.authSigninAppleRequest())
   
   const authSigninCognitoRequest = (payload) => {
     const usernameType = guessUsernameType(payload.username)
@@ -42,25 +42,25 @@ const AuthHomeComponentService = ({ children }) => {
     dispatch(authActions.authSigninCognitoIdle({}))
 
   useEffect(() => {
-    if (authGoogle.status === 'success') {
+    if (authSigninGoogle.status === 'success') {
       dispatch(authActions.authCheckIdle({}))
-      dispatch(authActions.authCheckRequest(authGoogle.data))
-      dispatch(authActions.authGoogleIdle({}))
+      dispatch(authActions.authCheckRequest(authSigninGoogle.data))
+      dispatch(authActions.authSigninGoogleIdle({}))
       dispatch(authActions.authSigninCognitoIdle({}))
     }
   }, [
-    authGoogle.status,
+    authSigninGoogle.status,
   ])
 
   useEffect(() => {
-    if (authApple.status === 'success') {
+    if (authSigninApple.status === 'success') {
       dispatch(authActions.authCheckIdle({}))
-      dispatch(authActions.authCheckRequest(authApple.data))
-      dispatch(authActions.authAppleIdle({}))
+      dispatch(authActions.authCheckRequest(authSigninApple.data))
+      dispatch(authActions.authSigninAppleIdle({}))
       dispatch(authActions.authSigninCognitoIdle({}))
     }
   }, [
-    authApple.status,
+    authSigninApple.status,
   ])
   
   useEffect(() => {
@@ -92,10 +92,10 @@ const AuthHomeComponentService = ({ children }) => {
 
   return children({
     authCheck,
-    authGoogle,
-    authGoogleRequest,
-    authApple,
-    authAppleRequest,
+    authSigninGoogle,
+    authSigninGoogleRequest,
+    authSigninApple,
+    authSigninAppleRequest,
     authSigninCognito,
     authSigninCognitoRequest,
     authSigninCognitoIdle,

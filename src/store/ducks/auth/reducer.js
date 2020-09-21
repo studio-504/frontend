@@ -28,7 +28,7 @@ const initialState = {
     payload: {},
     nextRoute: null,
   },
-  authGoogle: {
+  authSigninGoogle: {
     data: [],
     status: 'idle',
     error: {},
@@ -36,7 +36,7 @@ const initialState = {
     payload: {},
     nextRoute: null,
   },
-  authApple: {
+  authSigninApple: {
     data: [],
     status: 'idle',
     error: {},
@@ -155,68 +155,68 @@ const authSigninCognitoIdle = (state) => update(state, {
 /**
  *
  */
-const authGoogleRequest = (state) => update(state, {
-  authGoogle: {
+const authSigninGoogleRequest = (state) => update(state, {
+  authSigninGoogle: {
     status: { $set: 'loading' },
   },
 })
 
-const authGoogleSuccess = (state, action) => update(state, {
-  authGoogle: {
+const authSigninGoogleSuccess = (state, action) => update(state, {
+  authSigninGoogle: {
     message: { $set: action.payload.message },
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authGoogleFailure = (state, action) => update(state, {
-  authGoogle: {
+const authSigninGoogleFailure = (state, action) => update(state, {
+  authSigninGoogle: {
     message: { $set: action.payload.message },
     error: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
 
-const authGoogleIdle = (state) => update(state, {
-  authGoogle: {
-    data: { $set: initialState.authGoogle.data },
+const authSigninGoogleIdle = (state) => update(state, {
+  authSigninGoogle: {
+    data: { $set: initialState.authSigninGoogle.data },
     status: { $set: 'idle' },
-    error: { $set: initialState.authGoogle.error },
-    message: { $set: initialState.authGoogle.message },
+    error: { $set: initialState.authSigninGoogle.error },
+    message: { $set: initialState.authSigninGoogle.message },
   },
 })
 
 /**
  *
  */
-const authAppleRequest = (state) => update(state, {
-  authApple: {
+const authSigninAppleRequest = (state) => update(state, {
+  authSigninApple: {
     status: { $set: 'loading' },
   },
 })
 
-const authAppleSuccess = (state, action) => update(state, {
-  authApple: {
+const authSigninAppleSuccess = (state, action) => update(state, {
+  authSigninApple: {
     message: { $set: action.payload.message },
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authAppleFailure = (state, action) => update(state, {
-  authApple: {
+const authSigninAppleFailure = (state, action) => update(state, {
+  authSigninApple: {
     message: { $set: action.payload.message },
     error: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
 
-const authAppleIdle = (state) => update(state, {
-  authApple: {
-    data: { $set: initialState.authApple.data },
+const authSigninAppleIdle = (state) => update(state, {
+  authSigninApple: {
+    data: { $set: initialState.authSigninApple.data },
     status: { $set: 'idle' },
-    error: { $set: initialState.authApple.error },
-    message: { $set: initialState.authApple.message },
+    error: { $set: initialState.authSigninApple.error },
+    message: { $set: initialState.authSigninApple.message },
   },
 })
 
@@ -335,15 +335,15 @@ export default handleActions({
   [constants.AUTH_SIGNIN_COGNITO_FAILURE]: authSigninCognitoFailure,
   [constants.AUTH_SIGNIN_COGNITO_IDLE]: authSigninCognitoIdle,
 
-  [constants.AUTH_GOOGLE_REQUEST]: authGoogleRequest,
-  [constants.AUTH_GOOGLE_SUCCESS]: authGoogleSuccess,
-  [constants.AUTH_GOOGLE_FAILURE]: authGoogleFailure,
-  [constants.AUTH_GOOGLE_IDLE]: authGoogleIdle,
+  [constants.AUTH_SIGNIN_GOOGLE_REQUEST]: authSigninGoogleRequest,
+  [constants.AUTH_SIGNIN_GOOGLE_SUCCESS]: authSigninGoogleSuccess,
+  [constants.AUTH_SIGNIN_GOOGLE_FAILURE]: authSigninGoogleFailure,
+  [constants.AUTH_SIGNIN_GOOGLE_IDLE]: authSigninGoogleIdle,
 
-  [constants.AUTH_APPLE_REQUEST]: authAppleRequest,
-  [constants.AUTH_APPLE_SUCCESS]: authAppleSuccess,
-  [constants.AUTH_APPLE_FAILURE]: authAppleFailure,
-  [constants.AUTH_APPLE_IDLE]: authAppleIdle,
+  [constants.AUTH_SIGNIN_APPLE_REQUEST]: authSigninAppleRequest,
+  [constants.AUTH_SIGNIN_APPLE_SUCCESS]: authSigninAppleSuccess,
+  [constants.AUTH_SIGNIN_APPLE_FAILURE]: authSigninAppleFailure,
+  [constants.AUTH_SIGNIN_APPLE_IDLE]: authSigninAppleIdle,
 
   [constants.AUTH_SIGNOUT_REQUEST]: authSignoutRequest,
   [constants.AUTH_SIGNOUT_SUCCESS]: authSignoutSuccess,

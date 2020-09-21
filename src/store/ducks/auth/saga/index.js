@@ -83,21 +83,21 @@ function* handleAuthGoogleRequest() {
 /**
  *
  */
-function* authGoogleRequest(req) {
+function* authSigninGoogleRequest(req) {
   try {
     const data = yield handleAuthGoogleRequest(req.payload)
-    yield put(actions.authGoogleSuccess({
-      message: errors.getMessagePayload(constants.AUTH_GOOGLE_SUCCESS, 'GENERIC'),
+    yield put(actions.authSigninGoogleSuccess({
+      message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_SUCCESS, 'GENERIC'),
       data,
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_GOOGLE_FAILURE, 'CANCELED', error.message),
+      yield put(actions.authSigninGoogleFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'CANCELED', error.message),
       }))
     } else {
-      yield put(actions.authGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_GOOGLE_FAILURE, 'GENERIC', error.message),
+      yield put(actions.authSigninGoogleFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'GENERIC', error.message),
       }))
     }
   }
@@ -150,21 +150,21 @@ function* handleAuthAppleRequest() {
 /**
  *
  */
-function* authAppleRequest(req) {
+function* authSigninAppleRequest(req) {
   try {
     const data = yield handleAuthAppleRequest(req.payload)
-    yield put(actions.authAppleSuccess({
-      message: errors.getMessagePayload(constants.AUTH_APPLE_SUCCESS, 'GENERIC'),
+    yield put(actions.authSigninAppleSuccess({
+      message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_SUCCESS, 'GENERIC'),
       data,
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authAppleFailure({
-        message: errors.getMessagePayload(constants.AUTH_APPLE_FAILURE, 'CANCELED', error.message),
+      yield put(actions.authSigninAppleFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'CANCELED', error.message),
       }))
     } else {
-      yield put(actions.authAppleFailure({
-        message: errors.getMessagePayload(constants.AUTH_APPLE_FAILURE, 'GENERIC', error.message),
+      yield put(actions.authSigninAppleFailure({
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'GENERIC', error.message),
       }))
     }
   }
@@ -271,8 +271,8 @@ function* authForgotConfirmRequest(req) {
 
 export default (persistor) => [
   takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
-  takeEvery(constants.AUTH_GOOGLE_REQUEST, authGoogleRequest),
-  takeEvery(constants.AUTH_APPLE_REQUEST, authAppleRequest),
+  takeEvery(constants.AUTH_SIGNIN_GOOGLE_REQUEST, authSigninGoogleRequest),
+  takeEvery(constants.AUTH_SIGNIN_APPLE_REQUEST, authSigninAppleRequest),
   takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest, persistor),
   takeLatest(constants.AUTH_FORGOT_REQUEST, authForgotRequest),
   takeLatest(constants.AUTH_FORGOT_CONFIRM_REQUEST, authForgotConfirmRequest),

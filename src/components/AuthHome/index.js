@@ -16,10 +16,10 @@ import testIDs from './test-ids'
 
 const AuthHome = ({
   t,
-  authGoogle,
-  authGoogleRequest,
-  authApple,
-  authAppleRequest,
+  authSigninGoogle,
+  authSigninGoogleRequest,
+  authSigninApple,
+  authSigninAppleRequest,
 }) => {
   const styling = styles
   const navigation = useNavigation()
@@ -34,10 +34,10 @@ const AuthHome = ({
 
         <View style={styling.content}>
           <ActionsComponent
-            authGoogle={authGoogle}
-            authGoogleRequest={authGoogleRequest}
-            authApple={authApple}
-            authAppleRequest={authAppleRequest}
+            authSigninGoogle={authSigninGoogle}
+            authSigninGoogleRequest={authSigninGoogleRequest}
+            authSigninApple={authSigninApple}
+            authSigninAppleRequest={authSigninAppleRequest}
           />
         </View>
 
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
 
 AuthHome.propTypes = {
   t: PropTypes.any,
-  authGoogle: PropTypes.any,
-  authGoogleRequest: PropTypes.any,
-  authApple: PropTypes.any,
-  authAppleRequest: PropTypes.any,
+  authSigninGoogle: PropTypes.any,
+  authSigninGoogleRequest: PropTypes.any,
+  authSigninApple: PropTypes.any,
+  authSigninAppleRequest: PropTypes.any,
 }
 
 export default withTranslation()(AuthHome)

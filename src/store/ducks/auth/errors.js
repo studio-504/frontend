@@ -61,13 +61,13 @@ const messageCodes = {
     },
   },
 
-  [constants.AUTH_GOOGLE_SUCCESS]: {
+  [constants.AUTH_SIGNIN_GOOGLE_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Successfully signed with Google',
     },
   },
-  [constants.AUTH_GOOGLE_FAILURE]: {
+  [constants.AUTH_SIGNIN_GOOGLE_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to sign with Google',
@@ -78,13 +78,13 @@ const messageCodes = {
     },
   },
 
-  [constants.AUTH_APPLE_SUCCESS]: {
+  [constants.AUTH_SIGNIN_APPLE_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Successfully signed with Apple',
     },
   },
-  [constants.AUTH_APPLE_FAILURE]: {
+  [constants.AUTH_SIGNIN_APPLE_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to sign with Apple',

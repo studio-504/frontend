@@ -21,18 +21,18 @@ export const authSigninCognitoFailure = createAction(constants.AUTH_SIGNIN_COGNI
 /**
  * 
  */
-export const authGoogleIdle = createAction(constants.AUTH_GOOGLE_IDLE)
-export const authGoogleRequest = createAction(constants.AUTH_GOOGLE_REQUEST)
-export const authGoogleSuccess = createAction(constants.AUTH_GOOGLE_SUCCESS)
-export const authGoogleFailure = createAction(constants.AUTH_GOOGLE_FAILURE)
+export const authSigninGoogleIdle = createAction(constants.AUTH_SIGNIN_GOOGLE_IDLE)
+export const authSigninGoogleRequest = createAction(constants.AUTH_SIGNIN_GOOGLE_REQUEST)
+export const authSigninGoogleSuccess = createAction(constants.AUTH_SIGNIN_GOOGLE_SUCCESS)
+export const authSigninGoogleFailure = createAction(constants.AUTH_SIGNIN_GOOGLE_FAILURE)
 
 /**
  * 
  */
-export const authAppleIdle = createAction(constants.AUTH_APPLE_IDLE)
-export const authAppleRequest = createAction(constants.AUTH_APPLE_REQUEST)
-export const authAppleSuccess = createAction(constants.AUTH_APPLE_SUCCESS)
-export const authAppleFailure = createAction(constants.AUTH_APPLE_FAILURE)
+export const authSigninAppleIdle = createAction(constants.AUTH_SIGNIN_APPLE_IDLE)
+export const authSigninAppleRequest = createAction(constants.AUTH_SIGNIN_APPLE_REQUEST)
+export const authSigninAppleSuccess = createAction(constants.AUTH_SIGNIN_APPLE_SUCCESS)
+export const authSigninAppleFailure = createAction(constants.AUTH_SIGNIN_APPLE_FAILURE)
 
 /**
  * 
