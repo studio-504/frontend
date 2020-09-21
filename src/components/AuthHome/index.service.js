@@ -22,6 +22,7 @@ const AuthHomeComponentService = ({ children }) => {
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
+  const authSigninAnonymous = useSelector(state => state.auth.authSigninAnonymous)
 
   const authSigninGoogleRequest = () => 
     dispatch(authActions.authSigninGoogleRequest())
@@ -37,7 +38,10 @@ const AuthHomeComponentService = ({ children }) => {
       password: payload.password,
     }))
   }
-  
+
+  const authSigninAnonymousRequest = () => 
+    dispatch(authActions.authSigninAnonymousRequest())
+
   const authSigninCognitoIdle = () => 
     dispatch(authActions.authSigninCognitoIdle({}))
 
@@ -99,6 +103,8 @@ const AuthHomeComponentService = ({ children }) => {
     authSigninCognito,
     authSigninCognitoRequest,
     authSigninCognitoIdle,
+    authSigninAnonymous,
+    authSigninAnonymousRequest,
   })
 }
 

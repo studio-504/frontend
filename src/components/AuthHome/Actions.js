@@ -9,6 +9,7 @@ import * as navigationActions from 'navigation/actions'
 import PhoneIcon from 'assets/svg/auth/Phone'
 import AppleIcon from 'assets/svg/auth/Apple'
 import GoogleIcon from 'assets/svg/auth/Google'
+import { Text } from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
@@ -20,6 +21,8 @@ const Actions = ({
   authSigninGoogleRequest,
   authSigninApple,
   authSigninAppleRequest,
+  authSigninAnonymous,
+  authSigninAnonymousRequest,
 }) => {
   const styling = styles
   const navigation = useNavigation()
@@ -35,6 +38,8 @@ const Actions = ({
       <View style={styling.item}>
         <DefaultButton testID={testIDs.actions.appleBtn} icon={AppleIcon} label={t('Sign in with Apple')} onPress={authSigninAppleRequest} loading={authSigninApple.status === 'loading'} style={styling.apple} labelStyle={styling.labelStyle} />
       </View>
+
+      <Text testID={testIDs.actions.anonymousBtn} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.link}>{t('or Browse Anonymously')}</Text>
     </View>
   )
 }
@@ -45,6 +50,8 @@ Actions.propTypes = {
   authSigninGoogleRequest: PropTypes.any,
   authSigninApple: PropTypes.any,
   authSigninAppleRequest: PropTypes.any,
+  authSigninAnonymous: PropTypes.any,
+  authSigninAnonymousRequest: PropTypes.any,
 }
 
 const styles = StyleSheet.create({
@@ -64,6 +71,11 @@ const styles = StyleSheet.create({
   },
   google: {
     backgroundColor: '#4285F4',
+  },
+  link: {
+    marginVertical: 12,
+    textAlign: 'center',
+    fontWeight: '600',
   },
 })
 

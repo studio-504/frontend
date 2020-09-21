@@ -21,6 +21,14 @@ export const authSigninCognitoFailure = createAction(constants.AUTH_SIGNIN_COGNI
 /**
  * 
  */
+export const authSigninAnonymousIdle = createAction(constants.AUTH_SIGNIN_ANONYMOUS_IDLE)
+export const authSigninAnonymousRequest = createAction(constants.AUTH_SIGNIN_ANONYMOUS_REQUEST)
+export const authSigninAnonymousSuccess = createAction(constants.AUTH_SIGNIN_ANONYMOUS_SUCCESS)
+export const authSigninAnonymousFailure = createAction(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE)
+
+/**
+ * 
+ */
 export const authSigninGoogleIdle = createAction(constants.AUTH_SIGNIN_GOOGLE_IDLE)
 export const authSigninGoogleRequest = createAction(constants.AUTH_SIGNIN_GOOGLE_REQUEST)
 export const authSigninGoogleSuccess = createAction(constants.AUTH_SIGNIN_GOOGLE_SUCCESS)

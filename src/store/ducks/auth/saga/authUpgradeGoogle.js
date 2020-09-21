@@ -25,7 +25,6 @@ function* handleAuthUpgradeGoogleRequest() {
   }
 
   yield call([AwsAuth, 'currentUserCredentials'])
-  yield call([queryService, 'apiRequest'], queries.createAnonymousUser)
   yield call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
   yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
   yield call([AwsAuth, 'currentUserCredentials'], { bypassCache: false })

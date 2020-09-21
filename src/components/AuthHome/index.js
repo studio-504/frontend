@@ -20,6 +20,8 @@ const AuthHome = ({
   authSigninGoogleRequest,
   authSigninApple,
   authSigninAppleRequest,
+  authSigninAnonymous,
+  authSigninAnonymousRequest,
 }) => {
   const styling = styles
   const navigation = useNavigation()
@@ -38,6 +40,8 @@ const AuthHome = ({
             authSigninGoogleRequest={authSigninGoogleRequest}
             authSigninApple={authSigninApple}
             authSigninAppleRequest={authSigninAppleRequest}
+            authSigninAnonymous={authSigninAnonymous}
+            authSigninAnonymousRequest={authSigninAnonymousRequest}
           />
         </View>
 
@@ -70,6 +74,8 @@ AuthHome.propTypes = {
   authSigninGoogleRequest: PropTypes.any,
   authSigninApple: PropTypes.any,
   authSigninAppleRequest: PropTypes.any,
+  authSigninAnonymous: PropTypes.any,
+  authSigninAnonymousRequest: PropTypes.any,
 }
 
 export default withTranslation()(AuthHome)

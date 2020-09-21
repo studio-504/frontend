@@ -20,6 +20,14 @@ const initialState = {
     payload: {},
     nextRoute: null,
   },
+  authSigninAnonymous: {
+    data: [],
+    status: 'idle',
+    error: {},
+    message: {},
+    payload: {},
+    nextRoute: null,
+  },
   authSigninCognito: {
     data: [],
     status: 'idle',

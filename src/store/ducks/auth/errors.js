@@ -148,6 +148,22 @@ const messageCodes = {
     },
   },
 
+  /**
+   * 
+   */
+  [constants.AUTH_SIGNIN_ANONYMOUS_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_SIGNIN_ANONYMOUS_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
 }
 
 export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {

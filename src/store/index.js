@@ -12,6 +12,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { errorWrapper } from 'store/helpers'
 import 'store/updates'
+import StorageHelper from 'services/MemoryStorage'
 
 const persistConfig = {
   key: '/v2/root',
@@ -26,6 +27,7 @@ const networkMiddleware = createNetworkMiddleware({
 
 const sagaMiddleware = createSagaMiddleware({
   context: {
+    AwsStorage: (new StorageHelper()).getStorage(),
     AwsAuth: Auth,
     AwsAPI: API,
     errorWrapper,
