@@ -1,4 +1,3 @@
-import * as AWS from 'aws-sdk/global'
 import { put, getContext, takeEvery } from 'redux-saga/effects'
 import {
   federatedGoogleSignin,
@@ -6,7 +5,6 @@ import {
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
-import Config from 'react-native-config'
 
 /**
  *
@@ -24,13 +22,10 @@ function* handleAuthGoogleRequest() {
     token: google.token,
   }
 
-  const GoogleCognitoIdentityCredentials = yield AwsAuth.federatedSignIn('google', {
+  yield AwsAuth.federatedSignIn('google', {
     token: google.token,
     expires_at: google.expires_at,
   }, userPayload)
-
-  AWS.config.region = Config.AWS_COGNITO_REGION
-  AWS.config.credentials = GoogleCognitoIdentityCredentials
 
   return google
 }

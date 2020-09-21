@@ -1,4 +1,3 @@
-import * as AWS from 'aws-sdk/global'
 import { put, getContext, takeEvery } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import {
@@ -11,7 +10,6 @@ import {
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
-import Config from 'react-native-config'
 
 /**
  *
@@ -46,13 +44,10 @@ function* handleAuthAppleRequest() {
     token: apple.token,
   }
 
-  const AppleCognitoIdentityCredentials = yield AwsAuth.federatedSignIn('appleid.apple.com', {
+  yield AwsAuth.federatedSignIn('appleid.apple.com', {
     token: apple.token,
     expires_at: apple.expires_at,
   }, userPayload)
-
-  AWS.config.region = Config.AWS_COGNITO_REGION
-  AWS.config.credentials = AppleCognitoIdentityCredentials
 
   return apple
 }
