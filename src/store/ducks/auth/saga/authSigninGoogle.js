@@ -9,7 +9,7 @@ import * as errors from 'store/ducks/auth/errors'
 /**
  *
  */
-function* handleAuthGoogleRequest() {
+function* handleAuthSigninGoogleRequest() {
   const AwsAuth = yield getContext('AwsAuth')
 
   const google = yield federatedGoogleSignin()
@@ -35,7 +35,7 @@ function* handleAuthGoogleRequest() {
  */
 function* authSigninGoogleRequest(req) {
   try {
-    const data = yield handleAuthGoogleRequest(req.payload)
+    const data = yield handleAuthSigninGoogleRequest(req.payload)
     yield put(actions.authSigninGoogleSuccess({
       message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_SUCCESS, 'GENERIC'),
       data,

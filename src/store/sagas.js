@@ -14,6 +14,7 @@ import auth from 'store/ducks/auth/saga'
 import authCheck from 'store/ducks/auth/saga/authCheck'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
 import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
+import authUpgradeGoogle from 'store/ducks/auth/saga/authUpgradeGoogle'
 import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
 
 import posts from 'store/ducks/posts/saga'
@@ -51,6 +52,7 @@ export default function* rootSaga(persistor) {
     .concat(authCheck(persistor))
     .concat(authSigninCognito(persistor))
     .concat(authSigninGoogle(persistor))
+    .concat(authUpgradeGoogle(persistor))
     .concat(authSigninApple(persistor))
 
     .concat(posts())

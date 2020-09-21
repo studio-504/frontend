@@ -22,7 +22,7 @@ export function* getCognitoCredentials() {
 
   try {
     yield AwsAuth.currentAuthenticatedUser()
-    yield AwsAuth.currentCredentials()
+    yield AwsAuth.currentUserCredentials()
     yield AwsAuth.currentUserPoolUser()
   } catch (error) {
     if (typeof error === 'string' && error.includes('Network request failed')) {
