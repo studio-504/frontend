@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as Updates from 'services/Updates'
 import useAppState from 'services/AppState'
 import LoadingComponent from 'components/Loading'
 
@@ -37,7 +36,6 @@ export const AuthProvider = ({
    * Constructor function to fetch: Translations, Themes and Auth data
    */
   useEffect(() => {
-    // dispatch(authActions.authCheckRequest())
     dispatch(authActions.authFlowRequest())
   }, [])
 
@@ -55,8 +53,6 @@ export const AuthProvider = ({
    */
   useAppState({
     onForeground: () => {
-      // dispatch(authActions.authCheckRequest())
-      Updates.versionCheck()
       startApp(userId)
     },
     onBackground: () => {
@@ -67,7 +63,7 @@ export const AuthProvider = ({
     },
   })
 
-  if (['loading', 'idle'].includes(authFlow.status)) {
+  if (['loading'].includes(authFlow.status)) {
     return <LoadingComponent />
   }
 

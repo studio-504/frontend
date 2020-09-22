@@ -192,6 +192,7 @@ const authSigninCognitoRequest = (state, action) => update(state, {
   authSigninCognito: {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
+    error: { $set: initialState.authSigninCognito.error },
   },
 })
 

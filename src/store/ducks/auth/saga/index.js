@@ -1,46 +1,7 @@
-import { put, getContext, takeEvery, takeLatest } from 'redux-saga/effects'
-import {
-  federatedGoogleSignout,
-} from 'services/AWS'
-import {
-  resetAuthUserPersist,
-} from 'services/Auth'
+import { put, getContext, takeLatest } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
-
-/**
- *
- */
-function* handleAuthSignoutRequest() {
-  const AwsAuth = yield getContext('AwsAuth')
-
-  try {
-    yield federatedGoogleSignout()
-  } catch (error) {
-    // ignore
-  }
-
-  yield AwsAuth.signOut({ global: true })
-}
-
-function* authSignoutRequest(persistor, req) {
-  try {
-    const data = yield handleAuthSignoutRequest(req.payload)
-    yield resetAuthUserPersist()
-    yield persistor.purge()
-
-    yield put(actions.authSignoutSuccess({
-      message: errors.getMessagePayload(constants.AUTH_SIGNOUT_SUCCESS, 'GENERIC'),
-      data,
-    }))
-  } catch (error) {
-    yield put(actions.authSignoutFailure({
-      message: errors.getMessagePayload(constants.AUTH_SIGNOUT_FAILURE, 'GENERIC', error.message),
-    }))
-  }
-}
-
 
 /**
  *
@@ -108,8 +69,7 @@ function* authForgotConfirmRequest(req) {
   }
 }
 
-export default (persistor) => [
-  takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest, persistor),
+export default () => [
   takeLatest(constants.AUTH_FORGOT_REQUEST, authForgotRequest),
   takeLatest(constants.AUTH_FORGOT_CONFIRM_REQUEST, authForgotConfirmRequest),
 ]

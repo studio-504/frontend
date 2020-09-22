@@ -9,6 +9,7 @@ const AuthSigninComponentService = ({ children }) => {
   const dispatch = useDispatch()
 
   const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
+  const authFlow = useSelector(state => state.auth.authFlow)
 
   const handleFormSubmit = (payload) => {
     dispatch(authActions.authSigninCognitoRequest({
@@ -18,8 +19,8 @@ const AuthSigninComponentService = ({ children }) => {
     }))
   }
 
-  const formSubmitLoading = authSigninCognito.status === 'loading'
-  const formSubmitDisabled = authSigninCognito.status === 'loading'
+  const formSubmitLoading = authSigninCognito.status === 'loading' || authFlow.status === 'loading'
+  const formSubmitDisabled = authSigninCognito.status === 'loading' || authFlow.status === 'loading'
   const formErrorMessage = authSigninCognito.error.text
 
   const formInitialValues = {

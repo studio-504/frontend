@@ -116,6 +116,10 @@ export const refresh = async () => {
 }
 
 export const signout = async () => {
-  await GoogleSignin.revokeAccess()
-  await GoogleSignin.signOut()
+  try {
+    await GoogleSignin.revokeAccess()
+    await GoogleSignin.signOut()
+  } catch (error) {
+    //ignore
+  }
 }

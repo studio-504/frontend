@@ -11,6 +11,7 @@ import * as translationConstants from 'store/ducks/translation/constants'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import * as Updates from 'services/Updates'
 
 /**
  * Translation library setup, translationFetch.data is an object of:
@@ -51,6 +52,11 @@ function* handleAuthReadyRequest() {
     translationFetchFailure: take(translationConstants.TRANSLATION_FETCH_FAILURE),
   })
   yield call(translationsInit)
+
+  /**
+   * Is application at latest version
+   */
+  yield call([Updates, 'versionCheck'])
 }
 
 /**
