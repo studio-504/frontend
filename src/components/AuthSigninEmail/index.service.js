@@ -9,17 +9,25 @@ const AuthSigninComponentService = ({ children }) => {
   const dispatch = useDispatch()
 
   const authSignin = useSelector(state => state.auth.authSignin)
+  const authCheck = useSelector(state => state.auth.authCheck)
 
-  const handleFormSubmit = (payload) => {
-    dispatch(authActions.authSigninRequest({
+  const handleFormTransform = (values) => ({
+    username: compose(trim, toLower, pathOr('', ['username']))(values),
+    password: values.password,
+  })
+
+  const handleFormSubmit = (values, formApi) => {
+    const nextValues = handleFormTransform(values)
+    formApi.setValues(nextValues)
+
+    dispatch(authActions.authSigninSubmit({
       usernameType: 'email',
-      username: toLower(payload.username),
-      password: payload.password,
+      username: toLower(nextValues.username),
+      password: nextValues.password,
     }))
   }
 
-  const formSubmitLoading = authSignin.status === 'loading'
-  const formSubmitDisabled = authSignin.status === 'loading'
+  const formSubmitting = authSignin.status === 'loading' || authCheck.status === 'loading'
   const formErrorMessage = authSignin.error.text
 
   const formInitialValues = {
@@ -27,20 +35,16 @@ const AuthSigninComponentService = ({ children }) => {
     password: pathOr('', ['payload', 'password'])(authSignin),
   }
 
-  const handleFormTransform = (values) => ({
-    username: compose(trim, toLower, pathOr('', ['username']))(values),
-    password: values.password,
-  })
-
-  const handleErrorClose = () => dispatch(authActions.authSigninIdle({}))
+  const handleErrorClose = () => {
+    dispatch(authActions.authSigninIdle())
+    dispatch(authActions.authCheckIdle())
+  }
 
   return children({
     formErrorMessage,
     handleFormSubmit,
-    handleFormTransform,
     handleErrorClose,
-    formSubmitLoading,
-    formSubmitDisabled,
+    formSubmitting,
     formInitialValues,
   })
 }

@@ -5,15 +5,13 @@ import createSagaMiddleware from 'redux-saga'
 import reactotron from 'services/Reactotron'
 import rootReducer from 'store/reducers'
 import rootSaga from 'store/sagas'
-import { Credentials } from '@aws-amplify/core'
 import Auth from '@aws-amplify/auth'
-import Cache from '@aws-amplify/cache'
 import API from '@aws-amplify/api'
 import * as Logger from 'services/Logger'
 import { STORAGE_PROVIDER } from 'services/Storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
-import path from 'ramda/src/path'
+import { errorWrapper } from 'store/helpers'
 import 'store/updates'
 
 const persistConfig = {
@@ -23,25 +21,8 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
 }
 
-const errorWrapper = (error) => {
-  /**
-   * basic error object handling
-   */
-  const errorMessage = path(['message'])(error)
-  if (typeof errorMessage === 'string' && errorMessage.length) {
-    return errorMessage
-  }
-
-  /**
-   * graphql api errors
-   */
-  const errorGraphql = path(['errors'])(error)
-  if (Array.isArray(errorGraphql) && errorGraphql.length) {
-    return errorGraphql
-  }
-}
-
 const sagaMonitor = reactotron.createSagaMonitor()
+
 const networkMiddleware = createNetworkMiddleware({
   queueReleaseThrottle: 200,
 })
@@ -50,8 +31,6 @@ const sagaMiddleware = createSagaMiddleware({
   context: {
     AwsAuth: Auth,
     AwsAPI: API,
-    AwsCache: Cache,
-    AwsCredentials: Credentials,
     errorWrapper,
   },
   onError: Logger.captureException,
