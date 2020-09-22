@@ -46,16 +46,18 @@ export const AuthProvider = ({
   useEffect(() => {
     dispatch(themeActions.themeFetchRequest())
     dispatch(translationActions.translationFetchRequest())
-    dispatch(authActions.authCheckRequest({ type: 'FIRST_MOUNT' }))
+    dispatch(authActions.authCheckRequest())
   }, [])
 
+  const startApp = (userId) => {
+    if(!userId) return
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(subscriptionsActions.subscriptionsMainRequest())
-      dispatch(subscriptionsActions.subscriptionsPollRequest())
-    }
-  }, [userId])
+    dispatch(subscriptionsActions.subscriptionsMainRequest())
+    dispatch(subscriptionsActions.subscriptionsPollRequest())
+    dispatch(subscriptionsActions.subscriptionsPrefetchRequest())
+  }
+
+  useEffect(() => startApp(userId), [userId])
 
   /**
    * Application version check handler, which forces users to update
@@ -63,13 +65,9 @@ export const AuthProvider = ({
    */
   useAppState({
     onForeground: () => {
-      dispatch(authActions.authCheckRequest({ type: 'STATE_CHANGE' }))
+      dispatch(authActions.authCheckRequest())
       Updates.versionCheck()
-
-      if (userId) {
-        dispatch(subscriptionsActions.subscriptionsMainRequest())
-        dispatch(subscriptionsActions.subscriptionsPollRequest())
-      }
+      startApp(userId)
     },
     onBackground: () => {
       if (userId) {
