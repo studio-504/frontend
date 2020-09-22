@@ -11,12 +11,17 @@ import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 
 import auth from 'store/ducks/auth/saga'
-import authCheck from 'store/ducks/auth/saga/authCheck'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
 import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
 import authUpgradeGoogle from 'store/ducks/auth/saga/authUpgradeGoogle'
 import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
 import authSigninAnonymous from 'store/ducks/auth/saga/authSigninAnonymous'
+
+import authData from 'store/ducks/auth/saga/authData'
+import authToken from 'store/ducks/auth/saga/authToken'
+import authFlow from 'store/ducks/auth/saga/authFlow'
+import authReady from 'store/ducks/auth/saga/authReady'
+import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
 
 import posts from 'store/ducks/posts/saga'
 import postsCreate from 'store/ducks/posts/saga/postsCreate'
@@ -50,12 +55,16 @@ export default function* rootSaga(persistor) {
     .concat(subscriptions())
 
     .concat(auth(persistor))
-    .concat(authCheck(persistor))
     .concat(authSigninCognito(persistor))
     .concat(authSigninGoogle(persistor))
     .concat(authUpgradeGoogle(persistor))
     .concat(authSigninApple(persistor))
     .concat(authSigninAnonymous(persistor))
+    .concat(authData(persistor))
+    .concat(authToken(persistor))
+    .concat(authFlow(persistor))
+    .concat(authReady(persistor))
+    .concat(authPrefetch(persistor))
 
     .concat(posts())
     .concat(postsCreate())

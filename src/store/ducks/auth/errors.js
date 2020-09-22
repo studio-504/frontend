@@ -164,6 +164,85 @@ const messageCodes = {
     },
   },
 
+  /**
+   * 
+   */
+  [constants.AUTH_FLOW_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_FLOW_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_DATA_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_DATA_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_TOKEN_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_TOKEN_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_READY_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_READY_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_PREFETCH_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.AUTH_PREFETCH_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
 }
 
 export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {

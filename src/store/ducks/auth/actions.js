@@ -2,13 +2,52 @@ import { createAction } from 'redux-actions'
 import * as constants from 'store/ducks/auth/constants'
 
 /**
+ * New auth manager
+ */
+export const authFlowIdle = createAction(constants.AUTH_FLOW_IDLE)
+export const authFlowRequest = createAction(constants.AUTH_FLOW_REQUEST)
+export const authFlowSuccess = createAction(constants.AUTH_FLOW_SUCCESS)
+export const authFlowFailure = createAction(constants.AUTH_FLOW_FAILURE)
+
+/**
+ * Solely for cognito request
+ */
+export const authTokenIdle = createAction(constants.AUTH_TOKEN_IDLE)
+export const authTokenRequest = createAction(constants.AUTH_TOKEN_REQUEST)
+export const authTokenSuccess = createAction(constants.AUTH_TOKEN_SUCCESS)
+export const authTokenFailure = createAction(constants.AUTH_TOKEN_FAILURE)
+
+/**
+ * Solely for cognito request
+ */
+export const authDataIdle = createAction(constants.AUTH_DATA_IDLE)
+export const authDataRequest = createAction(constants.AUTH_DATA_REQUEST)
+export const authDataSuccess = createAction(constants.AUTH_DATA_SUCCESS)
+export const authDataFailure = createAction(constants.AUTH_DATA_FAILURE)
+
+/**
+ * Application Runtime initializer, should be moved into /ducks/app perhaps ?!
+ */
+export const authReadyIdle = createAction(constants.AUTH_READY_IDLE)
+export const authReadyRequest = createAction(constants.AUTH_READY_REQUEST)
+export const authReadySuccess = createAction(constants.AUTH_READY_SUCCESS)
+export const authReadyFailure = createAction(constants.AUTH_READY_FAILURE)
+
+/**
+ * Application Initial data prefetch, should be moved into /ducks/app perhaps ?!
+ */
+export const authPrefetchIdle = createAction(constants.AUTH_PREFETCH_IDLE)
+export const authPrefetchRequest = createAction(constants.AUTH_PREFETCH_REQUEST)
+export const authPrefetchSuccess = createAction(constants.AUTH_PREFETCH_SUCCESS)
+export const authPrefetchFailure = createAction(constants.AUTH_PREFETCH_FAILURE)
+
+/**
  * 
  */
 export const authCheckIdle = createAction(constants.AUTH_CHECK_IDLE)
 export const authCheckRequest = createAction(constants.AUTH_CHECK_REQUEST)
 export const authCheckSuccess = createAction(constants.AUTH_CHECK_SUCCESS)
 export const authCheckFailure = createAction(constants.AUTH_CHECK_FAILURE)
-export const authCheckReset = createAction(constants.AUTH_CHECK_RESET)
 
 /**
  * 
