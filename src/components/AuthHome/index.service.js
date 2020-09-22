@@ -18,7 +18,7 @@ const AuthHomeComponentService = ({ children }) => {
 
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const authCheck = useSelector(state => state.auth.authCheck)
+  const authFlow = useSelector(state => state.auth.authFlow)
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
@@ -46,56 +46,19 @@ const AuthHomeComponentService = ({ children }) => {
     dispatch(authActions.authSigninCognitoIdle({}))
 
   useEffect(() => {
-    if (authSigninGoogle.status === 'success') {
-      dispatch(authActions.authCheckIdle({}))
-      dispatch(authActions.authCheckRequest(authSigninGoogle.data))
-      dispatch(authActions.authSigninGoogleIdle({}))
-      dispatch(authActions.authSigninCognitoIdle({}))
-    }
-  }, [
-    authSigninGoogle.status,
-  ])
-
-  useEffect(() => {
-    if (authSigninApple.status === 'success') {
-      dispatch(authActions.authCheckIdle({}))
-      dispatch(authActions.authCheckRequest(authSigninApple.data))
-      dispatch(authActions.authSigninAppleIdle({}))
-      dispatch(authActions.authSigninCognitoIdle({}))
-    }
-  }, [
-    authSigninApple.status,
-  ])
-  
-  useEffect(() => {
-    if (authSigninCognito.status === 'success') {
-      dispatch(authActions.authCheckRequest())
-      dispatch(authActions.authSigninCognitoIdle({}))
-    }
-
-    if (authSigninCognito.status === 'failure' && authSigninCognito.nextRoute) {
-      navigation.navigate(authSigninCognito.nextRoute)
-      dispatch(authActions.authSigninCognitoIdle({}))
-    }
-  }, [
-    authSigninCognito.status,
-  ])
-
-  useEffect(() => {
     const shouldRedirect = [
       'AuthHome',
       'AuthCognito',
       'AuthSignupConfirm',
-    ].includes(authCheck.nextRoute)
+    ].includes(authFlow.meta.nextRoute)
     if (shouldRedirect) {
-      navigation.navigate(authCheck.nextRoute)
+      navigation.navigate(authFlow.meta.nextRoute)
     }
   }, [
-    authCheck.nextRoute,
+    authFlow.meta.nextRoute,
   ])
 
   return children({
-    authCheck,
     authSigninGoogle,
     authSigninGoogleRequest,
     authSigninApple,

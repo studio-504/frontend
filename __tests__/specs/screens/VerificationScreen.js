@@ -107,7 +107,6 @@ describe('Verification screen', () => {
       fireEvent.press(getByText('Hide and Proceed'))
 
       expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle({}))
-      // expect(dispatch).toHaveBeenCalledWith(authActions.authCheckIdle({ nextRoute: 'Root' }))
     })
   })
 

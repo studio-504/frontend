@@ -44,14 +44,6 @@ export const authPrefetchFailure = createAction(constants.AUTH_PREFETCH_FAILURE)
 /**
  * 
  */
-export const authCheckIdle = createAction(constants.AUTH_CHECK_IDLE)
-export const authCheckRequest = createAction(constants.AUTH_CHECK_REQUEST)
-export const authCheckSuccess = createAction(constants.AUTH_CHECK_SUCCESS)
-export const authCheckFailure = createAction(constants.AUTH_CHECK_FAILURE)
-
-/**
- * 
- */
 export const authSigninCognitoIdle = createAction(constants.AUTH_SIGNIN_COGNITO_IDLE)
 export const authSigninCognitoRequest = createAction(constants.AUTH_SIGNIN_COGNITO_REQUEST)
 export const authSigninCognitoSuccess = createAction(constants.AUTH_SIGNIN_COGNITO_SUCCESS)

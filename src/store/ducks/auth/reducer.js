@@ -50,14 +50,6 @@ const initialState = {
   /**
    *
    */
-  authCheck: {
-    data: [],
-    status: 'idle',
-    error: {},
-    message: {},
-    payload: {},
-    nextRoute: null,
-  },
   authSigninAnonymous: {
     data: [],
     status: 'idle',
@@ -300,11 +292,9 @@ const authSignoutRequest = (state) => update(state, {
   },
 })
 
-const authSignoutSuccess = (state, action) => update(initialState, {
-  authCheck: {
-    message: { $set: action.payload.message },
-    nextRoute: { $set: 'AuthHome' },
-  },
+const authSignoutSuccess = () => update(initialState, {
+  authFlow: { $set: initialState.authFlow },
+  authData: { $set: initialState.authData },
 })
 
 const authSignoutFailure = (state, action) => update(state, {

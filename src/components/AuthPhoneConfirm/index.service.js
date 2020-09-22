@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Keyboard } from 'react-native'
 import * as signupActions from 'store/ducks/signup/actions'
-import * as authActions from 'store/ducks/auth/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
@@ -65,7 +64,6 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
     dispatch(signupActions.signupPasswordIdle({}))
 
     Keyboard.dismiss()
-    dispatch(authActions.authCheckRequest())
   }, [
     signupConfirm.status,
   ])
