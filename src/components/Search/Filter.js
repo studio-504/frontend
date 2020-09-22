@@ -22,9 +22,9 @@ const Filter = ({
   const filters = [
     { title: 'All', isActive: viewedStatus === undefined && verifiedStatus === undefined, onPress: handlePostsAllFilter },
     { title: 'Verified', isActive: verifiedStatus === true, onPress: handlePostsVerifiedFilter },
-    { title: 'Not Verified', isActive: verifiedStatus === false, onPress: handlePostsNotVerifiedFilter },
+    { title: 'Unverified', isActive: verifiedStatus === false, onPress: handlePostsNotVerifiedFilter },
     { title: 'Viewed', isActive: viewedStatus === 'VIEWED', onPress: handlePostsViewedFilter },
-    { title: 'Not Viewed', isActive: viewedStatus === 'NOT_VIEWED', onPress: handlePostsNotViewedFilter },
+    { title: 'Unviewed', isActive: viewedStatus === 'NOT_VIEWED', onPress: handlePostsNotViewedFilter },
   ]
 
   return (
@@ -32,6 +32,8 @@ const Filter = ({
       <ScrollView style={styling.filters} horizontal>
         {filters.map((filter) => (
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={{ selected: filter.isActive }}
             key={filter.title}
             style={filter.isActive ? [styling.filter, styling.filterSelected] : [styling.filter, styling.filterCreate]}
             onPress={filter.onPress}
@@ -80,7 +82,7 @@ Filter.propTypes = {
     handlePostsNotViewedFilter: PropTypes.func,
     handlePostsVerifiedFilter: PropTypes.func,
     handlePostsNotVerifiedFilter: PropTypes.func,
-  }),
+  }).isRequired,
 }
 
 Filter.defaultProps = {

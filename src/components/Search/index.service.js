@@ -69,7 +69,7 @@ const SearchService = ({ children }) => {
     dispatch(postsActions.postsGetTrendingPostsRequest({ ...payload, viewedStatus, isVerified: verifiedStatus }))
   
   const postsGetTrendingPostsMoreRequest = (payload) =>
-    dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload, viewedStatus, isVerified: handleVerifiedStatus }))
+    dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload, viewedStatus, isVerified: verifiedStatus }))
 
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
