@@ -10,12 +10,13 @@ const Filter = ({
   trendingFilters: {
     viewedStatus,
     verifiedStatus,
-    handlePostsAllFilter,
-    handlePostsViewedFilter,
-    handlePostsNotViewedFilter,
-    handlePostsVerifiedFilter,
-    handlePostsNotVerifiedFilter,
   },
+  handlePostsAllFilter,
+  handlePostsViewedFilter,
+  handlePostsNotViewedFilter,
+  handlePostsVerifiedFilter,
+  handlePostsNotVerifiedFilter,
+  isLoading,
 }) => {
   const styling = styles(theme)
 
@@ -27,6 +28,12 @@ const Filter = ({
     { title: 'Unviewed', isActive: viewedStatus === 'NOT_VIEWED', onPress: handlePostsNotViewedFilter },
   ]
 
+  const makeStyles = ({ isActive, isLoading }) => ([
+    ...[styling.filter],
+    ...(isActive ? [styling.filterSelected] : []),
+    ...(isLoading ? [styling.filterDisabled] : []),
+  ])
+
   return (
     <View style={styling.root}>
       <ScrollView style={styling.filters} horizontal>
@@ -35,8 +42,9 @@ const Filter = ({
             accessibilityRole="button"
             accessibilityState={{ selected: filter.isActive }}
             key={filter.title}
-            style={filter.isActive ? [styling.filter, styling.filterSelected] : [styling.filter, styling.filterCreate]}
+            style={makeStyles({ isActive: filter.isActive, isLoading })}
             onPress={filter.onPress}
+            disabled={filter.isActive || isLoading}
           >
             <Text style={styling.text}>{filter.title}</Text>
           </TouchableOpacity>
@@ -69,6 +77,9 @@ const styles = (theme) =>
     text: {
       fontWeight: '500',
     },
+    filterDisabled: {
+      opacity: 0.4,
+    },
   })
 
 Filter.propTypes = {
@@ -77,16 +88,18 @@ Filter.propTypes = {
   trendingFilters: PropTypes.shape({
     viewedStatus: PropTypes.oneOf(['VIEWED', 'NOT_VIEWED']),
     verifiedStatus: PropTypes.bool,
-    handlePostsAllFilter: PropTypes.func,
-    handlePostsViewedFilter: PropTypes.func,
-    handlePostsNotViewedFilter: PropTypes.func,
-    handlePostsVerifiedFilter: PropTypes.func,
-    handlePostsNotVerifiedFilter: PropTypes.func,
   }).isRequired,
+  handlePostsAllFilter: PropTypes.func.isRequired,
+  handlePostsViewedFilter: PropTypes.func.isRequired,
+  handlePostsNotViewedFilter: PropTypes.func.isRequired,
+  handlePostsVerifiedFilter: PropTypes.func.isRequired,
+  handlePostsNotVerifiedFilter: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 }
 
 Filter.defaultProps = {
   values: {},
+  isLoading: false,
 }
 
 export default withTheme(Filter)

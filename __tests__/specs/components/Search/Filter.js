@@ -11,45 +11,55 @@ const callbacks = {
   handlePostsNotVerifiedFilter: jest.fn(),
 }
 
-const setup = (props) => renderWithProviders(<FilterComponent {...props} />)
+const setup = (props) => renderWithProviders(<FilterComponent {...callbacks} {...props} />)
 
 const testFilterButtons = (holder, expected) => {
   const { getAllByRole } = holder
   const $buttons = getAllByRole('button')
 
-  const testName = ($button, name) => {
+  const testButton = ($button, { name, fn, selected }) => {
     expect(within($button).getByText(name)).toBeTruthy()
-  }
-
-  const testIsActive = ($button, selected) => {
     expect($button).toHaveProp('accessibilityState', { selected })
-  }
-
-  const testCallback = ($button, fn) => {
     expect(fn).not.toHaveBeenCalled()
+
     fireEvent.press($button)
-    expect(fn).toHaveBeenCalled()
+
+    if (selected) {
+      expect(fn).not.toHaveBeenCalled()
+    } else {
+      expect(fn).toHaveBeenCalled()
+    }
   }
 
-  testName($buttons[0], 'All')
-  testIsActive($buttons[0], expected.all.isActive)
-  testCallback($buttons[0], callbacks.handlePostsAllFilter)
+  testButton($buttons[0], {
+    name: 'All',
+    selected: expected.all.isActive,
+    fn: callbacks.handlePostsAllFilter,
+  })
 
-  testName($buttons[1], 'Verified')
-  testIsActive($buttons[1], expected.verified.isActive)
-  testCallback($buttons[1], callbacks.handlePostsVerifiedFilter)
+  testButton($buttons[1], {
+    name: 'Verified',
+    selected: expected.verified.isActive,
+    fn: callbacks.handlePostsVerifiedFilter,
+  })
 
-  testName($buttons[2], 'Unverified')
-  testIsActive($buttons[2], expected.unverified.isActive)
-  testCallback($buttons[2], callbacks.handlePostsNotVerifiedFilter)
+  testButton($buttons[2], {
+    name: 'Unverified',
+    selected: expected.unverified.isActive,
+    fn: callbacks.handlePostsNotVerifiedFilter,
+  })
 
-  testName($buttons[3], 'Viewed')
-  testIsActive($buttons[3], expected.viewed.isActive)
-  testCallback($buttons[3], callbacks.handlePostsViewedFilter)
+  testButton($buttons[3], {
+    name: 'Viewed',
+    selected: expected.viewed.isActive,
+    fn: callbacks.handlePostsViewedFilter,
+  })
 
-  testName($buttons[4], 'Unviewed')
-  testIsActive($buttons[4], expected.unviewed.isActive)
-  testCallback($buttons[4], callbacks.handlePostsNotViewedFilter)
+  testButton($buttons[4], {
+    name: 'Unviewed',
+    selected: expected.unviewed.isActive,
+    fn: callbacks.handlePostsNotViewedFilter,
+  })
 }
 
 describe('Search filter component', () => {
@@ -62,7 +72,6 @@ describe('Search filter component', () => {
       trendingFilters: {
         viewedStatus: undefined,
         verifiedStatus: undefined,
-        ...callbacks,
       },
     })
 
@@ -80,7 +89,6 @@ describe('Search filter component', () => {
       trendingFilters: {
         viewedStatus: undefined,
         verifiedStatus: true,
-        ...callbacks,
       },
     })
 
@@ -98,7 +106,6 @@ describe('Search filter component', () => {
       trendingFilters: {
         viewedStatus: undefined,
         verifiedStatus: false,
-        ...callbacks,
       },
     })
 
@@ -116,7 +123,6 @@ describe('Search filter component', () => {
       trendingFilters: {
         viewedStatus: 'VIEWED',
         verifiedStatus: undefined,
-        ...callbacks,
       },
     })
 
@@ -134,7 +140,6 @@ describe('Search filter component', () => {
       trendingFilters: {
         viewedStatus: 'NOT_VIEWED',
         verifiedStatus: undefined,
-        ...callbacks,
       },
     })
 

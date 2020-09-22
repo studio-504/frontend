@@ -42,6 +42,7 @@ const SearchComponent = ({
   handleFormChange,
   formChange,
   trendingFilters,
+  handleFilterChange,
 }) => {
   const styling = styles(theme)
 
@@ -57,6 +58,36 @@ const SearchComponent = ({
     viewabilityConfigRef,
   } = useViewable()
 
+  const isEmpty = !path(['data', 'length'])(postsGetTrendingPosts)
+  const isLoading = path(['status'])(postsGetTrendingPosts) === 'loading'
+
+  const flatListRef = React.useRef()
+
+  const scrollToTop = () => {
+    flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+  }
+
+  const handlePostsAllFilter = () => {
+    handleFilterChange({ viewedStatus: undefined, verifiedStatus: undefined })
+    scrollToTop()
+  }
+  const handlePostsViewedFilter = () => {
+    handleFilterChange({ ...trendingFilters, viewedStatus: 'VIEWED' })
+    scrollToTop()
+  }
+  const handlePostsNotViewedFilter = () => {
+    handleFilterChange({ ...trendingFilters, viewedStatus: 'NOT_VIEWED' })
+    scrollToTop()
+  }
+  const handlePostsVerifiedFilter = () => {
+    handleFilterChange({ ...trendingFilters, verifiedStatus: true })
+    scrollToTop()
+  }
+  const handlePostsNotVerifiedFilter = () => {
+    handleFilterChange({ ...trendingFilters, verifiedStatus: false })
+    scrollToTop()
+  }
+
   return (
     <View style={styling.root}>
       <HeaderComponent>
@@ -67,44 +98,38 @@ const SearchComponent = ({
           handleFormChange={handleFormChange}
           formFocus={formFocus}
         />
+        <View style={styling.filters}>
+          <FilterComponent
+            trendingFilters={trendingFilters}
+            handlePostsAllFilter={handlePostsAllFilter}
+            handlePostsViewedFilter={handlePostsViewedFilter}
+            handlePostsNotViewedFilter={handlePostsNotViewedFilter}
+            handlePostsVerifiedFilter={handlePostsVerifiedFilter}
+            handlePostsNotVerifiedFilter={handlePostsNotVerifiedFilter}
+            isLoading={isLoading}
+          />
+        </View>
       </HeaderComponent>
 
-      {!formFocus && (path(['status'])(postsGetTrendingPosts) === 'loading' && !path(['data', 'length'])(postsGetTrendingPosts)) ?
-        <View style={styling.overlay}>
-          <PostsLoadingComponent />
-        </View>
-      : null}
+      {!formFocus && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
 
       <FlatList
+        ref={flatListRef}
         data={postsGetTrendingPosts.data}
         numColumns={3}
-        keyExtractor={item => item.postId}
+        keyExtractor={(item) => item.postId}
         renderItem={({ item: post, index: priorityIndex }) => (
-          <PostsGridThumbnailComponent
-            post={post}
-            priorityIndex={priorityIndex}
-            thread="posts/trending"
-          />
+          <PostsGridThumbnailComponent post={post} priorityIndex={priorityIndex} thread="posts/trending" />
         )}
-        refreshControl={(
+        refreshControl={
           <RefreshControl
             tintColor={theme.colors.border}
             onRefresh={scroll.handleRefresh}
             refreshing={scroll.refreshing}
           />
-        )}
-        ListHeaderComponent={(
-          <FilterComponent
-            trendingFilters={trendingFilters}
-          />
-        )}
+        }
         ListHeaderComponentStyle={styling.header}
-        ListFooterComponent={(
-          <ActivityIndicator
-            animating={scroll.loadingmore}
-            color={theme.colors.border}
-          />
-        )}
+        ListFooterComponent={<ActivityIndicator animating={scroll.loadingmore} color={theme.colors.border} />}
         ListFooterComponentStyle={styling.activity}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={0.5}
@@ -112,16 +137,13 @@ const SearchComponent = ({
         viewabilityConfig={viewabilityConfigRef.current}
       />
 
-      {formFocus && formChange ?
+      {formFocus && formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
             ref={feedRef}
             refreshControl={
-              <RefreshControl
-                tintColor={theme.colors.border}
-                refreshing={usersSearch.status === 'loading'}
-              />
+              <RefreshControl tintColor={theme.colors.border} refreshing={usersSearch.status === 'loading'} />
             }
           >
             <Subheading style={styling.subheading}>{t('Search Result')}</Subheading>
@@ -136,18 +158,15 @@ const SearchComponent = ({
             />
           </ScrollView>
         </View>
-      : null}
+      ) : null}
 
-      {formFocus && !formChange ?
+      {formFocus && !formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
             ref={feedRef}
             refreshControl={
-              <RefreshControl
-                tintColor={theme.colors.border}
-                refreshing={usersGetTrendingUsers.status === 'loading'}
-              />
+              <RefreshControl tintColor={theme.colors.border} refreshing={usersGetTrendingUsers.status === 'loading'} />
             }
           >
             <Subheading style={styling.subheading}>{t('Trending Users')}</Subheading>
@@ -162,7 +181,7 @@ const SearchComponent = ({
             />
           </ScrollView>
         </View>
-      : null}
+      ) : null}
     </View>
   )
 }
@@ -171,6 +190,13 @@ const styles = theme => StyleSheet.create({
   root: {
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
+  },
+  filters: {
+    backgroundColor: theme.colors.backgroundPrimary,
+    paddingTop: 6,
+    paddingHorizontal: 12,
+    borderBottomColor: theme.colors.backgroundSecondary,
+    borderBottomWidth: 1,
   },
   subheading: {
     paddingTop: 6,
@@ -211,6 +237,7 @@ SearchComponent.propTypes = {
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
   trendingFilters: PropTypes.any,
+  handleFilterChange: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(SearchComponent))

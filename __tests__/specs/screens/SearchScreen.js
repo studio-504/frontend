@@ -1,3 +1,4 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "testFilter"] }] */
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { renderWithProviders, fireEvent } from 'tests/utils'
@@ -32,22 +33,36 @@ describe('Search screen', () => {
     expect(dispatch).toHaveBeenCalledWith(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
   })
 
-  it('Filters', () => {
-    const { getByText } = setup()
-
-    const testFilter = ({ name, payload }) => {
+  describe('Filters', () => {
+    const testFilter = ({ getByText, name, payload }) => {
       dispatch.mockClear()
       fireEvent.press(getByText(name))
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetTrendingPostsRequest(payload))
-      dispatch.mockClear()
       fireEvent.press(getByText(name))
-      expect(dispatch).not.toHaveBeenCalled()
+      expect(dispatch).toHaveBeenCalledTimes(1)
     }
 
-    testFilter({ name: 'Verified', payload: { isVerified: true, viewedStatus: undefined } })
-    testFilter({ name: 'Unverified', payload: { isVerified: false, viewedStatus: undefined } })
-    testFilter({ name: 'Viewed', payload: { isVerified: undefined, viewedStatus: 'VIEWED' } })
-    testFilter({ name: 'Unviewed', payload: { isVerified: undefined, viewedStatus: 'NOT_VIEWED' } })
-    testFilter({ name: 'All', payload: { isVerified: undefined, viewedStatus: undefined } })
+    it('toggle Verified/Unverified', () => {
+      const { getByText } = setup()
+      testFilter({ getByText, name: 'Verified', payload: { isVerified: true, viewedStatus: undefined } })
+      testFilter({ getByText, name: 'Unverified', payload: { isVerified: false, viewedStatus: undefined } })
+      testFilter({ getByText, name: 'All', payload: { isVerified: undefined, viewedStatus: undefined } })
+    })
+
+    it('toggle Viewed/Unviewed', () => {
+      const { getByText } = setup()
+      testFilter({ getByText, name: 'Viewed', payload: { isVerified: undefined, viewedStatus: 'VIEWED' } })
+      testFilter({ getByText, name: 'Unviewed', payload: { isVerified: undefined, viewedStatus: 'NOT_VIEWED' } })
+      testFilter({ getByText, name: 'All', payload: { isVerified: undefined, viewedStatus: undefined } })
+    })
+
+    it('mix Verified/Viewed', () => {
+      const { getByText } = setup()
+
+      testFilter({ getByText, name: 'Viewed', payload: { isVerified: undefined, viewedStatus: 'VIEWED' } })
+      testFilter({ getByText, name: 'Verified', payload: { isVerified: true, viewedStatus: 'VIEWED' } })
+      testFilter({ getByText, name: 'Unviewed', payload: { isVerified: true, viewedStatus: 'NOT_VIEWED' } })
+      testFilter({ getByText, name: 'Unverified', payload: { isVerified: false, viewedStatus: 'NOT_VIEWED' } })
+    })
   })
 })

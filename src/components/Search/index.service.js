@@ -37,23 +37,9 @@ const SearchService = ({ children }) => {
   /**
    * Trending Filters
    */
-  const handlePostsAllFilter = () => {
-    handleViewedStatus(undefined)
-    handleVerifiedStatus(undefined)
-  }
-  const handlePostsViewedFilter = () => {
-    handleViewedStatus('VIEWED')
-    handleVerifiedStatus(undefined)
-  }
-  const handlePostsNotViewedFilter = () => {
-    handleViewedStatus('NOT_VIEWED')
-    handleVerifiedStatus(undefined)
-  }
-  const handlePostsVerifiedFilter = () => {
-    handleVerifiedStatus(true)
-  }
-  const handlePostsNotVerifiedFilter = () => {
-    handleVerifiedStatus(false)
+  const handleFilterChange = (filters) => {
+    handleViewedStatus(filters.viewedStatus)
+    handleVerifiedStatus(filters.verifiedStatus)
   }
 
   const usersFollowRequest = ({ userId }) =>
@@ -64,9 +50,6 @@ const SearchService = ({ children }) => {
   
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
-
-  const postsGetTrendingPostsRequest = (payload) =>
-    dispatch(postsActions.postsGetTrendingPostsRequest({ ...payload, viewedStatus, isVerified: verifiedStatus }))
   
   const postsGetTrendingPostsMoreRequest = (payload) =>
     dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload, viewedStatus, isVerified: verifiedStatus }))
@@ -76,7 +59,7 @@ const SearchService = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    postsGetTrendingPostsRequest({})
+    dispatch(postsActions.postsGetTrendingPostsRequest({ viewedStatus, isVerified: verifiedStatus }))
   }, [viewedStatus, verifiedStatus])
 
   /**
@@ -102,21 +85,16 @@ const SearchService = ({ children }) => {
     usersAcceptFollowerUser,
     usersAcceptFollowerUserRequest,
     usersGetTrendingUsers,
-    postsGetTrendingPostsRequest,
     postsGetTrendingPosts,
     postsGetTrendingPostsMoreRequest,
     formFocus,
     handleFormFocus,
     formChange,
     handleFormChange,
+    handleFilterChange,
     trendingFilters: {
       viewedStatus,
       verifiedStatus,
-      handlePostsAllFilter,
-      handlePostsViewedFilter,
-      handlePostsNotViewedFilter,
-      handlePostsVerifiedFilter,
-      handlePostsNotVerifiedFilter,
     },
   })
 }
