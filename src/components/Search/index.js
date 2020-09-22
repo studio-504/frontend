@@ -193,7 +193,8 @@ const styles = theme => StyleSheet.create({
   },
   filters: {
     backgroundColor: theme.colors.backgroundPrimary,
-    paddingTop: 6,
+    paddingTop: 9,
+    paddingBottom: 4,
     paddingHorizontal: 12,
     borderBottomColor: theme.colors.backgroundSecondary,
     borderBottomWidth: 1,
