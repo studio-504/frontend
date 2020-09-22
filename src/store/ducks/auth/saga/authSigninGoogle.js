@@ -1,4 +1,4 @@
-import { put, getContext, takeEvery } from 'redux-saga/effects'
+import { put, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import {
   federatedGoogleSignin,
 } from 'services/AWS'
@@ -27,7 +27,17 @@ function* handleAuthSigninGoogleRequest() {
     expires_at: google.expires_at,
   }, userPayload)
 
-  return google
+  yield put(actions.authFlowRequest({ allowAnonymous: true }))
+  const { flowSuccess, flowFailure } = yield race({
+    flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
+    flowFailure: take(constants.AUTH_FLOW_FAILURE),
+  })
+
+  if (flowFailure) {
+    throw new Error('Failed to obtain flow')
+  }
+
+  return flowSuccess
 }
 
 /**
