@@ -83,7 +83,28 @@ function* unauthenticatedToken() {
   return credentials
 }
 
-function* handleAuthTokenRequest() {
+/**
+ * Fetch guest tokens
+ */
+function* guestToken() {
+  const credentials = yield call(fetchCognitoCredentials)
+
+  if (!credentials.sessionToken) {
+    throw new MissingCognitoTokenError()
+  }
+
+  return {
+    ...credentials,
+    authenticated: true,
+  }
+}
+
+function* handleAuthTokenRequest(payload) {
+  if (payload.allowAnonymous) {
+    const credentials = yield call(guestToken)
+    return { data: credentials, meta: { type: 'COGNITO_GUEST' } }
+  }
+
   try {
     const credentials = yield call(authenticatedToken)
     return { data: credentials, meta: { type: 'COGNITO_AUTHENTICATED' } }

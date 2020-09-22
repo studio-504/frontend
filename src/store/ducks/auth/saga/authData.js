@@ -23,7 +23,7 @@ class MissingUserAttributeError extends Error {
 /**
  * Spread user data through normalized reducers
  */
-export function* handleAuthFlowRequestData(req, api) {
+export function* handleAuthDataRequestData(req, api) {
   const dataSelector = path(['data', 'self'])
 
   const data = dataSelector(api)
@@ -51,7 +51,7 @@ function* onlineData() {
   const response = yield queryService.apiRequest(queries.self)
   yield saveAuthUserPersist(response)
 
-  if (!response.data.self.userId) {
+  if (!path(['data', 'self', 'userId'])(response)) {
     throw new MissingUserAttributeError()
   }
 
@@ -64,21 +64,36 @@ function* onlineData() {
 function* offlineData() {
   const response = yield getAuthUserPersist()
 
-  if (!response.data.self.userId) {
+  if (!path(['data', 'self', 'userId'])(response)) {
     throw new MissingUserAttributeError()
   }
 
   return response
 }
 
-function* handleAuthFlowRequest() {
+/**
+ * Handled anonymous user creation, throws an error if user already exists
+ */
+function* createAnonymousUser() {
+  try {
+    yield queryService.apiRequest(queries.createAnonymousUser)
+  } catch (error) {
+    // ignore
+  }
+}
+
+function* handleAuthDataRequest(payload) {
+  if (payload.allowAnonymous) {
+    yield createAnonymousUser()
+  }
+
   try {
     const data = yield call(onlineData)
-    const next = yield call(handleAuthFlowRequestData, { meta: { type: 'ONLINE' } }, data)
+    const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, data)
     return next
   } catch (error) {
     const data = yield call(offlineData)
-    const next = yield call(handleAuthFlowRequestData, { meta: { type: 'OFFLINE' } }, data)
+    const next = yield call(handleAuthDataRequestData, { meta: { type: 'OFFLINE' } }, data)
     return next
   }
 }
@@ -88,7 +103,7 @@ function* handleAuthFlowRequest() {
  */
 function* authDataRequest(req) {
   try {
-    const { data, meta } = yield handleAuthFlowRequest(req.payload)
+    const { data, meta } = yield handleAuthDataRequest(req.payload)
     yield put(actions.authDataSuccess({
       message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
       data,

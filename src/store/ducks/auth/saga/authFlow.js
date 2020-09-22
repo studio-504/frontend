@@ -5,13 +5,20 @@ import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
 
 function hasAuthenticatedCondition({ tokenSuccess, dataSuccess }) {
-  return (
+  const authenticated = (
     pathOr('', ['payload', 'meta', 'type'])(tokenSuccess) === 'COGNITO_AUTHENTICATED' &&
     pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
   )
+
+  const guest = (
+    pathOr('', ['payload', 'meta', 'type'])(tokenSuccess) === 'COGNITO_GUEST' &&
+    pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
+  )
+
+  return (authenticated || guest)
 }
 
-function* handleAuthFlowRequest() {
+function* handleAuthFlowRequest(payload) {
   /**
    * App runtime initialization
    * Fetch translation and theme from cloudflare
@@ -25,7 +32,7 @@ function* handleAuthFlowRequest() {
   /**
    * Fetching cognito credentials/tokens
    */
-  yield put(actions.authTokenRequest())
+  yield put(actions.authTokenRequest({ allowAnonymous: payload.allowAnonymous }))
   const { tokenSuccess, tokenFailure } = yield race({
     tokenSuccess: take(constants.AUTH_TOKEN_SUCCESS),
     tokenFailure: take(constants.AUTH_TOKEN_FAILURE),
@@ -38,14 +45,14 @@ function* handleAuthFlowRequest() {
   /**
    * Fetching user data from api
    */
-  yield put(actions.authDataRequest())
+  yield put(actions.authDataRequest({ allowAnonymous: payload.allowAnonymous }))
   const { dataSuccess, dataFailure } = yield race({
     dataSuccess: take(constants.AUTH_DATA_SUCCESS),
     dataFailure: take(constants.AUTH_DATA_FAILURE),
   })
 
   if (dataFailure) {
-    throw new Error('Failed to obtain token')
+    throw new Error('Failed to fetch data')
   }
 
   return {
