@@ -99,7 +99,7 @@ function* guestToken() {
   }
 }
 
-function* handleAuthTokenRequest(payload) {
+function* handleAuthTokenRequest(payload = {}) {
   if (payload.allowAnonymous) {
     const credentials = yield call(guestToken)
     return { data: credentials, meta: { type: 'COGNITO_GUEST' } }

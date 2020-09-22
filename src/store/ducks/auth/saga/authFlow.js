@@ -18,7 +18,7 @@ function hasAuthenticatedCondition({ tokenSuccess, dataSuccess }) {
   return (authenticated || guest)
 }
 
-function* handleAuthFlowRequest(payload) {
+function* handleAuthFlowRequest(payload = {}) {
   /**
    * App runtime initialization
    * Fetch translation and theme from cloudflare

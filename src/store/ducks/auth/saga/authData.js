@@ -82,7 +82,7 @@ function* createAnonymousUser() {
   }
 }
 
-function* handleAuthDataRequest(payload) {
+function* handleAuthDataRequest(payload = {}) {
   if (payload.allowAnonymous) {
     yield createAnonymousUser()
   }
