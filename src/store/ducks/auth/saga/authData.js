@@ -33,7 +33,6 @@ export function* handleAuthLogger(api) {
     username: data.username,
     email: data.email,
   }
-  console.log(authenticated)
   yield call([Logger, 'setUser'], authenticated)
 }
 

@@ -1,4 +1,4 @@
-import { put, getContext, takeEvery } from 'redux-saga/effects'
+import { put, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
@@ -8,7 +8,19 @@ import * as errors from 'store/ducks/auth/errors'
  */
 function* handleAuthSigninRequest(payload) {
   const AwsAuth = yield getContext('AwsAuth')
-  return yield AwsAuth.signIn(payload.username, payload.password)
+  yield AwsAuth.signIn(payload.username, payload.password)
+
+  yield put(actions.authFlowRequest({ allowAnonymous: true }))
+  const { flowSuccess, flowFailure } = yield race({
+    flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
+    flowFailure: take(constants.AUTH_FLOW_FAILURE),
+  })
+
+  if (flowFailure) {
+    throw new Error('Failed to obtain flow')
+  }
+
+  return flowSuccess
 }
 
 function* authSigninCognitoRequest(req) {

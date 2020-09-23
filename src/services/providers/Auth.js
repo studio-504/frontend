@@ -16,6 +16,7 @@ export const AuthProvider = ({
   const userId = useSelector(authSelector.authUserIdSelector)
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const authFlow = useSelector(state => state.auth.authFlow)
+  const authReady = useSelector(state => state.auth.authReady)
   const theme = useSelector(authSelector.themeSelector)
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
@@ -63,7 +64,7 @@ export const AuthProvider = ({
     },
   })
 
-  if (['loading'].includes(authFlow.status)) {
+  if (authReady.status !== 'success') {
     return <LoadingComponent />
   }
 
