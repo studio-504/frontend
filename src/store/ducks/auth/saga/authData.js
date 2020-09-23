@@ -11,6 +11,7 @@ import {
 
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
+import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 
 class MissingUserAttributeError extends Error {
@@ -18,6 +19,22 @@ class MissingUserAttributeError extends Error {
     super(...args)
     this.code = 'MISSING_USER_ATTRIBUTEE_ERROR'
   }
+}
+
+/**
+ * Sentry logger
+ */
+export function* handleAuthLogger(api) {
+  const dataSelector = path(['data', 'self'])
+
+  const data = dataSelector(api)
+  const authenticated = {
+    id: data.userId,
+    username: data.username,
+    email: data.email,
+  }
+  console.log(authenticated)
+  yield call([Logger, 'setUser'], authenticated)
 }
 
 /**
@@ -90,10 +107,12 @@ function* handleAuthDataRequest(payload = {}) {
   try {
     const data = yield call(onlineData)
     const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, data)
+    yield handleAuthLogger(data)
     return next
   } catch (error) {
     const data = yield call(offlineData)
     const next = yield call(handleAuthDataRequestData, { meta: { type: 'OFFLINE' } }, data)
+    yield handleAuthLogger(data)
     return next
   }
 }

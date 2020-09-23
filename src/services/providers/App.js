@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as Logger from 'services/Logger'
 import { usePushNotification } from 'services/providers/Push'
 
 /**
@@ -18,19 +17,6 @@ export const AppProvider = ({
   const postsArchive = useSelector(state => state.posts.postsArchive)
   const postsRestoreArchived = useSelector(state => state.posts.postsRestoreArchived)
   const postsFlag = useSelector(state => state.posts.postsFlag)
-
-  /**
-   * Sentry specific logger to map partial user data to error log
-   */
-  useEffect(() => {
-    if (user && user.userId) {
-      Logger.setUser({
-        id: user.userId,
-        username: user.username,
-        email: user.email,
-      })
-    }
-  }, [user.userId])
 
   /**
    * Push notifications event listeners initialization

@@ -39,7 +39,9 @@ const Actions = ({
         <DefaultButton testID={testIDs.actions.appleBtn} icon={AppleIcon} label={t('Sign in with Apple')} onPress={authSigninAppleRequest} loading={authSigninApple.status === 'loading'} style={styling.apple} labelStyle={styling.labelStyle} />
       </View>
 
-      <Text testID={testIDs.actions.anonymousBtn} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.link}>{t('or Browse Anonymously')}</Text>
+      <View style={styling.item}>
+        <Text testID={testIDs.actions.anonymousBtn} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.link}>{t('or Browse Anonymously')}</Text>
+      </View>
     </View>
   )
 }
