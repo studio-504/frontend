@@ -19,7 +19,6 @@ import DiamondIcon from 'assets/svg/settings/Diamond'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
 
-import * as navigationActions from 'navigation/actions'
 import DeviceInfo from 'react-native-device-info'
 
 import { withTheme } from 'react-native-paper'
@@ -36,16 +35,17 @@ const Settings = ({
   usersDeleteAvatarRequest,
   handleErrorClose,
   settingsErrorMessage,
+  handleCameraSnap,
   user,
 }) => {
   const styling = styles(theme)
   const actionSheetRef = useRef(null)
 
-  const handleProfilePhotoUpload = () => {
+  const confirmProfilePhotoUpload = (onConfirm) => () => {
     confirm({
       title: t('Profile Photo Upload'),
       desc: t('Your photo will be uploaded as post'),
-      onConfirm: navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhotoUpload' }),
+      onConfirm,
     })
   }
 
@@ -73,11 +73,11 @@ const Settings = ({
           options={[
             {
               name: t('Take a Photo'),
-              onPress: () => handleProfilePhotoUpload(),
+              onPress: confirmProfilePhotoUpload(handleCameraSnap),
             },
             {
               name: t('Choose From Gallery'),
-              onPress: () => handleLibrarySnap(false),
+              onPress: confirmProfilePhotoUpload(handleLibrarySnap),
             },
             {
               name: t('Choose From Existing'),
@@ -190,6 +190,7 @@ Settings.propTypes = {
   usersDeleteAvatarRequest: PropTypes.func,
   handleErrorClose: PropTypes.func,
   settingsErrorMessage: PropTypes.string,
+  handleCameraSnap: PropTypes.func,
 }
 
 Settings.defaultProps = {

@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk/global'
-import { put, getContext, takeEvery, takeLatest } from 'redux-saga/effects'
+import { put, getContext, takeEvery, takeLatest, race, take } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import {
   federatedGoogleSignin,
@@ -7,7 +7,6 @@ import {
   federatedAppleSignin,
 } from 'services/AWS'
 import {
-  resetPhotoValidation,
   saveAppleSigninPersist,
   getAppleSigninPersist,
   resetAuthUserPersist,
@@ -51,6 +50,34 @@ function* authSigninRequest(req) {
         message: errors.getMessagePayload(constants.AUTH_SIGNIN_FAILURE, 'GENERIC', error.message),
       }))
     }
+  }
+}
+
+/**
+ *
+ */
+function* authSigninSubmit(req) {
+  yield put(actions.authSigninRequest(req.payload))
+
+  const { success } = yield race({
+    success: take(constants.AUTH_SIGNIN_SUCCESS),
+    failure: take(constants.AUTH_SIGNIN_FAILURE),
+  })
+
+  if (success) {
+    yield put(actions.authCheckRequest())
+    yield put(actions.authSigninIdle())
+  } 
+
+  const { failure } = yield race({
+    success: take(constants.AUTH_CHECK_SUCCESS),
+    failure: take(constants.AUTH_CHECK_FAILURE),
+  })
+
+  if (failure) {
+    yield put(actions.authSigninFailure({
+      message: path(['payload', 'message', 'text'], failure),
+    }))
   }
 }
 
@@ -176,17 +203,14 @@ function* authAppleRequest(req) {
  */
 function* handleAuthSignoutRequest() {
   const AwsAuth = yield getContext('AwsAuth')
-  const AwsCredentials = yield getContext('AwsCredentials')
 
   try {
-    yield resetPhotoValidation()
     yield federatedGoogleSignout()
   } catch (error) {
     // ignore
   }
 
   yield AwsAuth.signOut({ global: true })
-  yield AwsCredentials.clear()
 }
 
 function* authSignoutRequest(persistor, req) {
@@ -275,6 +299,7 @@ function* authForgotConfirmRequest(req) {
 
 export default (persistor) => [
   takeEvery(constants.AUTH_SIGNIN_REQUEST, authSigninRequest),
+  takeEvery(constants.AUTH_SIGNIN_SUBMIT, authSigninSubmit),
   takeEvery(constants.AUTH_GOOGLE_REQUEST, authGoogleRequest),
   takeEvery(constants.AUTH_APPLE_REQUEST, authAppleRequest),
   takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest, persistor),
