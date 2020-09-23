@@ -9,7 +9,6 @@ import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
-import * as Logger from 'services/Logger'
 
 /**
  *
@@ -310,7 +309,7 @@ function* handleSignupCognitoRequest(payload) {
   /**
    *
    */
-  const { next, user } = yield (function* createUser() {
+  const { next } = yield (function* createUser() {
     /**
      * Create new user APPLE user
      * email and fullname will be null if apple auth flow was interrupted (if not first request)
@@ -368,13 +367,6 @@ function* handleSignupCognitoRequest(payload) {
       return { next, user }
     }
   })()
-
-  /**
-   * Define user for sentry logger, authorized users will be re-defined at services/providers/App
-   * But user won't reach that part until profile photo is puloaded
-   */
-  Logger.setUser(user)
-
 
   /**
    * Api subscriptions initialization, most important one we need at this stage
