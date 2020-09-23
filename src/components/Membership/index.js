@@ -5,13 +5,15 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
+  ScrollView,
 } from 'react-native'
 import { Text } from 'react-native-paper'
-import DiamondIcon from 'assets/svg/membership/Diamond'
+import DiamondHeaderIcon from 'assets/svg/membership/Diamond'
 import ProfileIcon from 'assets/svg/membership/Profile'
 import DatingIcon from 'assets/svg/membership/Dating'
 import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
+import DiamondIcon from 'assets/svg/settings/Diamond'
 import AppleIcon from 'assets/svg/auth/Apple'
 import * as navigationActions from 'navigation/actions'
 import color from 'color'
@@ -30,13 +32,13 @@ const Membership = ({
   const navigation = useNavigation()
 
   return (
-    <View style={styling.root}>
+    <ScrollView style={styling.root}>
       <TouchableOpacity style={styling.backdrop} onPress={navigationActions.navigateBack(navigation)} />
     
       <SafeAreaView style={styling.component}>
         <View style={styling.heading}>
           <View style={styling.info}>
-            <DiamondIcon fill={theme.colors.text} />
+            <DiamondHeaderIcon fill={theme.colors.text} />
           </View>
           <Text style={styling.headingTitle}>{t('REAL Diamond')}</Text>
           <Text style={styling.headingSubtitle}>{t('Membership Perks')}</Text>
@@ -61,7 +63,7 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Boost your profile in dating app')}
+              {t('Send your profile to the top of potential matchess')}
             </Text>
           </View>
         </View>
@@ -73,7 +75,7 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Themes')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Custom per user themes')}
+              {t('Change the appearance of your profile')}
             </Text>
           </View>
         </View>
@@ -83,9 +85,9 @@ const Membership = ({
             <SupportIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('24/7 Live Chat Support')}</Text>
+            <Text style={styling.subheadingTitle}>{t('Live Chat Support')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Anytime support agent available')}
+              {t('We\'re here to help!')}
             </Text>
           </View>
         </View>
@@ -95,9 +97,9 @@ const Membership = ({
             <DiamondIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Diamond Emblem')}</Text>
+            <Text style={styling.subheadingTitle}>{t('Diamond Badge')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Get shiny diamond emblem')}
+              {t('A shiny badge next to your username')}
             </Text>
           </View>
         </View>
@@ -110,8 +112,8 @@ const Membership = ({
           <DefaultButton label={t('Subscribe for $9.99 month')} icon={AppleIcon} onPress={requestSubscription} />
         </View>
       </SafeAreaView>
-    </View>
-  )
+    </ScrollView>
+  ) 
 }
 
 const styles = theme => StyleSheet.create({
