@@ -2,12 +2,7 @@ import { select, put, call, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/app/actions'
 import * as constants from 'store/ducks/app/constants'
 import * as errors from 'store/ducks/app/errors'
-import * as selectors from 'store/ducks/app/selectors'
 import * as authSelectors from 'store/ducks/auth/selectors'
-
-import * as themeActions from 'store/ducks/theme/actions'
-import * as themeConstants from 'store/ducks/theme/constants'
-import * as themeSelectors from 'store/ducks/theme/selectors'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -32,38 +27,15 @@ function* translationInit() {
   i18n.use(initReactI18next).init(config)
 }
 
-/**
- * Check if themes are already loaded
- */
-function* themeFetchCached() {
-  const themeFetchLength = yield select(themeSelectors.themeFetchSelector)
-
-  if (!themeFetchLength || !themeFetchLength.length) {
-    return new Promise(() => {})
-  }
-}
-
-/**
- * Check if translations are already loaded
- */
-function* appTranslationCached() {
-  const appTranslationLength = yield select(selectors.appTranslationSelector)
-
-  if (!appTranslationLength || !appTranslationLength.en) {
-    return new Promise(() => {})
-  }
-}
-
 function* handleAppReady() {
   /**
    * Asseets load from cloudflare
    * Add offline cache
    */
-  yield put(themeActions.themeFetchRequest())
+  yield put(actions.appThemeRequest())
   yield race({
-    themeFetchCached: call(themeFetchCached),
-    themeFetchSuccess: take(themeConstants.THEME_FETCH_SUCCESS),
-    themeFetchFailure: take(themeConstants.THEME_FETCH_FAILURE),
+    appThemeSuccess: take(constants.APP_THEME_SUCCESS),
+    appThemeFailure: take(constants.APP_THEME_FAILURE),
   })
 
   /**
@@ -71,7 +43,6 @@ function* handleAppReady() {
    */
   yield put(actions.appTranslationRequest())
   yield race({
-    appTranslationCached: call(appTranslationCached),
     appTranslationSuccess: take(constants.APP_TRANSLATION_SUCCESS),
     appTranslationFailure: take(constants.APP_TRANSLATION_FAILURE),
   })
@@ -86,7 +57,7 @@ function* appReadyRequest(req) {
     yield call(handleAppReady)
     const data = yield call(handleAppReady, req.payload)
     yield put(actions.appReadySuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
+      message: errors.getMessagePayload(constants.APP_READY_SUCCESS, 'GENERIC'),
       data,
     }))
 
@@ -96,7 +67,7 @@ function* appReadyRequest(req) {
     yield call([Updates, 'versionCheck'])
   } catch (error) {
     yield put(actions.appReadyFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.APP_READY_FAILURE, 'GENERIC', error.message),
     }))
   }
 }

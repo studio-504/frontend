@@ -4,13 +4,61 @@ const messageCodes = {
   /**
    * 
    */
-  [constants.AUTH_READY_SUCCESS]: {
+  [constants.APP_READY_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Successfully created anonymous user',
     },
   },
-  [constants.AUTH_READY_FAILURE]: {
+  [constants.APP_READY_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.APP_THEME_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.APP_THEME_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.APP_THEME_PREVIEW_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.APP_THEME_PREVIEW_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to create anonymous user',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.APP_TRANSLATION_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Successfully created anonymous user',
+    },
+  },
+  [constants.APP_TRANSLATION_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to create anonymous user',

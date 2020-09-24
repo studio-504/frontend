@@ -1,6 +1,5 @@
 import { all, takeEvery } from 'redux-saga/effects'
 import camera from 'store/ducks/camera/saga'
-import theme from 'store/ducks/theme/saga'
 import albums from 'store/ducks/albums/saga'
 import chat from 'store/ducks/chat/saga'
 import users from 'store/ducks/users/saga'
@@ -9,6 +8,7 @@ import subscriptions from 'store/ducks/subscriptions/saga'
 
 import appReady from 'store/ducks/app/saga/appReady'
 import appTranslation from 'store/ducks/app/saga/appTranslation'
+import appTheme from 'store/ducks/app/saga/appTheme'
 
 import auth from 'store/ducks/auth/saga'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
@@ -50,9 +50,9 @@ export default function* rootSaga(persistor) {
   yield all([]
     .concat(appReady())
     .concat(appTranslation())
+    .concat(appTheme())
 
     .concat(camera())
-    .concat(theme())
     .concat(albums())
     .concat(chat())
     .concat(users())

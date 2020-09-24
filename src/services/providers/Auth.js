@@ -16,8 +16,8 @@ export const AuthProvider = ({
 }) => {
   const dispatch = useDispatch()
   const appReady = useSelector(state => state.app.appReady)
+  const appTheme = useSelector(state => state.app.appTheme)
   const userId = useSelector(authSelector.authUserIdSelector)
-  const themeFetch = useSelector(state => state.theme.themeFetch)
   const authFlow = useSelector(state => state.auth.authFlow)
   const theme = useSelector(authSelector.themeSelector)
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
@@ -92,7 +92,7 @@ export const AuthProvider = ({
 
   return children({
     theme,
-    themes: themeFetch.data,
+    themes: appTheme.data,
     authenticated: authFlow.meta.authenticated,
     appErrorMessage,
     handleErrorClose,
