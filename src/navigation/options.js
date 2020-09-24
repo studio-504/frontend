@@ -2,7 +2,6 @@ import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { HeaderStyleInterpolators, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack'
 import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
-import UIContextComponent from 'components/UI/Context'
 
 import * as navigationActions from 'navigation/actions'
 import path from 'ramda/src/path'
@@ -12,6 +11,9 @@ import LogoIcon from 'assets/svg/header/Logo'
 import CameraIcon from 'assets/svg/header/Camera'
 import DirectIcon from 'assets/svg/header/Direct'
 import BackIcon from 'assets/svg/header/Back'
+
+import * as authSelector from 'store/ducks/auth/selectors'
+import { connect } from 'react-redux'
 
 const getInitialRouteName = path(['route', 'params', 'initialRouteName'])
 
@@ -40,14 +42,15 @@ const homeHeaderLeft = ({ theme, navigation }) => () => (
 
 const homeHeaderTitle = ({ theme }) => () => <LogoIcon height="28" fill={theme.colors.primaryIcon} />
 
+const mapStateToProps = (state, ownProps) => ({ user: authSelector.authUserSelector(state), ...ownProps })
+const Next = connect(mapStateToProps)(({ user, theme, navigation }) => (
+  <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation)}>
+    <DirectIcon fill={theme.colors.primaryIcon} user={user} />
+  </TouchableOpacity>
+))
+
 const homeHeaderRight = ({ theme, navigation }) => () => (
-  <UIContextComponent.Consumer>
-    {({ user }) => (
-      <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation)}>
-        <DirectIcon fill={theme.colors.primaryIcon} user={user} />
-      </TouchableOpacity>
-    )}
-  </UIContextComponent.Consumer>
+  <Next theme={theme} navigation={navigation} />
 )
 
 const AuthNavigationComponent = ({ theme }) => ({
