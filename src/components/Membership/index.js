@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {
   SafeAreaView,
   StyleSheet,
-  View,
   ScrollView,
+  View,
 } from 'react-native'
 import { Text, withTheme } from 'react-native-paper'
 import DiamondHeaderIcon from 'assets/svg/membership/Diamond'
