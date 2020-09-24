@@ -119,7 +119,6 @@ const App = () => {
             {({
               theme,
               themes,
-              handleErrorClose,
               networkIsConnected,
               handleRouteInit,
               onStateChange,
@@ -136,6 +135,7 @@ const App = () => {
                     {({
                       authenticated,
                       appErrorMessage,
+                      handleErrorClose,
                     }) => (
                       <Routes
                         authenticated={authenticated}
