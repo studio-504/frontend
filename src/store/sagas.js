@@ -4,7 +4,6 @@ import theme from 'store/ducks/theme/saga'
 import albums from 'store/ducks/albums/saga'
 import chat from 'store/ducks/chat/saga'
 import users from 'store/ducks/users/saga'
-import layout from 'store/ducks/layout/saga'
 import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 
@@ -57,7 +56,6 @@ export default function* rootSaga(persistor) {
     .concat(albums())
     .concat(chat())
     .concat(users())
-    .concat(layout())
     .concat(cache())
     .concat(subscriptions())
 

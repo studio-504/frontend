@@ -10,7 +10,6 @@ import posts from 'store/ducks/posts/reducer'
 import albums from 'store/ducks/albums/reducer'
 import chat from 'store/ducks/chat/reducer'
 import users from 'store/ducks/users/reducer'
-import layout from 'store/ducks/layout/reducer'
 import app from 'store/ducks/app/reducer'
 import cache from 'store/ducks/cache/reducer'
 import entities from 'store/ducks/entities/reducer'
@@ -79,7 +78,6 @@ export default combineReducers({
   chat: persistReducer(chatPersistConfig, chat),
   posts: persistReducer(postsPersistConfig, posts),
   users: persistReducer(usersPersistConfig, users),
-  layout,
   cache,
   entities,
   subscriptions,

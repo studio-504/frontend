@@ -41,11 +41,6 @@ const composeEnhancers = composeWithDevTools({
   actionsBlacklist: [
     'persist/REHYDRATE',
 
-    'LAYOUT_POSTS_LIST_ITEM_SUCCESS',
-    'LAYOUT_POSTS_LIST_SCROLL_SUCCESS',
-    'LAYOUT_POST_MEDIA_ITEM_SUCCESS',
-    'LAYOUT_POST_MEDIA_SCROLL_SUCCESS',
-
     'POSTS_CREATE_PROGRESS',
 
     'CACHE_FETCH_REQUEST',
