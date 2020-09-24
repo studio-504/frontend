@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
+import * as usersActions from 'store/ducks/users/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import useAppState from 'services/AppState'
@@ -33,6 +34,25 @@ export const AuthProvider = ({
     .filter(error => error.appErrorMessage && !error.appErrorMessage.length)
     .pop() || {}
   
+  /**
+   *
+   */
+  const handleRouteInit = (routeNameRef, navigationRef) => () => {
+    routeNameRef.current = navigationRef.current.getCurrentRoute().name
+  }
+
+  const onStateChange = (routeNameRef, navigationRef) => () => {
+    const previousRouteName = routeNameRef.current
+    const currentRouteName = navigationRef.current.getCurrentRoute().name
+
+    if (previousRouteName !== currentRouteName && userId) {
+      dispatch(usersActions.usersReportScreenViewsRequest({ screens: [currentRouteName] }))
+    }
+
+    // Save the current route name for later comparision
+    routeNameRef.current = currentRouteName
+  } 
+
   /**
    * Constructor function to fetch: Translations, Themes and Auth data
    */
@@ -75,5 +95,7 @@ export const AuthProvider = ({
     appErrorMessage,
     handleErrorClose,
     networkIsConnected,
+    handleRouteInit,
+    onStateChange,
   })
 }

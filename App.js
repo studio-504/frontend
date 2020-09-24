@@ -78,11 +78,21 @@ const Routes = ({
   authenticated,
   appErrorMessage,
   handleErrorClose,
+  handleRouteInit,
+  onStateChange,
 }) => {
   const { theme, themes } = useContext(ThemesContext)
+  const routeNameRef = React.useRef()
+  const navigationRef = React.useRef()
 
   return (
-    <NavigationContainer theme={theme} linking={linking}>
+    <NavigationContainer
+      theme={theme}
+      linking={linking}
+      ref={navigationRef}
+      onReady={handleRouteInit(routeNameRef, navigationRef)}
+      onStateChange={onStateChange(routeNameRef, navigationRef)}
+    >
       {!authenticated ?
         <PaperProvider theme={themes[0].theme}>
           {appErrorMessage ?
@@ -109,6 +119,8 @@ Routes.propTypes = {
   authenticated: PropTypes.any,
   appErrorMessage: PropTypes.any,
   handleErrorClose: PropTypes.any,
+  handleRouteInit: PropTypes.any,
+  onStateChange: PropTypes.any,
 }
 
 const App = () => {
@@ -126,6 +138,8 @@ const App = () => {
               appErrorMessage,
               handleErrorClose,
               networkIsConnected,
+              handleRouteInit,
+              onStateChange,
             }) => (
               <ThemesContext.Provider value={{ theme, themes }}>
                 <FeedContextComponent.Provider value={{ draggedImage, setDraggedImage }}>
@@ -138,6 +152,8 @@ const App = () => {
                     authenticated={authenticated}
                     appErrorMessage={appErrorMessage}
                     handleErrorClose={handleErrorClose}
+                    handleRouteInit={handleRouteInit}
+                    onStateChange={onStateChange}
                   />
                 </FeedContextComponent.Provider>
               </ThemesContext.Provider>
