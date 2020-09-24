@@ -2,32 +2,30 @@ import { select, put, call, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/app/actions'
 import * as constants from 'store/ducks/app/constants'
 import * as errors from 'store/ducks/app/errors'
+import * as selectors from 'store/ducks/app/selectors'
 import * as authSelectors from 'store/ducks/auth/selectors'
 
 import * as themeActions from 'store/ducks/theme/actions'
 import * as themeConstants from 'store/ducks/theme/constants'
 import * as themeSelectors from 'store/ducks/theme/selectors'
-import * as translationActions from 'store/ducks/translation/actions'
-import * as translationConstants from 'store/ducks/translation/constants'
-import * as translationSelectors from 'store/ducks/translation/selectors'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import * as Updates from 'services/Updates'
 
 /**
- * Translation library setup, translationFetch.data is an object of:
+ * Translation library setup, appTranslation.data is an object of:
  * {
  *   en: { translation: { [key]: value, [key]: value } },
  *   de: { translation: { [key]: value, [key]: value } },
  * }
  */
 function* translationInit() {
-  const translationFetch = yield select(state => state.translation.translationFetch)
+  const appTranslation = yield select(state => state.app.appTranslation)
   const languageCode = yield select(authSelectors.languageCodeSelector)
 
   const config = {
-    resources: translationFetch.data,
+    resources: appTranslation.data,
     lng: languageCode || 'en',
     fallbackLng: 'en',
   }
@@ -48,10 +46,10 @@ function* themeFetchCached() {
 /**
  * Check if translations are already loaded
  */
-function* translationFetchCached() {
-  const translationFetchLength = yield select(translationSelectors.translationFetchSelector)
+function* appTranslationCached() {
+  const appTranslationLength = yield select(selectors.appTranslationSelector)
 
-  if (!translationFetchLength || !translationFetchLength.en) {
+  if (!appTranslationLength || !appTranslationLength.en) {
     return new Promise(() => {})
   }
 }
@@ -71,11 +69,11 @@ function* handleAppReady() {
   /**
    * Translation validation
    */
-  yield put(translationActions.translationFetchRequest())
+  yield put(actions.appTranslationRequest())
   yield race({
-    translationFetchCached: call(translationFetchCached),
-    translationFetchSuccess: take(translationConstants.TRANSLATION_FETCH_SUCCESS),
-    translationFetchFailure: take(translationConstants.TRANSLATION_FETCH_FAILURE),
+    appTranslationCached: call(appTranslationCached),
+    appTranslationSuccess: take(constants.APP_TRANSLATION_SUCCESS),
+    appTranslationFailure: take(constants.APP_TRANSLATION_FAILURE),
   })
   yield call(translationInit)
 }
