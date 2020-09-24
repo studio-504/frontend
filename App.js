@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
 import { AuthProvider } from 'services/providers/Auth'
+import { AppProvider } from 'services/providers/App'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { ThemesContext } from 'navigation/context'
 import { ReduxNetworkProvider } from 'react-native-offline'
@@ -130,12 +131,10 @@ const App = () => {
     <Provider store={store}>
       <ReduxNetworkProvider>
         <PersistGate loading={(<LoadingComponent />)} persistor={persistor}>
-          <AuthProvider>
+          <AppProvider>
             {({
               theme,
               themes,
-              authenticated,
-              appErrorMessage,
               handleErrorClose,
               networkIsConnected,
               handleRouteInit,
@@ -148,17 +147,25 @@ const App = () => {
                   <NetworkComponent
                     networkIsConnected={networkIsConnected}
                   />
-                  <Routes
-                    authenticated={authenticated}
-                    appErrorMessage={appErrorMessage}
-                    handleErrorClose={handleErrorClose}
-                    handleRouteInit={handleRouteInit}
-                    onStateChange={onStateChange}
-                  />
+
+                  <AuthProvider>
+                    {({
+                      authenticated,
+                      appErrorMessage,
+                    }) => (
+                      <Routes
+                        authenticated={authenticated}
+                        appErrorMessage={appErrorMessage}
+                        handleErrorClose={handleErrorClose}
+                        handleRouteInit={handleRouteInit}
+                        onStateChange={onStateChange}
+                      />
+                    )}
+                  </AuthProvider>
                 </FeedContextComponent.Provider>
               </ThemesContext.Provider>
             )}
-          </AuthProvider>
+          </AppProvider>
         </PersistGate>
       </ReduxNetworkProvider>
     </Provider>
