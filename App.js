@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { StatusBar, Text, TextInput } from 'react-native'
+import { StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
@@ -12,11 +12,7 @@ import { ReduxNetworkProvider } from 'react-native-offline'
 import AuthNavigator from 'navigation/AuthNavigator'
 import AppNavigator from 'navigation/AppNavigator'
 import store, { persistor } from 'store/index'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import codePush from 'react-native-code-push' 
-import 'services/Logger'
-import { enableScreens } from 'react-native-screens'
 import NetworkComponent from 'components/Network'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
@@ -62,18 +58,6 @@ const codePushOptions = {
 }
 
 // codePush.sync(codePushOptions)
-
-enableScreens()
-
-dayjs.extend(relativeTime)
-
-if (Text.defaultProps == null) {
-  Text.defaultProps = Text.defaultProps || {}
-  Text.defaultProps.allowFontScaling = false
-  
-  TextInput.defaultProps = TextInput.defaultProps || {}
-  TextInput.defaultProps.allowFontScaling = false
-}
 
 const Routes = ({
   authenticated,
@@ -172,4 +156,4 @@ const App = () => {
   )
 }
 
- export default codePush(codePushOptions)(App) 
+export default codePush(codePushOptions)(App) 
