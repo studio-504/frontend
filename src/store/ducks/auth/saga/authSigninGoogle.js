@@ -1,4 +1,4 @@
-import { put, take, race, getContext, takeEvery } from 'redux-saga/effects'
+import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import {
   federatedGoogleSignin,
 } from 'services/AWS'
@@ -7,9 +7,9 @@ import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 
 /**
- *
+ * Authenticate using google into identity pool
  */
-function* handleAuthSigninGoogleRequest() {
+function* googleAuthentication() {
   const AwsAuth = yield getContext('AwsAuth')
 
   const google = yield federatedGoogleSignin()
@@ -22,10 +22,14 @@ function* handleAuthSigninGoogleRequest() {
     token: google.token,
   }
 
-  yield AwsAuth.federatedSignIn('google', {
+  return yield AwsAuth.federatedSignIn('google', {
     token: google.token,
     expires_at: google.expires_at,
   }, userPayload)
+}
+
+function* handleAuthSigninGoogleRequest() {
+  yield call(googleAuthentication)
 
   yield put(actions.authFlowRequest({ allowAnonymous: true }))
   const { flowSuccess, flowFailure } = yield race({

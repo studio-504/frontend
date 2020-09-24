@@ -1,14 +1,21 @@
-import { put, take, race, getContext, takeEvery } from 'redux-saga/effects'
+import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 
 /**
+ * Authenticate using cognito into user pool
+ */
+function* cognitoAuthentication(payload) {
+  const AwsAuth = yield getContext('AwsAuth')
+  yield AwsAuth.signIn(payload.username, payload.password)
+}
+
+/**
  * Signin user. Currently supports email and password or phone number and password methods
  */
 function* handleAuthSigninRequest(payload) {
-  const AwsAuth = yield getContext('AwsAuth')
-  yield AwsAuth.signIn(payload.username, payload.password)
+  yield call(cognitoAuthentication, payload)
 
   yield put(actions.authFlowRequest({ allowAnonymous: true }))
   const { flowSuccess, flowFailure } = yield race({

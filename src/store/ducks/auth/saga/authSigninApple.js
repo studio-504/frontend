@@ -1,4 +1,4 @@
-import { put, take, race, getContext, takeEvery } from 'redux-saga/effects'
+import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import {
   federatedAppleSignin,
@@ -30,7 +30,10 @@ function* mergeAppleCache(apple) {
   }
 }
 
-function* handleAuthAppleRequest() {
+/**
+ * Authenticate using apple into identity pool
+ */
+function* appleAuthentication() {
   const AwsAuth = yield getContext('AwsAuth')
 
   const apple = yield federatedAppleSignin()
@@ -44,10 +47,14 @@ function* handleAuthAppleRequest() {
     token: apple.token,
   }
 
-  yield AwsAuth.federatedSignIn('appleid.apple.com', {
+  return yield AwsAuth.federatedSignIn('appleid.apple.com', {
     token: apple.token,
     expires_at: apple.expires_at,
   }, userPayload)
+}
+
+function* handleAuthAppleRequest() {
+  yield call(appleAuthentication)
 
   yield put(actions.authFlowRequest({ allowAnonymous: true }))
   const { flowSuccess, flowFailure } = yield race({

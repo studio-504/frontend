@@ -83,11 +83,6 @@ function* authFlowRequest(req) {
       data,
       meta,
     }))
-
-    /**
-     * Fetching initial data such as feed/cards/trending
-     */
-    yield put(actions.authPrefetchRequest())
   } catch (error) {
     yield put(actions.authFlowFailure({
       message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
@@ -99,6 +94,14 @@ function* authFlowRequest(req) {
   }
 }
 
+/**
+ * Fetching initial data such as feed/cards/trending
+ */
+function* authFlowSuccess() {
+  yield put(actions.authPrefetchRequest())
+}
+
 export default () => [
   takeEvery(constants.AUTH_FLOW_REQUEST, authFlowRequest),
+  takeEvery(constants.AUTH_FLOW_SUCCESS, authFlowSuccess),
 ]
