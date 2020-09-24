@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  TouchableOpacity,
   SafeAreaView,
   StyleSheet,
   View,
   ScrollView,
 } from 'react-native'
-import { Text } from 'react-native-paper'
+import { Text, withTheme } from 'react-native-paper'
 import DiamondHeaderIcon from 'assets/svg/membership/Diamond'
 import ProfileIcon from 'assets/svg/membership/Profile'
 import DatingIcon from 'assets/svg/membership/Dating'
@@ -15,26 +14,22 @@ import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import AppleIcon from 'assets/svg/auth/Apple'
-import * as navigationActions from 'navigation/actions'
 import color from 'color'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 
-import { withTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
 
 const Membership = ({
   t,
   theme,
   requestSubscription,
+  cancelSubscription,
+  isSubscribed,
 }) => {
   const styling = styles(theme)
-  const navigation = useNavigation()
-
+  
   return (
     <ScrollView style={styling.root}>
-      <TouchableOpacity style={styling.backdrop} onPress={navigationActions.navigateBack(navigation)} />
-    
       <SafeAreaView style={styling.component}>
         <View style={styling.heading}>
           <View style={styling.info}>
@@ -50,9 +45,7 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Trending Boost')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('Boost your profile in trending photos')}
-            </Text>
+            <Text style={styling.subheadingSubtitle}>{t('Boost your profile in trending photos')}</Text>
           </View>
         </View>
 
@@ -62,9 +55,7 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('Send your profile to the top of potential matchess')}
-            </Text>
+            <Text style={styling.subheadingSubtitle}>{t('Send your profile to the top of potential matchess')}</Text>
           </View>
         </View>
 
@@ -74,9 +65,7 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Themes')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('Change the appearance of your profile')}
-            </Text>
+            <Text style={styling.subheadingSubtitle}>{t('Change the appearance of your profile')}</Text>
           </View>
         </View>
 
@@ -86,30 +75,34 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Live Chat Support')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('We\'re here to help!')}
-            </Text>
+            <Text style={styling.subheadingSubtitle}>{t('We\'re here to help!')}</Text>
           </View>
         </View>
 
-        <View style={styling.subheading}>
+        <View style={[styling.subheading, styling.lastChild]}>
           <View style={styling.subheadingIcon}>
             <DiamondIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Diamond Badge')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('A shiny badge next to your username')}
-            </Text>
+            <Text style={styling.subheadingSubtitle}>{t('A shiny badge next to your username')}</Text>
           </View>
         </View>
 
-        <View style={styling.description}>
-          <Text style={styling.descriptionText}>{t('Become a member today')}</Text>
-        </View>
-
         <View style={styling.action}>
-          <DefaultButton label={t('Subscribe for $9.99 month')} icon={AppleIcon} onPress={requestSubscription} />
+          {isSubscribed ? (
+            <DefaultButton labelStyle={styling.unsubscribeBtnLabel} mode="outlined" label={t('Unsubscribe')} onPress={cancelSubscription} />
+          ) : (
+            <>
+            <Text style={styling.descriptionText}>{t('Become a member today')}</Text>
+            <DefaultButton
+              labelStyle={styling.labelStyle}
+              label={t('Subscribe for $9.99 month')}
+              icon={AppleIcon}
+              onPress={requestSubscription}
+            />
+            </>
+          )}
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -120,11 +113,6 @@ const styles = theme => StyleSheet.create({
   root: {
     flex: 1,
   },
-  backdrop: {
-  },
-  component: {
-  },
-  
   info: {
     alignItems: 'center',
     paddingBottom: 12,
@@ -143,6 +131,9 @@ const styles = theme => StyleSheet.create({
   action: {
     paddingHorizontal: theme.spacing.base,
   },
+  labelStyle: {
+    marginLeft: 12,
+  },  
   headingTitle: {
     fontSize: 22,
     fontWeight: '600',
@@ -171,15 +162,10 @@ const styles = theme => StyleSheet.create({
     fontWeight: '400',
     color: color(theme.colors.text).fade(.4),
   },
-  strong: {
-    fontWeight: '500',
-    color: color(theme.colors.text).fade(.4),
-  },
-  description: {
-    paddingHorizontal: 48,
-    paddingVertical: 24,
-    borderTopColor: theme.colors.border,
-    borderTopWidth: 1,
+  lastChild: {
+    borderBottomColor: theme.colors.border,
+    borderBottomWidth: 1,
+    marginBottom: 24,
   },
   descriptionText: {
     fontSize: 12,
@@ -187,15 +173,21 @@ const styles = theme => StyleSheet.create({
     paddingBottom: 6,
     textAlign: 'center',
   },
+  unsubscribeBtnLabel: {
+    color: theme.colors.text,
+  },
 })
 
 Membership.propTypes = {
-  theme: PropTypes.any,
   t: PropTypes.any,
-  handleBackAction: PropTypes.any,
-  handleHideAction: PropTypes.any,
-  handleHomeAction: PropTypes.any,
+  theme: PropTypes.any,
+  isSubscribed: PropTypes.bool,
   requestSubscription: PropTypes.func,
+  cancelSubscription: PropTypes.func,
+}
+
+Membership.defaultProps = {
+  isSubscribed: false,
 }
 
 export default withTranslation()(withTheme(Membership))

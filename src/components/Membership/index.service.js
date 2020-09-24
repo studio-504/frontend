@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Alert, Linking } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import RNIap, {
   finishTransaction,
   finishTransactionIOS,
@@ -8,16 +8,23 @@ import RNIap, {
   purchaseUpdatedListener,
 } from 'react-native-iap'
 import * as usersActions from 'store/ducks/users/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
 
 const PRIMARY_SUBSCRIPTION = 'app.real.mobile.diamond1M'
 
 const MembershipService = ({ children }) => {
   const dispatch = useDispatch()
+  const user = useSelector(authSelector.authUserSelector)
 
 	useEffect(() => {
 		RNIap.initConnection()
     RNIap.getSubscriptions([PRIMARY_SUBSCRIPTION])
-	}, [])
+  }, [])
+
+  /**
+   *
+   */
+  const isSubscribed = user.subscriptionLevel === 'DIAMOND'
 
   /**
    *
@@ -74,6 +81,7 @@ const MembershipService = ({ children }) => {
   return children({
     requestSubscription,
     cancelSubscription,
+    isSubscribed,
   })
 }
 
