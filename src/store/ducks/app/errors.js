@@ -7,13 +7,13 @@ const messageCodes = {
   [constants.APP_READY_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'App assets were fetched',
     },
   },
   [constants.APP_READY_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to fetch app assets',
     },
   },
 
@@ -23,13 +23,13 @@ const messageCodes = {
   [constants.APP_THEME_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'App theme is fetched',
     },
   },
   [constants.APP_THEME_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to fetch app theme',
     },
   },
 
@@ -39,13 +39,13 @@ const messageCodes = {
   [constants.APP_THEME_PREVIEW_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'App theme preview is loaded',
     },
   },
   [constants.APP_THEME_PREVIEW_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to load app theme preview',
     },
   },
 
@@ -55,13 +55,13 @@ const messageCodes = {
   [constants.APP_TRANSLATION_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'App translation is fetched',
     },
   },
   [constants.APP_TRANSLATION_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to fetch app translation',
     },
   },
 }

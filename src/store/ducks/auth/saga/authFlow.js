@@ -4,18 +4,10 @@ import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
 
-function hasAuthenticatedCondition({ tokenSuccess, dataSuccess }) {
-  const authenticated = (
-    pathOr('', ['payload', 'meta', 'type'])(tokenSuccess) === 'COGNITO_AUTHENTICATED' &&
-    pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
-  )
+function hasAuthenticatedCondition({ dataSuccess }) {
+  const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
 
-  const guest = (
-    pathOr('', ['payload', 'meta', 'type'])(tokenSuccess) === 'COGNITO_GUEST' &&
-    pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
-  )
-
-  return (authenticated || guest)
+  return (authenticated)
 }
 
 function* handleAuthFlowRequest(payload = {}) {
@@ -47,7 +39,7 @@ function* handleAuthFlowRequest(payload = {}) {
 
   return {
     meta: {
-      authenticated: hasAuthenticatedCondition({ tokenSuccess, dataSuccess }),
+      authenticated: hasAuthenticatedCondition({ dataSuccess }),
     },
     data: {
       authToken: tokenSuccess.payload,

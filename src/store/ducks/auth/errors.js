@@ -170,13 +170,13 @@ const messageCodes = {
   [constants.AUTH_FLOW_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'Auth flow completed',
     },
   },
   [constants.AUTH_FLOW_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to complete auth flow',
     },
   },
 
@@ -186,13 +186,13 @@ const messageCodes = {
   [constants.AUTH_DATA_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'Auth data is fetched',
     },
   },
   [constants.AUTH_DATA_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to fetch auth data',
     },
   },
 
@@ -202,13 +202,13 @@ const messageCodes = {
   [constants.AUTH_TOKEN_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'Auth token is fetched',
     },
   },
   [constants.AUTH_TOKEN_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to fetch auth token',
     },
   },
 
@@ -218,13 +218,13 @@ const messageCodes = {
   [constants.AUTH_PREFETCH_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Successfully created anonymous user',
+      text: 'Auth prefetch is completed',
     },
   },
   [constants.AUTH_PREFETCH_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Failed to create anonymous user',
+      text: 'Failed to complete auth prefetch',
     },
   },
 }

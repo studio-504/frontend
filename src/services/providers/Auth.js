@@ -32,7 +32,7 @@ export const AuthProvider = ({
    * Constructor function to fetch: Translations, Themes and Auth data
    */
   useEffect(() => {
-    dispatch(authActions.authFlowRequest())
+    dispatch(authActions.authFlowRequest({ allowAnonymous: false }))
   }, [])
 
   const startApp = (userId) => {
