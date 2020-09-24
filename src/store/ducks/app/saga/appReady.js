@@ -1,8 +1,8 @@
 import { select, put, call, take, race, takeEvery } from 'redux-saga/effects'
-import * as actions from 'store/ducks/auth/actions'
-import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
-import * as selectors from 'store/ducks/auth/selectors'
+import * as actions from 'store/ducks/app/actions'
+import * as constants from 'store/ducks/app/constants'
+import * as errors from 'store/ducks/app/errors'
+import * as authSelectors from 'store/ducks/auth/selectors'
 
 import * as themeActions from 'store/ducks/theme/actions'
 import * as themeConstants from 'store/ducks/theme/constants'
@@ -24,7 +24,7 @@ import * as Updates from 'services/Updates'
  */
 function* translationInit() {
   const translationFetch = yield select(state => state.translation.translationFetch)
-  const languageCode = yield select(selectors.languageCodeSelector)
+  const languageCode = yield select(authSelectors.languageCodeSelector)
 
   const config = {
     resources: translationFetch.data,
@@ -56,7 +56,7 @@ function* translationFetchCached() {
   }
 }
 
-function* handleAuthReadyRequest() {
+function* handleAppReady() {
   /**
    * Asseets load from cloudflare
    * Add offline cache
@@ -83,11 +83,11 @@ function* handleAuthReadyRequest() {
 /**
  * Fetching assets such as language and translation
  */
-function* authReadyRequest(req) {
+function* appReadyRequest(req) {
   try {
-    yield call(handleAuthReadyRequest)
-    const data = yield call(handleAuthReadyRequest, req.payload)
-    yield put(actions.authReadySuccess({
+    yield call(handleAppReady)
+    const data = yield call(handleAppReady, req.payload)
+    yield put(actions.appReadySuccess({
       message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
       data,
     }))
@@ -97,12 +97,12 @@ function* authReadyRequest(req) {
      */
     yield call([Updates, 'versionCheck'])
   } catch (error) {
-    yield put(actions.authReadyFailure({
+    yield put(actions.appReadyFailure({
       message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
     }))
   }
 }
 
 export default () => [
-  takeEvery(constants.AUTH_READY_REQUEST, authReadyRequest),
+  takeEvery(constants.APP_READY_REQUEST, appReadyRequest),
 ]

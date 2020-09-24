@@ -26,14 +26,6 @@ export const authDataSuccess = createAction(constants.AUTH_DATA_SUCCESS)
 export const authDataFailure = createAction(constants.AUTH_DATA_FAILURE)
 
 /**
- * Application Runtime initializer, should be moved into /ducks/app perhaps ?!
- */
-export const authReadyIdle = createAction(constants.AUTH_READY_IDLE)
-export const authReadyRequest = createAction(constants.AUTH_READY_REQUEST)
-export const authReadySuccess = createAction(constants.AUTH_READY_SUCCESS)
-export const authReadyFailure = createAction(constants.AUTH_READY_FAILURE)
-
-/**
  * Application Initial data prefetch, should be moved into /ducks/app perhaps ?!
  */
 export const authPrefetchIdle = createAction(constants.AUTH_PREFETCH_IDLE)

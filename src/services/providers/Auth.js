@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import * as appActions from 'store/ducks/app/actions'
 import * as authActions from 'store/ducks/auth/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
@@ -14,10 +15,10 @@ export const AuthProvider = ({
   children,
 }) => {
   const dispatch = useDispatch()
+  const appReady = useSelector(state => state.app.appReady)
   const userId = useSelector(authSelector.authUserIdSelector)
   const themeFetch = useSelector(state => state.theme.themeFetch)
   const authFlow = useSelector(state => state.auth.authFlow)
-  const authReady = useSelector(state => state.auth.authReady)
   const theme = useSelector(authSelector.themeSelector)
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
@@ -57,6 +58,7 @@ export const AuthProvider = ({
    * Constructor function to fetch: Translations, Themes and Auth data
    */
   useEffect(() => {
+    dispatch(appActions.appReadyRequest())
     dispatch(authActions.authFlowRequest())
   }, [])
 
@@ -84,7 +86,7 @@ export const AuthProvider = ({
     },
   })
 
-  if (authReady.status !== 'success') {
+  if (appReady.status !== 'success') {
     return <LoadingComponent />
   }
 

@@ -215,22 +215,6 @@ const messageCodes = {
   /**
    * 
    */
-  [constants.AUTH_READY_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully created anonymous user',
-    },
-  },
-  [constants.AUTH_READY_FAILURE]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Failed to create anonymous user',
-    },
-  },
-
-  /**
-   * 
-   */
   [constants.AUTH_PREFETCH_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',

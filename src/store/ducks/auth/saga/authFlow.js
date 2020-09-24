@@ -20,16 +20,6 @@ function hasAuthenticatedCondition({ tokenSuccess, dataSuccess }) {
 
 function* handleAuthFlowRequest(payload = {}) {
   /**
-   * App runtime initialization
-   * Fetch translation and theme from cloudflare
-   */
-  yield put(actions.authReadyRequest())
-  const { readySuccess } = yield race({
-    readySuccess: take(constants.AUTH_READY_SUCCESS),
-    readyFailure: take(constants.AUTH_READY_FAILURE),
-  })
-
-  /**
    * Fetching cognito credentials/tokens
    */
   yield put(actions.authTokenRequest({ allowAnonymous: payload.allowAnonymous }))
@@ -62,7 +52,6 @@ function* handleAuthFlowRequest(payload = {}) {
     data: {
       authToken: tokenSuccess.payload,
       authData: dataSuccess.payload,
-      authReady: readySuccess.payload,
     },
   }
 }

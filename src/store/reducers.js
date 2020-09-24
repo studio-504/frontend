@@ -12,7 +12,7 @@ import chat from 'store/ducks/chat/reducer'
 import users from 'store/ducks/users/reducer'
 import layout from 'store/ducks/layout/reducer'
 import translation from 'store/ducks/translation/reducer'
-import ui from 'store/ducks/ui/reducer'
+import app from 'store/ducks/app/reducer'
 import cache from 'store/ducks/cache/reducer'
 import entities from 'store/ducks/entities/reducer'
 import subscriptions from 'store/ducks/subscriptions/reducer'
@@ -70,6 +70,7 @@ const chatPersistConfig = {
 }
 
 export default combineReducers({
+  app,
   network,
   auth: persistReducer(authPersistConfig, auth),
   signup: persistReducer(signupPersistConfig, signup),
@@ -81,7 +82,6 @@ export default combineReducers({
   users: persistReducer(usersPersistConfig, users),
   layout,
   translation,
-  ui,
   cache,
   entities,
   subscriptions,

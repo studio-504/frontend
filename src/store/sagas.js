@@ -9,6 +9,8 @@ import translation from 'store/ducks/translation/saga'
 import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 
+import appReady from 'store/ducks/app/saga/appReady'
+
 import auth from 'store/ducks/auth/saga'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
 import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
@@ -20,7 +22,6 @@ import authSignout from 'store/ducks/auth/saga/authSignout'
 import authData from 'store/ducks/auth/saga/authData'
 import authToken from 'store/ducks/auth/saga/authToken'
 import authFlow from 'store/ducks/auth/saga/authFlow'
-import authReady from 'store/ducks/auth/saga/authReady'
 import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
 
 import signup from 'store/ducks/signup/saga'
@@ -48,6 +49,8 @@ const captureErrors = (payload) => {
 
 export default function* rootSaga(persistor) {
   yield all([]
+    .concat(appReady())
+
     .concat(camera())
     .concat(theme())
     .concat(albums())
@@ -67,7 +70,6 @@ export default function* rootSaga(persistor) {
     .concat(authData(persistor))
     .concat(authToken(persistor))
     .concat(authFlow(persistor))
-    .concat(authReady(persistor))
     .concat(authPrefetch(persistor))
     .concat(authSignout(persistor))
 

@@ -32,13 +32,6 @@ const initialState = {
     payload: {},
     meta: {},
   },
-  authReady: {
-    data: [],
-    status: 'idle',
-    error: {},
-    payload: {},
-    meta: {},
-  },
   authPrefetch: {
     data: [],
     status: 'idle',
@@ -175,42 +168,6 @@ const authDataFailure = (state, action) => update(state, {
 
 const authDataIdle = (state) => update(state, {
   authData: { $set: initialState.authData },
-})
-
-/**
- *
- */
-const authReadyRequest = (state) => update(state, {
-  authReady: {
-    status: { $set: 'loading' },
-  },
-})
-
-const authReadySuccess = (state, action) => update(state, {
-  user: {
-    $set: action.payload.data,
-  },
-  authReady: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-    error: { $set: initialState.authReady.error },
-    payload: {},
-    meta: { $set: action.payload.meta },
-  },
-})
-
-const authReadyFailure = (state, action) => update(state, {
-  authReady: {
-    data: { $set: initialState.authReady.data },
-    status: { $set: 'failure' },
-    error: { $set: action.payload.message },
-    payload: {},
-    meta: { $set: action.payload.meta },
-  },
-})
-
-const authReadyIdle = (state) => update(state, {
-  authReady: { $set: initialState.authReady },
 })
 
 /**
@@ -430,11 +387,6 @@ export default handleActions({
   [constants.AUTH_DATA_SUCCESS]: authDataSuccess,
   [constants.AUTH_DATA_FAILURE]: authDataFailure,
   [constants.AUTH_DATA_IDLE]: authDataIdle,
-
-  [constants.AUTH_READY_REQUEST]: authReadyRequest,
-  [constants.AUTH_READY_SUCCESS]: authReadySuccess,
-  [constants.AUTH_READY_FAILURE]: authReadyFailure,
-  [constants.AUTH_READY_IDLE]: authReadyIdle,
 
   [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,
