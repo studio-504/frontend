@@ -19,36 +19,7 @@ import FeedContextComponent from 'components/Feed/Context'
 import ErrorTemplate from 'templates/Error'
 import Config from 'react-native-config' 
 import LoadingComponent from 'components/Loading'
-
-const linking = {
-  prefixes: ['real.app://', 'https://real.app/'],
-  config: {
-    AuthEmailConfirm: 'confirm/email/:userId/:confirmationCode',
-    AuthForgotConfirm: 'confirm/forgot/:userId/:confirmationCode',
-    Chat: {
-      screens: {
-        ChatDirect: 'chat/:chatId',
-        Chat: 'chat',
-      },
-    },
-    Root: {
-      screens: {
-        Home: {
-          screens: {
-            Profile: {
-              screens: {
-                ProfilePhoto: 'user/:userId/settings/photo',
-              },
-            },
-          },
-        },
-        Comments: 'user/:userId/post/:postId/comments',
-        PostMedia: 'user/:userId/post/:postId',
-        Profile: 'user/:userId',
-      },
-    },
-  },
-}
+import linking from 'navigation/linking'
 
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
@@ -63,20 +34,17 @@ const Routes = ({
   authenticated,
   appErrorMessage,
   handleErrorClose,
-  handleRouteInit,
-  onStateChange,
+  navigationHandlers,
 }) => {
   const { theme, themes } = useContext(ThemesContext)
-  const routeNameRef = React.useRef()
-  const navigationRef = React.useRef()
 
   return (
     <NavigationContainer
       theme={theme}
       linking={linking}
-      ref={navigationRef}
-      onReady={handleRouteInit(routeNameRef, navigationRef)}
-      onStateChange={onStateChange(routeNameRef, navigationRef)}
+      ref={navigationHandlers.navigationRef}
+      onReady={navigationHandlers.handleRouteInit}
+      onStateChange={navigationHandlers.onStateChange}
     >
       {!authenticated ?
         <PaperProvider theme={themes[0].theme}>
@@ -104,8 +72,7 @@ Routes.propTypes = {
   authenticated: PropTypes.any,
   appErrorMessage: PropTypes.any,
   handleErrorClose: PropTypes.any,
-  handleRouteInit: PropTypes.any,
-  onStateChange: PropTypes.any,
+  navigationHandlers: PropTypes.any,
 }
 
 const App = () => {
@@ -120,8 +87,7 @@ const App = () => {
               theme,
               themes,
               networkIsConnected,
-              handleRouteInit,
-              onStateChange,
+              navigationHandlers,
             }) => (
               <ThemesContext.Provider value={{ theme, themes }}>
                 <FeedContextComponent.Provider value={{ draggedImage, setDraggedImage }}>
@@ -141,8 +107,7 @@ const App = () => {
                         authenticated={authenticated}
                         appErrorMessage={appErrorMessage}
                         handleErrorClose={handleErrorClose}
-                        handleRouteInit={handleRouteInit}
-                        onStateChange={onStateChange}
+                        navigationHandlers={navigationHandlers}
                       />
                     )}
                   </AuthProvider>

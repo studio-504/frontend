@@ -54,7 +54,6 @@ function* handleAppReady() {
  */
 function* appReadyRequest(req) {
   try {
-    yield call(handleAppReady)
     const data = yield call(handleAppReady, req.payload)
     yield put(actions.appReadySuccess({
       message: errors.getMessagePayload(constants.APP_READY_SUCCESS, 'GENERIC'),

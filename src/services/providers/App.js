@@ -17,14 +17,17 @@ export const AppProvider = ({
   const theme = useSelector(authSelector.themeSelector)
   const networkIsConnected = useSelector(state => state.network.isConnected)
 
+  const routeNameRef = React.useRef()
+  const navigationRef = React.useRef()
+
   /**
    *
    */
-  const handleRouteInit = (routeNameRef, navigationRef) => () => {
+  const handleRouteInit = () => {
     routeNameRef.current = navigationRef.current.getCurrentRoute().name
   }
 
-  const onStateChange = (routeNameRef, navigationRef) => () => {
+  const onStateChange = () => {
     const previousRouteName = routeNameRef.current
     const currentRouteName = navigationRef.current.getCurrentRoute().name
 
@@ -43,7 +46,6 @@ export const AppProvider = ({
     dispatch(appActions.appReadyRequest())
   }, [])
 
-
   if (appReady.status !== 'success') {
     return <LoadingComponent />
   }
@@ -52,7 +54,11 @@ export const AppProvider = ({
     theme,
     themes: appTheme.data,
     networkIsConnected,
-    handleRouteInit,
-    onStateChange,
+    navigationHandlers: {
+      handleRouteInit,
+      onStateChange,
+      routeNameRef,
+      navigationRef,
+    },
   })
 }
