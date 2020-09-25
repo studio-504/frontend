@@ -1,0 +1,9 @@
+export const PRIMARY_SUBSCRIPTION = 'app.real.mobile.diamond1M'
+
+export const SUBSCRIPTION_LEVEL = {
+  DIAMOND: 'DIAMOND',
+}
+
+export const PURCHASE_REQUEST = 'PURCHASE_REQUEST'
+export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS'
+export const PURCHASE_FAILURE = 'PURCHASE_FAILURE'
