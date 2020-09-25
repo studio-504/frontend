@@ -35,12 +35,12 @@ RNIap.purchaseErrorListener.mockReturnValue(errorListener)
 RNIap.initConnection.mockResolvedValue(true)
 
 function expectClosedChannel() {
-  expect(RNIap.initConnection).toBeCalled()
-  expect(RNIap.purchaseUpdatedListener).toBeCalled()
-  expect(RNIap.purchaseErrorListener).toBeCalled()
-  expect(updatedListener.remove).toBeCalled()
-  expect(errorListener.remove).toBeCalled()
-  expect(RNIap.endConnection).toBeCalled()
+  expect(RNIap.initConnection).toHaveBeenCalled()
+  expect(RNIap.purchaseUpdatedListener).toHaveBeenCalled()
+  expect(RNIap.purchaseErrorListener).toHaveBeenCalled()
+  expect(updatedListener.remove).toHaveBeenCalled()
+  expect(errorListener.remove).toHaveBeenCalled()
+  expect(RNIap.endConnection).toHaveBeenCalled()
 }
 
 function getCallbacks() {

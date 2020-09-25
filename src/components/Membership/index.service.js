@@ -9,7 +9,7 @@ const MembershipService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
 
   const isSubscribed = user.subscriptionLevel === purchasesConstants.DIAMOND
-  const requestSubscription = () => dispatch(purchasesActions.purchaseRequest({productId: purchasesConstants.PRIMARY_SUBSCRIPTION}))
+  const requestSubscription = () => dispatch(purchasesActions.purchaseRequest({ productId: purchasesConstants.PRIMARY_SUBSCRIPTION }))
   const cancelSubscription = () => Linking.openURL('https://apps.apple.com/account/subscriptions')
 
   return children({

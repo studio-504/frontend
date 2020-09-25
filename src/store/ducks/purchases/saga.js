@@ -18,7 +18,7 @@ async function purchaseEmitter() {
 
     const listeners = [
       RNIap.purchaseUpdatedListener(handleSuccess), 
-      RNIap.purchaseErrorListener(handleError)
+      RNIap.purchaseErrorListener(handleError),
     ]
 
     return () => {
