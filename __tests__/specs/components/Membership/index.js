@@ -12,7 +12,7 @@ describe('Membership component', () => {
     getByText('Membership Perks')
   })
 
-  it('Membership Perks', () => {
+  it('membership Perks', () => {
     const { getByText } = setup()
 
     getByText('Profile Trending Boost')
@@ -33,18 +33,19 @@ describe('Membership component', () => {
     
   })
 
-  it('Subscribe button', () => {
+  it('subscribe button', () => {
     const requestSubscription = jest.fn()
     const { getByText, queryByText } = setup({ requestSubscription })
     const $button = getByText('Subscribe for $9.99 month')
 
     expect(queryByText('Become a member today')).toBeTruthy()
 
+    expect($button).toBeEnabled()
     fireEvent.press($button)
     expect(requestSubscription).toHaveBeenCalled()
   })
 
-  it('Unsubscribe button', () => {
+  it('unsubscribe button', () => {
     const cancelSubscription = jest.fn()
     const { getByText, queryByText } = setup({ cancelSubscription, isSubscribed: true })
     const $button = getByText('Unsubscribe')
@@ -53,5 +54,12 @@ describe('Membership component', () => {
 
     fireEvent.press($button)
     expect(cancelSubscription).toHaveBeenCalled()
+  })
+
+  it('submitting state', () => {
+    const { getByText } = setup({ isSubmitting: true })
+    const $button = getByText('Subscribe for $9.99 month')
+
+    expect($button).toBeDisabled()
   })
 })

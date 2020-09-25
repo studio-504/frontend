@@ -25,6 +25,7 @@ const Membership = ({
   requestSubscription,
   cancelSubscription,
   isSubscribed,
+  isSubmitting,
 }) => {
   const styling = styles(theme)
   
@@ -100,6 +101,8 @@ const Membership = ({
               label={t('Subscribe for $9.99 month')}
               icon={AppleIcon}
               onPress={requestSubscription}
+              loading={isSubmitting}
+              disabled={isSubmitting}
             />
             </>
           )}
@@ -182,12 +185,14 @@ Membership.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   isSubscribed: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
   requestSubscription: PropTypes.func,
   cancelSubscription: PropTypes.func,
 }
 
 Membership.defaultProps = {
   isSubscribed: false,
+  isSubmitting: false
 }
 
 export default withTranslation()(withTheme(Membership))
