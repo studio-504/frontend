@@ -13,21 +13,7 @@ export const AuthProvider = ({
 }) => {
   const dispatch = useDispatch()
   const userId = useSelector(authSelector.authUserIdSelector)
-  const authFlow = useSelector(state => state.auth.authFlow)
-  const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
-  const authSigninApple = useSelector(state => state.auth.authSigninApple)
 
-  const errorsPool = [{
-    appErrorMessage: authSigninGoogle.error.text,
-    handleErrorClose: () => dispatch(authActions.authSigninGoogleIdle()),
-  }, {
-    appErrorMessage: authSigninApple.error.text,
-    handleErrorClose: () => dispatch(authActions.authSigninAppleIdle()),
-  }]
-  const { appErrorMessage, handleErrorClose } = errorsPool
-    .filter(error => error.appErrorMessage && !error.appErrorMessage.length)
-    .pop() || {}
-  
   /**
    * Constructor function to fetch: Translations, Themes and Auth data
    */
@@ -59,9 +45,5 @@ export const AuthProvider = ({
     },
   })
 
-  return children({
-    authenticated: authFlow.meta.authenticated,
-    appErrorMessage,
-    handleErrorClose,
-  })
+  return children
 }

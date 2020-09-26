@@ -5,6 +5,7 @@ import * as errors from 'store/ducks/auth/errors'
 import { federatedGoogleSignout } from 'services/AWS'
 import { resetAuthUserPersist } from 'services/Auth'
 import Config from 'react-native-config'
+import * as navigationActions from 'navigation/actions'
 
 /**
  * Remove cognito credentials
@@ -43,12 +44,17 @@ function* authSignoutRequest(req) {
       message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
       meta: {
         authenticated: false,
-        nextRoute: 'Root',
       },
     }))
   }
 }
 
+function* authSignoutSuccess() {
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+  navigationActions.navigateAuthHome(ReactNavigationRef.current)()
+}
+
 export default () => [
   takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest),
+  takeEvery(constants.AUTH_SIGNOUT_SUCCESS, authSignoutSuccess),
 ]

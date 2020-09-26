@@ -83,8 +83,6 @@ function* authPrefetchRequest(req) {
     yield put(actions.authPrefetchFailure({
       message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error.message),
       meta: {
-        authenticated: false,
-        nextRoute: 'Root',
       },
     }))
   }

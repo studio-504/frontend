@@ -2,6 +2,7 @@ import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
+import * as navigationActions from 'navigation/actions'
 
 /**
  * Authenticate using cognito into user pool
@@ -33,7 +34,7 @@ function* handleAuthSigninRequest(payload) {
 function* authSigninCognitoRequest(req) {
   try {
     const data = yield handleAuthSigninRequest(req.payload)
-    yield put(actions.authSigninCognitoSuccess({ data, nextRoute: 'Root' }))
+    yield put(actions.authSigninCognitoSuccess({ data }))
   } catch (error) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninCognitoFailure({
@@ -59,6 +60,12 @@ function* authSigninCognitoRequest(req) {
   }
 }
 
+function* authSigninCognitoSuccess() {
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+  navigationActions.navigateAuthHome(ReactNavigationRef.current)()
+}
+
 export default () => [
   takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
+  takeEvery(constants.AUTH_SIGNIN_COGNITO_SUCCESS, authSigninCognitoSuccess),
 ]

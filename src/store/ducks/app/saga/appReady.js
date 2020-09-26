@@ -1,8 +1,9 @@
-import { select, put, call, take, race, takeEvery } from 'redux-saga/effects'
+import { select, put, call, take, race, takeEvery, getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/app/actions'
 import * as constants from 'store/ducks/app/constants'
 import * as errors from 'store/ducks/app/errors'
 import * as authSelectors from 'store/ducks/auth/selectors'
+import * as navigationActions from 'navigation/actions'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -59,11 +60,6 @@ function* appReadyRequest(req) {
       message: errors.getMessagePayload(constants.APP_READY_SUCCESS, 'GENERIC'),
       data,
     }))
-
-    /**
-     * Is application at latest version
-     */
-    yield call([Updates, 'versionCheck'])
   } catch (error) {
     yield put(actions.appReadyFailure({
       message: errors.getMessagePayload(constants.APP_READY_FAILURE, 'GENERIC', error.message),
@@ -71,6 +67,16 @@ function* appReadyRequest(req) {
   }
 }
 
+function* appReadySuccess() {
+  /**
+   * Is application at latest version
+   */
+  yield call([Updates, 'versionCheck'])
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+  navigationActions.navigateAuthHome(ReactNavigationRef.current)()
+}
+
 export default () => [
   takeEvery(constants.APP_READY_REQUEST, appReadyRequest),
+  takeEvery(constants.APP_READY_SUCCESS, appReadySuccess),
 ]

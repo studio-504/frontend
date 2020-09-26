@@ -10,22 +10,15 @@ import LoadingComponent from 'components/Loading'
  */
 export const AppProvider = ({
   children,
+  onStateChangeRef,
+  routeNameRef,
+  navigationRef,
 }) => {
   const dispatch = useDispatch()
   const appReady = useSelector(state => state.app.appReady)
   const appTheme = useSelector(state => state.app.appTheme)
   const theme = useSelector(authSelector.themeSelector)
   const networkIsConnected = useSelector(state => state.network.isConnected)
-
-  const routeNameRef = React.useRef()
-  const navigationRef = React.useRef()
-
-  /**
-   *
-   */
-  const handleRouteInit = () => {
-    routeNameRef.current = navigationRef.current.getCurrentRoute().name
-  }
 
   const onStateChange = () => {
     const previousRouteName = routeNameRef.current
@@ -37,13 +30,17 @@ export const AppProvider = ({
 
     // Save the current route name for later comparision
     routeNameRef.current = currentRouteName
-  } 
+  }
+  onStateChangeRef.current = onStateChange
 
   /**
    * Constructor function to fetch: Translations, Themes and Auth data
    */
   useEffect(() => {
     dispatch(appActions.appReadyRequest())
+  }, [])
+
+  useEffect(() => {
   }, [])
 
   if (appReady.status !== 'success') {
@@ -54,11 +51,5 @@ export const AppProvider = ({
     theme,
     themes: appTheme.data,
     networkIsConnected,
-    navigationHandlers: {
-      handleRouteInit,
-      onStateChange,
-      routeNameRef,
-      navigationRef,
-    },
   })
 }

@@ -15,8 +15,6 @@ import BackIcon from 'assets/svg/header/Back'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { connect } from 'react-redux'
 
-const getInitialRouteName = path(['route', 'params', 'initialRouteName'])
-
 export const pageHeaderLeft = ({ onPress, testID = null }) => {
   if (!onPress) {
     return null
@@ -90,7 +88,7 @@ const pager = (props) => {
   return <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled} />
 }
 
-export const tabNavigatorDefaultProps = () => ({
+export const tabNavigatorDefaultProps = ({
   initialRouteName: 'Root',
   tabBar: () => null,
   lazy: true,
@@ -98,19 +96,26 @@ export const tabNavigatorDefaultProps = () => ({
     backgroundColor: 'transparent',
   },
   pager,
+  gestureEnabled: false,
 })
 
-export const tabNavigatorAuthProps = ({ theme, props }) => ({
-  initialRouteName: getInitialRouteName(props),
+export const tabNavigatorAuthProps = ({ theme }) => ({
   sceneContainerStyle: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.backgroundPrimary,
   },
   tabBarOptions: {
-    activeTintColor: theme.colors.primary,
-    inactiveTintColor: theme.colors.primary,
+    activeTintColor: theme.colors.text,
+    inactiveTintColor: theme.colors.text,
+    style: {
+      backgroundColor: theme.colors.backgroundSecondary,
+    },
+    indicatorStyle: {
+      backgroundColor: theme.colors.primary,
+    },
   },
   pager,
 })
+
 
 export const stackNavigatorDefaultProps = ({ theme }) => ({
   screenOptions: {
@@ -161,7 +166,7 @@ export const stackScreenAuthProps = ({ theme }) => ({ options } = {}) => ({
       backgroundColor: theme.colors.backgroundPrimary,
     },
     headerStyle: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.backgroundSecondary,
       shadowRadius: 0,
       shadowOffset: {
         height: 0,
@@ -189,6 +194,7 @@ export const stackScreenOnboardProps = ({ theme }) => ({
     headerTitleStyle: {
       color: theme.colors.backgroundPrimary,
     },
+    headerShown: false,
   }),
 })
 
@@ -211,8 +217,8 @@ export const stackScreenBlankProps = ({ theme }) => ({
 /**
  * Used for Camera without header
  */
-export const stackScreenModalProps = () => ({
-  options: () => ({
+export const stackScreenModalProps = ({
+  options: {
     gestureDirection: 'vertical',
     gestureResponseDistance: {
       horizontal: Layout.window.width,
@@ -222,6 +228,17 @@ export const stackScreenModalProps = () => ({
       backgroundColor: 'transparent',
       gestureDirection: 'vertical',
     },
+    headerShown: false,
+    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+  },
+})
+
+export const stackScreenModalStaticProps = ({
+  options: () => ({
+    cardStyle: {
+      backgroundColor: '#000000',
+    },
+    gestureEnabled: false,
     headerShown: false,
     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
   }),

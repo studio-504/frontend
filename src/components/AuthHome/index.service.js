@@ -1,7 +1,5 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
-import { useNavigation } from '@react-navigation/native'
 import toLower from 'ramda/src/toLower'
 
 const AuthHomeComponentService = ({ children }) => {
@@ -17,8 +15,6 @@ const AuthHomeComponentService = ({ children }) => {
   }
 
   const dispatch = useDispatch()
-  const navigation = useNavigation()
-  const authFlow = useSelector(state => state.auth.authFlow)
   const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const authSigninCognito = useSelector(state => state.auth.authSigninCognito)
@@ -44,19 +40,6 @@ const AuthHomeComponentService = ({ children }) => {
 
   const authSigninCognitoIdle = () => 
     dispatch(authActions.authSigninCognitoIdle({}))
-
-  useEffect(() => {
-    const shouldRedirect = [
-      'AuthHome',
-      'AuthCognito',
-      'AuthSignupConfirm',
-    ].includes(authFlow.meta.nextRoute)
-    if (shouldRedirect) {
-      navigation.navigate(authFlow.meta.nextRoute)
-    }
-  }, [
-    authFlow.meta.nextRoute,
-  ])
 
   return children({
     authSigninGoogle,

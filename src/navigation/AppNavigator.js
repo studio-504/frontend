@@ -71,9 +71,9 @@ const RootNavigator = () => {
   const { theme, themes } = useContext(ThemesContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme, themes })
   const stackScreenBlankProps = navigationOptions.stackScreenBlankProps({ theme, themes })
-  const stackScreenModalProps = navigationOptions.stackScreenModalProps({ theme, themes })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme, themes })
   const stackScreenCardProps = navigationOptions.stackScreenCardProps({ theme, themes })
+  const stackScreenModalProps = navigationOptions.stackScreenModalProps
 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
@@ -118,7 +118,8 @@ const RootNavigator = () => {
 
 const AppNavigator = withTheme(() => {
   const Tab = createMaterialTopTabNavigator()
-  const tabNavigatorDefaultProps = navigationOptions.tabNavigatorDefaultProps()
+  const tabNavigatorDefaultProps = navigationOptions.tabNavigatorDefaultProps
+
   return (
     <Tab.Navigator {...tabNavigatorDefaultProps}>
       <Tab.Screen

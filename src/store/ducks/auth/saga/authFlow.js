@@ -4,6 +4,7 @@ import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
 import Config from 'react-native-config'
+import * as navigationActions from 'navigation/actions'
 
 function hasAuthenticatedCondition({ dataSuccess }) {
   const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
@@ -75,7 +76,6 @@ function* authFlowRequest(req) {
       message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
       meta: {
         authenticated: false,
-        nextRoute: 'Root',
       },
     }))
   }
@@ -85,6 +85,8 @@ function* authFlowRequest(req) {
  * Fetching initial data such as feed/cards/trending
  */
 function* authFlowSuccess() {
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+  navigationActions.navigateApp(ReactNavigationRef.current)()
   yield put(actions.authPrefetchRequest())
 }
 

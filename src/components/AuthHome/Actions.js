@@ -9,7 +9,6 @@ import * as navigationActions from 'navigation/actions'
 import PhoneIcon from 'assets/svg/auth/Phone'
 import AppleIcon from 'assets/svg/auth/Apple'
 import GoogleIcon from 'assets/svg/auth/Google'
-import { Text } from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
@@ -38,9 +37,8 @@ const Actions = ({
       <View style={styling.item}>
         <DefaultButton testID={testIDs.actions.appleBtn} icon={AppleIcon} label={t('Sign in with Apple')} onPress={authSigninAppleRequest} loading={authSigninApple.status === 'loading'} style={styling.apple} labelStyle={styling.labelStyle} />
       </View>
-
       <View style={styling.item}>
-        <Text testID={testIDs.actions.anonymousBtn} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.link}>{t('or Browse Anonymously')}</Text>
+        <DefaultButton testID={testIDs.actions.anonymousBtn}  label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
       </View>
     </View>
   )
@@ -74,10 +72,8 @@ const styles = StyleSheet.create({
   google: {
     backgroundColor: '#4285F4',
   },
-  link: {
-    marginVertical: 12,
-    textAlign: 'center',
-    fontWeight: '600',
+  cognito: {
+    backgroundColor: '#333333',
   },
 })
 
