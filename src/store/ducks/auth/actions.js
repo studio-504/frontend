@@ -18,6 +18,14 @@ export const authTokenSuccess = createAction(constants.AUTH_TOKEN_SUCCESS)
 export const authTokenFailure = createAction(constants.AUTH_TOKEN_FAILURE)
 
 /**
+ * Clear cached credentials for amplify
+ */
+export const authResetIdle = createAction(constants.AUTH_RESET_IDLE)
+export const authResetRequest = createAction(constants.AUTH_RESET_REQUEST)
+export const authResetSuccess = createAction(constants.AUTH_RESET_SUCCESS)
+export const authResetFailure = createAction(constants.AUTH_RESET_FAILURE)
+
+/**
  * Solely for cognito request
  */
 export const authDataIdle = createAction(constants.AUTH_DATA_IDLE)

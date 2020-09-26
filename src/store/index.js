@@ -6,13 +6,13 @@ import rootReducer from 'store/reducers'
 import rootSaga from 'store/sagas'
 import Auth from '@aws-amplify/auth'
 import API from '@aws-amplify/api'
+import { Credentials } from '@aws-amplify/core'
 import * as Logger from 'services/Logger'
 import { STORAGE_PROVIDER } from 'services/Storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { errorWrapper } from 'store/helpers'
 import 'store/updates'
-import StorageHelper from 'services/MemoryStorage'
 
 const persistConfig = {
   key: '/v2/root',
@@ -25,11 +25,19 @@ const networkMiddleware = createNetworkMiddleware({
   queueReleaseThrottle: 200,
 })
 
+/**
+ * Dangeourusly get Amplify Credentials storage, it syncs InMemoryStorage + AsyncStorage
+ * which is the reason of grabbing same instance although we could also generate it using
+ * (new StorageHelper()).getStorage() which will break credentials token sync.
+ */
+const AwsCache = Auth._storage
+
 const sagaMiddleware = createSagaMiddleware({
   context: {
-    AwsStorage: (new StorageHelper()).getStorage(),
+    AwsCache,
     AwsAuth: Auth,
     AwsAPI: API,
+    AwsCredentials: Credentials,
     errorWrapper,
   },
   onError: Logger.captureException,

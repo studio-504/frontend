@@ -194,6 +194,10 @@ const messageCodes = {
       code: 'GENERIC',
       text: 'Failed to fetch auth data',
     },
+    USER_DOES_NOT_EXIST: {
+      code: 'USER_DOES_NOT_EXIST',
+      text: 'User does not exist',
+    },
   },
 
   /**
@@ -225,6 +229,54 @@ const messageCodes = {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to complete auth prefetch',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_UPGRADE_GOOGLE_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Anonymous user has been upgraded via google',
+    },
+  },
+  [constants.AUTH_UPGRADE_GOOGLE_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to upgrade anonymous user via google',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_UPGRADE_APPLE_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Anonymous user has been upgraded via apple',
+    },
+  },
+  [constants.AUTH_UPGRADE_APPLE_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Failed to upgrade anonymous user via apple',
+    },
+  },
+
+  /**
+   * 
+   */
+  [constants.AUTH_RESET_SUCCESS]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Cognito credentials have been reset',
+    },
+  },
+  [constants.AUTH_RESET_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Cannot reset cognito credentials',
     },
   },
 }
