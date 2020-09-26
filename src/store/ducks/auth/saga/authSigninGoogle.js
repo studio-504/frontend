@@ -5,13 +5,13 @@ import {
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
+import * as queries from 'store/ducks/auth/queries'
+import * as queryService from 'services/Query'
 
 /**
  * Authenticate using google into identity pool
  */
-function* googleAuthentication() {
-  const AwsAuth = yield getContext('AwsAuth')
-
+function* getGooglePayload() {
   const google = yield federatedGoogleSignin()
 
   const userPayload = {
@@ -20,28 +20,65 @@ function* googleAuthentication() {
     email: google.user.email,
     authProvider: 'GOOGLE',
     token: google.token,
+    expires_at: google.expires_at,
   }
 
+  return userPayload
+}
+
+/**
+ *
+ */
+function* googleAuthenticateExisting(userPayload) {
+  const AwsAuth = yield getContext('AwsAuth')
+
   return yield AwsAuth.federatedSignIn('google', {
-    token: google.token,
-    expires_at: google.expires_at,
+    token: userPayload.token,
+    expires_at: userPayload.expires_at,
   }, userPayload)
 }
 
+/**
+ *
+ */
+function* createAnonymousUser(userPayload) {
+  yield call([queryService, 'apiRequest'], queries.createAnonymousUser)
+  yield call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
+  yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
+}
+
+/**
+ *
+ */
 function* handleAuthSigninGoogleRequest() {
-  yield call(googleAuthentication)
+  const userPayload = yield call(getGooglePayload)
+
+  yield call(googleAuthenticateExisting, userPayload)
 
   yield put(actions.authFlowRequest({ allowAnonymous: true }))
-  const { flowSuccess, flowFailure } = yield race({
+  const { flowSuccess } = yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
     flowFailure: take(constants.AUTH_FLOW_FAILURE),
   })
 
-  if (flowFailure) {
-    throw new Error('Failed to obtain flow')
+  if (flowSuccess) {
+    return flowSuccess
   }
 
-  return flowSuccess
+  yield put(actions.authResetRequest({ allowAnonymous: true }))
+  yield race({
+    resetSuccess: take(constants.AUTH_RESET_SUCCESS),
+    resetFailure: take(constants.AUTH_RESET_FAILURE),
+  })
+
+  yield call(createAnonymousUser, userPayload)
+  yield call(googleAuthenticateExisting, userPayload)
+
+  yield put(actions.authFlowRequest({ allowAnonymous: false }))
+  yield race({
+    flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
+    flowFailure: take(constants.AUTH_FLOW_FAILURE),
+  })
 }
 
 /**

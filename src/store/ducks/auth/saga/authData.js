@@ -5,7 +5,6 @@ import * as errors from 'store/ducks/auth/errors'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
 import {
-  getAuthUserPersist,
   saveAuthUserPersist,
 } from 'services/Auth'
 
@@ -75,19 +74,6 @@ function* onlineData() {
 }
 
 /**
- * Fetch cached data from asyncstorage
- */
-function* offlineData() {
-  const response = yield getAuthUserPersist()
-
-  if (!path(['data', 'self', 'userId'])(response)) {
-    throw new MissingUserAttributeError()
-  }
-
-  return response
-}
-
-/**
  * Handled anonymous user creation, throws an error if user already exists
  */
 function* createAnonymousUser() {
@@ -103,17 +89,10 @@ function* handleAuthDataRequest(payload = {}) {
     yield createAnonymousUser()
   }
 
-  try {
-    const data = yield call(onlineData)
-    const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, data)
-    yield handleAuthLogger(data)
-    return next
-  } catch (error) {
-    const data = yield call(offlineData)
-    const next = yield call(handleAuthDataRequestData, { meta: { type: 'OFFLINE' } }, data)
-    yield handleAuthLogger(data)
-    return next
-  }
+  const data = yield call(onlineData)
+  const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, data)
+  yield handleAuthLogger(data)
+  return next
 }
 
 /**
@@ -123,16 +102,22 @@ function* authDataRequest(req) {
   try {
     const { data, meta } = yield handleAuthDataRequest(req.payload)
     yield put(actions.authDataSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
+      message: errors.getMessagePayload(constants.AUTH_DATA_SUCCESS, 'GENERIC'),
       data,
       meta,
     }))
   } catch (error) {
-    yield put(actions.authDataFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
-      data: {},
-      meta: {},
-    }))
+    const primaryClientError = queryService.getPrimaryClientError(error)
+      
+    if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
+      yield put(actions.authDataFailure({
+        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'USER_DOES_NOT_EXIST', error.message),
+      }))
+    } else {
+      yield put(actions.authDataFailure({
+        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'GENERIC', error.message),
+      }))
+    }
   }
 }
 

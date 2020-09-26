@@ -21,23 +21,25 @@ class UnauthorizedTokenError extends Error {
 /**
  * Fetch identity pool token
  * Validate cache support with online/offline handlers ?!
- * Cached in asyncstorage under: @RealStorageService:CognitoIdentityId-${AWS_COGNITO_IDENTITY_POOL_ID}
+ * Cached in asyncstorage under: @MemoryStorage:CognitoIdentityId-${AWS_COGNITO_IDENTITY_POOL_ID}
  */
 function* fetchCognitoCredentials() {
   const AwsAuth = yield getContext('AwsAuth')
-  const AwsStorage = yield getContext('AwsStorage')
+  const AwsCache = yield getContext('AwsCache')
+  const AwsCredentials = yield getContext('AwsCredentials')
 
   /**
    * Fetch latest token from cognito api, bypass cache from asyncstorage
    */
-  const credentials = yield call([AwsAuth, 'currentUserCredentials'], { bypassCache: false })
+  const credentials = yield call([AwsAuth, 'currentUserCredentials'], { bypassCache: true })
 
   /**
    * Cognito may throw an error if user is unathorized to stale token coming from asyncStorage
    */
   if (credentials.message && credentials.message.includes('Access to Identity') && credentials.message.includes('is forbidden')) {
-    yield call([AwsStorage, 'removeItem'], `CognitoIdentityId-${Config.AWS_COGNITO_IDENTITY_POOL_ID}`)
-    return yield call([AwsAuth, 'currentUserCredentials'], { bypassCache: false })
+    yield call([AwsCredentials, 'clear'])
+    yield call([AwsCache, 'removeItem'], `CognitoIdentityId-${Config.AWS_COGNITO_IDENTITY_POOL_ID}`)
+    return yield call([AwsAuth, 'currentUserCredentials'], { bypassCache: true })
   }
 
   return credentials
@@ -45,7 +47,7 @@ function* fetchCognitoCredentials() {
 
 /**
  * Authenticated users federation info from identity pool
- * Cached in asyncstorage under: @RealStorageService:aws-amplify-federatedInfo
+ * Cached in asyncstorage under: @MemoryStorage:aws-amplify-federatedInfo
  */
 function* fetchCognitoUser() {
   const AwsAuth = yield getContext('AwsAuth')
