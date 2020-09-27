@@ -82,3 +82,12 @@ export const finishChangeUserEmail = `
   }
   ${userFragment}
 `
+
+export const setFullname = `
+  mutation setFullname($fullName: String) {
+    setUserDetails(fullName: $fullName) {
+      ...userFragment
+    }
+  }
+  ${userFragment}
+`

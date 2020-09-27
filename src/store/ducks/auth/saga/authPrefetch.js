@@ -98,8 +98,6 @@ function* handleAuthPrefetchGuest() {
 function* handleAuthPrefetchRequest() {
   const authenticationType = yield select(state => state.auth.authToken.meta.type)
 
-  console.log(authenticationType, 32)
-
   if (authenticationType === 'COGNITO_AUTHENTICATED') {
     yield call(handleAuthPrefetchAuthenticated)
   }
