@@ -1,4 +1,4 @@
-import { put, select, take, race, takeEvery } from 'redux-saga/effects'
+import { put, call, select, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
@@ -13,7 +13,7 @@ import * as authSelector from 'store/ducks/auth/selectors'
 /**
  * Used sequential approach to load data in UI order
  */
-function* handleAuthPrefetchRequest() {
+function* handleAuthPrefetchAuthenticated() {
   const userId = yield select(authSelector.authUserIdSelector)
 
   /**
@@ -68,22 +68,59 @@ function* handleAuthPrefetchRequest() {
   }
 }
 
+function* handleAuthPrefetchGuest() {
+  /**
+   * 1. Feed
+   */
+  yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
+  yield race({
+    cardsSuccess: take(postsConstants.POSTS_FEED_GET_SUCCESS),
+    cardsFailure: take(postsConstants.POSTS_FEED_GET_FAILURE),
+  })
+
+  /**
+   * Data which is important to load but not belongs to home screen
+   * Sequential approach wasn't used cuz some calls are expensive and not top priority
+   */
+  yield put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+
+  return {
+    meta: {
+    },
+    data: {
+    },
+  }
+}
+
+/**
+ * Used sequential approach to load data in UI order
+ */
+function* handleAuthPrefetchRequest() {
+  const authenticationType = yield select(state => state.auth.authToken.meta.type)
+
+  console.log(authenticationType, 32)
+
+  if (authenticationType === 'COGNITO_AUTHENTICATED') {
+    yield call(handleAuthPrefetchAuthenticated)
+  }
+
+  if (authenticationType === 'COGNITO_GUEST') {
+    yield call(handleAuthPrefetchGuest)
+  }
+}
+
 /**
  * Fetching initial data such as feed/cards/trending
  */
 function* authPrefetchRequest(req) {
   try {
-    const { data, meta } = yield handleAuthPrefetchRequest(req.payload)
+    yield handleAuthPrefetchRequest(req.payload)
     yield put(actions.authPrefetchSuccess({
       message: errors.getMessagePayload(constants.AUTH_PREFETCH_SUCCESS, 'GENERIC'),
-      data,
-      meta,
     }))
   } catch (error) {
     yield put(actions.authPrefetchFailure({
       message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error.message),
-      meta: {
-      },
     }))
   }
 }

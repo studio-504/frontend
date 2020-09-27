@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import AuthNavigator from 'navigation/AuthNavigator'
 import AppNavigator from 'navigation/AppNavigator'
 import * as navigationOptions from 'navigation/options'
@@ -17,13 +16,13 @@ const Router = () => {
         {...navigationOptions.stackScreenModalStaticProps}
       />
       <Stack.Screen
-        name="Auth"
-        component={AuthNavigator}
+        name="App"
+        component={AppNavigator}
         {...navigationOptions.stackScreenModalStaticProps}
       />
       <Stack.Screen
-        name="App"
-        component={AppNavigator}
+        name="Auth"
+        component={AuthNavigator}
         {...navigationOptions.stackScreenModalStaticProps}
       />
     </Stack.Navigator>
@@ -31,10 +30,6 @@ const Router = () => {
 }
 
 Router.propTypes = {
-  authenticated: PropTypes.any,
-  appErrorMessage: PropTypes.any,
-  handleErrorClose: PropTypes.any,
-  navigationHandlers: PropTypes.any,
 }
 
 export default Router

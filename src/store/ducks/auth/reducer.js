@@ -173,6 +173,39 @@ const authDataIdle = (state) => update(state, {
 /**
  *
  */
+const authTokenRequest = (state) => update(state, {
+  authToken: {
+    status: { $set: 'loading' },
+  },
+})
+
+const authTokenSuccess = (state, action) => update(state, {
+  authToken: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+    error: { $set: initialState.authToken.error },
+    payload: {},
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const authTokenFailure = (state, action) => update(state, {
+  authToken: {
+    data: { $set: initialState.authToken.data },
+    status: { $set: 'failure' },
+    error: { $set: action.payload.message },
+    payload: {},
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const authTokenIdle = (state) => update(state, {
+  authToken: { $set: initialState.authToken },
+})
+
+/**
+ *
+ */
 const authSigninCognitoRequest = (state, action) => update(state, {
   authSigninCognito: {
     status: { $set: 'loading' },
@@ -387,6 +420,11 @@ export default handleActions({
   [constants.AUTH_DATA_SUCCESS]: authDataSuccess,
   [constants.AUTH_DATA_FAILURE]: authDataFailure,
   [constants.AUTH_DATA_IDLE]: authDataIdle,
+
+  [constants.AUTH_TOKEN_REQUEST]: authTokenRequest,
+  [constants.AUTH_TOKEN_SUCCESS]: authTokenSuccess,
+  [constants.AUTH_TOKEN_FAILURE]: authTokenFailure,
+  [constants.AUTH_TOKEN_IDLE]: authTokenIdle,
 
   [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,
