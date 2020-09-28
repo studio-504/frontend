@@ -1,5 +1,5 @@
 import React from 'react'
-import { renderWithProviders } from 'tests/utils'
+import { renderWithProviders, fireEvent } from 'tests/utils'
 import ActionSheet from 'components/ActionSheet'
 import SettingsComponent from 'components/Settings'
 import { prop } from 'ramda'
@@ -14,6 +14,10 @@ const navigation = { navigate: jest.fn() }
 const setup = (props) => renderWithProviders(<SettingsComponent navigation={navigation} {...props} />)
 
 describe('Settings component', () => {
+  afterEach(() => {
+    navigation.navigate.mockClear()
+  })
+
   describe('Profile photo actions menu', () => {
     afterEach(() => {
       ActionSheet.mockClear()
@@ -136,6 +140,63 @@ describe('Settings component', () => {
 
       expect(name).toBe('Cancel')
       expect(isCancel).toBeTruthy()
+    })
+  })
+
+  describe('Settings links', () => {
+    it('Edit Profile', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Edit Profile'))
+
+      expect(navigation.navigate).toBeCalledWith('ProfileEdit')
+    })
+
+    it('Change Profile Photo', () => {
+      const { getByText } = setup()
+
+      getByText('Change Profile Photo')
+    })
+
+    it('Choose Theme', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Choose Theme'))
+
+      expect(navigation.navigate).toBeCalledWith('Theme')
+    })
+
+    it('Archived Photos', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Archived Photos'))
+
+      expect(navigation.navigate).toBeCalledWith('Archived')
+    })
+
+    it('Mental Health & Privacy Settings', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Mental Health & Privacy Settings'))
+
+      expect(navigation.navigate).toBeCalledWith('Privacy')
+    })
+
+    it('Follow & Invite Friends', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Follow & Invite Friends'))
+
+      expect(navigation.navigate).toBeCalledWith('InviteFriends')
+    })
+
+    it('Signout', () => {
+      const authSignoutRequest = jest.fn()
+      const { getByText } = setup({ authSignoutRequest })
+
+      fireEvent.press(getByText('Signout'))
+
+      expect(authSignoutRequest).toBeCalled()
     })
   })
 })
