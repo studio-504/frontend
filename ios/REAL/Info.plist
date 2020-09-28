@@ -89,6 +89,8 @@
 	<string>$(PRODUCT_NAME) wants to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need camera permissions to use Photo Uploading on Public or Private Feed which you can define in profile settings.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need contacts permissions to allow you to find and invite friends.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
