@@ -10,6 +10,7 @@ import retryPurchaseRequest from 'store/ducks/purchases/saga/retryPurchase'
 import * as actions from 'store/ducks/purchases/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
+import * as Logger from 'services/Logger'
 
 jest.mock('services/Query', () => ({
   apiRequest: jest.fn(),
@@ -34,6 +35,8 @@ describe('Finish pending purchases saga', () => {
     RNIap.getPendingPurchasesIOS.mockClear()
     RNIap.finishTransactionIOS.mockClear()
     RNIap.clearTransactionIOS.mockClear()
+
+    Logger.captureException.mockClear()
   })
 
   describe('retry request', () => {
@@ -87,6 +90,7 @@ describe('Finish pending purchases saga', () => {
         .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
         .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
         .put(actions.retryPurchaseFailure(error.message))
+        .call([Logger, 'captureException'], error)
 
         .dispatch(actions.retryPurchaseRequest(subscription))
         .silentRun()

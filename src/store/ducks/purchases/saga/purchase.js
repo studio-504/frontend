@@ -4,6 +4,7 @@ import { eventChannel } from 'redux-saga'
 import * as actions from 'store/ducks/purchases/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
+import * as Logger from 'services/Logger'
 
 /**
  *
@@ -68,6 +69,7 @@ function* purchaseRequest(req) {
     yield put(actions.purchaseSuccess())
   } catch (error) {
     yield put(actions.purchaseFailure(error.message))
+    yield call([Logger, 'captureException'], error)
   } finally {
     if (channel) {
       channel.close()

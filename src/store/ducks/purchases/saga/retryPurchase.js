@@ -3,6 +3,7 @@ import isEmpty from 'ramda/src/isEmpty'
 import { put, call, delay, race, all } from 'redux-saga/effects'
 import * as actions from 'store/ducks/purchases/actions'
 import purchaseRequest, { purchaseComplete } from 'store/ducks/purchases/saga/purchase'
+import * as Logger from 'services/Logger'
 
 /**
  *
@@ -38,6 +39,7 @@ function* retryPurchaseRequest(req) {
   } catch (error) {
     yield call([RNIap, 'clearTransactionIOS'])
     yield put(actions.retryPurchaseFailure(error.message))
+    yield call([Logger, 'captureException'], error)
   }
 }
 

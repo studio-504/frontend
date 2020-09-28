@@ -8,6 +8,7 @@ import * as actions from 'store/ducks/purchases/actions'
 import * as constants from 'store/ducks/purchases/constants'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
+import * as Logger from 'services/Logger'
 
 jest.mock('services/Query', () => ({
   apiRequest: jest.fn(),
@@ -55,6 +56,8 @@ describe('Purchases saga', () => {
     updatedListener.remove.mockClear()
     errorListener.remove.mockClear()
 
+    Logger.captureException.mockClear()
+
     RNIap.initConnection.mockClear()
     RNIap.purchaseUpdatedListener.mockClear()
     RNIap.purchaseErrorListener.mockClear()
@@ -73,7 +76,11 @@ describe('Purchases saga', () => {
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
 
-    setTimeout(expectClosedChannel, 0)
+    setTimeout(() => {
+      expectClosedChannel()
+      expect(Logger.captureException).toHaveBeenCalled()
+      expect(Logger.captureException.mock.calls[0][0].message).toBe('Purchase Request Timeout')
+    }, 0)
 
     return promise
   })
@@ -83,6 +90,7 @@ describe('Purchases saga', () => {
     const promise = expectSaga(testAsRootSaga(purchases))
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .put(actions.purchaseFailure(error.message))
+      .call([Logger, 'captureException'], error)
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
@@ -126,6 +134,7 @@ describe('Purchases saga', () => {
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
       .put(actions.purchaseFailure(error.message))
+      .call([Logger, 'captureException'], error)
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
