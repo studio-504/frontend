@@ -3,7 +3,7 @@ import isEmpty from 'ramda/src/isEmpty'
 import { put, call, delay, race, all } from 'redux-saga/effects'
 import * as actions from 'store/ducks/purchases/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import purchaseRequest, { purchaseComplete } from 'store/ducks/purchases/saga/purchase'
+import { purchaseComplete, purchaseRequest } from 'store/ducks/purchases/saga/purchase'
 import * as Logger from 'services/Logger'
 
 /**
@@ -23,7 +23,7 @@ function* completePendingTransactions(transactions) {
 /**
  *
  */
-function* retryPurchaseRequest(req) {
+function* retryPurchase(req) {
   try {
     const { transactions } = yield race({
       timeout: delay(10000),
@@ -31,7 +31,8 @@ function* retryPurchaseRequest(req) {
     })
 
     if (transactions === undefined || isEmpty(transactions)) {
-      yield call(purchaseRequest, req)
+      const { productId } = req.payload
+      yield call(purchaseRequest, productId)
     } else {
       yield call(completePendingTransactions, transactions)
     }
@@ -45,4 +46,4 @@ function* retryPurchaseRequest(req) {
   }
 }
 
-export default retryPurchaseRequest
+export default retryPurchase

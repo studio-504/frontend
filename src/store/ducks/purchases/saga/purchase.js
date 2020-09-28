@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import * as RNIap from 'react-native-iap'
 import { put, call, race, delay, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
@@ -17,10 +18,7 @@ async function purchaseEmitter() {
     const handleSuccess = (purchase) => emitter({ eventType: 'success', eventData: { purchase } })
     const handleError = (error) => emitter({ eventType: 'error', eventData: { error } })
 
-    const listeners = [
-      RNIap.purchaseUpdatedListener(handleSuccess), 
-      RNIap.purchaseErrorListener(handleError),
-    ]
+    const listeners = [RNIap.purchaseUpdatedListener(handleSuccess), RNIap.purchaseErrorListener(handleError)]
 
     return () => {
       listeners.forEach((listener) => listener.remove())
@@ -40,15 +38,14 @@ export function* purchaseComplete(purchase) {
 /**
  *
  */
-function* purchaseRequest(req) {
+export function* purchaseRequest(productId) {
   let channel
+  const finishTransactionAutomatically = false
 
   try {
-    const { productId } = req.payload
-    const finishTransactionAutomatically = false
-
     channel = yield call(purchaseEmitter)
 
+    yield call([RNIap, 'getSubscriptions'], [productId])
     yield call([RNIap, 'requestSubscription'], productId, finishTransactionAutomatically)
 
     const { timeout, response } = yield race({
@@ -60,18 +57,13 @@ function* purchaseRequest(req) {
       throw new Error('Purchase Request Timeout')
     }
 
-    const { eventType, eventData } = response
-
-    if (eventType === 'error') {
-      throw eventData.error
+    if (response.eventType === 'error') {
+      throw response.eventData.error
     }
 
-    yield call(purchaseComplete, eventData.purchase)
-    yield put(actions.purchaseSuccess())
-    yield put(usersActions.usersGetProfileSelfRequest())
+    yield call(purchaseComplete, response.eventData.purchase)
   } catch (error) {
-    yield put(actions.purchaseFailure(error.message))
-    yield call([Logger, 'captureException'], error)
+    throw error
   } finally {
     if (channel) {
       channel.close()
@@ -79,4 +71,16 @@ function* purchaseRequest(req) {
   }
 }
 
-export default purchaseRequest
+function* purchase(req) {
+  try {
+    const { productId } = req.payload
+    yield call(purchaseRequest, productId)
+    yield put(actions.purchaseSuccess())
+    yield put(usersActions.usersGetProfileSelfRequest())
+  } catch (error) {
+    yield put(actions.purchaseFailure(error.message))
+    yield call([Logger, 'captureException'], error)
+  }
+}
+
+export default purchase

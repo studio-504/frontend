@@ -5,7 +5,7 @@ import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
 import { testAsRootSaga } from 'tests/utils/helpers'
 import purchases from 'store/ducks/purchases/saga'
-import purchaseRequest from 'store/ducks/purchases/saga/purchase'
+import { purchaseRequest } from 'store/ducks/purchases/saga/purchase'
 import retryPurchaseRequest from 'store/ducks/purchases/saga/retryPurchase'
 import * as usersActions from 'store/ducks/users/actions'
 import * as actions from 'store/ducks/purchases/actions'
@@ -50,7 +50,7 @@ describe('Finish pending purchases saga', () => {
         })
 
         .next({ transactions: [] })
-        .call(purchaseRequest, action)
+        .call(purchaseRequest, action.payload.productId)
 
         .next()
         .put(actions.retryPurchaseSuccess())
@@ -71,7 +71,7 @@ describe('Finish pending purchases saga', () => {
         })
 
         .next({ timeout: true })
-        .call(purchaseRequest, action)
+        .call(purchaseRequest, action.payload.productId)
 
         .next()
         .put(actions.retryPurchaseSuccess())
