@@ -1,6 +1,6 @@
 import * as RNIap from 'react-native-iap'
 import { expectSaga, testSaga } from 'redux-saga-test-plan'
-import {  call, delay } from 'redux-saga/effects'
+import { call, delay } from 'redux-saga/effects'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
 import { testAsRootSaga } from 'tests/utils/helpers'
@@ -28,7 +28,7 @@ const purchase = {
   transactionId: 'transactionId',
 }
 
-const subscription = { productId: '123' }
+const action = actions.retryPurchaseRequest({ productId: '123' })
 
 describe('Finish pending purchases saga', () => {
   afterEach(() => {
@@ -42,7 +42,7 @@ describe('Finish pending purchases saga', () => {
 
   describe('retry request', () => {
     it('no pending transactions', () => {
-      testSaga(retryPurchaseRequest, actions.retryPurchaseRequest(subscription))
+      testSaga(retryPurchaseRequest, action)
         .next()
         .race({
           timeout: delay(10000),
@@ -50,7 +50,7 @@ describe('Finish pending purchases saga', () => {
         })
 
         .next({ transactions: [] })
-        .call(purchaseRequest, subscription)
+        .call(purchaseRequest, action)
 
         .next()
         .put(actions.retryPurchaseSuccess())
@@ -63,7 +63,7 @@ describe('Finish pending purchases saga', () => {
     })
 
     it('pending purchases request timeout', () => {
-      testSaga(retryPurchaseRequest, actions.retryPurchaseRequest(subscription))
+      testSaga(retryPurchaseRequest, action)
         .next()
         .race({
           timeout: delay(10000),
@@ -71,7 +71,7 @@ describe('Finish pending purchases saga', () => {
         })
 
         .next({ timeout: true })
-        .call(purchaseRequest, subscription)
+        .call(purchaseRequest, action)
 
         .next()
         .put(actions.retryPurchaseSuccess())
@@ -99,7 +99,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseFailure(error.message))
         .call([Logger, 'captureException'], error)
 
-        .dispatch(actions.retryPurchaseRequest(subscription))
+        .dispatch(action)
         .silentRun()
     })
 
@@ -115,7 +115,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseSuccess())
         .put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.retryPurchaseRequest(subscription))
+        .dispatch(action)
         .silentRun()
     })
   })

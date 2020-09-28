@@ -31,7 +31,7 @@ function* retryPurchaseRequest(req) {
     })
 
     if (transactions === undefined || isEmpty(transactions)) {
-      yield call(purchaseRequest, req.payload)
+      yield call(purchaseRequest, req)
     } else {
       yield call(completePendingTransactions, transactions)
     }
