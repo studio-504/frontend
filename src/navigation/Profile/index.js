@@ -80,7 +80,7 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="Membership"
         component={MembershipScreen}
-        {...stackScreenPageProps({ options: { headerShown: false } })}
+        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
       />
       <Stack.Screen
         name="Archived"
