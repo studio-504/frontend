@@ -1,8 +1,7 @@
 import * as RNIap from 'react-native-iap'
-import { put, takeEvery, call, race, delay, take } from 'redux-saga/effects'
+import { put, call, race, delay, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as actions from 'store/ducks/purchases/actions'
-import * as constants from 'store/ducks/purchases/constants'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
 
@@ -31,7 +30,7 @@ async function purchaseEmitter() {
 /**
  *
  */
-function* purchaseComplete(purchase) {
+export function* purchaseComplete(purchase) {
   yield call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
   yield call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
 }
@@ -76,4 +75,4 @@ function* purchaseRequest(req) {
   }
 }
 
-export default () => [takeEvery(constants.PURCHASE_REQUEST, purchaseRequest)]
+export default purchaseRequest

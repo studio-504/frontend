@@ -9,17 +9,23 @@ const MembershipService = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUserSelector)
   const purchasesRequest = useSelector(purchasesSelectors.purchasesRequest)
+  const retryPurchase = useSelector(purchasesSelectors.retryPurchase)
 
+  const subscription = { productId: purchasesConstants.PRIMARY_SUBSCRIPTION }
   const isSubscribed = user.subscriptionLevel === purchasesConstants.SUBSCRIPTION_LEVEL.DIAMOND
-  const isSubmitting = purchasesRequest.status === 'loading'
-  const requestSubscription = () => dispatch(purchasesActions.purchaseRequest({ productId: purchasesConstants.PRIMARY_SUBSCRIPTION }))
-  const cancelSubscription = () => Linking.openURL('https://apps.apple.com/account/subscriptions')
+  const requestSubscription = () => dispatch(purchasesActions.purchaseRequest(subscription))
+  const retryPurchaseRequest = () => dispatch(purchasesActions.retryPurchaseRequest(subscription))
+  const manageSubscriptions = () => Linking.openURL('https://apps.apple.com/account/subscriptions')
+  const handleContactUs = () => Linking.openURL('mailto:support@real.app')
 
   return children({
     isSubscribed,
-    isSubmitting,
+    purchasesRequest,
+    retryPurchase,
     requestSubscription,
-    cancelSubscription,
+    manageSubscriptions,
+    handleContactUs,
+    retryPurchaseRequest,
   })
 }
 

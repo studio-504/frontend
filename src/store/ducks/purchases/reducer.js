@@ -7,6 +7,10 @@ const initialState = {
     status: 'idle',
     error: '',
   },
+  retryPurchase: {
+    status: 'idle',
+    error: '',
+  }
 }
 
 /**
@@ -35,11 +39,46 @@ const purchasesFailure = (state, action) =>
     },
   })
 
+/**
+ *
+ */
+const retryPurchaseRequest = (state) =>
+  update(state, {
+    retryPurchase: {
+      status: { $set: 'loading' },
+    },
+  })
+
+const retryPurchaseSuccess = (state) =>
+  update(state, {
+    purchasesRequest: {
+      status: { $set: initialState.purchasesRequest.status },
+      error: { $set: initialState.purchasesRequest.error },
+    },
+
+    retryPurchase: {
+      status: { $set: 'success' },
+      error: { $set: initialState.retryPurchase.error },
+    },
+  })
+
+const retryPurchaseFailure = (state, action) =>
+  update(state, {
+    retryPurchase: {
+      status: { $set: 'failure' },
+      error: { $set: action.payload },
+    },
+  })
+
 export default handleActions(
   {
     [constants.PURCHASE_REQUEST]: purchasesRequest,
     [constants.PURCHASE_SUCCESS]: purchasesSuccess,
     [constants.PURCHASE_FAILURE]: purchasesFailure,
+
+    [constants.RETRY_PURCHASE_REQUEST]: retryPurchaseRequest,
+    [constants.RETRY_PURCHASE_SUCCESS]: retryPurchaseSuccess,
+    [constants.RETRY_PURCHASE_FAILURE]: retryPurchaseFailure,
   },
   initialState,
 )
