@@ -5,6 +5,7 @@ import { throwError } from 'redux-saga-test-plan/providers'
 import { testAsRootSaga, provideDelay } from 'tests/utils/helpers'
 import purchases from 'store/ducks/purchases/saga'
 import * as actions from 'store/ducks/purchases/actions'
+import * as usersActions from 'store/ducks/users/actions'
 import * as constants from 'store/ducks/purchases/constants'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
@@ -111,6 +112,7 @@ describe('Purchases saga', () => {
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
       .put(actions.purchaseSuccess())
+        .put(usersActions.usersGetProfileSelfRequest())
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()

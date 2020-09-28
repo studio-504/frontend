@@ -2,6 +2,7 @@ import * as RNIap from 'react-native-iap'
 import { put, call, race, delay, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as actions from 'store/ducks/purchases/actions'
+import * as usersActions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
 import * as Logger from 'services/Logger'
@@ -67,6 +68,7 @@ function* purchaseRequest(req) {
 
     yield call(purchaseComplete, eventData.purchase)
     yield put(actions.purchaseSuccess())
+    yield put(usersActions.usersGetProfileSelfRequest())
   } catch (error) {
     yield put(actions.purchaseFailure(error.message))
     yield call([Logger, 'captureException'], error)
