@@ -115,7 +115,7 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Live Chat Support')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t("We're here to help!")}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('We\'re here to help!')}</Text>
           </View>
         </View>
 
@@ -233,6 +233,7 @@ Membership.propTypes = {
   requestSubscription: PropTypes.func,
   manageSubscriptions: PropTypes.func,
   handleContactUs: PropTypes.func,
+  retryPurchaseRequest: PropTypes.func,
   purchasesRequest: PropTypes.shape({
     status: PropTypes.string,
     error: PropTypes.string,

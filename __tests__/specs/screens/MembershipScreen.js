@@ -35,7 +35,7 @@ describe('Membership Screen', () => {
 
     fireEvent.press(getByText('Subscribe for $9.99 month'))
 
-    expect(dispatch).toBeCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+    expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
   })
 
   it('user with premium subscription try to unsubscribe', () => {
@@ -44,7 +44,7 @@ describe('Membership Screen', () => {
 
     fireEvent.press(getByText('Unsubscribe'))
 
-    expect(Linking.openURL).toBeCalledWith('https://apps.apple.com/account/subscriptions')
+    expect(Linking.openURL).toHaveBeenCalledWith('https://apps.apple.com/account/subscriptions')
   })
 
   describe('submitting state', () => {
@@ -73,7 +73,7 @@ describe('Membership Screen', () => {
       expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toBeCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
     })
 
     it('retry failure', () => {
@@ -84,7 +84,7 @@ describe('Membership Screen', () => {
       expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toBeCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
     })
 
     it('contact us', () => {
@@ -94,7 +94,7 @@ describe('Membership Screen', () => {
 
       fireEvent.press(getByText('Or contact us'))
 
-      expect(Linking.openURL).toBeCalledWith('mailto:support@real.app')
+      expect(Linking.openURL).toHaveBeenCalledWith('mailto:support@real.app')
     })
   })
 })

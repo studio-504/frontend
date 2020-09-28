@@ -27,7 +27,7 @@ describe('Membership component', () => {
     getByText('Change the appearance of your profile')
 
     getByText('Live Chat Support')
-    getByText("We're here to help!")
+    getByText('We\'re here to help!')
 
     getByText('Diamond Badge')
     getByText('A shiny badge next to your username')
@@ -75,7 +75,7 @@ describe('Membership component', () => {
     expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
 
     fireEvent.press($button)
-    expect(retryPurchaseRequest).toBeCalled()
+    expect(retryPurchaseRequest).toHaveBeenCalled()
   })
 
   it('retryPurchase error', () => {
@@ -89,7 +89,7 @@ describe('Membership component', () => {
     expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
 
     fireEvent.press($button)
-    expect(retryPurchaseRequest).toBeCalled()
+    expect(retryPurchaseRequest).toHaveBeenCalled()
   })
 
   it('retryPurchase submitting state', () => {

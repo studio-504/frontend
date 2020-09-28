@@ -38,7 +38,7 @@ describe('Purchases reducer', () => {
   it('clear error on request', () => {
     const state = applyActions([
       actions.purchaseFailure(error.message),
-      actions.purchaseRequest()
+      actions.purchaseRequest(),
     ], reducer) 
 
     expect(selectors.purchasesRequest(state)).toEqual({

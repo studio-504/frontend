@@ -5,5 +5,5 @@ import retryPurchaseRequest from 'store/ducks/purchases/saga/retryPurchase'
 
 export default () => [
   takeEvery(constants.PURCHASE_REQUEST, purchaseRequest),
-  takeEvery(constants.RETRY_PURCHASE_REQUEST, retryPurchaseRequest)
+  takeEvery(constants.RETRY_PURCHASE_REQUEST, retryPurchaseRequest),
 ]

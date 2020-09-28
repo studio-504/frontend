@@ -10,7 +10,7 @@ const initialState = {
   retryPurchase: {
     status: 'idle',
     error: '',
-  }
+  },
 }
 
 /**
