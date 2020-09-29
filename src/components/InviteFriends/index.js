@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next'
 import { withTheme } from 'react-native-paper'
 import ContactsIcon from 'assets/svg/contacts/Contacts'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
+import RowsComponent from 'templates/Rows'
 
 const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings }) => {
   const styling = styles(theme)
@@ -23,23 +24,29 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
           <Text style={styling.headingSubtitle}>{t('Find people you know on Real.app and choose who to follow.')}</Text>
         </View>
         <View style={styling.content}>
-          {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
           <View style={styling.actions}>
-            {contactsGet.status === 'failure' ? (
+            {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
+            {contactsGet.status === 'failure' && (
+              <DefaultButton style={styling.openSettingsBtn} label={t('Open the "Settings"')} onPress={openSettings} />
+            )}
+            {contactsGet.status === 'idle' && (
               <DefaultButton
-                style={styling.openSettingsBtn}
-                label={t('Open the "Settings"')}
-                onPress={openSettings}
-              />
-            ) : (
-              <DefaultButton
-                label={contactsGet.status === 'success' ? t('Synchronize Contacts') : t('Connect Contacts')}
+                label={t('Connect Contacts')}
                 onPress={contactsGetRequest}
                 loading={isLoading}
                 disabled={isLoading}
               />
             )}
           </View>
+          {contactsGet.status === 'success' && (
+            <RowsComponent items={contactsGet.items}>
+              {(user) => (
+                <View>
+                  <Text>{user.givenName}</Text>
+                </View>
+              )}
+            </RowsComponent>
+          )}
         </View>
       </SafeAreaView>
     </ScrollView>

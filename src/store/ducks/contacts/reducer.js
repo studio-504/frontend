@@ -6,6 +6,7 @@ const initialState = {
   contactsGet: {
     status: 'idle',
     error: '',
+    items: [],
   },
 }
 
@@ -20,10 +21,11 @@ const contactsGetRequest = (state) =>
     },
   })
 
-const contactsSuccess = (state) =>
+const contactsSuccess = (state, action) =>
   update(state, {
     contactsGet: {
       status: { $set: 'success' },
+      items: { $set: action.payload.items },
     },
   })
 

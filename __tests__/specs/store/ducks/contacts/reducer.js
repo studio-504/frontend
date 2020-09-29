@@ -14,6 +14,7 @@ describe('Contacts reducer', () => {
     expect(selectors.contactsGet(state)).toEqual({
       error: '',
       status: 'idle',
+      items: []
     })
   })
 
@@ -23,15 +24,18 @@ describe('Contacts reducer', () => {
     expect(selectors.contactsGet(state)).toEqual({
       error: '',
       status: 'loading',
+      items: []
     })
   })
 
   it('success state', () => {
-    const state = reducer(undefined, actions.contactsGetSuccess())
+    const items = [{id: 1}, {id: 2}]
+    const state = reducer(undefined, actions.contactsGetSuccess({items}))
 
     expect(selectors.contactsGet(state)).toEqual({
       error: '',
       status: 'success',
+      items
     })
   })
 
@@ -41,6 +45,7 @@ describe('Contacts reducer', () => {
     expect(selectors.contactsGet(state)).toEqual({
       error: error.message,
       status: 'failure',
+      items: []
     })
   })
 
@@ -50,6 +55,7 @@ describe('Contacts reducer', () => {
     expect(selectors.contactsGet(state)).toEqual({
       error: '',
       status: 'loading',
+      items: []
     })
   })
 })
