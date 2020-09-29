@@ -114,6 +114,8 @@ PODS:
   - OpenSSL-Universal/Static (1.0.2.19)
   - Permission-Camera (2.2.0):
     - RNPermissions
+  - Permission-Contacts (2.2.0):
+    - RNPermissions
   - Permission-Notifications (2.2.0):
     - RNPermissions
   - Permission-PhotoLibrary (2.2.0):
@@ -459,6 +461,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (~> 5.0.0)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera.podspec`)
+  - Permission-Contacts (from `../node_modules/react-native-permissions/ios/Contacts.podspec`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -564,6 +567,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera.podspec"
+  Permission-Contacts:
+    :path: "../node_modules/react-native-permissions/ios/Contacts.podspec"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
   Permission-PhotoLibrary:
@@ -703,6 +708,7 @@ SPEC CHECKSUMS:
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   Permission-Camera: 9ff12884205fb282b4a22b9e8c358ba53cee7567
+  Permission-Contacts: 2c9a8932f30582ed175551b7baa8d0344837c53b
   Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
   Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
@@ -763,6 +769,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: fd6060bdd1746994f8dc44d2136568c262d6d630
+PODFILE CHECKSUM: f89789b85b7269657c398ee48f559d735b70d7b9
 
 COCOAPODS: 1.9.3

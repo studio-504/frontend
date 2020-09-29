@@ -23,7 +23,7 @@ function* contactsGetRequest() {
       throw new Error(`Contacts permission is ${permission}`)
     }
 
-    yield put(actions.contactsGetSuccess({ items: [] }))
+    yield put(actions.contactsGetSuccess({ items: [] })) 
   } catch (error) {
     yield put(actions.contactsGetFailure(errorWrapper(error)))
   }
