@@ -74,6 +74,7 @@ export const user = `
 
 export const setUserDetails = `
   mutation setUserDetails(
+    $username: String,
     $fullName: String,
     $bio: String,
     $photoPostId: ID,
@@ -83,11 +84,18 @@ export const setUserDetails = `
     $commentsDisabled: Boolean,
     $likesDisabled: Boolean,
     $sharingDisabled: Boolean,
-    $themeCode: String,
+    $verificationHidden: Boolean,
     $languageCode: String,
-    $verificationHidden: Boolean
+    $themeCode: String,
+    $dateOfBirth: AWSDate,
+    $gender: UserGender,
+    $location: LocationInput,
+    $matchAgeRange: AgeRangeInput,
+    $matchGenders: [UserGender!],
+    $matchLocationRadius: Int
   ) {
     setUserDetails(
+      username: $username,
       fullName: $fullName,
       bio: $bio,
       photoPostId: $photoPostId,
@@ -97,9 +105,15 @@ export const setUserDetails = `
       commentsDisabled: $commentsDisabled,
       likesDisabled: $likesDisabled,
       sharingDisabled: $sharingDisabled,
-      themeCode: $themeCode,
+      verificationHidden: $verificationHidden,
       languageCode: $languageCode,
-      verificationHidden: $verificationHidden
+      themeCode: $themeCode,
+      dateOfBirth: $dateOfBirth,
+      gender: $gender,
+      location: $location,
+      matchAgeRange: $matchAgeRange,
+      matchGenders: $matchGenders,
+      matchLocationRadius: $matchLocationRadius,
     ) {
       ...singleUserFragment
     }

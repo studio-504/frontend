@@ -29,7 +29,7 @@ const DatingAboutForm = ({
         <Field name="gender" component={TextField} placeholder={t('Your Gender')} />
       </View>
       <View style={styling.input}>
-        <Field name="fullname" component={TextField} placeholder={t('Your Full Name')} />
+        <Field name="fullName" component={TextField} placeholder={t('Your Full Name')} />
       </View>
       <View style={styling.input}>
         <Field name="bio" component={TextField} placeholder={t('Your Bio')} />
