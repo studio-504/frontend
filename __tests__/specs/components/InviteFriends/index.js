@@ -19,34 +19,40 @@ describe('Invite Friends Component', () => {
   })
 
   it('idle state', () => {
-    const { getByText } = setup()
+    const { queryByText } = setup()
 
-    fireEvent.press(getByText('Connect Contacts'))
+    expect(queryByText('Open the "Settings"')).toBeFalsy()
+
+    fireEvent.press(queryByText('Connect Contacts'))
     expect(contactsGetRequest).toHaveBeenCalled()
   })
 
   it('error state', () => {
     const error = 'Error'
     const contactsGet = { status: 'failure', error }
-    const { getByText } = setup({ contactsGet })
+    const openSettings = jest.fn()
+    const { queryByText } = setup({ contactsGet, openSettings })
 
-    expect(getByText(error)).toBeTruthy()
-    fireEvent.press(getByText('Connect Contacts'))
-    expect(contactsGetRequest).toHaveBeenCalled()
+    expect(queryByText(error)).toBeTruthy()
+    expect(queryByText('Connect Contacts')).toBeFalsy()
+    fireEvent.press(queryByText('Open the "Settings"'))
+    expect(openSettings).toHaveBeenCalled()
   })
 
   it('loading state', () => {
     const contactsGet = { status: 'loading', error: '' }
-    const { getByText } = setup({ contactsGet })
+    const { queryByText } = setup({ contactsGet })
 
-    expect(getByText('Connect Contacts')).toBeDisabled()
+    expect(queryByText('Connect Contacts')).toBeDisabled()
+    expect(queryByText('Open the "Settings"')).toBeFalsy()
   })
 
   it('success state', () => {
     const contactsGet = { status: 'success', error: '' }
-    const { getByText } = setup({ contactsGet })
+    const { queryByText } = setup({ contactsGet })
 
-    fireEvent.press(getByText('Synchronize Contacts'))
+    expect(queryByText('Open the "Settings"')).toBeFalsy()
+    fireEvent.press(queryByText('Synchronize Contacts'))
     expect(contactsGetRequest).toHaveBeenCalled()
   })
 })

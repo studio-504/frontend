@@ -8,7 +8,7 @@ import { withTheme } from 'react-native-paper'
 import ContactsIcon from 'assets/svg/contacts/Contacts'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 
-const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest }) => {
+const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings }) => {
   const styling = styles(theme)
   const isLoading = contactsGet.status === 'loading'
 
@@ -24,12 +24,22 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest }) => {
         </View>
         <View style={styling.content}>
           {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
-          <DefaultButton
-            label={contactsGet.status === 'success' ? t('Synchronize Contacts') : t('Connect Contacts')}
-            onPress={contactsGetRequest}
-            loading={isLoading}
-            disabled={isLoading}
-          />
+          <View style={styling.actions}>
+            {contactsGet.status === 'failure' ? (
+              <DefaultButton
+                style={styling.openSettingsBtn}
+                label={t('Open the "Settings"')}
+                onPress={openSettings}
+              />
+            ) : (
+              <DefaultButton
+                label={contactsGet.status === 'success' ? t('Synchronize Contacts') : t('Connect Contacts')}
+                onPress={contactsGetRequest}
+                loading={isLoading}
+                disabled={isLoading}
+              />
+            )}
+          </View>
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -40,6 +50,7 @@ InviteFriends.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   contactsGetRequest: PropTypes.func,
+  openSettings: PropTypes.func,
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
     error: PropTypes.string,
@@ -80,6 +91,9 @@ const styles = (theme) =>
     },
     content: {
       paddingHorizontal: 16,
+    },
+    openSettingsBtn: {
+      marginTop: 12,
     },
   })
 
