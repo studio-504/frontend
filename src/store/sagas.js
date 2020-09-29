@@ -9,6 +9,7 @@ import layout from 'store/ducks/layout/saga'
 import translation from 'store/ducks/translation/saga'
 import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
+import contacts from 'store/ducks/contacts/saga'
 
 import auth from 'store/ducks/auth/saga'
 import authCheck from 'store/ducks/auth/saga/authCheck'
@@ -44,6 +45,7 @@ export default function* rootSaga(persistor) {
     .concat(translation())
     .concat(cache())
     .concat(subscriptions())
+    .concat(contacts())
 
     .concat(auth(persistor))
     .concat(authCheck(persistor))
