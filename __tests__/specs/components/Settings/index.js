@@ -149,7 +149,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Edit Profile'))
 
-      expect(navigation.navigate).toBeCalledWith('ProfileEdit')
+      expect(navigation.navigate).toHaveBeenCalledWith('ProfileEdit')
     })
 
     it('Change Profile Photo', () => {
@@ -163,7 +163,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Choose Theme'))
 
-      expect(navigation.navigate).toBeCalledWith('Theme')
+      expect(navigation.navigate).toHaveBeenCalledWith('Theme')
     })
 
     it('Archived Photos', () => {
@@ -171,7 +171,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Archived Photos'))
 
-      expect(navigation.navigate).toBeCalledWith('Archived')
+      expect(navigation.navigate).toHaveBeenCalledWith('Archived')
     })
 
     it('Mental Health & Privacy Settings', () => {
@@ -179,7 +179,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Mental Health & Privacy Settings'))
 
-      expect(navigation.navigate).toBeCalledWith('Privacy')
+      expect(navigation.navigate).toHaveBeenCalledWith('Privacy')
     })
 
     it('Follow & Invite Friends', () => {
@@ -187,7 +187,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Follow & Invite Friends'))
 
-      expect(navigation.navigate).toBeCalledWith('InviteFriends')
+      expect(navigation.navigate).toHaveBeenCalledWith('InviteFriends')
     })
 
     it('Signout', () => {
@@ -196,7 +196,7 @@ describe('Settings component', () => {
 
       fireEvent.press(getByText('Signout'))
 
-      expect(authSignoutRequest).toBeCalled()
+      expect(authSignoutRequest).toHaveBeenCalled()
     })
   })
 })
