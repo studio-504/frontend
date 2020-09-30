@@ -15,8 +15,8 @@ describe('Invite Friends Component', () => {
   it('header', () => {
     const { getByText } = setup()
 
-    getByText('Connect Your Contacts')
-    getByText('Find people you know on Real.app and choose who to follow.')
+    getByText('Earn Free REAL Diamond')
+    getByText('Follow or Invite 10 friends & get REAL Diamond FREE for 2 months!')
   })
 
   it('idle state', () => {

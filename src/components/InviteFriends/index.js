@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import color from 'color'
-import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native'
+import { View, ScrollView, SafeAreaView, StyleSheet, RefreshControl } from 'react-native'
 import { Text } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import { withTheme } from 'react-native-paper'
@@ -15,7 +15,12 @@ import testIDs from 'components/InviteFriends/test-ids'
 const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings }) => {
   const styling = styles(theme)
   const isLoading = contactsGet.status === 'loading'
-  const isEmpty = contactsGet.status === 'success' && contactsGet.items.length === 0
+  const isSuccess = contactsGet.status === 'success'
+  const isEmpty = isSuccess && contactsGet.items.length === 0
+
+  const refreshControl = (
+    <RefreshControl tintColor={theme.colors.border} onRefresh={contactsGetRequest} refreshing={isLoading} />
+  )
 
   const renderRow = (user) => {
     const fullName = [user.givenName, user.middleName, user.familyName].filter((i) => i).join(' ')
@@ -29,14 +34,16 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
   }
 
   return (
-    <ScrollView style={styling.root}>
+    <ScrollView refreshControl={refreshControl} style={styling.root}>
       <SafeAreaView style={styling.component}>
         <View style={styling.heading}>
           <View style={styling.headerIcon}>
             <ContactsIcon fill={theme.colors.text} />
           </View>
-          <Text style={styling.headingTitle}>{t('Connect Your Contacts')}</Text>
-          <Text style={styling.headingSubtitle}>{t('Find people you know on Real.app and choose who to follow.')}</Text>
+          <Text style={styling.headingTitle}>{t('Earn Free REAL Diamond')}</Text>
+          <Text style={styling.headingSubtitle}>
+            {t('Follow or Invite 10 friends & get REAL Diamond FREE for 2 months!')}
+          </Text>
         </View>
         <View style={styling.content}>
           <View style={styling.actions}>
@@ -53,7 +60,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
               />
             )}
           </View>
-          {contactsGet.status === 'success' ? (
+          {isSuccess ? (
             isEmpty ? (
               <Text style={styling.emptyText}>{t('There are no contacts. Pull down to refresh')}</Text>
             ) : (
