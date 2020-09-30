@@ -1,7 +1,6 @@
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions'
-import { takeLeading, call, getContext, put } from 'redux-saga/effects'
+import { call, getContext, put } from 'redux-saga/effects'
 import Contacts from 'react-native-contacts'
-import * as constants from 'store/ducks/contacts/constants'
 import * as actions from 'store/ducks/contacts/actions'
 
 function getAllContacts() {
@@ -44,4 +43,4 @@ function* contactsGetRequest() {
   }
 }
 
-export default () => [takeLeading(constants.CONTACTS_GET_REQUEST, contactsGetRequest)]
+export default contactsGetRequest

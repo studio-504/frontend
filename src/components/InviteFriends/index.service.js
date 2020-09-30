@@ -8,7 +8,9 @@ import useAppState from 'services/AppState'
 const InviteFriendsService = ({ children }) => {
   const dispatch = useDispatch()
   const contactsGet = useSelector(selectors.contactsGet)
+  const invited = useSelector(selectors.invited)
   const contactsGetRequest = () => dispatch(actions.contactsGetRequest())
+  const contactsInviteRequest = (contact) => dispatch(actions.contactsInviteRequest(contact))
 
   const checkPermissionUpdates = () => {
     if (contactsGet.status === 'failure') {
@@ -23,6 +25,8 @@ const InviteFriendsService = ({ children }) => {
     contactsGetRequest,
     contactsGet,
     openSettings,
+    contactsInviteRequest,
+    invited,
   })
 }
 

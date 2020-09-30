@@ -8,6 +8,9 @@ const initialState = {
     error: '',
     items: [],
   },
+  invited: {
+    items: [],
+  },
 }
 
 /**
@@ -37,11 +40,23 @@ const contactsFailure = (state, action) =>
     },
   })
 
+/**
+ *
+ */
+const contactsInviteSuccess = (state, action) =>
+  update(state, {
+    invited: {
+      items: { $push: [action.payload.recordID] },
+    },
+  })
+
 export default handleActions(
   {
     [constants.CONTACTS_GET_REQUEST]: contactsGetRequest,
     [constants.CONTACTS_GET_SUCCESS]: contactsSuccess,
     [constants.CONTACTS_GET_FAILURE]: contactsFailure,
+
+    [constants.CONTACTS_INVITE_SUCCESS]: contactsInviteSuccess,
   },
   initialState,
 )
