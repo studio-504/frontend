@@ -1,6 +1,7 @@
 import React from 'react'
-import { renderWithProviders, fireEvent } from 'tests/utils'
+import { renderWithProviders, fireEvent, within } from 'tests/utils'
 import InviteFriendsComponent from 'components/InviteFriends'
+import testIDs from 'components/InviteFriends/test-ids'
 
 const contactsGetRequest = jest.fn()
 const requiredProps = { contactsGetRequest, contactsGet: { status: 'idle', error: '' } }
@@ -47,11 +48,39 @@ describe('Invite Friends Component', () => {
     expect(queryByText('Open the "Settings"')).toBeFalsy()
   })
 
-  it('success state', () => {
-    const contactsGet = { status: 'success', error: '' }
+  it('empty state', () => {
+    const contactsGet = { status: 'success', error: '', items: [] }
     const { queryByText } = setup({ contactsGet })
 
     expect(queryByText('Open the "Settings"')).toBeFalsy()
     expect(queryByText('Connect Contacts"')).toBeFalsy()
+    expect(queryByText('There are no contacts. Pull down to refresh')).toBeTruthy()
+  })
+
+  it('success state', () => {
+    const items = [
+      { givenName: '', middleName: 'middle0', familyName: 'family0' },
+      { givenName: 'given1', middleName: '', familyName: 'family1' },
+      { givenName: 'given2', middleName: 'middle2', familyName: '' },
+      { givenName: 'given3', middleName: 'middle3', familyName: 'family3' },
+    ]
+    const contactsGet = { status: 'success', error: '', items }
+    const { queryByText, queryAllByTestId } = setup({ contactsGet })
+
+    expect(queryByText('Open the "Settings"')).toBeFalsy()
+    expect(queryByText('Connect Contacts"')).toBeFalsy()
+    expect(queryByText('There are no contacts. Pull down to refresh')).toBeFalsy()
+
+    const testRow = ($row, { fullName }) => {
+      expect(within($row).queryByText(fullName)).toBeTruthy()
+    }
+
+    const $rows = queryAllByTestId(testIDs.row)
+
+    expect($rows).toHaveLength(items.length)
+    testRow($rows[0], { fullName: 'middle0 family0' })
+    testRow($rows[1], { fullName: 'given1 family1' })
+    testRow($rows[2], { fullName: 'given2 middle2' })
+    testRow($rows[3], { fullName: 'given3 middle3 family3' })
   })
 })

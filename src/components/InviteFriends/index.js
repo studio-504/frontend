@@ -8,10 +8,25 @@ import { withTheme } from 'react-native-paper'
 import ContactsIcon from 'assets/svg/contacts/Contacts'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import RowsComponent from 'templates/Rows'
+import RowsItemComponent from 'templates/RowsItem'
+import UserRowComponent from 'templates/UserRow'
+import testIDs from 'components/InviteFriends/test-ids'
 
 const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings }) => {
   const styling = styles(theme)
   const isLoading = contactsGet.status === 'loading'
+  const isEmpty = contactsGet.status === 'success' && contactsGet.items.length === 0
+
+  const renderRow = (user) => {
+    const fullName = [user.givenName, user.middleName, user.familyName].filter((i) => i).join(' ')
+    const content = <Text style={styling.fullName}>{fullName}</Text>
+
+    return (
+      <RowsItemComponent testID={testIDs.row} hasBorders>
+        <UserRowComponent avatar={null} content={content} action={null} />
+      </RowsItemComponent>
+    )
+  }
 
   return (
     <ScrollView style={styling.root}>
@@ -38,15 +53,13 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
               />
             )}
           </View>
-          {contactsGet.status === 'success' && (
-            <RowsComponent items={contactsGet.items}>
-              {(user) => (
-                <View>
-                  <Text>{user.givenName}</Text>
-                </View>
-              )}
-            </RowsComponent>
-          )}
+          {contactsGet.status === 'success' ? (
+            isEmpty ? (
+              <Text style={styling.emptyText}>{t('There are no contacts. Pull down to refresh')}</Text>
+            ) : (
+              <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>
+            )
+          ) : null}
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -61,7 +74,13 @@ InviteFriends.propTypes = {
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
     error: PropTypes.string,
-    items: PropTypes.array,
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        givenName: PropTypes.string,
+        middleName: PropTypes.string,
+        familyName: PropTypes.string,
+      }),
+    ),
   }),
 }
 
@@ -96,6 +115,11 @@ const styles = (theme) =>
       paddingBottom: 6,
       textAlign: 'center',
       color: 'red',
+    },
+    emptyText: {
+      fontSize: 14,
+      fontWeight: '300',
+      textAlign: 'center',
     },
     content: {
       paddingHorizontal: 16,
