@@ -29,7 +29,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
             {contactsGet.status === 'failure' && (
               <DefaultButton style={styling.openSettingsBtn} label={t('Open the "Settings"')} onPress={openSettings} />
             )}
-            {contactsGet.status === 'idle' && (
+            {!['failure', 'success'].includes(contactsGet.status) && (
               <DefaultButton
                 label={t('Connect Contacts')}
                 onPress={contactsGetRequest}
@@ -61,6 +61,7 @@ InviteFriends.propTypes = {
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
     error: PropTypes.string,
+    items: PropTypes.array,
   }),
 }
 

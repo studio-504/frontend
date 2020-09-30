@@ -52,7 +52,6 @@ describe('Invite Friends Component', () => {
     const { queryByText } = setup({ contactsGet })
 
     expect(queryByText('Open the "Settings"')).toBeFalsy()
-    fireEvent.press(queryByText('Synchronize Contacts'))
-    expect(contactsGetRequest).toHaveBeenCalled()
+    expect(queryByText('Connect Contacts"')).toBeFalsy()
   })
 })
