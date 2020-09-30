@@ -4,7 +4,8 @@ import { TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { withTheme } from 'react-native-paper'
 
-import { ThemesContext } from 'navigation/context'
+import { ThemeContext } from 'services/providers/Theme'
+import { AuthContext } from 'services/providers/Auth'
 import * as navigationOptions from 'navigation/options'
 import * as navigationActions from 'navigation/actions'
 
@@ -21,7 +22,8 @@ import UserIcon from 'assets/svg/footer/User'
 import testIDs from './test-ids'
 
 const TabNavigator = ({ navigation, route }) => {
-  const { theme, themes } = useContext(ThemesContext)
+  const { theme, themes } = useContext(ThemeContext)
+  const { user } = useContext(AuthContext)
   const tabNavigatorProps = navigationOptions.tabNavigatorProps({ theme, themes, route })
 
   const FeedTabIconComponent = ({ color }) => <HomeIcon fill={color} />
@@ -41,7 +43,7 @@ const TabNavigator = ({ navigation, route }) => {
   }
 
   const CameraTabIconComponent = ({ color }) => <CreateIcon fill={color} />
-  const CameraTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigatePostType(navigation, { actionType: 'HOME' })} />
+  const CameraTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigatePostType(navigation, { actionType: 'HOME' }, { protected: true, user })} />
   const cameraTabScreenPropsCard = {
     options: {
       tabBarIcon: CameraTabIconComponent,
@@ -51,19 +53,23 @@ const TabNavigator = ({ navigation, route }) => {
   }
 
   const DatingTabIconComponent = ({ color }) => <DatingIcon fill={color} />
+  const ChatTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigateDating(navigation, {}, { protected: true, user })} />
   const datingTabScreenPropsCard = {
     options: {
       tabBarIcon: DatingTabIconComponent,
       tabBarLabel: 'Dating',
+      tabBarButton: ChatTabButtonComponent,
     },
   }
 
   const ProfileTabIconComponent = ({ color }) => <UserIcon fill={color} />
+  const ProfileTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigateProfileSelf(navigation, {}, { protected: true, user })} />
   const profileTabScreenPropsCard = {
     options: {
-      tabBarTestID: testIDs.tabNavigator.profile,
       tabBarIcon: ProfileTabIconComponent,
       tabBarLabel: 'Profile',
+      tabBarButton: ProfileTabButtonComponent,
+      tabBarTestID: testIDs.tabNavigator.profile,
     },
   }
 
