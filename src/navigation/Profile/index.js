@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { withTheme } from 'react-native-paper'
 
-import { ThemesContext } from 'navigation/context'
+import { ThemeContext } from 'services/providers/Theme'
 import * as navigationOptions from 'navigation/options'
 import * as navigationFragments from 'navigation/fragments'
 
@@ -21,7 +21,7 @@ import ArchivedScreen from 'screens/ArchivedScreen'
 import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 
 const ProfileNavigator = () => {
-  const { theme, themes } = useContext(ThemesContext)
+  const { theme, themes } = useContext(ThemeContext)
   const Stack = createStackNavigator()
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme, themes })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme, themes })
