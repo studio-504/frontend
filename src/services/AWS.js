@@ -1,11 +1,8 @@
 import Amplify from '@aws-amplify/core'
-import Auth from '@aws-amplify/auth'
-import API from '@aws-amplify/api'
 import Config from 'react-native-config'
 import * as Google from 'services/Google'
 import * as Apple from 'services/Apple'
 import DeviceInfo from 'react-native-device-info'
-import { MemoryStorage } from 'services/MemoryStorage'
 
 /**
  * AWS Configuration
@@ -20,8 +17,8 @@ export const amplifyConfig = () => {
       refreshHandlers: {
         'google': Google.refresh,
         'apple': Apple.refresh,
+        // [`cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`]: console.log,
       },
-      storage: MemoryStorage,
     },
     API: {
       aws_appsync_graphqlEndpoint: Config.AWS_APPSYNC_GRAPHQL_ENDPOINT,
@@ -37,8 +34,6 @@ export const amplifyConfig = () => {
   }
 
   Amplify.configure(config)
-  Auth.configure(config.Auth)
-  API.configure(config.API)
 }
 
 export const federatedGoogleSignin = Google.signin
