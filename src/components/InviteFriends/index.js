@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import color from 'color'
-import { Alert, View, ScrollView, SafeAreaView, StyleSheet, RefreshControl } from 'react-native'
+import { Alert, View, SafeAreaView, StyleSheet, RefreshControl, FlatList } from 'react-native'
 import { Text } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import { withTheme } from 'react-native-paper'
 import ContactsIcon from 'assets/svg/contacts/Contacts'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import Avatar from 'templates/Avatar'
-import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
 import testIDs from 'components/InviteFriends/test-ids'
@@ -43,26 +42,36 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
     <RefreshControl tintColor={theme.colors.border} onRefresh={contactsGetRequest} refreshing={isLoading} />
   )
 
-  const renderRow = (user) => {
-    const avatarSource = { uri: user.thumbnailPath }
-    const action = invited.items.includes(user.recordID) ? (
+  const renderRow = ({ item }) => {
+    const avatarSource = { uri: item.thumbnailPath }
+    const action = invited.items.includes(item.recordID) ? (
       <DefaultButton label={t('Invited')} mode="outlined" size="compact" disabled />
     ) : (
-      <DefaultButton label={t('Invite')} onPress={() => handleInvitePress(user)} mode="outlined" size="compact" />
+      <DefaultButton label={t('Invite')} onPress={() => handleInvitePress(item)} mode="outlined" size="compact" />
     )
 
     return (
       <RowsItemComponent testID={testIDs.row} hasBorders>
         <UserRowComponent
           avatar={<Avatar thumbnailSource={avatarSource} imageSource={avatarSource} active={false} />}
-          content={<Text numberOfLines={1} ellipsizeMode="tail" style={styling.fullName}>{user.fullName}</Text>}
+          content={
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styling.fullName}>
+              {item.fullName}
+            </Text>
+          }
           action={action}
         />
       </RowsItemComponent>
     )
   }
 
-  const { title, subtitle } = (function (invitedCount) {
+  const renderEmpty = () => {
+    return isSuccess ? (
+      <Text style={styling.emptyText}>{t('We couldn\'t find any contacts on your device. Pull down to refresh.')}</Text>
+    ) : null
+  }
+
+  function getTitles(invitedCount) {
     if (invitedCount >= 10) {
       return {
         title: t('Connect Your Contacts'),
@@ -76,42 +85,48 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
         }),
       }
     }
-  })(invited.items.length)
+  }
+
+  const renderHeader = () => {
+    const { title, subtitle } = getTitles(invited.items.length)
+
+    return (
+      <View style={styling.heading}>
+        <View style={styling.headerIcon}>
+          <ContactsIcon fill={theme.colors.text} />
+        </View>
+        <Text style={styling.headingTitle}>{title}</Text>
+        <Text style={styling.headingSubtitle}>{subtitle}</Text>
+        <View style={styling.actions}>
+          {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
+          {contactsGet.status === 'failure' && (
+            <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
+          )}
+          {!['failure', 'success'].includes(contactsGet.status) && isEmpty && (
+            <DefaultButton
+              label={t('Check Contacts')}
+              onPress={contactsGetRequest}
+              loading={isLoading}
+              disabled={isLoading}
+            />
+          )}
+        </View>
+      </View>
+    )
+  }
 
   return (
-    <ScrollView refreshControl={refreshControl} style={styling.root}>
-      <SafeAreaView style={styling.component}>
-        <View style={styling.heading}>
-          <View style={styling.headerIcon}>
-            <ContactsIcon fill={theme.colors.text} />
-          </View>
-          <Text style={styling.headingTitle}>{title}</Text>
-          <Text style={styling.headingSubtitle}>{subtitle}</Text>
-        </View>
-        <View style={styling.content}>
-          <View style={styling.actions}>
-            {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
-            {contactsGet.status === 'failure' && (
-              <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
-            )}
-            {!['failure', 'success'].includes(contactsGet.status) && isEmpty && (
-              <DefaultButton
-                label={t('Check Contacts')}
-                onPress={contactsGetRequest}
-                loading={isLoading}
-                disabled={isLoading}
-              />
-            )}
-          </View>
-          {isSuccess && isEmpty && (
-            <Text style={styling.emptyText}>
-              {t('We couldn\'t find any contacts on your device. Pull down to refresh.')}
-            </Text>
-          )}
-          {!isEmpty && <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>}
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <SafeAreaView style={styling.root}>
+      <FlatList
+        contentContainerStyle={styling.list}
+        ListHeaderComponent={renderHeader()}
+        ListEmptyComponent={renderEmpty()}
+        keyExtractor={(item) => item.recordID}
+        refreshControl={refreshControl}
+        data={contactsGet.items}
+        renderItem={renderRow}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -141,6 +156,9 @@ const styles = (theme) =>
   StyleSheet.create({
     root: {
       flex: 1,
+    },
+    list: {
+      paddingHorizontal: 12,
     },
     headerIcon: {
       alignItems: 'center',
@@ -174,8 +192,8 @@ const styles = (theme) =>
       fontWeight: '300',
       textAlign: 'center',
     },
-    content: {
-      paddingHorizontal: 16,
+    actions: {
+      paddingTop: 16,
     },
     openSettingsBtn: {
       marginTop: 12,
