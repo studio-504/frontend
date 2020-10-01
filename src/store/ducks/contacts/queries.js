@@ -1,4 +1,5 @@
 import { userFragment } from 'store/fragments'
+import * as usersSingle from 'store/ducks/users/queries/single'
 
 export const findUsers = `
   query findUsers($emails: [AWSEmail!]!, $phoneNumbers: [AWSPhone!]!) {
@@ -9,4 +10,12 @@ export const findUsers = `
     }
   }
   ${userFragment}
+`
+export const grantUserSubscriptionBonus = `
+  mutation grantUserSubscriptionBonus {
+    grantUserSubscriptionBonus {
+      ...singleUserFragment
+    }
+  }
+  ${usersSingle.singleUserFragment}
 `

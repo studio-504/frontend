@@ -75,11 +75,11 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
           <View style={styling.actions}>
             {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
             {contactsGet.status === 'failure' && (
-              <DefaultButton style={styling.openSettingsBtn} label={t('Open the "Settings"')} onPress={openSettings} />
+              <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
             )}
             {!['failure', 'success'].includes(contactsGet.status) && (
               <DefaultButton
-                label={t('Connect Contacts')}
+                label={t('Check Contacts')}
                 onPress={contactsGetRequest}
                 loading={isLoading}
                 disabled={isLoading}
@@ -88,7 +88,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
           </View>
           {isSuccess ? (
             isEmpty ? (
-              <Text style={styling.emptyText}>{t('There are no contacts. Pull down to refresh')}</Text>
+              <Text style={styling.emptyText}>{t('We couldn\'t find any contacts on your device. Pull down to refresh.')}</Text>
             ) : (
               <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>
             )

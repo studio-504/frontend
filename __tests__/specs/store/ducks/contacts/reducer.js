@@ -59,6 +59,20 @@ describe('Contacts reducer', () => {
         items: [],
       })
     })
+
+    it('clear items on error', () => {
+      const items = [{ id: 1 }, { id: 2 }]
+      const state = applyActions(
+        [actions.contactsGetSuccess({ items }), actions.contactsGetFailure(error.message)],
+        reducer,
+      )
+
+      expect(selectors.contactsGet(state)).toEqual({
+        error: 'Error',
+        status: 'failure',
+        items: [],
+      })
+    })
   })
 
   describe('invited', () => {

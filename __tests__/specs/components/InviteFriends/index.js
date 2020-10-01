@@ -41,9 +41,9 @@ describe('Invite Friends Component', () => {
   it('idle state', () => {
     const { queryByText } = setup()
 
-    expect(queryByText('Open the "Settings"')).toBeFalsy()
+    expect(queryByText('Open Settings')).toBeFalsy()
 
-    fireEvent.press(queryByText('Connect Contacts'))
+    fireEvent.press(queryByText('Check Contacts'))
     expect(contactsGetRequest).toHaveBeenCalled()
   })
 
@@ -54,8 +54,8 @@ describe('Invite Friends Component', () => {
     const { queryByText } = setup({ contactsGet, openSettings })
 
     expect(queryByText(error)).toBeTruthy()
-    expect(queryByText('Connect Contacts')).toBeFalsy()
-    fireEvent.press(queryByText('Open the "Settings"'))
+    expect(queryByText('Check Contacts')).toBeFalsy()
+    fireEvent.press(queryByText('Open Settings'))
     expect(openSettings).toHaveBeenCalled()
   })
 
@@ -63,17 +63,17 @@ describe('Invite Friends Component', () => {
     const contactsGet = { status: 'loading', error: '' }
     const { queryByText } = setup({ contactsGet })
 
-    expect(queryByText('Connect Contacts')).toBeDisabled()
-    expect(queryByText('Open the "Settings"')).toBeFalsy()
+    expect(queryByText('Check Contacts')).toBeDisabled()
+    expect(queryByText('Open Settings')).toBeFalsy()
   })
 
   it('empty state', () => {
     const contactsGet = { status: 'success', error: '', items: [] }
     const { queryByText } = setup({ contactsGet })
 
-    expect(queryByText('Open the "Settings"')).toBeFalsy()
-    expect(queryByText('Connect Contacts"')).toBeFalsy()
-    expect(queryByText('There are no contacts. Pull down to refresh')).toBeTruthy()
+    expect(queryByText('Open Settings')).toBeFalsy()
+    expect(queryByText('Check Contacts"')).toBeFalsy()
+    expect(queryByText('We couldn\'t find any contacts on your device. Pull down to refresh.')).toBeTruthy()
   })
 
   describe('success state', () => {
@@ -81,9 +81,9 @@ describe('Invite Friends Component', () => {
       const contactsGet = { status: 'success', error: '', items }
       const { queryByText, queryAllByTestId } = setup({ contactsGet })
 
-      expect(queryByText('Open the "Settings"')).toBeFalsy()
-      expect(queryByText('Connect Contacts"')).toBeFalsy()
-      expect(queryByText('There are no contacts. Pull down to refresh')).toBeFalsy()
+      expect(queryByText('Open Settings')).toBeFalsy()
+      expect(queryByText('Check Contacts"')).toBeFalsy()
+      expect(queryByText('We couldn\'t find any contacts on your device. Pull down to refresh.')).toBeFalsy()
 
       const testRow = ($row, { fullName }) => {
         expect(within($row).queryByText(fullName)).toBeTruthy()

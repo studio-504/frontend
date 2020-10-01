@@ -90,7 +90,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need camera permissions to use Photo Uploading on Public or Private Feed which you can define in profile settings.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We need contacts permissions to allow you to find and invite friends.</string>
+	<string>REAL needs contacts permission to allow you to find &amp; invite friends</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

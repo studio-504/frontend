@@ -37,6 +37,7 @@ const contactsFailure = (state, action) =>
     contactsGet: {
       status: { $set: 'failure' },
       error: { $set: action.payload },
+      items: { $set: initialState.contactsGet.items },
     },
   })
 

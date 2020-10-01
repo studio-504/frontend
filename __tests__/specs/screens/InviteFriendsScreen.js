@@ -40,7 +40,7 @@ describe('Invite Friends screen', () => {
     const { getByText } = setup()
 
     dispatch.mockClear()
-    fireEvent.press(getByText('Connect Contacts'))
+    fireEvent.press(getByText('Check Contacts'))
     expect(dispatch).toHaveBeenCalledWith(actions.contactsGetRequest())
   })
 
@@ -49,7 +49,7 @@ describe('Invite Friends screen', () => {
     selectors.contactsGet.mockReturnValueOnce({ status: 'failure', error })
     const { getByText } = setup()
 
-    fireEvent.press(getByText('Open the "Settings"'))
+    fireEvent.press(getByText('Open Settings'))
     expect(openSettings).toHaveBeenCalled()
   })
 })
