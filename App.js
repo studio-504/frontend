@@ -41,6 +41,7 @@ const linking = {
             Profile: {
               screens: {
                 ProfilePhoto: 'user/:userId/settings/photo',
+                InviteFriends: 'user/:userId/settings/contacts',
               },
             },
           },
