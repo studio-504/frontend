@@ -16,6 +16,7 @@ import ArchiveIcon from 'assets/svg/settings/Archive'
 import SignoutIcon from 'assets/svg/settings/Signout'
 import PrivacyIcon from 'assets/svg/settings/Privacy'
 import DiamondIcon from 'assets/svg/settings/Diamond'
+import ContactsIcon from 'assets/svg/settings/Contacts'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
 
@@ -128,6 +129,11 @@ const Settings = ({
               label: t('Join Diamond'),
               onPress: () => navigation.navigate('Membership'),
               icon: <DiamondIcon fill={theme.colors.text} />,
+            },
+            {
+              label: t('Follow & Invite Friends'),
+              onPress: () => navigation.navigate('InviteFriends'),
+              icon: <ContactsIcon fill={theme.colors.text} />,
             },
             {
               testID: testIDs.actions.signOutBtn,

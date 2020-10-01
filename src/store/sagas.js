@@ -6,6 +6,7 @@ import users from 'store/ducks/users/saga'
 import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
+import contacts from 'store/ducks/contacts/saga'
 
 import appReady from 'store/ducks/app/saga/appReady'
 import appTranslation from 'store/ducks/app/saga/appTranslation'
@@ -61,6 +62,7 @@ export default function* rootSaga(persistor) {
     .concat(cache())
     .concat(subscriptions())
     .concat(purchases())
+    .concat(contacts())
 
     .concat(auth(persistor))
     .concat(authSigninCognito(persistor))
