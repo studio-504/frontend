@@ -6,9 +6,9 @@ class DatingMatchScreen extends React.Component {
   render() {
     return (
       <DatingMatchServiceComponent>
-        {(profileEditProps) => (
+        {(datingMatchProps) => (
           <DatingMatchComponent
-            {...profileEditProps}
+            {...datingMatchProps}
           />
         )}
       </DatingMatchServiceComponent>

@@ -11,9 +11,7 @@ import { withTheme } from 'react-native-paper'
 
 const DatingAbout = ({
   theme,
-  user,
-  usersEditProfile,
-  usersEditProfileRequest,
+  form,
 }) => {
   const styling = styles(theme)
   
@@ -22,9 +20,7 @@ const DatingAbout = ({
       <KeyboardAwareScrollView>
         <View style={styling.form}>
           <DatingAboutForm
-            user={user}
-            usersEditProfile={usersEditProfile}
-            usersEditProfileRequest={usersEditProfileRequest}
+            form={form}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -40,25 +36,11 @@ const styles = theme => StyleSheet.create({
   form: {
     padding: theme.spacing.base,
   },
-  danger: {
-    padding: theme.spacing.base,
-    backgroundColor: theme.colors.backgroundSecondary,
-  },
 })
 
 DatingAbout.propTypes = {
   theme: PropTypes.any,
-  user: PropTypes.any,
-  usersEditProfile: PropTypes.any,
-  usersEditProfileRequest: PropTypes.any,
-  togglePrivacyStatus: PropTypes.func,
-  toggleFollowCountsHidden: PropTypes.func,
-  toggleViewCountsHidden: PropTypes.func,
-  toggleLikesDisabled: PropTypes.func,
-  toggleCommentsDisabled: PropTypes.func,
-  toggleSharingDisabled: PropTypes.func,
-  usersDelete: PropTypes.any,
-  usersDeleteRequest: PropTypes.any,
+  form: PropTypes.any,
 }
 
 export default withTheme(DatingAbout)

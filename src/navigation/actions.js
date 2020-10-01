@@ -102,16 +102,24 @@ export const navigateChat = withAuthValidation((navigation, params) =>
   navigation.navigate('Chat', params),
 )
 
-export const navigateDating = withAuthValidation((navigation, params) =>
-  navigation.navigate('Dating', params),
-)
-
 export const navigateChatDirect = withAuthValidation((navigation, params) =>
   navigation.navigate('ChatDirect', params),
 )
 
 export const navigateChatOptions = withAuthValidation((navigation, params) =>
   navigation.navigate('ChatOptions', params),
+)
+
+export const navigateDating = withAuthValidation((navigation, params) =>
+  navigation.navigate('Dating', params),
+)
+
+export const navigateDatingAbout = withAuthValidation((navigation, params) =>
+  navigation.navigate('DatingAbout', params),
+)
+
+export const navigateDatingMatch = withAuthValidation((navigation, params) =>
+  navigation.navigate('DatingMatch', params),
 )
 
 export const navigatePostShare = withAuthValidation((navigation, params) =>

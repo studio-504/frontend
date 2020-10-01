@@ -22,8 +22,8 @@ const DatingNavigator = () => {
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
       <Stack.Screen
-        name="DatingMatch"
-        component={DatingMatchScreen}
+        name="Dating"
+        component={DatingScreen}
         {...stackScreenDefaultProps}
       />
 
@@ -34,8 +34,8 @@ const DatingNavigator = () => {
       />
 
       <Stack.Screen
-        name="Dating"
-        component={DatingScreen}
+        name="DatingMatch"
+        component={DatingMatchScreen}
         {...stackScreenDefaultProps}
       />
 

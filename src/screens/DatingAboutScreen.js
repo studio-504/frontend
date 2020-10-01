@@ -6,9 +6,9 @@ class DatingAboutScreen extends React.Component {
   render() {
     return (
       <DatingAboutServiceComponent>
-        {(profileEditProps) => (
+        {(datingAboutProps) => (
           <DatingAboutComponent
-            {...profileEditProps}
+            {...datingAboutProps}
           />
         )}
       </DatingAboutServiceComponent>

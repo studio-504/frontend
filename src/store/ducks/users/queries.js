@@ -1,6 +1,7 @@
 import {
   cardFragment,
   postFragment,
+  userFragment,
 } from 'store/fragments'
 
 import * as usersSingle from 'store/ducks/users/queries/single'
@@ -198,10 +199,10 @@ export const denyFollowerUser = `
 export const self = `
   query self {
     self {
-      ...singleUserFragment
+      ...userFragment
     }
   }
-  ${usersSingle.singleUserFragment}
+  ${userFragment}
 `
 
 export const trendingUsers = `
@@ -276,3 +277,12 @@ export const reportScreenViews = `
     reportScreenViews(screens: $screens)
   }
 ` 
+
+export const setUserDatingStatus = `
+  mutation setUserDatingStatus($status: DatingStatus!) {
+    setUserDatingStatus(status: $status) {
+      ...userFragment
+    }
+  }
+  ${userFragment}
+`
