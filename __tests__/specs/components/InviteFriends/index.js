@@ -6,14 +6,14 @@ import testIDs from 'components/InviteFriends/test-ids'
 
 jest.spyOn(Alert, 'alert')
 
-const emailAddresses = [{ email: 'text0@email.com' }, { email: 'text1@email.com' }, { email: 'text2@email.com' }]
-const phoneNumbers = [{ number: '+199999999' }, { number: '+299999999' }, { number: '+399999999' }]
+const emailAddresses = ['text0@email.com', 'text1@email.com', 'text2@email.com']
+const phoneNumbers = ['+199999999', '+299999999', '+399999999']
 
 const items = [
-  { recordID: '1', givenName: '', middleName: 'middle0', familyName: 'family0' },
-  { recordID: '2', givenName: 'given1', middleName: '', familyName: 'family1' },
-  { recordID: '3', givenName: 'given2', middleName: 'middle2', familyName: '' },
-  { recordID: '4', givenName: 'given3', middleName: 'middle3', familyName: 'family3' },
+  { recordID: '1', fullName: 'fullName1' },
+  { recordID: '2', fullName: 'fullName2' },
+  { recordID: '3', fullName: 'fullName3' },
+  { recordID: '4', fullName: 'fullName4' },
 ].map((item) => ({ ...item, emailAddresses, phoneNumbers }))
 
 const invited = { items: [items[0].recordID, items[2].recordID] }
@@ -108,17 +108,13 @@ describe('Invite Friends Component', () => {
       expect(queryByText('Check Contacts"')).toBeFalsy()
       expect(queryByText('We couldn\'t find any contacts on your device. Pull down to refresh.')).toBeFalsy()
 
-      const testRow = ($row, { fullName }) => {
-        expect(within($row).queryByText(fullName)).toBeTruthy()
-      }
-
       const $rows = queryAllByTestId(testIDs.row)
 
+      $rows.forEach(($row, index) => {
+        expect(within($row).queryByText(items[index].fullName)).toBeTruthy()
+      })
+
       expect($rows).toHaveLength(items.length)
-      testRow($rows[0], { fullName: 'middle0 family0' })
-      testRow($rows[1], { fullName: 'given1 family1' })
-      testRow($rows[2], { fullName: 'given2 middle2' })
-      testRow($rows[3], { fullName: 'given3 middle3 family3' })
     })
 
     it('invite callback', () => {
@@ -132,7 +128,7 @@ describe('Invite Friends Component', () => {
 
       expect(Alert.alert).toHaveBeenCalled()
       const [title, message, buttons, options] = Alert.alert.mock.calls[0]
-      expect(title).toBe('Invite middle0 family0')
+      expect(title).toBe('Invite fullName1')
       expect(message).toBe('Сhoose a contact')
       expect(options).toEqual({ cancelable: true })
 
@@ -169,7 +165,7 @@ describe('Invite Friends Component', () => {
       const contactsInviteRequest = jest.fn()
       const user = {
         ...items[0],
-        emailAddresses: [{ email: 'test@email.com' }],
+        emailAddresses: ['test@email.com' ],
         phoneNumbers: [],
       }
       const contactsGet = { status: 'success', error: '', items: [user] }

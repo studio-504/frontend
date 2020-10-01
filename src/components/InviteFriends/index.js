@@ -18,11 +18,9 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
   const isSuccess = contactsGet.status === 'success'
   const isEmpty = isSuccess && contactsGet.items.length === 0
 
-  const makeFullName = (user) => [user.givenName, user.middleName, user.familyName].filter((i) => i).join(' ')
-
   const handleInvitePress = (user) => {
-    const emails = user.emailAddresses.map((item) => ({ value: item.email, type: 'email' }))
-    const phones = user.phoneNumbers.map((item) => ({ value: item.number, type: 'phone' }))
+    const emails = user.emailAddresses.map((value) => ({ value, type: 'email' }))
+    const phones = user.phoneNumbers.map((value) => ({ value, type: 'phone' }))
     const options = [...emails, ...phones].map((contact) => ({
       text: contact.value,
       onPress: () => contactsInviteRequest({ user, contact }),
@@ -32,7 +30,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
       options[0].onPress()
     } else {
       Alert.alert(
-        t('Invite {{fullName}}', { fullName: makeFullName(user) }),
+        t('Invite {{fullName}}', { fullName: user.fullName }),
         t('Сhoose a contact'),
         [...options, { text: t('Cancel'), style: 'cancel' }],
         { cancelable: true },
@@ -45,7 +43,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
   )
 
   const renderRow = (user) => {
-    const content = <Text style={styling.fullName}>{makeFullName(user)}</Text>
+    const content = <Text style={styling.fullName}>{user.fullName}</Text>
     const action = invited.items.includes(user.recordID) ? (
       <DefaultButton label={t('Invited')} mode="outlined" size="compact" disabled />
     ) : (

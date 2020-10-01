@@ -22,6 +22,22 @@ jest.mock('react-native-permissions', () => ({
   },
 }))
 
+const emailAddresses = [{ email: 'test1@email.com' }, { email: 'test2@email.com' }]
+const phoneNumbers = [{ number: '+19999999' }, { number: '+2999999' }]
+const items = [
+  {
+    recordID: 1,
+    givenName: 'givenName1',
+    middleName: 'middleName1',
+    familyName: 'familyName1',
+    emailAddresses,
+    phoneNumbers,
+  },
+  { recordID: 2, givenName: '', middleName: 'middleName1', familyName: 'familyName1', emailAddresses, phoneNumbers },
+  { recordID: 3, givenName: 'givenName1', middleName: '', familyName: 'familyName1', emailAddresses, phoneNumbers },
+  { recordID: 4, givenName: '', middleName: '', familyName: '', emailAddresses, phoneNumbers },
+]
+
 describe('Contacts saga', () => {
   it('Permission UNAVAILABLE', () => {
     const context = [
@@ -92,7 +108,6 @@ describe('Contacts saga', () => {
   })
 
   it('success', () => {
-    const items = [{ id: 1 }, { id: 2 }]
     Contacts.getAll.mockImplementationOnce((cb) => cb(null, items))
 
     const context = [
@@ -104,7 +119,36 @@ describe('Contacts saga', () => {
       .provide(context)
 
       .call(check, PERMISSIONS.IOS.CONTACTS)
-      .put(actions.contactsGetSuccess({ items }))
+      .put(
+        actions.contactsGetSuccess({
+          items: [
+            {
+              recordID: 1,
+              fullName: 'givenName1 middleName1 familyName1',
+              emailAddresses: ['test1@email.com', 'test2@email.com'],
+              phoneNumbers: ['+19999999', '+2999999'],
+            },
+            {
+              recordID: 2,
+              fullName: 'middleName1 familyName1',
+              emailAddresses: ['test1@email.com', 'test2@email.com'],
+              phoneNumbers: ['+19999999', '+2999999'],
+            },
+            {
+              recordID: 3,
+              fullName: 'givenName1 familyName1',
+              emailAddresses: ['test1@email.com', 'test2@email.com'],
+              phoneNumbers: ['+19999999', '+2999999'],
+            },
+            {
+              recordID: 4,
+              fullName: 'Anonymous',
+              emailAddresses: ['test1@email.com', 'test2@email.com'],
+              phoneNumbers: ['+19999999', '+2999999'],
+            },
+          ],
+        }),
+      )
 
       .dispatch(actions.contactsGetRequest())
       .silentRun()
