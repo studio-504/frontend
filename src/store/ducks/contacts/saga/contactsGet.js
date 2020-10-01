@@ -16,6 +16,7 @@ function normalizeContacts(contacts) {
     fullName: makeFullName(item),
     emailAddresses: item.emailAddresses.map(prop('email')),
     phoneNumbers: item.phoneNumbers.map(prop('number')),
+    thumbnailPath: item.thumbnailPath,
   }))
 }
 

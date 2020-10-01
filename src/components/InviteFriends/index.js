@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next'
 import { withTheme } from 'react-native-paper'
 import ContactsIcon from 'assets/svg/contacts/Contacts'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
+import Avatar from 'templates/Avatar'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
@@ -16,7 +17,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
   const styling = styles(theme)
   const isLoading = contactsGet.status === 'loading'
   const isSuccess = contactsGet.status === 'success'
-  const isEmpty = isSuccess && contactsGet.items.length === 0
+  const isEmpty = contactsGet.items.length === 0
 
   const handleInvitePress = (user) => {
     const emails = user.emailAddresses.map((value) => ({ value, type: 'email' }))
@@ -43,7 +44,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
   )
 
   const renderRow = (user) => {
-    const content = <Text style={styling.fullName}>{user.fullName}</Text>
+    const avatarSource = { uri: user.thumbnailPath }
     const action = invited.items.includes(user.recordID) ? (
       <DefaultButton label={t('Invited')} mode="outlined" size="compact" disabled />
     ) : (
@@ -52,7 +53,11 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
 
     return (
       <RowsItemComponent testID={testIDs.row} hasBorders>
-        <UserRowComponent avatar={null} content={content} action={action} />
+        <UserRowComponent
+          avatar={<Avatar thumbnailSource={avatarSource} imageSource={avatarSource} active={false} />}
+          content={<Text numberOfLines={1} ellipsizeMode="tail" style={styling.fullName}>{user.fullName}</Text>}
+          action={action}
+        />
       </RowsItemComponent>
     )
   }
@@ -89,7 +94,7 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
             {contactsGet.status === 'failure' && (
               <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
             )}
-            {!['failure', 'success'].includes(contactsGet.status) && (
+            {!['failure', 'success'].includes(contactsGet.status) && isEmpty && (
               <DefaultButton
                 label={t('Check Contacts')}
                 onPress={contactsGetRequest}
@@ -98,15 +103,12 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
               />
             )}
           </View>
-          {isSuccess ? (
-            isEmpty ? (
-              <Text style={styling.emptyText}>
-                {t('We couldn\'t find any contacts on your device. Pull down to refresh.')}
-              </Text>
-            ) : (
-              <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>
-            )
-          ) : null}
+          {isSuccess && isEmpty && (
+            <Text style={styling.emptyText}>
+              {t('We couldn\'t find any contacts on your device. Pull down to refresh.')}
+            </Text>
+          )}
+          {!isEmpty && <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>}
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -177,6 +179,9 @@ const styles = (theme) =>
     },
     openSettingsBtn: {
       marginTop: 12,
+    },
+    fullName: {
+      paddingHorizontal: 8,
     },
   })
 

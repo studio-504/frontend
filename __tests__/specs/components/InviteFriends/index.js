@@ -1,19 +1,21 @@
 import React from 'react'
 import { Alert } from 'react-native'
 import { renderWithProviders, fireEvent, within } from 'tests/utils'
+import Avatar from 'templates/Avatar'
 import InviteFriendsComponent from 'components/InviteFriends'
 import testIDs from 'components/InviteFriends/test-ids'
 
 jest.spyOn(Alert, 'alert')
+jest.mock('templates/Avatar', () => jest.fn().mockReturnValue(null))
 
 const emailAddresses = ['text0@email.com', 'text1@email.com', 'text2@email.com']
 const phoneNumbers = ['+199999999', '+299999999', '+399999999']
 
 const items = [
-  { recordID: '1', fullName: 'fullName1' },
-  { recordID: '2', fullName: 'fullName2' },
-  { recordID: '3', fullName: 'fullName3' },
-  { recordID: '4', fullName: 'fullName4' },
+  { recordID: '1', fullName: 'fullName1', thumbnailPath: 'thumbnailPath' },
+  { recordID: '2', fullName: 'fullName2', thumbnailPath: 'thumbnailPath' },
+  { recordID: '3', fullName: 'fullName3', thumbnailPath: 'thumbnailPath' },
+  { recordID: '4', fullName: 'fullName4', thumbnailPath: 'thumbnailPath' },
 ].map((item) => ({ ...item, emailAddresses, phoneNumbers }))
 
 const invited = { items: [items[0].recordID, items[2].recordID] }
@@ -21,7 +23,7 @@ const invited = { items: [items[0].recordID, items[2].recordID] }
 const contactsGetRequest = jest.fn()
 const requiredProps = {
   contactsGetRequest,
-  contactsGet: { status: 'idle', error: '' },
+  contactsGet: { status: 'idle', error: '', items: [] },
   invited: { items: [] },
 }
 
@@ -31,6 +33,7 @@ describe('Invite Friends Component', () => {
   afterEach(() => {
     contactsGetRequest.mockClear()
     Alert.alert.mockClear()
+    Avatar.mockClear()
   })
 
   describe('header', () => {
@@ -72,7 +75,7 @@ describe('Invite Friends Component', () => {
 
   it('error state', () => {
     const error = 'Error'
-    const contactsGet = { status: 'failure', error }
+    const contactsGet = { status: 'failure', error, items: [] }
     const openSettings = jest.fn()
     const { queryByText } = setup({ contactsGet, openSettings })
 
@@ -83,7 +86,7 @@ describe('Invite Friends Component', () => {
   })
 
   it('loading state', () => {
-    const contactsGet = { status: 'loading', error: '' }
+    const contactsGet = { status: 'loading', error: '', items: [] }
     const { queryByText } = setup({ contactsGet })
 
     expect(queryByText('Check Contacts')).toBeDisabled()
@@ -111,9 +114,15 @@ describe('Invite Friends Component', () => {
       const $rows = queryAllByTestId(testIDs.row)
 
       $rows.forEach(($row, index) => {
-        expect(within($row).queryByText(items[index].fullName)).toBeTruthy()
+        const item = items[index]
+        const $title = within($row).queryByText(item.fullName)
+
+        expect($title).toBeTruthy()
+        expect($title.props.numberOfLines).toBe(1)
+        expect($title.props.ellipsizeMode).toBe('tail')
       })
 
+      expect(Avatar).toHaveBeenCalledTimes(items.length)
       expect($rows).toHaveLength(items.length)
     })
 
@@ -165,7 +174,7 @@ describe('Invite Friends Component', () => {
       const contactsInviteRequest = jest.fn()
       const user = {
         ...items[0],
-        emailAddresses: ['test@email.com' ],
+        emailAddresses: ['test@email.com'],
         phoneNumbers: [],
       }
       const contactsGet = { status: 'success', error: '', items: [user] }

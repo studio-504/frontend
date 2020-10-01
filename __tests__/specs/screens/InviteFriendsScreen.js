@@ -9,10 +9,11 @@ import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (fn) => fn() }))
 jest.mock('store/ducks/contacts/selectors', () => ({ contactsGet: jest.fn(), invited: jest.fn() }))
 jest.mock('react-native-permissions', () => ({ openSettings: jest.fn() }))
+jest.mock('templates/Avatar', () => jest.fn().mockReturnValue(null))
 
 const dispatch = jest.fn()
 useDispatch.mockReturnValue(dispatch)
-selectors.contactsGet.mockReturnValue({ status: 'idle', error: '' })
+selectors.contactsGet.mockReturnValue({ status: 'idle', error: '', items: [] })
 selectors.invited.mockReturnValue({ items: [] })
 
 const setup = () => renderWithProviders(<InviteFriendsScreen />)
@@ -24,7 +25,7 @@ describe('Invite Friends screen', () => {
   })
 
   it('update failed permission status on mount', () => {
-    selectors.contactsGet.mockReturnValueOnce({ status: 'failure', error: 'error' })
+    selectors.contactsGet.mockReturnValueOnce({ status: 'failure', error: 'error', items: [] })
     setup()
 
     expect(dispatch).toHaveBeenCalledWith(actions.contactsGetRequest())
@@ -46,7 +47,7 @@ describe('Invite Friends screen', () => {
 
   it('error state', () => {
     const error = 'Error'
-    selectors.contactsGet.mockReturnValueOnce({ status: 'failure', error })
+    selectors.contactsGet.mockReturnValueOnce({ status: 'failure', error, items: [] })
     const { getByText } = setup()
 
     fireEvent.press(getByText('Open Settings'))
