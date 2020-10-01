@@ -16,6 +16,8 @@ const items = [
   { recordID: '4', givenName: 'given3', middleName: 'middle3', familyName: 'family3' },
 ].map((item) => ({ ...item, emailAddresses, phoneNumbers }))
 
+const invited = { items: [items[0].recordID, items[2].recordID] }
+
 const contactsGetRequest = jest.fn()
 const requiredProps = {
   contactsGetRequest,
@@ -31,11 +33,32 @@ describe('Invite Friends Component', () => {
     Alert.alert.mockClear()
   })
 
-  it('header', () => {
-    const { getByText } = setup()
+  describe('header', () => {
+    it('by default', () => {
+      const { getByText } = setup()
 
-    getByText('Earn Free REAL Diamond')
-    getByText('Follow or Invite 10 friends & get REAL Diamond FREE for 2 months!')
+      getByText('Earn Free REAL Diamond')
+      getByText('Follow or Invite 0/10 friends & get REAL Diamond FREE for 2 months!')
+    })
+
+    it('less than 10', () => {
+      const { getByText } = setup({ invited })
+
+      getByText('Earn Free REAL Diamond')
+      getByText(`Follow or Invite ${invited.items.length}/10 friends & get REAL Diamond FREE for 2 months!`)
+    })
+
+    it('equal or more than 10', () => {
+      const testTitles = (items) => {
+        const { getByText } = setup({ invited: { items } })
+
+        getByText('Connect Your Contacts')
+        getByText('Find people you know on REAL and choose who to follow or invite')
+      }
+
+      testTitles(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
+      testTitles(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'])
+    })
   })
 
   it('idle state', () => {
@@ -166,7 +189,6 @@ describe('Invite Friends Component', () => {
     })
 
     it('invited', () => {
-      const invited = { items: [items[0].recordID, items[2].recordID] }
       const contactsGet = { status: 'success', error: '', items }
       const { queryAllByTestId } = setup({ contactsGet, invited })
       const $rows = queryAllByTestId(testIDs.row)

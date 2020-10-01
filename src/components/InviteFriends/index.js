@@ -32,9 +32,9 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
       options[0].onPress()
     } else {
       Alert.alert(
-        `Invite ${makeFullName(user)}`,
-        'Сhoose a contact',
-        [...options, { text: 'Cancel', style: 'cancel' }],
+        t('Invite {{fullName}}', { fullName: makeFullName(user) }),
+        t('Сhoose a contact'),
+        [...options, { text: t('Cancel'), style: 'cancel' }],
         { cancelable: true },
       )
     }
@@ -59,6 +59,22 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
     )
   }
 
+  const { title, subtitle } = (function (invitedCount) {
+    if (invitedCount >= 10) {
+      return {
+        title: t('Connect Your Contacts'),
+        subtitle: t('Find people you know on REAL and choose who to follow or invite'),
+      }
+    } else {
+      return {
+        title: t('Earn Free REAL Diamond'),
+        subtitle: t('Follow or Invite {{invitedCount}}/10 friends & get REAL Diamond FREE for 2 months!', {
+          invitedCount,
+        }),
+      }
+    }
+  })(invited.items.length)
+
   return (
     <ScrollView refreshControl={refreshControl} style={styling.root}>
       <SafeAreaView style={styling.component}>
@@ -66,10 +82,8 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
           <View style={styling.headerIcon}>
             <ContactsIcon fill={theme.colors.text} />
           </View>
-          <Text style={styling.headingTitle}>{t('Earn Free REAL Diamond')}</Text>
-          <Text style={styling.headingSubtitle}>
-            {t('Follow or Invite 10 friends & get REAL Diamond FREE for 2 months!')}
-          </Text>
+          <Text style={styling.headingTitle}>{title}</Text>
+          <Text style={styling.headingSubtitle}>{subtitle}</Text>
         </View>
         <View style={styling.content}>
           <View style={styling.actions}>
@@ -88,7 +102,9 @@ const InviteFriends = ({ t, theme, contactsGet, contactsGetRequest, openSettings
           </View>
           {isSuccess ? (
             isEmpty ? (
-              <Text style={styling.emptyText}>{t('We couldn\'t find any contacts on your device. Pull down to refresh.')}</Text>
+              <Text style={styling.emptyText}>
+                {t('We couldn\'t find any contacts on your device. Pull down to refresh.')}
+              </Text>
             ) : (
               <RowsComponent items={contactsGet.items}>{renderRow}</RowsComponent>
             )
