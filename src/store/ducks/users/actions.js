@@ -179,7 +179,6 @@ export const usersReportScreenViewsRequest = createAction(constants.USERS_REPORT
 export const usersReportScreenViewsSuccess = createAction(constants.USERS_REPORT_SCREEN_VIEWS_SUCCESS)
 export const usersReportScreenViewsFailure = createAction(constants.USERS_REPORT_SCREEN_VIEWS_FAILURE) 
 
-
 /**
  * 
  */

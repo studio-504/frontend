@@ -72,6 +72,7 @@ export const singleUserFragment = `
     blockedStatus
     blockerStatus
     chatsWithUnviewedMessagesCount
+    subscriptionLevel
 
     photo {
       ...userImageFragment
