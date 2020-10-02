@@ -18,7 +18,7 @@ function* handlePostsReportPostViewsRequest(payload) {
   yield put(entitiesActions.entitiesPostsMerge({ data }))
 }
 
-function* postsReportPostViewsRequest(req) {
+export function* postsReportPostViewsRequest(req) {
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
@@ -26,7 +26,10 @@ function* postsReportPostViewsRequest(req) {
     const selector = path(['data', 'reportPostViews'])
     const meta = {}
 
-    yield handlePostsReportPostViewsRequest(req.payload)
+    if (req.payload.viewType === 'FOCUS') {
+      yield handlePostsReportPostViewsRequest(req.payload)
+    }
+    
     yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsReportPostViewsFailure({ message: errorWrapper(error), payload: req.payload }))
