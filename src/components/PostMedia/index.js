@@ -39,7 +39,7 @@ const PostMedia = ({
   const data = postsSingleGet.data ? [postsSingleGet.data] : []
 
   const {
-    onViewableItemsFocus,
+    onViewableItemsFocusRef,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -59,7 +59,7 @@ const PostMedia = ({
         ref={feedRef}
         keyExtractor={ item => item.postId}
         data={data}
-        onViewableItemsChanged={onViewableItemsFocus.current}
+        onViewableItemsChanged={onViewableItemsFocusRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
         renderItem={({ item: post, index }) => (
           <PostComponent

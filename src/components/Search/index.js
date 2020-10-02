@@ -54,7 +54,7 @@ const SearchComponent = ({
   })
 
   const {
-    onViewableItemsThumbnails,
+    onViewableItemsThumbnailsRef,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -133,7 +133,7 @@ const SearchComponent = ({
         ListFooterComponentStyle={styling.activity}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={0.5}
-        onViewableItemsChanged={onViewableItemsThumbnails.current}
+        onViewableItemsChanged={onViewableItemsThumbnailsRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
       />
 

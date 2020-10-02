@@ -49,7 +49,7 @@ const Album = ({
   })
 
   const {
-    onViewableItemsThumbnails,
+    onViewableItemsThumbnailsRef,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -83,7 +83,7 @@ const Album = ({
             refreshing={scroll.refreshing}
           />
         )}
-        onViewableItemsChanged={onViewableItemsThumbnails.current}
+        onViewableItemsChanged={onViewableItemsThumbnailsRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
       />
 

@@ -28,17 +28,17 @@ export const useViewable = () => {
     waitForInteraction: false,
   })
 
-  const onViewableItemsThumbnails = useRef(({ viewableItems }) => {
+  const onViewableItemsThumbnailsRef = useRef(({ viewableItems }) => {
     onViewableItemsChanged({ viewableItems, viewType: 'THUMBNAIL' })
   })
 
-  const onViewableItemsFocus = useRef(({ viewableItems }) => {
+  const onViewableItemsFocusRef = useRef(({ viewableItems }) => {
     onViewableItemsChanged({ viewableItems, viewType: 'FOCUS' })
   })
 
   return ({
-    onViewableItemsThumbnails,
-    onViewableItemsFocus,
+    onViewableItemsThumbnailsRef,
+    onViewableItemsFocusRef,
     viewabilityConfigRef,
   })
 }

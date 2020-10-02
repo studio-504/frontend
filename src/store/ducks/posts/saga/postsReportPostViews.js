@@ -29,7 +29,7 @@ export function* postsReportPostViewsRequest(req) {
     if (req.payload.viewType === 'FOCUS') {
       yield handlePostsReportPostViewsRequest(req.payload)
     }
-    
+
     yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
     yield put(actions.postsReportPostViewsFailure({ message: errorWrapper(error), payload: req.payload }))
@@ -76,15 +76,15 @@ function* watchPostsReportPostViewsRequest() {
      * get first received action, wait for 10secs while accumulating other actions
      */
     const firstAction = yield take(channel)
-    
+
     yield delay(10000)
     const accumedActions = yield flush(channel)
-    const actions = packActions(groupActionsByType([firstAction, ...accumedActions]))
+    const preparedActions = packActions(groupActionsByType([firstAction, ...accumedActions]))
 
     /**
      * report views in parallel without blocking the thread
      */
-    yield all(actions.map((payload) => fork(postsReportPostViewsRequest, { payload })))
+    yield all(preparedActions.map((payload) => fork(postsReportPostViewsRequest, { payload })))
   }
 }
 

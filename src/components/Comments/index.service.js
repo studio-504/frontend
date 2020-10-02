@@ -104,7 +104,7 @@ const CommentsService = ({ children }) => {
   /**
    * FlatList feed config ref, used for reporting scroll events
    */
-  const { onViewableItemsThumbnails } = useViewable()
+  const { onViewableItemsThumbnailsRef } = useViewable()
   const viewabilityConfigRef = useRef({
     viewAreaCoveragePercentThreshold: 5,
     waitForInteraction: false,
@@ -157,7 +157,7 @@ const CommentsService = ({ children }) => {
     postsCommentsGet,
     postsSingleGet,
     marginBottom,
-    onViewableItemsThumbnails,
+    onViewableItemsThumbnailsRef,
     viewabilityConfigRef,
     handleUserReply,
     commentsRef,
