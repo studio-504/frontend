@@ -75,7 +75,7 @@ const Profile = ({
   })
 
   const {
-    onViewableItemsChangedRef,
+    onViewableItemsThumbnails,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -169,7 +169,7 @@ const Profile = ({
         ListFooterComponentStyle={styling.activity}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={0.5}
-        onViewableItemsChanged={onViewableItemsChangedRef.current}
+        onViewableItemsChanged={onViewableItemsThumbnails.current}
         viewabilityConfig={viewabilityConfigRef.current}
       />
     </React.Fragment>

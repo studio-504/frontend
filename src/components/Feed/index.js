@@ -54,7 +54,7 @@ const Feed = ({
   })
 
   const {
-    onViewableItemsChangedRef,
+    onViewableItemsFocus,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -107,7 +107,7 @@ const Feed = ({
             refreshing={scroll.refreshing}
           />
         )}
-        onViewableItemsChanged={onViewableItemsChangedRef.current}
+        onViewableItemsChanged={onViewableItemsFocus.current}
         viewabilityConfig={viewabilityConfigRef.current}
         ListHeaderComponent={useCallback(() => (
           <React.Fragment>

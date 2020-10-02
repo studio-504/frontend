@@ -39,7 +39,7 @@ const PostMedia = ({
   const data = postsSingleGet.data ? [postsSingleGet.data] : []
 
   const {
-    onViewableItemsChangedRef,
+    onViewableItemsFocus,
     viewabilityConfigRef,
   } = useViewable()
 
@@ -57,9 +57,9 @@ const PostMedia = ({
       <FlatList
         bounces={false}
         ref={feedRef}
-        keyExtractor={item => item.postId}
+        keyExtractor={ item => item.postId}
         data={data}
-        onViewableItemsChanged={onViewableItemsChangedRef.current}
+        onViewableItemsChanged={onViewableItemsFocus.current}
         viewabilityConfig={viewabilityConfigRef.current}
         renderItem={({ item: post, index }) => (
           <PostComponent
