@@ -1,9 +1,9 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { Alert } from 'react-native'
-import { AuthContext } from 'services/providers/Auth'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as navigationActions from 'navigation/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
 import useUpload, { useUploadState } from 'services/providers/Upload'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
@@ -13,7 +13,7 @@ import { pageHeaderLeft } from 'navigation/options'
 const ProfilePhotoUploadComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { user } = useContext(AuthContext)
+  const user = useSelector(authSelector.authUserSelector)
 
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
   const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
