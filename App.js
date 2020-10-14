@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
@@ -27,7 +27,7 @@ const codePushOptions = {
 
 const Application = (navigationProps) => {
   const [draggedImage, setDraggedImage] = useState({})
-  const { store, persistor } = initializeStore({ navigationRef: navigationProps.navigationRef })
+  const { store, persistor } = useMemo(() => initializeStore({ navigationRef: navigationProps.navigationRef }), [])
 
   return (
     <Provider store={store}>
