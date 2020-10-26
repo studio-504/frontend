@@ -1,0 +1,43 @@
+name: CI
+
+on: 
+  push:
+    tags:
+    - 'ios*'
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Node
+      run: |
+        sudo npm install n -g
+        sudo n stable
+    - name: Yarn
+      run: |
+        yarn install
+    - name: Install react native
+      run: |
+        sudo npm install -g react-native-cli
+    - name: Install fastlane
+      run: |
+        sudo gem install fastlane
+    - name: Build
+      env:
+        FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        GIT_URL: ${{ secrets.GIT_URL }}
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        OUR_KEYCHAIN: "mychain"
+        SUPERPASS: "mypass"
+      run: |
+        TAG=$(echo ${GITHUB_REF}| cut -d'-' -f 3)
+        export BUILD_NUM=$(echo $TAG| cut -d'b' -f 2)
+        export VERSION_NUM=$(echo $TAG| cut -d'b' -f 3)
+        pod install --project-directory=ios --repo-update
+        react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+        cd ios
+        pod install
+        fastlane buildnumber
+        fastlane internal --verbose
