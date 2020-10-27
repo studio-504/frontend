@@ -24,20 +24,18 @@ jobs:
         sudo gem install fastlane
     - name: Build
       env:
-        FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-        GIT_URL: ${{ secrets.GIT_URL }}
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        OUR_KEYCHAIN: "mychain"
-        SUPERPASS: "mypass"
+        MATCH_TYPE: ${{ secrets.MATCH_TYPE }}
+				APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+				APP_SCHEME: ${{ secrets.APP_SCHEME }}
+				APPLE_ID: ${{ secrets.APPLE_ID }}
+				ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+				TEAM_ID: ${{ secrets.TEAM_ID }}
+				MATCH_APP_IDENTIFIER: ${{ secrets.MATCH_APP_IDENTIFIER }}
+				FASTLANE_TEAM_ID: ${{ secrets.FASTLANE_TEAM_ID }}
+				MATCH_USERNAME: ${{ secrets.MATCH_USERNAME }}
       run: |
         TAG=$(echo ${GITHUB_REF}| cut -d'-' -f 3)
         export BUILD_NUM=$(echo $TAG| cut -d'b' -f 2)
         export VERSION_NUM=$(echo $TAG| cut -d'b' -f 3)
         pod install --project-directory=ios --repo-update
-        react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-        cd ios
-        pod install
-        fastlane buildnumber
-        fastlane internal --verbose
+        fastlane beta --env development --verbose
