@@ -406,6 +406,7 @@ function* usersEditProfileRequestData(req, api) {
 function* usersEditProfileRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.setUserDetails, req.payload)
+
     const next = yield usersEditProfileRequestData(req, data)
     yield put(actions.usersEditProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

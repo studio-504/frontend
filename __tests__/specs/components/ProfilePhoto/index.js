@@ -2,11 +2,11 @@ import React from 'react'
 import { renderWithProviders, fireEvent } from 'tests/utils'
 import ProfilePhoto from 'components/ProfilePhoto'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
-import { confirm } from 'components/Settings/helpers'
+import { confirm } from 'components/UploadAvatar/helpers'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('components/ProfilePhotoUpload/Photo', () => jest.fn().mockReturnValue(null))
-jest.mock('components/Settings/helpers', () => ({ confirm: jest.fn() }))
+jest.mock('components/UploadAvatar/helpers', () => ({ confirm: jest.fn() }))
 
 const handleLibrarySnap = jest.fn()
 const handleCameraSnap = jest.fn()

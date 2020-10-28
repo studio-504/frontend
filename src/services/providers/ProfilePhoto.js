@@ -5,11 +5,14 @@ import * as cameraActions from 'store/ducks/camera/actions'
 import * as navigationActions from 'navigation/actions'
 import useCamera from 'services/providers/Camera'
 import { AuthContext } from 'services/providers/Auth'
+import * as usersActions from 'store/ducks/users/actions'
+import * as helpers from 'components/UploadAvatar/helpers'
 
 function useProfilePhoto() {
   const dispatch = useDispatch()
-  const navigation = useNavigation() 
+  const navigation = useNavigation()
   const { user } = useContext(AuthContext)
+  const isAvatarEmpty = helpers.isAvatarEmpty(user)
 
   const camera = useCamera({
     handleProcessedPhoto: (payload) => {
@@ -18,14 +21,24 @@ function useProfilePhoto() {
     },
   })
 
-  const handleCameraSnap = navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhotoUpload' }, { protected: true, user })
+  const handleCameraSnap = navigationActions.navigateCamera(
+    navigation,
+    { nextRoute: 'ProfilePhotoUpload' },
+    { protected: true, user },
+  )
   const handleSkipUpload = () => navigation.replace('Settings')
   const handleLibrarySnap = () => camera.handleLibrarySnap()
+  const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation)
+  const usersDeleteAvatarRequest = () => dispatch(usersActions.usersDeleteAvatarRequest())
 
   return {
+    navigation,
     handleLibrarySnap,
     handleCameraSnap,
     handleSkipUpload,
+    usersDeleteAvatarRequest,
+    isAvatarEmpty,
+    navigateProfilePhotoGrid,
   }
 }
 

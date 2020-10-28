@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import AuthHeaderTemplate from 'templates/Auth/Header'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
-import { confirm } from 'components/Settings/helpers'
+import { confirm } from 'components/UploadAvatar/helpers'
 import { withTranslation } from 'react-i18next'
 
 const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload }) => {
