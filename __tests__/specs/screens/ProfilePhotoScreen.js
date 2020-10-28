@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { renderWithProviders, fireEvent } from 'tests/utils'
 import ProfilePhotoScreen from 'screens/ProfilePhotoScreen'
 import * as cameraActions from 'store/ducks/camera/actions'
-import * as helpers from 'components/UploadAvatar/helpers'
+import {confirm} from 'components/Alert'
 import useCamera from 'services/providers/Camera'
 import { useNavigation } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -16,8 +16,8 @@ jest.mock('components/ProfilePhotoUpload/Photo', () => jest.fn().mockReturnValue
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (cb) => cb() }))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('services/providers/Camera', () => jest.fn())
+jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
-const confirm = jest.spyOn(helpers, 'confirm')
 const navigation = { replace: jest.fn(), navigate: jest.fn() }
 const dispatch = jest.fn()
 const handleLibrarySnap = jest.fn()

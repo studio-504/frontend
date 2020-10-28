@@ -3,10 +3,10 @@ import { renderWithProviders } from 'tests/utils'
 import ActionSheet from 'components/ActionSheet'
 import UploadAvatar from 'components/UploadAvatar/component'
 import { prop } from 'ramda'
-import { confirm } from 'components/UploadAvatar/helpers'
+import { confirm } from 'components/Alert'
 
 jest.mock('components/ActionSheet', () => jest.fn().mockReturnValue(null))
-jest.mock('components/UploadAvatar/helpers', () => ({ confirm: jest.fn() }))
+jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
 const navigation = { navigate: jest.fn() }
 const setup = (props) => renderWithProviders(<UploadAvatar navigation={navigation} {...props} />)

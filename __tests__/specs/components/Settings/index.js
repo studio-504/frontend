@@ -4,7 +4,7 @@ import SettingsComponent from 'components/Settings'
 import { testNavigate } from 'tests/utils/helpers'
 
 jest.mock('components/ActionSheet', () => jest.fn().mockReturnValue(null))
-jest.mock('components/UploadAvatar/helpers', () => ({ isAvatarEmpty: jest.fn(), confirm: jest.fn() }))
+jest.mock('components/Alert', () => ({  confirm: jest.fn() }))
 jest.mock('templates/Avatar', () => () => null)
 jest.mock('templates/SettingsAvatar', () => () => null)
 

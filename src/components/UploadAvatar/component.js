@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ActionSheet from 'components/ActionSheet'
 import { withTranslation } from 'react-i18next'
-import { confirm } from 'components/UploadAvatar/helpers'
+import { confirm } from 'components/Alert'
 
 const UploadAvatar = ({
   t,

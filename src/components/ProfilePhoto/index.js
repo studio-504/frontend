@@ -4,10 +4,10 @@ import { View, StyleSheet } from 'react-native'
 import AuthHeaderTemplate from 'templates/Auth/Header'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
-import { confirm } from 'components/UploadAvatar/helpers'
+import { confirm } from 'components/Alert'
 import { withTranslation } from 'react-i18next'
 
-const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload }) => {
+const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload }) => { 
   const confirmProfilePhotoUpload = (onConfirm) => () => {
     confirm({
       title: t('Profile Photo Upload'),
