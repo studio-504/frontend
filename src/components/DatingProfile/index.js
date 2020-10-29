@@ -22,8 +22,8 @@ const DatingProfile = ({ t, theme, user, usersSetUserDatingStatus, usersSetUserD
           <View style={styling.actions}>
             {isAvatarEmpty ? (
               <View style={styling.actions}>
-                <DefaultButton label={t('Upload Profile Photo')} onPress={openUploadAvatarMenu} />
-                <Text style={styling.text}>{t('Before start dating, upload Profile Photo')}</Text>
+                <DefaultButton label={t('Change Profile Photo')} onPress={openUploadAvatarMenu} />
+                <Text style={styling.text}>{t('Before start dating, change Profile Photo')}</Text>
               </View>
             ) : (
               <View style={styling.actions}>
