@@ -3,7 +3,6 @@ import DatingComponent from 'components/Dating'
 import DatingServiceComponent from 'components/Dating/index.service'
 import PermissionsComponent from 'components/Permissions'
 import PermissionsServiceComponent from 'components/Permissions/index.service'
-import withDatingEnabledValidation from 'components/Dating/Permission'
 
 class DatingScreen extends React.Component {
   render() {
@@ -32,4 +31,4 @@ class DatingScreen extends React.Component {
   }
 }
 
-export default withDatingEnabledValidation(DatingScreen)
+export default DatingScreen
