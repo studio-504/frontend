@@ -27,14 +27,14 @@ const AuthNavigator = () => {
   const stackScreenAuthProps = navigationOptions.stackScreenAuthProps({ theme })
   const stackScreenAuthModalProps = navigationOptions.stackScreenAuthModalProps({ theme })
   const headerLeft = props => navigationOptions.pageHeaderLeft({ ...props, theme })
-
+ 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
       <Stack.Screen
         name="AuthHome"
         component={AuthHomeScreen}
         {...stackScreenOnboardProps}
-      />
+      /> 
 
       <Stack.Screen
         name="Signup"
@@ -57,7 +57,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="AuthUsername"
         component={AuthUsernameScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft, gestureEnabled: true } })}
+        {...stackScreenAuthProps({ options: { title: 'Signup', gestureEnabled: true } })}
       />
 
       <Stack.Screen

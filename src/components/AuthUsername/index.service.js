@@ -16,6 +16,7 @@ const AuthUsernameComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { theme } = useContext(ThemeContext)
+  const authFlow = useSelector(state => state.auth.authFlow)
 
   const signupUsername = useSelector(state => state.signup.signupUsername)
 
@@ -29,7 +30,12 @@ const AuthUsernameComponentService = ({ children }) => {
    */
   const handleGoBack = useCallback(() => {
     dispatch(signupActions.signupUsernameIdle({}))
-    navigationActions.navigateAuthHome(navigation)
+
+    if (authFlow.status === 'success') {
+      navigationActions.navigateApp(navigation)
+    } else {
+      navigationActions.navigateAuthHome(navigation)
+    }
   }, [])
 
   useEffect(() => {
