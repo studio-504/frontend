@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -34,6 +35,10 @@ const SettingsService = ({ children }) => {
       }
     </UploadAvatar>
   )
+}
+
+SettingsService.propTypes = {
+  children: PropTypes.element.isRequired,
 }
 
 export default SettingsService

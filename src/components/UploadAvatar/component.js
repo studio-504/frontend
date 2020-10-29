@@ -68,6 +68,7 @@ UploadAvatar.propTypes = {
   usersDeleteAvatarRequest: PropTypes.func,
   handleCameraSnap: PropTypes.func,
   isAvatarEmpty: PropTypes.bool,
+  actionSheetRef: PropTypes.any,
 }
 
 UploadAvatar.defaultProps = {

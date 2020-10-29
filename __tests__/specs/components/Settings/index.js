@@ -26,7 +26,7 @@ describe('Settings component', () => {
 
   it('Change Profile Picture', () => {
     const openUploadAvatarMenu = jest.fn()
-    const { getByText } = setup({openUploadAvatarMenu})
+    const { getByText } = setup({ openUploadAvatarMenu })
 
     fireEvent.press(getByText('Change Profile Picture'))
 
