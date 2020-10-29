@@ -15,7 +15,7 @@ const UploadAvatar = ({
 }) => {
   const confirmProfilePhotoUpload = (onConfirm) => () => {
     confirm({
-      title: t('Profile Photo Upload'),
+      title: t('Profile Picture Upload'),
       desc: t('Your photo will be uploaded as post'),
       onConfirm,
     })
@@ -23,7 +23,7 @@ const UploadAvatar = ({
 
   const handleProfilePhotoDelete = () => {
     confirm({
-      title: t('Delete Profile Photo'),
+      title: t('Delete Profile Picture'),
       desc: t('Are you sure you want to delete the profile photo?'),
       onConfirm: usersDeleteAvatarRequest,
     })
@@ -46,7 +46,7 @@ const UploadAvatar = ({
           onPress: navigateProfilePhotoGrid,
         },
         {
-          name: t('Delete Profile Photo'),
+          name: t('Delete Profile Picture'),
           onPress: () => handleProfilePhotoDelete(),
           isDestructive: true,
           isVisible: !isAvatarEmpty,

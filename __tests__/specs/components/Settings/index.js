@@ -24,11 +24,11 @@ describe('Settings component', () => {
     testNavigate(navigation, 'App.Root.Home.Profile.ProfileEdit')
   })
 
-  it('Change Profile Photo', () => {
+  it('Change Profile Picture', () => {
     const openUploadAvatarMenu = jest.fn()
     const { getByText } = setup({openUploadAvatarMenu})
 
-    fireEvent.press(getByText('Change Profile Photo'))
+    fireEvent.press(getByText('Change Profile Picture'))
 
     expect(openUploadAvatarMenu).toHaveBeenCalled()
   })

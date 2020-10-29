@@ -20,7 +20,7 @@ const requiredProps = {
 
 const setup = () => renderWithProviders(<ProfilePhoto {...requiredProps} />)
 
-describe('Profile Photo screen', () => {
+describe('Profile Picture screen', () => {
   afterEach(() => {
     handleLibrarySnap.mockClear()
     handleCameraSnap.mockClear()
@@ -53,7 +53,7 @@ describe('Profile Photo screen', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()
@@ -69,7 +69,7 @@ describe('Profile Photo screen', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()

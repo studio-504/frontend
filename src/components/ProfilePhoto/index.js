@@ -10,7 +10,7 @@ import { withTranslation } from 'react-i18next'
 const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload }) => { 
   const confirmProfilePhotoUpload = (onConfirm) => () => {
     confirm({
-      title: t('Profile Photo Upload'),
+      title: t('Profile Picture Upload'),
       desc: t('Your photo will be uploaded as post'),
       onConfirm,
     })

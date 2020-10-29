@@ -28,7 +28,7 @@ describe('UploadAvatar component', () => {
       'Take a Photo',
       'Choose From Gallery',
       'Choose From Existing',
-      'Delete Profile Photo',
+      'Delete Profile Picture',
       'Cancel',
     ])
   })
@@ -48,7 +48,7 @@ describe('UploadAvatar component', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()
@@ -70,7 +70,7 @@ describe('UploadAvatar component', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()
@@ -90,24 +90,24 @@ describe('UploadAvatar component', () => {
     expect(navigateProfilePhotoGrid).toHaveBeenCalled()
   })
 
-  it('Delete Profile Photo should not be visible when avatar empty', () => {
+  it('Delete Profile Picture should not be visible when avatar empty', () => {
     setup({ isAvatarEmpty: true })
 
     const { options } = ActionSheet.mock.calls[0][0]
     const { name, isVisible } = options[3]
 
-    expect(name).toBe('Delete Profile Photo')
+    expect(name).toBe('Delete Profile Picture')
     expect(isVisible).toBeFalsy()
   })
 
-  it('Delete Profile Photo', () => {
+  it('Delete Profile Picture', () => {
     const usersDeleteAvatarRequest = jest.fn()
     setup({ usersDeleteAvatarRequest, isAvatarEmpty: false })
 
     const { options } = ActionSheet.mock.calls[0][0]
     const { name, onPress, isVisible, isDestructive } = options[3]
 
-    expect(name).toBe('Delete Profile Photo')
+    expect(name).toBe('Delete Profile Picture')
     expect(isVisible).toBeTruthy()
     expect(isDestructive).toBeTruthy()
 
@@ -117,7 +117,7 @@ describe('UploadAvatar component', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Are you sure you want to delete the profile photo?',
-      title: 'Delete Profile Photo',
+      title: 'Delete Profile Picture',
     })
 
     onConfirm()

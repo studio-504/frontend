@@ -33,7 +33,7 @@ const setup = () =>
     </AuthProvider>,
   )
 
-describe('Profile Photo screen', () => {
+describe('Profile Picture screen', () => {
   afterEach(() => {
     dispatch.mockClear()
     navigation.replace.mockClear()
