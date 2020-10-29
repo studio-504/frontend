@@ -35,7 +35,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
 
   const handleUploadFailure = () => {
     Alert.alert(
-      'Profile Photo Upload Failed',
+      'Profile Picture Upload Failed',
       'Please try again',
       [
         {
