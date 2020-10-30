@@ -2,7 +2,7 @@ import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as actions from 'store/ducks/auth/actions'
 import authFlow from 'store/ducks/auth/saga/authFlow'
-import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
+import { testAsRootSaga } from 'tests/utils/helpers'
 
 describe('Auth flow', () => {
   it('redirect an user to explore page on success signup/signin', async () => {
@@ -14,7 +14,5 @@ describe('Auth flow', () => {
 
       .dispatch(actions.authFlowSuccess())
       .silentRun()
-
-    testNavigate(navigation.current, 'App.Root.Home.Search')
   })
 })
