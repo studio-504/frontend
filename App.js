@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
@@ -22,7 +23,7 @@ const codePushOptions = {
 
 // codePush.sync(codePushOptions)
 
-const Application = ({navigationRef}) => {
+const Application = ({ navigationRef }) => {
   const { store, persistor } = useMemo(() => initializeStore({ navigationRef }), [])
 
   return (
@@ -40,6 +41,10 @@ const Application = ({navigationRef}) => {
       </ReduxNetworkProvider>
     </Provider>
   )
+}
+
+Application.propTypes = {
+  navigationRef: PropTypes.any,
 }
 
 const WithNavigationContainer = () => {
