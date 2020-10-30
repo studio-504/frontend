@@ -22,19 +22,19 @@ const codePushOptions = {
 
 // codePush.sync(codePushOptions)
 
-const Application = (navigationProps) => {
-  const { store, persistor } = useMemo(() => initializeStore({ navigationRef: navigationProps.navigationRef }), [])
+const Application = ({navigationRef}) => {
+  const { store, persistor } = useMemo(() => initializeStore({ navigationRef }), [])
 
   return (
     <Provider store={store}>
       <ReduxNetworkProvider>
         <PersistGate loading={(<LoadingComponent />)} persistor={persistor}>
-          <AppProvider {...navigationProps}>
-              <AuthProvider>
-                <ThemeProvider>
-                  <Router navigationRef={navigationProps.navigationRef} />
-                </ThemeProvider>
-              </AuthProvider>
+          <AppProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <Router />
+              </ThemeProvider>
+            </AuthProvider>
           </AppProvider>
         </PersistGate>
       </ReduxNetworkProvider>
@@ -44,27 +44,21 @@ const Application = (navigationProps) => {
 
 const WithNavigationContainer = () => {
   const navigationRef = useRef(null)
-  const onStateChangeRef = useRef(null)
-  const routeNameRef = useRef(null)
-
   const [navigationReady, setNavigationReady] = useState(false)
   const setMounted = () => setNavigationReady(true)
   const setUnmounted = () => setNavigationReady(false)
-  const onStateChange = () => onStateChangeRef.current && onStateChangeRef.current()
+
   useEffect(() => setUnmounted, [])
 
   return (
     <NavigationContainer
       ref={navigationRef}
       onReady={setMounted}
-      onStateChange={onStateChange}
       linking={linking}
     >
       {navigationReady ?
-        <Application
-          navigationRef={navigationRef}
-          onStateChangeRef={onStateChangeRef}
-          routeNameRef={routeNameRef}
+        <Application 
+          navigationRef={navigationRef} 
         />
       : null}
     </NavigationContainer>
