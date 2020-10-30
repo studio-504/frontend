@@ -10,13 +10,14 @@ import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
 import { logEvent } from 'services/Analytics'
 import { pageHeaderLeft } from 'navigation/options'
+import * as authSelector from 'store/ducks/auth/selectors'
 import testIDs from './test-ids'
 
 const AuthUsernameComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { theme } = useContext(ThemeContext)
-  const authFlow = useSelector(state => state.auth.authFlow)
+  const authUserId = useSelector(authSelector.authUserIdSelector)
 
   const signupUsername = useSelector(state => state.signup.signupUsername)
 
@@ -34,7 +35,7 @@ const AuthUsernameComponentService = ({ children }) => {
   }
 
   const handleGoBack = useCallback(() => {
-    if (authFlow.status === 'success') {
+    if (authUserId) {
       navigationActions.navigateApp(navigation)
     } else {
       navigationActions.navigateAuthHome(navigation)
