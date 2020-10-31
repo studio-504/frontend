@@ -1,4 +1,4 @@
-import { takeEvery, call } from 'redux-saga/effects'
+import { takeEvery, spawn } from 'redux-saga/effects'
 import * as constants from 'store/ducks/subscriptions/constants'
 import subscriptionNotificationStart from 'store/ducks/subscriptions/saga/notifications'
 import chatMessageSubscription from 'store/ducks/subscriptions/saga/chat'
@@ -11,5 +11,5 @@ export default () => [
   takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, chatMessageSubscription),
   takeEvery(constants.SUBSCRIPTIONS_MAIN_REQUEST, cardSubscription),
   takeEvery(constants.SUBSCRIPTIONS_POLL_REQUEST, subscriptionPollStart),
-  call(navigationSubscription),
+  spawn(navigationSubscription),
 ]

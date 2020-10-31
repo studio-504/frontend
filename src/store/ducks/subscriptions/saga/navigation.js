@@ -1,35 +1,42 @@
 import equals from 'ramda/src/equals'
 import { eventChannel } from 'redux-saga'
-import { call, takeEvery, put } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import * as usersActions from 'store/ducks/users/actions'
 import * as NavigationService from 'services/Navigation'
+import * as Logger from 'services/Logger'
 
 function createNavigationChannel(navigation) {
   let prevRoute = navigation.getCurrentRoute()
 
   return eventChannel((emitter) => {
     return navigation.addListener('state', () => {
-      const route = navigation.getCurrentRoute()
-      const isChanged = !equals(prevRoute, route)
+      try {
+        const route = navigation.getCurrentRoute()
+        const isChanged = !equals(prevRoute, route)
 
-      if (isChanged) {
-        emitter(route)
-        prevRoute = route
+        if (isChanged) {
+          emitter(route)
+          prevRoute = route
+        }
+      } catch (error) {
+        emitter(error)
       }
     })
   })
 }
 
 function* navigationSubscription() {
-  try {
-    const navigation = yield NavigationService.getNavigation()
-    const channel = yield call(createNavigationChannel, navigation)
+  const navigation = yield NavigationService.getNavigation()
+  const channel = yield call(createNavigationChannel, navigation)
 
-    yield takeEvery(channel, function* (route) {
+  try {
+    while (true) {
+      const route = yield take(channel)
       yield put(usersActions.usersReportScreenViewsRequest({ screens: [route.name] }))
-    })
+    }
   } catch (error) {
-    // ignore
+    yield call([Logger, 'captureException'], error)
+    channel.close()
   }
 }
 
