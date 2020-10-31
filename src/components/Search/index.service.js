@@ -40,6 +40,7 @@ const SearchService = ({ children }) => {
   const handleFilterChange = (filters) => {
     handleViewedStatus(filters.viewedStatus)
     handleVerifiedStatus(filters.verifiedStatus)
+    dispatch(postsActions.postsGetTrendingPostsRequest({ viewedStatus, isVerified: verifiedStatus }))
   }
 
   const usersFollowRequest = ({ userId }) =>
@@ -57,10 +58,6 @@ const SearchService = ({ children }) => {
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
   }, [])
-
-  useEffect(() => {
-    dispatch(postsActions.postsGetTrendingPostsRequest({ viewedStatus, isVerified: verifiedStatus }))
-  }, [viewedStatus, verifiedStatus])
 
   /**
    * Following two states are tracking values of Search/Form -> searchToken input field
