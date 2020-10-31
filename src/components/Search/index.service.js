@@ -26,7 +26,7 @@ const SearchService = ({ children }) => {
   useScrollToTop(feedRef)
 
   const [viewedStatus, handleViewedStatus] = useState(undefined)
-  const [verifiedStatus, handleVerifiedStatus] = useState(undefined)
+  const [isVerified, handleVerified] = useState(undefined)
 
   const usersSearchRequest = ({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
@@ -39,8 +39,8 @@ const SearchService = ({ children }) => {
    */
   const handleFilterChange = (filters) => {
     handleViewedStatus(filters.viewedStatus)
-    handleVerifiedStatus(filters.verifiedStatus)
-    dispatch(postsActions.postsGetTrendingPostsRequest({ viewedStatus, isVerified: verifiedStatus }))
+    handleVerified(filters.isVerified)
+    dispatch(postsActions.postsGetTrendingPostsRequest(filters))
   }
 
   const usersFollowRequest = ({ userId }) =>
@@ -53,7 +53,7 @@ const SearchService = ({ children }) => {
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
   
   const postsGetTrendingPostsMoreRequest = (payload) =>
-    dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload, viewedStatus, isVerified: verifiedStatus }))
+    dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload, viewedStatus, isVerified }))
 
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
@@ -91,7 +91,7 @@ const SearchService = ({ children }) => {
     handleFilterChange,
     trendingFilters: {
       viewedStatus,
-      verifiedStatus,
+      isVerified,
     },
   })
 }
