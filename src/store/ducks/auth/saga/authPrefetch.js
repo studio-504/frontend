@@ -34,7 +34,7 @@ function* handleAuthPrefetchAuthenticated() {
   /**
    * 1. Common
    */
-  yield* handleAuthPrefetchCommon()
+  yield call(handleAuthPrefetchCommon)
 
   /**
    * 2. Stories
