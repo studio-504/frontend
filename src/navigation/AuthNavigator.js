@@ -56,7 +56,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="AuthUsername"
         component={AuthUsernameScreen}
-        {...stackScreenAuthProps({ options: { title: 'Signup', gestureEnabled: true } })}
+        {...stackScreenAuthProps({ options: { title: 'Signup', headerLeft, gestureEnabled: true } })}
       />
 
       <Stack.Screen
