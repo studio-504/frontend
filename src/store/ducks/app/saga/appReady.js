@@ -8,6 +8,7 @@ import * as authActions from 'store/ducks/auth/actions'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import * as Updates from 'services/Updates'
+import translationsJson from 'assets/translations.json'
 
 /**
  * Translation library setup, appTranslation.data is an object of:
@@ -17,11 +18,10 @@ import * as Updates from 'services/Updates'
  * }
  */
 function* translationInit() {
-  const appTranslation = yield select(state => state.app.appTranslation)
   const languageCode = yield select(authSelectors.languageCodeSelector)
 
   const config = {
-    resources: appTranslation.data,
+    resources: translationsJson,
     lng: languageCode || 'en',
     fallbackLng: 'en',
   }
@@ -29,24 +29,6 @@ function* translationInit() {
 }
 
 function* handleAppReady() {
-  /**
-   * Asseets load from cloudflare
-   * Add offline cache
-   */
-  yield put(actions.appThemeRequest())
-  yield race({
-    appThemeSuccess: take(constants.APP_THEME_SUCCESS),
-    appThemeFailure: take(constants.APP_THEME_FAILURE),
-  })
-
-  /**
-   * Translation validation
-   */
-  yield put(actions.appTranslationRequest())
-  yield race({
-    appTranslationSuccess: take(constants.APP_TRANSLATION_SUCCESS),
-    appTranslationFailure: take(constants.APP_TRANSLATION_FAILURE),
-  })
   yield call(translationInit)
 }
 

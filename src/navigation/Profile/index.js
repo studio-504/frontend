@@ -25,9 +25,9 @@ import DatingProfileScreen from 'screens/DatingProfileScreen'
 const Stack = createStackNavigator()
 
 const ProfileNavigator = () => {
-  const { theme, themes } = useContext(ThemeContext)
-  const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme, themes })
-  const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme, themes })
+  const { theme } = useContext(ThemeContext)
+  const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
+  const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
@@ -44,17 +44,17 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="ProfilePhotoGrid"
         component={ProfilePhotoGridScreen}
-        {...stackScreenPageProps({ options: { title: 'Change Profile Photo' } })}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
       <Stack.Screen
         name="ProfilePhotoUpload"
         component={ProfilePhotoUploadScreen}
-        {...stackScreenPageProps({ options: { title: 'Change Profile Photo' } })}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
       <Stack.Screen
         name="ProfilePhoto"
         component={ProfilePhotoScreen}
-        {...stackScreenPageProps({ options: { title: 'Change Profile Photo' } })}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
       <Stack.Screen
         name="Theme"
