@@ -71,7 +71,6 @@ ProfilePhotoGrid.propTypes = {
   usersImagePostsGet: PropTypes.any,
   handlePostPress: PropTypes.any,
   selectedPost: PropTypes.any,
-  usersEditProfileRequest: PropTypes.any,
 }
 
 export default withTheme(ProfilePhotoGrid)
