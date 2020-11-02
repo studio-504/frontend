@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { useNavigation } from '@react-navigation/native'
+import * as navigationActions from 'navigation/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'navigation/HeaderRight'
+import { VERIFICATION_TYPE } from 'components/Verification'
 
 const ProfilePhotoGridService = ({ children }) => {
   const dispatch = useDispatch()
@@ -46,10 +48,15 @@ const ProfilePhotoGridService = ({ children }) => {
     })
   }, [selectedPost.postId])
 
+  const handleOpenVerification = navigationActions.navigateVerification(navigation, {
+    actionType: VERIFICATION_TYPE.BACK,
+  })
+
   return children({
     usersImagePostsGet,
     handlePostPress,
     selectedPost,
+    handleOpenVerification,
   })
 }
 
