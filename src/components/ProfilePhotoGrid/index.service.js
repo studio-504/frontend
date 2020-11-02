@@ -14,7 +14,7 @@ const ProfilePhotoGridService = ({ children }) => {
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
 
   useEffect(() => {
-    dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId }))
+    dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 
   useEffect(() => {
