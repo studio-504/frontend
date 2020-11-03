@@ -12,15 +12,16 @@ import DatingAboutScreen from 'screens/DatingAboutScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingPreviewScreen from 'screens/DatingPreviewScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
+import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
 
 const Stack = createStackNavigator()
 
 const DatingNavigator = () => {
-  const { theme, themes } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
   const { user } = useContext(AuthContext)
-  const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme, themes })
-  const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, themes, user })
-  const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme, themes })
+  const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
+  const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, user })
+  const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
@@ -51,6 +52,12 @@ const DatingNavigator = () => {
       <Stack.Screen
         name="DatingProfile"
         component={DatingProfileScreen}
+        {...stackScreenDefaultProps}
+      />
+
+      <Stack.Screen
+        name="ProfilePhotoUpload"
+        component={ProfilePhotoUploadScreen}
         {...stackScreenDefaultProps}
       />
 

@@ -10,6 +10,7 @@ import * as errors from 'store/ducks/users/errors'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
+import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
 import * as LinkingService from 'services/Linking'
 import * as Logger from 'services/Logger'
 
@@ -608,43 +609,6 @@ function* usersUnblockRequest(req) {
 /**
  *
  */
-function* usersImagePostsGetRequestData(req, api) {
-  const dataSelector = path(['data', 'user', 'posts', 'items'])
-  const metaSelector = compose(omit(['items']), path(['data', 'user', 'posts']))
-
-  const data = dataSelector(api)
-  const meta = metaSelector(api)
-  const payload = req.payload
-
-  const normalized = normalizer.normalizePostsGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersImagePostsGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
-  try {
-    const data = yield queryService.apiRequest(queries.getImagePosts, req.payload)
-    const next = yield usersImagePostsGetRequestData(req, data)
-    yield put(actions.usersImagePostsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersImagePostsGetFailure({ payload: req.payload, message: errorWrapper(error) }))
-  }
-}
-
-/**
- *
- */
 function* usersGetTrendingUsersRequestData(req, api) {
   const dataSelector = path(['data', 'trendingUsers', 'items'])
   const metaSelector = compose(omit(['items']), path(['data', 'trendingUsers']))
@@ -752,7 +716,6 @@ function* usersReportScreenViewsRequest(req) {
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
-    yield call(usersCheckPermissions, { redirect: false })
     const data = yield queryService.apiRequest(queries.reportScreenViews, req.payload)
 
     yield put(actions.usersReportScreenViewsSuccess({ payload: req.payload, data, meta: {} }))

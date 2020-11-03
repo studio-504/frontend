@@ -1,8 +1,7 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import { Text, Caption } from 'react-native-paper'
-import ActionSheet from 'components/ActionSheet'
 import AuthErrorTemplate from 'templates/Auth/Error'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
@@ -17,6 +16,7 @@ import SignoutIcon from 'assets/svg/settings/Signout'
 import PrivacyIcon from 'assets/svg/settings/Privacy'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import ContactsIcon from 'assets/svg/settings/Contacts'
+import PasswordIcon from 'assets/svg/settings/Password'
 import DatingIcon from 'assets/svg/settings/Dating'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
@@ -25,7 +25,6 @@ import DeviceInfo from 'react-native-device-info'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import { isAvatarEmpty, confirm } from 'components/Settings/helpers'
 import * as navigationActions from 'navigation/actions'
 import testIDs from './test-ids'
 
@@ -33,32 +32,14 @@ const Settings = ({
   t,
   theme,
   authSignoutRequest,
-  handleLibrarySnap,
   navigation,
-  usersDeleteAvatarRequest,
   handleErrorClose,
   settingsErrorMessage,
-  handleCameraSnap,
   user,
+  openUploadAvatarMenu,
+  authForgotRequest,
 }) => {
   const styling = styles(theme)
-  const actionSheetRef = useRef(null)
-
-  const confirmProfilePhotoUpload = (onConfirm) => () => {
-    confirm({
-      title: t('Profile Photo Upload'),
-      desc: t('Your photo will be uploaded as post'),
-      onConfirm,
-    })
-  }
-
-  const handleProfilePhotoDelete = () => {
-    confirm({
-      title: t('Delete Profile Photo'),
-      desc: t('Are you sure you want to delete the profile photo?'),
-      onConfirm: usersDeleteAvatarRequest,
-    })
-  }
 
   return (
     <React.Fragment>
@@ -71,35 +52,6 @@ const Settings = ({
           />
         </TouchableOpacity>
 
-        <ActionSheet
-          actionSheetRef={actionSheetRef}
-          options={[
-            {
-              name: t('Take a Photo'),
-              onPress: confirmProfilePhotoUpload(handleCameraSnap),
-            },
-            {
-              name: t('Choose From Gallery'),
-              onPress: confirmProfilePhotoUpload(handleLibrarySnap),
-            },
-            {
-              name: t('Choose From Existing'),
-              onPress: () => navigationActions.navigateProfilePhotoGrid(navigation),
-            },
-            {
-              name: t('Delete Profile Photo'),
-              onPress: () => handleProfilePhotoDelete(),
-              isDestructive: true,
-              isVisible: !isAvatarEmpty(user),
-            },
-            {
-              name: t('Cancel'),
-              onPress: () => {},
-              isCancel: true,
-            },
-          ]}
-        />
-
         <RowsComponent
           items={[
             {
@@ -108,8 +60,8 @@ const Settings = ({
               icon: <EditIcon fill={theme.colors.text} />,
             },
             {
-              label: t('Change Profile Photo'),
-              onPress: () => actionSheetRef.current && actionSheetRef.current.show(),
+              label: t('Change Profile Picture'),
+              onPress: openUploadAvatarMenu,
               icon: <PhotoIcon fill={theme.colors.text} />,
             },
             {
@@ -141,6 +93,11 @@ const Settings = ({
               label: t('Archived Photos'),
               onPress: () => navigationActions.navigateArchived(navigation),
               icon: <ArchiveIcon fill={theme.colors.text} />,
+            },
+            {
+              label: t('Change Password'),
+              onPress: authForgotRequest,
+              icon: <PasswordIcon fill={theme.colors.text} />,
             },
             {
               testID: testIDs.actions.signOutBtn,
@@ -197,13 +154,12 @@ Settings.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   authSignoutRequest: PropTypes.any,
-  handleLibrarySnap: PropTypes.any,
   navigation: PropTypes.any,
   user: PropTypes.any,
-  usersDeleteAvatarRequest: PropTypes.func,
   handleErrorClose: PropTypes.func,
   settingsErrorMessage: PropTypes.string,
-  handleCameraSnap: PropTypes.func,
+  openUploadAvatarMenu: PropTypes.func,
+  authForgotRequest: PropTypes.func,
 }
 
 Settings.defaultProps = {
