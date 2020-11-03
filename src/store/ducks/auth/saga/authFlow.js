@@ -84,4 +84,5 @@ function* authFlowSuccess() {
 export default () => [
   takeEvery(constants.AUTH_FLOW_REQUEST, authFlowRequest),
   takeEvery(constants.AUTH_FLOW_SUCCESS, authFlowSuccess),
+  takeEvery(constants.AUTH_FLOW_FAILURE, authFlowFailure),
 ]
