@@ -61,14 +61,12 @@ const SearchComponent = ({
   const isEmpty = !path(['data', 'length'])(postsGetTrendingPosts)
   const isLoading = path(['status'])(postsGetTrendingPosts) === 'loading'
 
-  const flatListRef = React.useRef()
-
   const scrollToTop = () => {
-    flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+    feedRef.current.scrollToOffset({ animated: true, offset: 0 })
   }
 
   const handlePostsAllFilter = () => {
-    handleFilterChange({ viewedStatus: undefined, verifiedStatus: undefined })
+    handleFilterChange({ viewedStatus: undefined, isVerified: undefined })
     scrollToTop()
   }
   const handlePostsViewedFilter = () => {
@@ -80,11 +78,11 @@ const SearchComponent = ({
     scrollToTop()
   }
   const handlePostsVerifiedFilter = () => {
-    handleFilterChange({ ...trendingFilters, verifiedStatus: true })
+    handleFilterChange({ ...trendingFilters, isVerified: true })
     scrollToTop()
   }
   const handlePostsNotVerifiedFilter = () => {
-    handleFilterChange({ ...trendingFilters, verifiedStatus: false })
+    handleFilterChange({ ...trendingFilters, isVerified: false })
     scrollToTop()
   }
 
@@ -114,7 +112,7 @@ const SearchComponent = ({
       {!formFocus && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
 
       <FlatList
-        ref={flatListRef}
+        ref={feedRef}
         data={postsGetTrendingPosts.data}
         numColumns={3}
         keyExtractor={(item) => item.postId}
