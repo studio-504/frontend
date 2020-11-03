@@ -38,9 +38,11 @@ const SearchService = ({ children }) => {
   /**
    * Trending Filters
    */
+  const postsGetTrendingPostsRequest = () => dispatch(postsActions.postsGetTrendingPostsRequest())
+
   const handleFilterChange = (filters) => {
     dispatch(postsActions.postsGetTrendingPostsChangeFilters(filters))
-    dispatch(postsActions.postsGetTrendingPostsRequest())
+    postsGetTrendingPostsRequest()
     scrollToTop()
   }
     
@@ -90,6 +92,7 @@ const SearchService = ({ children }) => {
     handleFormChange,
     handleFilterChange,
     trendingFilters,
+    postsGetTrendingPostsRequest,
   })
 }
 

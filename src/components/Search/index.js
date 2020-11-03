@@ -43,12 +43,13 @@ const SearchComponent = ({
   formChange,
   trendingFilters,
   handleFilterChange,
+  postsGetTrendingPostsRequest,
 }) => {
   const styling = styles(theme)
 
   const scroll = ScrollService({
     resource: postsGetTrendingPosts,
-    loadInit: () => {},
+    loadInit: postsGetTrendingPostsRequest, 
     loadMore: postsGetTrendingPostsMoreRequest,
     extra: { limit: path(['payload', 'limit'])(postsGetTrendingPosts) },
   })
@@ -208,6 +209,7 @@ SearchComponent.propTypes = {
   formChange: PropTypes.any,
   trendingFilters: PropTypes.any,
   handleFilterChange: PropTypes.func,
+  postsGetTrendingPostsRequest: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(SearchComponent))
