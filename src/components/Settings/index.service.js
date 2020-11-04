@@ -20,10 +20,7 @@ const SettingsService = ({ children }) => {
 
   const authSignoutRequest = () => dispatch(authActions.authSignoutRequest())
   const handleErrorClose = () => dispatch(usersActions.usersDeleteAvatarIdle({}))
-  const authForgotRequest = () => dispatch(authActions.authForgotRequest({ 
-    usernameType: 'email',
-    email: user.email, 
-  }))
+  const authForgotRequest = () => dispatch(authActions.authForgotRequest({ username: user.email }))
 
   return (
     <UploadAvatar>

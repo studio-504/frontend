@@ -49,7 +49,7 @@ const AuthForgotConfirmComponentService = ({ children }) => {
   const formErrorMessage = authForgotConfirm.error.text
 
   const formInitialValues = {
-    username: compose(trim, toLower)(authForgot.payload.username),
+    username: authForgot.payload.username,
   }
 
   const handleFormTransform = (values) => ({

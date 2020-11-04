@@ -24,7 +24,7 @@ const AuthForgotComponentService = ({ children }) => {
     formApi.setValues(nextValues)
 
     dispatch(authActions.authForgotRequest({
-      usernameType: 'email',
+      username: nextValues.email,
       email: nextValues.email,
     }))
   }

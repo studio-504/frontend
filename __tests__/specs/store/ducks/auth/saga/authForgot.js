@@ -19,6 +19,7 @@ describe('authForgot', () => {
   describe('success', () => {
     it('phone', async () => {
       AwsAuth.forgotPassword.mockResolvedValueOnce(true)
+      const username = `${countryCode}${phone}`
 
       await expectSaga(testAsRootSaga(authForgot))
         .provide([
@@ -28,10 +29,10 @@ describe('authForgot', () => {
 
         .put(actions.authForgotSuccess())
 
-        .dispatch(actions.authForgotRequest({ usernameType: 'phone', phone, countryCode }))
+        .dispatch(actions.authForgotRequest({ username, phone, countryCode }))
         .silentRun()
 
-      expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(`${countryCode}${phone}`)
+      expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(username)
       testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
       expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
     })
@@ -47,7 +48,7 @@ describe('authForgot', () => {
 
         .put(actions.authForgotSuccess())
 
-        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
+        .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
 
       expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(email)
@@ -69,7 +70,7 @@ describe('authForgot', () => {
 
         .put(actions.authForgotFailure({ message }))
 
-        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
+        .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
     })
 
@@ -85,30 +86,8 @@ describe('authForgot', () => {
 
         .put(actions.authForgotFailure({ message }))
 
-        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
+        .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
-    })
-
-    it('unsupported usernameType', async () => {
-      AwsAuth.forgotPassword.mockRejectedValueOnce(new Error('Error'))
-      const message = {
-        code: 'GENERIC',
-        text: 'Failed to reset the password',
-        nativeError: 'Not supported usernameType',
-      }
-
-      await expectSaga(testAsRootSaga(authForgot))
-        .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), navigation],
-        ])
-
-        .put(actions.authForgotFailure({ message }))
-
-        .dispatch(actions.authForgotRequest({ usernameType: undefined, email }))
-        .silentRun()
-
-      expect(AwsAuth.forgotPassword).not.toHaveBeenCalled()
     })
   })
 })
