@@ -14,7 +14,6 @@ describe('Auth reducer', () => {
       expect(selectors.authForgot(state)).toEqual({
         status: 'idle',
         error: {},
-        message: {},
         payload: {},
       })
     })
@@ -32,19 +31,16 @@ describe('Auth reducer', () => {
       expect(selectors.authForgot(state)).toEqual({
         status: 'loading',
         error: {},
-        message: {},
         payload: { a: 4, b: 5, c: 3 },
       })
     })
 
     it('success', () => {
-      const message = 'Message'
-      const state = reducer(undefined, actions.authForgotSuccess({ message }))
+      const state = reducer(undefined, actions.authForgotSuccess())
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'success',
         error: {},
-        message,
         payload: {},
       })
     })
@@ -56,7 +52,6 @@ describe('Auth reducer', () => {
       expect(selectors.authForgot(state)).toEqual({
         status: 'failure',
         error: message,
-        message,
         payload: {},
       })
     })
@@ -74,7 +69,6 @@ describe('Auth reducer', () => {
       expect(selectors.authForgot(state)).toEqual({
         status: 'idle',
         error: {},
-        message: {},
         payload: {},
       })
     })

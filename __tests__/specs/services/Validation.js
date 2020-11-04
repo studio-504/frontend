@@ -14,6 +14,42 @@ describe('Validation service', () => {
     API.graphqlOperation.mockClear()
   })
 
+  it('getPhone', () => {
+    expect(Validation.getPhone({})).toBe('')
+    expect(Validation.getPhone({ phone: ' 1232WDEWE4234 ' })).toBe('12324234')
+  })
+
+  it('getCountryCode', () => {
+    expect(Validation.getCountryCode({})).toBe('+1')
+    expect(Validation.getCountryCode({ countryCode: ' Wcsw2 ' })).toBe('2')
+  })
+
+  it('getEmail', () => {
+    expect(Validation.getEmail({})).toBe('')
+    expect(Validation.getEmail({ email: ' VAlid@mail.com ' })).toBe('valid@mail.com')
+  })
+
+  it('email', async () => {
+    expect(await Validation.email.isValid(undefined)).toBeFalsy()
+    expect(await Validation.email.isValid('')).toBeFalsy()
+    expect(await Validation.email.isValid('1')).toBeFalsy()
+    expect(await Validation.email.isValid('12')).toBeFalsy()
+    expect(await Validation.email.isValid('valid@mail.com')).toBeTruthy()
+    expect(await Validation.email.cast(' trim ')).toBe('trim')
+  })
+
+  it('phone', async () => {
+    expect(await Validation.phone.isValid(undefined)).toBeFalsy()
+    expect(await Validation.phone.isValid('')).toBeFalsy()
+    expect(await Validation.phone.isValid('1')).toBeFalsy()
+    expect(await Validation.phone.isValid('12')).toBeFalsy()
+    expect(await Validation.phone.isValid('123')).toBeTruthy()
+    expect(await Validation.phone.isValid(join('', repeat('a', 50)))).toBeTruthy()
+    expect(await Validation.phone.isValid(join('', repeat('a', 51)))).toBeFalsy()
+    expect(await Validation.phone.isValid('123456789')).toBeTruthy()
+    expect(await Validation.phone.cast(' trim ')).toBe('trim')
+  })
+
   it('username', async () => {
     expect(await Validation.username.isValid(undefined)).toBeFalsy()
     expect(await Validation.username.isValid('')).toBeFalsy()

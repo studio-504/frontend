@@ -90,7 +90,6 @@ export const initialState = {
   authForgot: {
     status: 'idle',
     error: {},
-    message: {},
     payload: {},
   },
   authForgotConfirm: {
@@ -388,16 +387,14 @@ const authForgotRequest = (state, action) => update(state, {
   },
 })
 
-const authForgotSuccess = (state, action) => update(state, {
+const authForgotSuccess = (state) => update(state, {
   authForgot: {
-    message: { $set: action.payload.message },
     status: { $set: 'success' },
   },
 })
 
 const authForgotFailure = (state, action) => update(state, {
   authForgot: {
-    message: { $set: action.payload.message },
     error: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
@@ -407,7 +404,6 @@ const authForgotIdle = (state) => update(state, {
   authForgot: {
     status: { $set: 'idle' },
     error: { $set: initialState.authForgot.error },
-    message: { $set: initialState.authForgot.message },
   },
 })
 
