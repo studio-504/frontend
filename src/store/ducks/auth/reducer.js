@@ -84,12 +84,10 @@ export const initialState = {
     nextRoute: null,
   },
   authForgot: {
-    data: [],
     status: 'idle',
     error: {},
     message: {},
     payload: {},
-    nextRoute: null,
   },
   authForgotConfirm: {
     data: [],
@@ -389,7 +387,6 @@ const authForgotRequest = (state, action) => update(state, {
 const authForgotSuccess = (state, action) => update(state, {
   authForgot: {
     message: { $set: action.payload.message },
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -404,7 +401,6 @@ const authForgotFailure = (state, action) => update(state, {
 
 const authForgotIdle = (state) => update(state, {
   authForgot: {
-    data: { $set: initialState.authForgot.data },
     status: { $set: 'idle' },
     error: { $set: initialState.authForgot.error },
     message: { $set: initialState.authForgot.message },

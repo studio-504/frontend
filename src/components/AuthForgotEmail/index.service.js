@@ -9,13 +9,14 @@ import compose from 'ramda/src/compose'
 import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
 import { pageHeaderLeft } from 'navigation/options'
+import * as authSelectors from 'store/ducks/auth/selectors'
 
 const AuthForgotComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { theme } = useContext(ThemeContext)
 
-  const authForgot = useSelector(state => state.auth.authForgot)
+  const authForgot = useSelector(authSelectors.authForgot)
 
   const handleFormSubmit = (payload) => {
     dispatch(authActions.authForgotRequest({
