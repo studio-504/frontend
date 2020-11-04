@@ -8,9 +8,23 @@ import { logEvent } from 'services/Analytics'
 /**
  *
  */
+function getUsername(payload) {
+  const { usernameType } = payload
+
+  if (usernameType === 'email') {
+    return payload.email
+  } else if (usernameType === 'phone') {
+    return `${payload.countryCode}${payload.phone}`
+  } else {
+    throw new Error('Not supported usernameType')
+  }
+}
+
 function* handleAuthForgotRequest(payload) {
   const AwsAuth = yield getContext('AwsAuth')
-  return yield AwsAuth.forgotPassword(payload.username)
+  const username = yield getUsername(payload)
+
+  return yield AwsAuth.forgotPassword(username)
 }
 
 /**

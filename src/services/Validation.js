@@ -1,5 +1,10 @@
 import * as Yup from 'yup'
 import path from 'ramda/src/path'
+import trim from 'ramda/src/trim'
+import compose from 'ramda/src/compose'
+import replace from 'ramda/src/replace'
+import toLower from 'ramda/src/toLower'
+import pathOr from 'ramda/src/pathOr'
 import debounce from 'debounce-async'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
@@ -33,3 +38,20 @@ export const username = Yup.string()
   .trim()
   .required()
   .test('usernameReserve', 'username is reserved', remoteUsernameValidation())
+
+export const email = Yup.string()
+  .email()
+  .min(3)
+  .max(50)
+  .trim()
+  .required()
+
+export const phone = Yup.string()
+  .min(3)
+  .max(50)
+  .trim()
+  .required()
+
+export const getPhone = compose(trim, toLower, pathOr('', ['phone']))
+export const getCountryCode = compose(replace(/[^+0-9]/g, ''), trim, toLower, pathOr('+1', ['countryCode']))
+export const getEmail = compose(trim, toLower, pathOr('', ['email']))

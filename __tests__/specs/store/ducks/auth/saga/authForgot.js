@@ -7,25 +7,53 @@ import { logEvent } from 'services/Analytics'
 
 const AwsAuth = { forgotPassword: jest.fn() }
 const navigation = { current: { navigate: jest.fn() } }
-const username = 'username'
+const phone = '12345678'
+const countryCode = '+7'
+const email = 'test@mail.com'
 
 describe('authForgot', () => {
-  it('success', async () => {
-    AwsAuth.forgotPassword.mockResolvedValueOnce(true)
+  afterEach(() => {
+    AwsAuth.forgotPassword.mockClear()
+  })
 
-    await expectSaga(testAsRootSaga(authForgot))
-      .provide([
-        [getContext('AwsAuth'), AwsAuth],
-        [getContext('ReactNavigationRef'), navigation],
-      ])
+  describe('success', () => {
+    it('phone', async () => {
+      AwsAuth.forgotPassword.mockResolvedValueOnce(true)
 
-      .put(actions.authForgotSuccess())
+      await expectSaga(testAsRootSaga(authForgot))
+        .provide([
+          [getContext('AwsAuth'), AwsAuth],
+          [getContext('ReactNavigationRef'), navigation],
+        ])
 
-      .dispatch(actions.authForgotRequest({ username }))
-      .silentRun()
+        .put(actions.authForgotSuccess())
 
-    testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
-    expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
+        .dispatch(actions.authForgotRequest({ usernameType: 'phone', phone, countryCode }))
+        .silentRun()
+
+      expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(`${countryCode}${phone}`)
+      testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
+      expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
+    })
+
+    it('email', async () => {
+      AwsAuth.forgotPassword.mockResolvedValueOnce(true)
+
+      await expectSaga(testAsRootSaga(authForgot))
+        .provide([
+          [getContext('AwsAuth'), AwsAuth],
+          [getContext('ReactNavigationRef'), navigation],
+        ])
+
+        .put(actions.authForgotSuccess())
+
+        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
+        .silentRun()
+
+      expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(email)
+      testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
+      expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
+    })
   })
 
   describe('failure', () => {
@@ -41,7 +69,7 @@ describe('authForgot', () => {
 
         .put(actions.authForgotFailure({ message }))
 
-        .dispatch(actions.authForgotRequest({ username }))
+        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
         .silentRun()
     })
 
@@ -57,8 +85,30 @@ describe('authForgot', () => {
 
         .put(actions.authForgotFailure({ message }))
 
-        .dispatch(actions.authForgotRequest({ username }))
+        .dispatch(actions.authForgotRequest({ usernameType: 'email', email }))
         .silentRun()
+    })
+
+    it('unsupported usernameType', async () => {
+      AwsAuth.forgotPassword.mockRejectedValueOnce(new Error('Error'))
+      const message = {
+        code: 'GENERIC',
+        text: 'Failed to reset the password',
+        nativeError: 'Not supported usernameType',
+      }
+
+      await expectSaga(testAsRootSaga(authForgot))
+        .provide([
+          [getContext('AwsAuth'), AwsAuth],
+          [getContext('ReactNavigationRef'), navigation],
+        ])
+
+        .put(actions.authForgotFailure({ message }))
+
+        .dispatch(actions.authForgotRequest({ usernameType: undefined, email }))
+        .silentRun()
+
+      expect(AwsAuth.forgotPassword).not.toHaveBeenCalled()
     })
   })
 })

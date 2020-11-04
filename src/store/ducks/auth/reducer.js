@@ -83,6 +83,10 @@ export const initialState = {
     payload: {},
     nextRoute: null,
   },
+
+  /**
+   *
+   */
   authForgot: {
     status: 'idle',
     error: {},
@@ -380,7 +384,7 @@ const authSignoutIdle = (state) => update(state, {
 const authForgotRequest = (state, action) => update(state, {
   authForgot: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
+    payload: { $merge: action.payload },
   },
 })
 

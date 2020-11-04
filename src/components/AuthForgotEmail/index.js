@@ -12,13 +12,12 @@ import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
-import testIDs from './test-ids'
+import testIDs from 'components/AuthForgotEmail/test-ids'
 
 const AuthForgotEmail = ({
   t,
   formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
   handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
@@ -31,6 +30,7 @@ const AuthForgotEmail = ({
     <View testID={testIDs.root} style={styling.root}>
       {formErrorMessage ?
         <AuthErrorTemplate
+          testID={testIDs.error}
           text={formErrorMessage}
           onClose={handleErrorClose}
         />
@@ -45,7 +45,6 @@ const AuthForgotEmail = ({
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -77,7 +76,6 @@ AuthForgotEmail.propTypes = {
   t: PropTypes.any,
   formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
   handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,

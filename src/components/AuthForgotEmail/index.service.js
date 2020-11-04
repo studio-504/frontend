@@ -4,12 +4,9 @@ import * as navigationActions from 'navigation/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from 'services/providers/Theme'
-import trim from 'ramda/src/trim'
-import compose from 'ramda/src/compose'
-import toLower from 'ramda/src/toLower'
-import pathOr from 'ramda/src/pathOr'
 import { pageHeaderLeft } from 'navigation/options'
 import * as authSelectors from 'store/ducks/auth/selectors'
+import * as Validation from 'services/Validation'
 
 const AuthForgotComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -18,9 +15,17 @@ const AuthForgotComponentService = ({ children }) => {
 
   const authForgot = useSelector(authSelectors.authForgot)
 
-  const handleFormSubmit = (payload) => {
+  const handleFormTransform = (values) => ({
+    email: Validation.getEmail(values),
+  })
+
+  const handleFormSubmit = (values, formApi) => {
+    const nextValues = handleFormTransform(values)
+    formApi.setValues(nextValues)
+
     dispatch(authActions.authForgotRequest({
-      username: toLower(payload.username),
+      usernameType: 'email',
+      email: nextValues.email,
     }))
   }
 
@@ -43,21 +48,13 @@ const AuthForgotComponentService = ({ children }) => {
   const formSubmitLoading = authForgot.status === 'loading'
   const formSubmitDisabled = authForgot.status === 'loading'
   const formErrorMessage = authForgot.error.text
-
-  const formInitialValues = {
-    username: authForgot.payload.username,
-  }
-
-  const handleFormTransform = (values) => ({
-    username: compose(trim, toLower, pathOr('', ['username']))(values),
-  })
+  const formInitialValues = handleFormTransform(authForgot.payload)
 
   const handleErrorClose = () => dispatch(authActions.authForgotIdle({}))
 
   return children({
     formErrorMessage,
     handleFormSubmit,
-    handleFormTransform,
     handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,

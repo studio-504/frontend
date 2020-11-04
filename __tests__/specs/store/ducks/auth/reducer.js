@@ -20,14 +20,20 @@ describe('Auth reducer', () => {
     })
 
     it('loading', () => {
-      const payload = { a: 1, b: 2 }
-      const state = reducer(undefined, actions.authForgotRequest(payload))
+      const state = applyActions(
+        [
+          actions.authForgotRequest({ a: 1, b: 2 }),
+          actions.authForgotRequest({ c: 3 }),
+          actions.authForgotRequest({ a: 4, b: 5 }),
+        ],
+        reducer,
+      )
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'loading',
         error: {},
         message: {},
-        payload,
+        payload: { a: 4, b: 5, c: 3 },
       })
     })
 
