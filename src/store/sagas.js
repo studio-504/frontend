@@ -12,7 +12,7 @@ import usersSetUserDatingStatus from 'store/ducks/users/saga/usersSetUserDatingS
 
 import appReady from 'store/ducks/app/saga/appReady'
 
-import auth from 'store/ducks/auth/saga'
+import authForgot from 'store/ducks/auth/saga/authForgot'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
 import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
 import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
@@ -71,7 +71,7 @@ export default function* rootSaga(persistor) {
     .concat(users())
     .concat(usersSetUserDatingStatus())
 
-    .concat(auth(persistor))
+    .concat(authForgot())
     .concat(authSigninCognito(persistor))
     .concat(authSigninGoogle(persistor))
     .concat(authSigninApple(persistor))
