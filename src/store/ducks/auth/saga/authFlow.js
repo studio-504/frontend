@@ -3,6 +3,8 @@ import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
+import * as navigationActions from 'navigation/actions'
+import * as NavigationService from 'services/Navigation'
 
 function hasAuthenticatedCondition({ dataSuccess }) {
   const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
@@ -81,7 +83,13 @@ function* authFlowSuccess() {
   yield put(actions.authPrefetchRequest())
 }
 
+function* authFlowFailure() {
+  const navigation = yield NavigationService.getNavigation()
+  navigationActions.navigateAuthHome(navigation)
+}
+
 export default () => [
   takeEvery(constants.AUTH_FLOW_REQUEST, authFlowRequest),
   takeEvery(constants.AUTH_FLOW_SUCCESS, authFlowSuccess),
-]
+  takeEvery(constants.AUTH_FLOW_FAILURE, authFlowFailure),
+] 
