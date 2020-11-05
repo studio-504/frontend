@@ -3,13 +3,6 @@ import update from 'immutability-helper'
 import * as constants from 'store/ducks/signup/constants'
 
 export const initialState = {
-  /**
-   *
-   */
-  signupCognitoIdentity: {
-    
-  },
-
   signupUsername: {
     data: [],
     status: 'idle',
@@ -120,9 +113,6 @@ const signupCreateSuccess = (state, action) => update(state, {
     status: { $set: 'success' },
     payload: { $set: action.payload.payload },
   },
-  signupCognitoIdentity: {
-    $set: action.payload.data,
-  },
 })
 
 const signupCreateFailure = (state, action) => update(state, {
@@ -151,9 +141,6 @@ const signupConfirmSuccess = (state, action) => update(state, {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
     payload: { $set: action.payload.payload },
-  },
-  signupCognitoIdentity: {
-    $set: initialState.signupCognitoIdentity,
   },
 })
 
