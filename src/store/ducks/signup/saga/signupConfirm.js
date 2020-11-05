@@ -30,6 +30,7 @@ function* handleSignupConfirmRequest(payload) {
  */
 function* signupConfirmRequest(req) {
   try {
+    logEvent('SIGNUP_CONFIRM_REQUEST')
     const data = yield handleSignupConfirmRequest(req.payload)
     yield put(actions.signupConfirmSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_SUCCESS, 'GENERIC'),

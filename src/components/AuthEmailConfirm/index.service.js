@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ThemeContext } from 'services/providers/Theme'
 import path from 'ramda/src/path'
-import { logEvent } from 'services/Analytics'
 import { pageHeaderLeft } from 'navigation/options'
 import testIDs from './test-ids'
+import * as signupSelectors from 'store/ducks/signup/selectors'
 
 const AuthEmailConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -15,7 +15,7 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const { theme } = useContext(ThemeContext)
 
   const signupConfirm = useSelector(state => state.signup.signupConfirm)
-  const signupCreate = useSelector(state => state.signup.signupCreate)
+  const signupCreate = useSelector(signupSelectors.signupCreate)
 
   /**
    * Navigation state reset on back button press
@@ -35,11 +35,15 @@ const AuthEmailConfirmComponentService = ({ children }) => {
     })
   }, [])
 
-  const handleFormSubmit = (payload) => {
-    logEvent('SIGNUP_CONFIRM_REQUEST')
+  const handleFormTransform = (values) => ({
+    confirmationCode: values.confirmationCode,
+  })
+
+  const handleFormSubmit = (values) => {
+    const nextValues = handleFormTransform(values)
 
     dispatch(signupActions.signupConfirmRequest({
-      confirmationCode: payload.confirmationCode,
+      confirmationCode: nextValues.confirmationCode,
     }))
   }
 
@@ -52,16 +56,11 @@ const AuthEmailConfirmComponentService = ({ children }) => {
     confirmationCode: path(['params', 'confirmationCode'])(route),
   }
 
-  const handleFormTransform = (values) => ({
-    confirmationCode: values.confirmationCode,
-  })
-
   const handleErrorClose = () => dispatch(signupActions.signupConfirmIdle({}))
 
   return children({
     formErrorMessage,
     handleFormSubmit,
-    handleFormTransform,
     handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,

@@ -12,7 +12,6 @@ const AuthPhoneConfirm = ({
   t,
   formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
   handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
@@ -37,7 +36,6 @@ const AuthPhoneConfirm = ({
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -65,7 +63,6 @@ AuthPhoneConfirm.propTypes = {
   t: PropTypes.any,
   formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
   handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
