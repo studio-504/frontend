@@ -33,8 +33,8 @@ function* handleAuthSigninRequest(payload) {
 
 function* authSigninCognitoRequest(req) {
   try {
-    const data = yield handleAuthSigninRequest(req.payload)
-    yield put(actions.authSigninCognitoSuccess({ data }))
+    yield handleAuthSigninRequest(req.payload)
+    yield put(actions.authSigninCognitoSuccess())
   } catch (error) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninCognitoFailure({

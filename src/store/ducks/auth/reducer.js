@@ -52,12 +52,9 @@ export const initialState = {
     nextRoute: null,
   },
   authSigninCognito: {
-    data: [],
     status: 'idle',
     error: {},
-    message: {},
     payload: {},
-    nextRoute: null,
   },
   authSigninGoogle: {
     data: [],
@@ -210,36 +207,26 @@ const authTokenIdle = (state) => update(state, {
 const authSigninCognitoRequest = (state, action) => update(state, {
   authSigninCognito: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
+    payload: { $merge: action.payload },
     error: { $set: initialState.authSigninCognito.error },
   },
 })
 
-const authSigninCognitoSuccess = (state, action) => update(state, {
+const authSigninCognitoSuccess = (state) => update(state, {
   authSigninCognito: {
-    message: { $set: action.payload.message },
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
-    nextRoute: { $set: action.payload.nextRoute },
   },
 })
 
 const authSigninCognitoFailure = (state, action) => update(state, {
   authSigninCognito: {
-    message: { $set: action.payload.message },
     error: { $set: action.payload.message },
     status: { $set: 'failure' },
-    nextRoute: { $set: action.payload.nextRoute },
   },
 })
 
 const authSigninCognitoIdle = (state) => update(state, {
-  authSigninCognito: {
-    data: { $set: initialState.authSigninCognito.data },
-    status: { $set: 'idle' },
-    error: { $set: initialState.authSigninCognito.error },
-    message: { $set: initialState.authSigninCognito.message },
-  },
+  authSigninCognito: { $set: initialState.authSigninCognito },
 })
 
 /**

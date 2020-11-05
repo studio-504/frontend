@@ -37,11 +37,10 @@ const AuthEmailConfirmComponentService = ({ children }) => {
 
   const handleFormSubmit = (payload) => {
     logEvent('SIGNUP_CONFIRM_REQUEST')
-    const nextPayload = {
-      usernameType: 'email',
+
+    dispatch(signupActions.signupConfirmRequest({
       confirmationCode: payload.confirmationCode,
-    }
-    dispatch(signupActions.signupConfirmRequest(nextPayload))
+    }))
   }
 
   const formSubmitLoading = signupConfirm.status === 'loading'

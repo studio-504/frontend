@@ -13,11 +13,10 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
 
   const handleFormSubmit = (payload) => {
     logEvent('SIGNUP_CONFIRM_REQUEST')
-    const nextPayload = {
-      usernameType: 'phone',
+
+    dispatch(signupActions.signupConfirmRequest({
       confirmationCode: payload.confirmationCode,
-    }
-    dispatch(signupActions.signupConfirmRequest(nextPayload))
+    }))
   }
 
   const formSubmitLoading = signupConfirm.status === 'loading'

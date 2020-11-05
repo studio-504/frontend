@@ -29,6 +29,16 @@ describe('Validation service', () => {
     expect(Validation.getEmail({ email: ' VAlid@mail.com ' })).toBe('valid@mail.com')
   })
 
+  it('getUsername', () => {
+    expect(Validation.getUsername({})).toBe('')
+    expect(Validation.getUsername({ username: ' useRname ' })).toBe('username')
+  })
+
+  it('getPassword', () => {
+    expect(Validation.getPassword({})).toBe('')
+    expect(Validation.getPassword({ password: ' passWord ' })).toBe('passWord')
+  })
+
   it('email', async () => {
     expect(await Validation.email.isValid(undefined)).toBeFalsy()
     expect(await Validation.email.isValid('')).toBeFalsy()
@@ -37,6 +47,15 @@ describe('Validation service', () => {
     expect(await Validation.email.isValid('valid@mail.com')).toBeTruthy()
     expect(await Validation.email.cast(' trim ')).toBe('trim')
     expect(await Validation.email.isValid('with white space@mail.com')).toBeFalsy()
+  })
+
+  it('password', async () => {
+    expect(await Validation.password.isValid(undefined)).toBeFalsy()
+    expect(await Validation.password.isValid('')).toBeFalsy()
+    expect(await Validation.password.isValid('1')).toBeFalsy()
+    expect(await Validation.password.isValid('1234567')).toBeFalsy()
+    expect(await Validation.password.isValid('12345678')).toBeTruthy()
+    expect(await Validation.password.cast(' trim ')).toBe('trim')
   })
 
   it('phone', async () => {

@@ -25,7 +25,7 @@ function* queryBasedOnSignupType(payload) {
   }
 }
 
-function* handleSignuptCreateRequest(payload) {
+function* handleSignupCreateRequest(payload) {
   /**
    * Fetching cognito credentials/tokens
    */
@@ -61,7 +61,7 @@ function* handleSignuptCreateRequest(payload) {
 function* signupCreateRequest(req) {
   try {
     logEvent('SIGNUP_CREATE_REQUEST')
-    yield handleSignuptCreateRequest(req.payload)
+    yield handleSignupCreateRequest(req.payload)
 
     yield put(actions.signupCreateSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC'),

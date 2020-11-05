@@ -44,3 +44,4 @@ export const themeSelector = createSelector(
 
 const authRoot = prop('auth')
 export const authForgot = compose(prop('authForgot'), authRoot)
+export const authSigninCognito = compose(prop('authSigninCognito'), authRoot)
