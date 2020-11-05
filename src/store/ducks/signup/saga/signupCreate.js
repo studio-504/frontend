@@ -65,7 +65,6 @@ function* signupCreateRequest(req) {
 
     yield put(actions.signupCreateSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC'),
-      data: { cognitoDelivery: req.payload.usernameType },
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {

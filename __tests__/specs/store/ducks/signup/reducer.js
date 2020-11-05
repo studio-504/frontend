@@ -12,7 +12,6 @@ describe('Signup reducer', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
       expect(selectors.signupCreate(state)).toEqual({
-        data: [],
         status: 'idle',
         error: {},
         payload: {},
@@ -30,7 +29,6 @@ describe('Signup reducer', () => {
       )
 
       expect(selectors.signupCreate(state)).toEqual({
-        data: [],
         status: 'loading',
         error: {},
         payload: { a: 4, b: 5, c: 3 },
@@ -38,15 +36,12 @@ describe('Signup reducer', () => {
     })
 
     it('success', () => {
-      const payload = { a: 1, b: 2 }
-      const data = { c: 3 }
-      const state = reducer(undefined, actions.signupCreateSuccess({ payload, data }))
+      const state = reducer(undefined, actions.signupCreateSuccess())
 
       expect(selectors.signupCreate(state)).toEqual({
-        data,
         status: 'success',
         error: {},
-        payload,
+        payload: {},
       })
     })
 
@@ -55,7 +50,6 @@ describe('Signup reducer', () => {
       const state = reducer(undefined, actions.signupCreateFailure({ message }))
 
       expect(selectors.signupCreate(state)).toEqual({
-        data: [],
         status: 'failure',
         error: message,
         payload: {},
@@ -73,7 +67,6 @@ describe('Signup reducer', () => {
       )
 
       expect(selectors.signupCreate(state)).toEqual({
-        data: [],
         status: 'idle',
         error: {},
         payload: {},

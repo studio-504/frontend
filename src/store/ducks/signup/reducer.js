@@ -16,7 +16,6 @@ export const initialState = {
     payload: {},
   },
   signupCreate: {
-    data: [],
     status: 'idle',
     error: {},
     payload: {},
@@ -107,11 +106,9 @@ const signupCreateRequest = (state, action) => update(state, {
   },
 })
 
-const signupCreateSuccess = (state, action) => update(state, {
+const signupCreateSuccess = (state) => update(state, {
   signupCreate: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
-    payload: { $set: action.payload.payload },
   },
 })
 
