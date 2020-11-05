@@ -10,7 +10,6 @@ import { ReduxNetworkProvider } from 'react-native-offline'
 import initializeStore from 'store/index'
 import codePush from 'react-native-code-push' 
 import Config from 'react-native-config' 
-import LoadingComponent from 'components/Loading'
 import linking from 'navigation/linking'
 import Router from 'navigation/Router'
 
@@ -29,7 +28,7 @@ const Application = ({ navigationRef }) => {
   return (
     <Provider store={store}>
       <ReduxNetworkProvider>
-        <PersistGate loading={(<LoadingComponent />)} persistor={persistor}>
+        <PersistGate persistor={persistor}>
           <AppProvider>
             <AuthProvider>
               <ThemeProvider>

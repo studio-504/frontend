@@ -10,7 +10,7 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const route = useRoute()
 
   const signupConfirm = useSelector(state => state.signup.signupConfirm)
-  const signupCognitoIdentity = useSelector(state => state.signup.signupCognitoIdentity)
+  const signupCreate = useSelector(state => state.signup.signupCreate)
 
   const onUnmount = () => {
     dispatch(signupActions.signupConfirmIdle({}))
@@ -23,9 +23,6 @@ const AuthEmailConfirmComponentService = ({ children }) => {
     const nextPayload = {
       usernameType: 'email',
       confirmationCode: payload.confirmationCode,
-      cognitoUsername: signupCognitoIdentity.cognitoUsername,
-      cognitoUserId: signupCognitoIdentity.cognitoUserId,
-      username: signupCognitoIdentity.username,
     }
     dispatch(signupActions.signupConfirmRequest(nextPayload))
   }
@@ -35,12 +32,11 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const formErrorMessage = signupConfirm.error.text
 
   const formInitialValues = {
-    cognitoUsername: path(['cognitoUsername'])(signupCognitoIdentity),
+    cognitoUsername: path(['payload', 'email'])(signupCreate),
     confirmationCode: path(['params', 'confirmationCode'])(route),
   }
 
   const handleFormTransform = (values) => ({
-    cognitoUsername: values.cognitoUsername,
     confirmationCode: values.confirmationCode,
   })
 
