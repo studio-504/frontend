@@ -14,12 +14,15 @@ import { logEvent } from 'services/Analytics'
  */
 function* queryBasedOnSignupType(payload) {
   if (payload.usernameType === 'email') {
-    return yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
+    yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
+    logEvent('SIGNUP_EMAIL_SUCCESS')
+  } else if (payload.usernameType === 'phone') {
+    const phoneNumber = `${payload.countryCode}${payload.phone}`
+    yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber })
+    logEvent('SIGNUP_PHONE_SUCCESS')
+  } else {
+    throw new Error('Unsupported usernameType')
   }
-  if (payload.usernameType === 'phone') {
-    return yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber: payload.phone })
-  }
-  return {}
 }
 
 function* handleSignuptCreateRequest(payload) {
@@ -57,38 +60,33 @@ function* handleSignuptCreateRequest(payload) {
  */
 function* signupCreateRequest(req) {
   try {
+    logEvent('SIGNUP_CREATE_REQUEST')
     yield handleSignuptCreateRequest(req.payload)
 
     yield put(actions.signupCreateSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC'),
-      payload: req.payload,
       data: { cognitoDelivery: req.payload.usernameType },
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
       yield put(actions.signupCreateFailure({
         message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error.message),
-        payload: req.payload,
       }))
     } else if (error.code === 'UsernameExistsException') {
       yield put(actions.signupCreateFailure({
         message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error.message),
-        payload: req.payload,
       }))
     } else if (error.code === 'InvalidPasswordException') {
       yield put(actions.signupCreateFailure({
         message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error.message),
-        payload: req.payload,
       }))
     } else if (error.code === 'InvalidParameterException') {
       yield put(actions.signupCreateFailure({
         message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error.message),
-        payload: req.payload,
       }))
     } else {
       yield put(actions.signupCreateFailure({
         message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error.message),
-        payload: req.payload,
       }))
     }
   }

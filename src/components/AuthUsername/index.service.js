@@ -4,11 +4,7 @@ import * as navigationActions from 'navigation/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from 'services/providers/Theme'
-import trim from 'ramda/src/trim'
-import compose from 'ramda/src/compose'
-import toLower from 'ramda/src/toLower'
-import pathOr from 'ramda/src/pathOr'
-import { logEvent } from 'services/Analytics'
+import * as Validation from 'services/Validation'
 import { pageHeaderLeft } from 'navigation/options'
 import testIDs from './test-ids'
 
@@ -19,16 +15,21 @@ const AuthUsernameComponentService = ({ children }) => {
 
   const signupUsername = useSelector(state => state.signup.signupUsername)
 
-  const handleFormSubmit = (payload) => {
-    logEvent('SIGNUP_CHECK_REQUEST')
-    dispatch(signupActions.signupUsernameRequest(payload))
+  const handleFormTransform = (values) => ({
+    username: Validation.getUsername(values),
+  })
+
+  const handleFormSubmit = (values, formApi) => {
+    const nextValues = handleFormTransform(values)
+    formApi.setValues(nextValues)
+
+    dispatch(signupActions.signupUsernameRequest(nextValues))
   }
 
   /**
    * Navigation state reset on back button press
    */
   const handleGoBack = useCallback(() => {
-    dispatch(signupActions.signupCheckIdle({}))
     navigationActions.navigateAuthHome(navigation)
   }, [])
 
@@ -45,16 +46,9 @@ const AuthUsernameComponentService = ({ children }) => {
   const formSubmitLoading = signupUsername.status === 'loading'
   const formSubmitDisabled = signupUsername.status === 'loading'
   const formErrorMessage = signupUsername.error.text
+  const formInitialValues = handleFormTransform(signupUsername.payload)
 
-  const formInitialValues = {
-    username: signupUsername.payload.username,
-  }
-
-  const handleFormTransform = (values) => ({
-    username: compose(trim, toLower, pathOr('', ['username']))(values),
-  })
-
-  const handleErrorClose = () => dispatch(signupActions.signupCheckIdle({}))
+  const handleErrorClose = () => dispatch(signupActions.signupUsernameIdle())
 
   return children({
     formErrorMessage,

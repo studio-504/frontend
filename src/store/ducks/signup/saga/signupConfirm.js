@@ -13,12 +13,12 @@ import { Keyboard } from 'react-native'
  */
 function* queryBasedOnSignupType(payload) {
   if (payload.usernameType === 'email') {
-    return yield queryService.apiRequest(queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
+    yield queryService.apiRequest(queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
+  } else if (payload.usernameType === 'phone') {
+    yield queryService.apiRequest(queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
+  } else {
+    throw new Error('Unsupported usernameType')
   }
-  if (payload.usernameType === 'phone') {
-    return yield queryService.apiRequest(queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
-  }
-  return {}
 }
 
 function* handleSignupConfirmRequest(payload) {
@@ -68,7 +68,6 @@ function* signupConfirmSuccess() {
 
   yield put(actions.signupCreateIdle({}))
   yield put(actions.signupConfirmIdle({}))
-  yield put(actions.signupCheckIdle({}))
   yield put(actions.signupPasswordIdle({}))
 
   Keyboard.dismiss()

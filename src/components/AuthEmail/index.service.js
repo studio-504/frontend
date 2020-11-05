@@ -3,13 +3,10 @@ import * as signupActions from 'store/ducks/signup/actions'
 import * as navigationActions from 'navigation/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
-import trim from 'ramda/src/trim'
-import compose from 'ramda/src/compose'
-import toLower from 'ramda/src/toLower'
-import pathOr from 'ramda/src/pathOr'
 import { ThemeContext } from 'services/providers/Theme'
-import { logEvent } from 'services/Analytics'
 import { pageHeaderLeft } from 'navigation/options'
+import * as Validation from 'services/Validation'
+import * as signupSelectors from 'store/ducks/signup/selectors'
 import testIDs from './test-ids'
 
 const AuthEmailComponentService = ({ children }) => {
@@ -17,16 +14,12 @@ const AuthEmailComponentService = ({ children }) => {
   const navigation = useNavigation()
   const { theme } = useContext(ThemeContext)
 
-  const signupCheck = useSelector(state => state.signup.signupCheck)
-  const signupEmail = useSelector(state => state.signup.signupEmail)
-  const signupCreate = useSelector(state => state.signup.signupCreate)
+  const signupCreate = useSelector(signupSelectors.signupCreate)
 
   /**
    * Navigation state reset on back button press
    */
   const handleGoBack = useCallback(() => {
-    dispatch(signupActions.signupEmailIdle({}))
-    dispatch(signupActions.signupPhoneIdle({}))
     dispatch(signupActions.signupCreateIdle({}))
     navigationActions.navigateAuthPassword(navigation)
   }, [])
@@ -44,40 +37,33 @@ const AuthEmailComponentService = ({ children }) => {
     })
   }, [])
 
-  const handleFormSubmit = (payload) => {
-    dispatch(signupActions.signupEmailRequest(payload))
+  const handleFormTransform = (values) => ({
+    email: Validation.getEmail(values),
+  })
+
+  const handleFormSubmit = (values, formApi) => {
+    const nextValues = handleFormTransform(values)
+    formApi.setValues(nextValues)
 
     /**
      *
      */
-    logEvent('SIGNUP_CREATE_REQUEST')
-    const signupCreatePayload = {
-      username: signupCheck.payload.username,
+    dispatch(signupActions.signupCreateRequest({
       usernameType: 'email',
-      phone: null,
-      email: payload.email,
-    }
-    dispatch(signupActions.signupCreateRequest(signupCreatePayload))
+      email: nextValues.email,
+    }))
   }
 
   const formSubmitLoading = signupCreate.status === 'loading'
   const formSubmitDisabled = signupCreate.status === 'loading'
   const formErrorMessage = signupCreate.error.text
-
-  const formInitialValues = {
-    email: signupEmail.payload.email,
-  }
-
-  const handleFormTransform = (values) => ({
-    email: compose(trim, toLower, pathOr('', ['email']))(values),
-  })
+  const formInitialValues = handleFormTransform(signupCreate.payload)
 
   const handleErrorClose = () => dispatch(signupActions.signupCreateIdle({}))
 
   return children({
     formErrorMessage,
     handleFormSubmit,
-    handleFormTransform,
     handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,

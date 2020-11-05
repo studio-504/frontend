@@ -36,6 +36,7 @@ describe('Validation service', () => {
     expect(await Validation.email.isValid('12')).toBeFalsy()
     expect(await Validation.email.isValid('valid@mail.com')).toBeTruthy()
     expect(await Validation.email.cast(' trim ')).toBe('trim')
+    expect(await Validation.email.isValid('with white space@mail.com')).toBeFalsy()
   })
 
   it('phone', async () => {
@@ -43,9 +44,10 @@ describe('Validation service', () => {
     expect(await Validation.phone.isValid('')).toBeFalsy()
     expect(await Validation.phone.isValid('1')).toBeFalsy()
     expect(await Validation.phone.isValid('12')).toBeFalsy()
+    expect(await Validation.phone.isValid('123sfsdfds')).toBeFalsy()
     expect(await Validation.phone.isValid('123')).toBeTruthy()
-    expect(await Validation.phone.isValid(join('', repeat('a', 50)))).toBeTruthy()
-    expect(await Validation.phone.isValid(join('', repeat('a', 51)))).toBeFalsy()
+    expect(await Validation.phone.isValid(join('', repeat('1', 50)))).toBeTruthy()
+    expect(await Validation.phone.isValid(join('', repeat('1', 51)))).toBeFalsy()
     expect(await Validation.phone.isValid('123456789')).toBeTruthy()
     expect(await Validation.phone.cast(' trim ')).toBe('trim')
   })

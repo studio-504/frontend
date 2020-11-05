@@ -25,7 +25,6 @@ import authToken from 'store/ducks/auth/saga/authToken'
 import authFlow from 'store/ducks/auth/saga/authFlow'
 import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
 
-import signup from 'store/ducks/signup/saga'
 import signupCreate from 'store/ducks/signup/saga/signupCreate'
 import signupConfirm from 'store/ducks/signup/saga/signupConfirm'
 import signupPassword from 'store/ducks/signup/saga/signupPassword'
@@ -83,7 +82,6 @@ export default function* rootSaga(persistor) {
     .concat(authSignout(persistor))
     .concat(authReset(persistor))
 
-    .concat(signup())
     .concat(signupCreate())
     .concat(signupConfirm())
     .concat(signupPassword())
