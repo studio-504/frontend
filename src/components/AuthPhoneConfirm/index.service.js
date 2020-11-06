@@ -20,7 +20,10 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
     const nextValues = handleFormTransform(values)
     formApi.setValues(nextValues)
 
-    dispatch(signupActions.signupConfirmRequest(nextValues))
+    dispatch(signupActions.signupConfirmRequest({
+      usernameType: 'phone',
+      confirmationCode: nextValues.confirmationCode,
+    }))
   }
 
   const formSubmitLoading = signupConfirm.status === 'loading'

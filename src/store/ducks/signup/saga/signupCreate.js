@@ -15,11 +15,9 @@ import { logEvent } from 'services/Analytics'
 function* queryBasedOnSignupType(payload) {
   if (payload.usernameType === 'email') {
     yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
-    logEvent('SIGNUP_EMAIL_SUCCESS')
   } else if (payload.usernameType === 'phone') {
     const phoneNumber = `${payload.countryCode}${payload.phone}`
     yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber })
-    logEvent('SIGNUP_PHONE_SUCCESS')
   } else {
     throw new Error('Unsupported usernameType')
   }
@@ -61,10 +59,11 @@ function* handleSignupCreateRequest(payload) {
 function* signupCreateRequest(req) {
   try {
     logEvent('SIGNUP_CREATE_REQUEST')
+    
     yield handleSignupCreateRequest(req.payload)
-
     yield put(actions.signupCreateSuccess({
-      message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC'),
+      message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC' ), 
+      usernameType: req.payload.usernameType
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
@@ -95,11 +94,13 @@ function* signupCreateSuccess(req) {
   logEvent('SIGNUP_CREATE_SUCCESS')
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
 
-  if (req.payload.payload.usernameType === 'phone') {
+  if (req.payload.usernameType === 'phone') {
+    logEvent('SIGNUP_PHONE_SUCCESS')
     navigationActions.navigateAuthPhoneConfirm(ReactNavigationRef.current)
   }
 
-  if (req.payload.payload.usernameType === 'email') {
+  if (req.payload.usernameType === 'email') {
+    logEvent('SIGNUP_EMAIL_SUCCESS')
     navigationActions.navigateAuthEmailConfirm(ReactNavigationRef.current)
   }
 }

@@ -26,7 +26,10 @@ const AuthEmailConfirmComponentService = ({ children }) => {
   const handleFormSubmit = (values) => {
     const nextValues = handleFormTransform(values)
 
-    dispatch(signupActions.signupConfirmRequest(nextValues))
+    dispatch(signupActions.signupConfirmRequest({
+      usernameType: 'email',
+      confirmationCode: nextValues.confirmationCode,
+    }))
   }
 
   const formSubmitLoading = signupConfirm.status === 'loading'
