@@ -63,7 +63,7 @@ function* signupCreateRequest(req) {
     yield handleSignupCreateRequest(req.payload)
     yield put(actions.signupCreateSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC' ), 
-      usernameType: req.payload.usernameType
+      usernameType: req.payload.usernameType,
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
