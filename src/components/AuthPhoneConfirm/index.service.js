@@ -9,7 +9,7 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const route = useRoute()
 
-  const signupConfirm = useSelector(state => state.signup.signupConfirm)
+  const signupConfirm = useSelector(signupSelectors.signupConfirm)
   const signupCreate = useSelector(signupSelectors.signupCreate)
 
   const handleFormTransform = (values) => ({

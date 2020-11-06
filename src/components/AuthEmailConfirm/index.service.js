@@ -8,13 +8,13 @@ import * as Validation from 'services/Validation'
 
 const AuthEmailConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
-  const route = useRoute()
+  const route = useRoute() 
 
-  const signupConfirm = useSelector(state => state.signup.signupConfirm)
+  const signupConfirm = useSelector(signupSelectors.signupConfirm)
   const signupCreate = useSelector(signupSelectors.signupCreate)
 
   const onUnmount = () => {
-    dispatch(signupActions.signupConfirmIdle({}))
+    dispatch(signupActions.signupConfirmIdle())
   } 
   
   useEffect(() => onUnmount, [])
