@@ -49,6 +49,7 @@ const AuthPhoneConfirm = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingTop: 50,
   },
   component: {
     paddingHorizontal: 24,
