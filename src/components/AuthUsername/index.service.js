@@ -20,8 +20,7 @@ const AuthUsernameComponentService = ({ children }) => {
   }
 
   const handleClose = () => {
-    dispatch(signupActions.signupUsernameIdle({}))
-    dispatch(signupActions.signupCheckIdle({}))
+    dispatch(signupActions.signupUsernameIdle())
   }
 
   const onUnmount = handleClose
