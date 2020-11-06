@@ -15,7 +15,7 @@ const AuthPasswordComponentService = ({ children }) => {
   useEffect(() => onUnmount, [])
 
   const handleFormTransform = (values) => ({
-    password: Validation.getPassword(values)
+    password: Validation.getPassword(values),
   })
 
   const handleFormSubmit = (values) => {

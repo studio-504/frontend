@@ -64,7 +64,6 @@ PasswordForm.propTypes = {
 
 export default withTranslation()(({
   handleFormSubmit,
-  handleFormTransform,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
