@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import * as authActions from 'store/ducks/auth/actions'
-import * as signupActions from 'store/ducks/signup/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import * as authSelectors from 'store/ducks/auth/selectors'
 import * as Validation from 'services/Validation'
@@ -25,7 +24,7 @@ const AuthForgotConfirmComponentService = ({ children }) => {
   }
 
   const onUnmount = () => {
-    dispatch(signupActions.authForgotConfirmIdle())
+    dispatch(authActions.authForgotConfirmIdle())
   }
 
   useEffect(() => onUnmount, [])

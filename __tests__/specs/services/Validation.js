@@ -205,5 +205,20 @@ describe('Validation service', () => {
       autoFocus: true,
       maxLength: 6,
     })
+
+    expect(Validation.getInputTypeProps('password')).toEqual({
+      accessibilityLabel: 'password',
+      secureTextEntry: true,
+      keyboardType: 'default',
+      textContentType: 'password',
+      autoCompleteType: 'password',
+    })
+
+    expect(Validation.getInputTypeProps('username')).toEqual({
+      accessibilityLabel: 'username',
+      keyboardType: 'default',
+      textContentType: 'username',
+      autoCompleteType: 'username',
+    })
   })
 })

@@ -23,20 +23,45 @@ const ForgotConfirmForm = ({
   t,
   handleSubmit,
   loading,
+  disabled,
 }) => {
   return (
     <View style={styles.root}>
       <View style={styles.input}>
-        <Field testID={testIDs.form.username} name="username" component={TextField} placeholder={t('Phone or Email')} keyboardType="default" textContentType="username" autoCompleteType="username" />
+        <Field
+          testID={testIDs.form.username}
+          name="username"
+          component={TextField}
+          placeholder={t('Phone or Email')}
+          {...Validation.getInputTypeProps('username')}
+        />
       </View>
       <View style={styles.input}>
-        <Field testID={testIDs.form.confirmationCode} name="confirmationCode" component={TextField} placeholder={t('Confirmation Code')} keyboardType="number-pad" textContentType="oneTimeCode" autoCompleteType="off" autoFocus />
+        <Field
+          testID={testIDs.form.confirmationCode}
+          name="confirmationCode"
+          component={TextField}
+          placeholder={t('Confirmation Code')}
+          {...Validation.getInputTypeProps('confirmationCode')}
+        />
       </View>
       <View style={styles.input}>
-        <Field testID={testIDs.form.password} name="password" component={TextField} placeholder={t('New Password')} secureTextEntry keyboardType="default" textContentType="password" autoCompleteType="password" />
+        <Field
+          testID={testIDs.form.password}
+          name="password"
+          component={TextField}
+          placeholder={t('New Password')}
+          {...Validation.getInputTypeProps('password')}
+        />
       </View>
       <View style={styles.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={disabled}
+        />
       </View>
     </View>
   )
@@ -54,11 +79,17 @@ ForgotConfirmForm.propTypes = {
   t: PropTypes.any,
   handleSubmit: PropTypes.any,
   loading: PropTypes.any,
+  disabled: PropTypes.bool,
+}
+
+ForgotConfirmForm.defaultProps = {
+  disabled: false,
 }
 
 export default withTranslation()(({
   handleFormSubmit,
   formSubmitLoading,
+  formSubmitDisabled,
   formInitialValues,
   ...props
 }) => (
@@ -73,6 +104,7 @@ export default withTranslation()(({
         {...formikProps}
         {...props}
         loading={formSubmitLoading}
+        disabled={formSubmitDisabled}
       />
     )}
   </Formik>

@@ -32,7 +32,7 @@ const AuthForgotConfirm = ({
       {formErrorMessage ?
         <AuthErrorTemplate
           text={formErrorMessage}
-          onClose={handleErrorClose}
+          onClose={handleErrorClose} 
         />
       : null}
 

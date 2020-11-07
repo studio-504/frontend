@@ -31,11 +31,7 @@ export const remoteUsernameValidation = () => {
   }
 }
 
-export const phoneOrEmail = Yup.string()
-  .min(3)
-  .max(50)
-  .trim()
-  .required()
+export const phoneOrEmail = Yup.string().min(3).max(50).trim().required()
 
 export const username = Yup.string()
   .min(3)
@@ -45,13 +41,7 @@ export const username = Yup.string()
   .required()
   .test('usernameReserve', 'username is reserved', remoteUsernameValidation())
 
-export const email = Yup.string()
-  .matches(/^\S*$/, 'no whitespace')
-  .email()
-  .min(3)
-  .max(50)
-  .trim()
-  .required()
+export const email = Yup.string().matches(/^\S*$/, 'no whitespace').email().min(3).max(50).trim().required()
 
 export const phone = Yup.string()
   .matches(/^[0-9]*$/gm, 'numbers only')
@@ -60,11 +50,7 @@ export const phone = Yup.string()
   .trim()
   .required()
 
-export const password = Yup.string()
-  .min(8)
-  .max(50)
-  .trim()
-  .required()
+export const password = Yup.string().min(8).max(50).trim().required()
 
 export const confirmationCode = Yup.string()
   .length(6)
@@ -98,6 +84,21 @@ export const getInputTypeProps = (type) => {
         autoCompleteType: 'off',
         autoFocus: true,
         maxLength: 6,
+      }
+    case 'password':
+      return {
+        accessibilityLabel: 'password',
+        secureTextEntry: true,
+        keyboardType: 'default',
+        textContentType: 'password',
+        autoCompleteType: 'password',
+      }
+    case 'username':
+      return {
+        accessibilityLabel: 'username',
+        keyboardType: 'default',
+        textContentType: 'username',
+        autoCompleteType: 'username',
       }
     default:
       return {}
