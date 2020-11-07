@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import has from 'ramda/src/has'
+import propOr from 'ramda/src/propOr'
 import { View, StyleSheet } from 'react-native'
 import FormComponent from 'components/AuthEmailConfirm/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
@@ -18,23 +18,21 @@ const AuthEmailConfirm = ({
   formSubmitDisabled,
   formInitialValues,
 }) => {
-  const styling = styles
-
   return (
-    <View testID={testIDs.root} style={styling.root}>
+    <View testID={testIDs.root} style={styles.root}>
       {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
 
-      <View style={styling.component}>
+      <View style={styles.component}>
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
           subtitle={
-            has('cognitoUsername', formInitialValues)
+            propOr(false, 'cognitoUsername', formInitialValues)
               ? t('Sent to {{cognitoUsername}}', formInitialValues)
               : t('You’ve been sent a password reset token')
           }
         />
 
-        <View style={styling.content}>
+        <View style={styles.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
             formSubmitLoading={formSubmitLoading}

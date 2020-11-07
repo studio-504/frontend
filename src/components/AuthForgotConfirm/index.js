@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native'
-import has from 'ramda/src/has'
+import propOr from 'ramda/src/propOr'
 import FormComponent from 'components/AuthForgotConfirm/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
@@ -40,7 +40,7 @@ const AuthForgotConfirm = ({
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
           subtitle={
-            has('username', formInitialValues)
+            propOr(false, 'username', formInitialValues)
               ? t('Sent to {{username}}', formInitialValues)
               : t('You’ve been sent a password reset token')
           }

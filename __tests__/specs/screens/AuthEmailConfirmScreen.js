@@ -3,6 +3,8 @@ import AuthEmailConfirmScreen from 'screens/AuthEmailConfirmScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
 import * as signupActions from 'store/ducks/signup/actions'
 import { useRoute } from '@react-navigation/native'
+import * as Validation from 'services/Validation'
+import { testField } from 'tests/utils/helpers'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useRoute: jest.fn() }))
 jest.spyOn(signupActions, 'signupConfirmRequest')
@@ -12,9 +14,7 @@ const email = 'valid@mail.com'
 const confirmationCode = '123456'
 
 const setup = () => {
-  const actions = [signupActions.signupCreateRequest({ usernameType: 'email', email })]
-
-  return renderWithStore(<AuthEmailConfirmScreen />, actions)
+  return renderWithStore(<AuthEmailConfirmScreen />)
 }
 
 describe('AuthEmailConfirmScreen', () => {
@@ -27,6 +27,26 @@ describe('AuthEmailConfirmScreen', () => {
     const { getByText } = setup()
 
     expect(getByText('Enter 6-digit code')).toBeTruthy()
+    expect(getByText('You’ve been sent a password reset token')).toBeTruthy()
+  })
+
+  it('form', () => {
+    const { getByLabelText } = setup()
+
+    testField(getByLabelText('confirmationCode'), {
+      name: 'confirmationCode',
+      value: undefined,
+      ...Validation.getInputTypeProps('confirmationCode'),
+    })
+  })
+
+  it('subtitle with email', async () => {
+    const { getByText, store } = setup()
+
+    await act(async () => {
+      store.dispatch(signupActions.signupCreateRequest({ email }))
+    })
+
     expect(getByText('Sent to valid@mail.com')).toBeTruthy()
   })
 
@@ -67,5 +87,32 @@ describe('AuthEmailConfirmScreen', () => {
 
     unmount()
     expect(signupActions.signupConfirmIdle).toHaveBeenCalled()
+  })
+
+  it('loading state', async () => {
+    const { store, getByText } = setup()
+
+    await act(async () => {
+      store.dispatch(signupActions.signupConfirmRequest({}))
+    })
+
+    expect(getByText('Next')).toBeDisabled()
+  })
+
+  it('error state', async () => {
+    const error = 'Error'
+    const { store, queryByText, getByLabelText } = setup()
+
+    await act(async () => {
+      store.dispatch(signupActions.signupConfirmFailure({ message: { text: error } }))
+    })
+
+    expect(queryByText(error)).toBeTruthy()
+
+    await act(async () => {
+      fireEvent.press(getByLabelText('Close error'))
+    })
+
+    expect(queryByText(error)).toBeFalsy()
   })
 })
