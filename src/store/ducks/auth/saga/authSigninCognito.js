@@ -2,7 +2,6 @@ import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
-import * as navigationActions from 'navigation/actions'
 
 /**
  * Authenticate using cognito into user pool
@@ -60,12 +59,6 @@ function* authSigninCognitoRequest(req) {
   }
 }
 
-function* authSigninCognitoSuccess() {
-  const ReactNavigationRef = yield getContext('ReactNavigationRef')
-  navigationActions.navigateApp(ReactNavigationRef.current)
-}
-
 export default () => [
   takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
-  takeEvery(constants.AUTH_SIGNIN_COGNITO_SUCCESS, authSigninCognitoSuccess),
 ]
