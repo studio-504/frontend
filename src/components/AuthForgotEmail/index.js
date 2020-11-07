@@ -30,7 +30,6 @@ const AuthForgotEmail = ({
     <View testID={testIDs.root} style={styling.root}>
       {formErrorMessage ?
         <AuthErrorTemplate
-          testID={testIDs.error}
           text={formErrorMessage}
           onClose={handleErrorClose}
         />

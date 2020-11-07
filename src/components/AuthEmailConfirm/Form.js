@@ -25,7 +25,13 @@ const EmailConfirmForm = ({
   return (
     <View style={styles.root}>
       <View style={styles.input}>
-        <Field testID={testIDs.form.confirmationCode} name="confirmationCode" accessibilityLabel="confirmationCode" component={TextField} placeholder={t('Confirmation Code')} keyboardType="number-pad" textContentType="oneTimeCode" autoCompleteType="off" autoFocus maxLength={6} />
+        <Field
+          testID={testIDs.form.confirmationCode}
+          component={TextField}
+          name="confirmationCode"
+          placeholder="Confirmation Code"
+          {...Validation.getInputTypeProps('confirmationCode')}
+        />
       </View>
 
       <View style={styles.input}>

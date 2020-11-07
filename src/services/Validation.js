@@ -80,3 +80,26 @@ export const getEmail = compose(trim, toLower, pathOr('', ['email']))
 export const getUsername = compose(trim, toLower, pathOr('', ['username']))
 export const getPassword = compose(trim, pathOr('', ['password']))
 export const getConfirmationCode = compose(onlyNumbers, trim, toLower, pathOr('', ['confirmationCode']))
+
+export const getInputTypeProps = (type) => {
+  switch (type) {
+    case 'email':
+      return {
+        accessibilityLabel: 'email',
+        keyboardType: 'email-address',
+        textContentType: 'emailAddress',
+        autoCompleteType: 'email',
+      }
+    case 'confirmationCode':
+      return {
+        accessibilityLabel: 'confirmationCode',
+        keyboardType: 'number-pad',
+        textContentType: 'oneTimeCode',
+        autoCompleteType: 'off',
+        autoFocus: true,
+        maxLength: 6,
+      }
+    default:
+      return {}
+  }
+}

@@ -186,4 +186,24 @@ describe('Validation service', () => {
       expect(API.graphql).toHaveBeenCalledTimes(2)
     })
   })
+
+  it('getInputTypeProps', () => {
+    expect(Validation.getInputTypeProps(undefined)).toEqual({})
+
+    expect(Validation.getInputTypeProps('email')).toEqual({
+      accessibilityLabel: 'email',
+      keyboardType: 'email-address',
+      textContentType: 'emailAddress',
+      autoCompleteType: 'email',
+    })
+
+    expect(Validation.getInputTypeProps('confirmationCode')).toEqual({
+      accessibilityLabel: 'confirmationCode',
+      keyboardType: 'number-pad',
+      textContentType: 'oneTimeCode',
+      autoCompleteType: 'off',
+      autoFocus: true,
+      maxLength: 6,
+    })
+  })
 })

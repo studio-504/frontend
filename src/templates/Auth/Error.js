@@ -14,16 +14,15 @@ const Error = ({
   theme,
   text,
   onClose,
-  testID,
 }) => {
   const styling = styles(theme)
 
   return (
-    <View testID={testID} style={styling.root}>
+    <View style={styling.root}>
       <View style={styling.content}>
         <Text style={styling.text}>{text}</Text>
       </View>
-      <TouchableOpacity accessibilityRole="button" style={styling.action} onPress={onClose}>
+      <TouchableOpacity accessibilityLabel="Close error" accessibilityRole="button" style={styling.action} onPress={onClose}>
         <CloseIcon fill="#ffffff" />
       </TouchableOpacity>
     </View>
@@ -52,11 +51,6 @@ Error.propTypes = {
   theme: PropTypes.any,
   text: PropTypes.any,
   onClose: PropTypes.any,
-  testID: PropTypes.string,
-}
-
-Error.defaultProps = {
-  testID: null,
 }
 
 export default withTheme(Error)
