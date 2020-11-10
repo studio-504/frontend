@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import NetworkComponent from 'components/Network'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
+import LoadingComponent from 'components/Loading'
 
 const Stack = createStackNavigator()
 
@@ -18,9 +19,14 @@ const Router = () => {
       <NetworkComponent />
       <Stack.Navigator>
         <Stack.Screen
+          name="Loading"
+          component={LoadingComponent}
+          {...navigationOptions.stackScreenStaleStaticProps}
+        />
+        <Stack.Screen
           name="App"
           component={AppNavigator}
-          {...navigationOptions.stackScreenModalStaticProps}
+          {...navigationOptions.stackScreenStaleStaticProps}
         />
         <Stack.Screen
           name="Auth"
