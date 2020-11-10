@@ -35,6 +35,7 @@ export const gridPostFragment = `
 
   fragment gridPostFragment on Post {
     postId
+    isVerified
     postStatus
     postType
     postedAt
