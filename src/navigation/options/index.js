@@ -238,6 +238,17 @@ export const stackScreenModalStaticProps = ({
   }),
 })
 
+export const stackScreenStaleStaticProps = ({
+  options: () => ({
+    cardStyle: {
+      backgroundColor: '#000000',
+    },
+    gestureEnabled: false,
+    headerShown: false,
+    animationEnabled: false,
+  }),
+})
+
 export const stackScreenAuthModalProps = ({ theme }) => ({
   options: () => ({
     gestureDirection: 'vertical',
