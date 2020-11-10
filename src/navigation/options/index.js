@@ -6,6 +6,7 @@ import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
 import * as navigationActions from 'navigation/actions'
 import path from 'ramda/src/path'
 import Layout from 'constants/Layout'
+import AuthHeader from 'navigation/Auth/Header'
 
 import LogoIcon from 'assets/svg/header/Logo'
 import CameraIcon from 'assets/svg/header/Camera'
@@ -44,21 +45,6 @@ const homeHeaderRight = ({ theme, navigation, user }) => () => (
     <DirectIcon fill={path(['colors', 'primaryIcon'], theme)} user={user} />
   </TouchableOpacity>
 )
-
-const AuthNavigationComponent = ({ theme }) => ({
-  headerStyle: {
-    backgroundColor: theme.colors.backgroundPrimary,
-    shadowRadius: 0,
-    shadowOffset: {
-      height: 0,
-    },
-    borderBottomWidth: 0,
-    shadowColor: 'transparent',
-  },
-  headerTitleStyle: {
-    color: theme.colors.text,
-  },
-})
 
 const HomeNavigationComponent = ({ navigation, theme, user }) => ({
   headerStyle: {
@@ -153,42 +139,12 @@ export const stackScreenDefaultProps = ({ theme, user }) => ({
  * Used for Main Screens with application logo
  */
 export const stackScreenAuthProps = ({ theme }) => ({ options } = {}) => ({
-  options: (props) => ({
-    ...AuthNavigationComponent({ ...props, theme }),
-    gestureEnabled: false,
+  options: ({
+    header: AuthHeader,
     cardStyle: {
       backgroundColor: theme.colors.backgroundPrimary,
-    },
-    headerStyle: {
-      backgroundColor: theme.colors.backgroundSecondary,
-      shadowRadius: 0,
-      shadowOffset: {
-        height: 0,
-      },
-      borderBottomWidth: 0,
-      shadowColor: 'transparent',
-    },
-    headerTitleStyle: {
-      color: '#ffffff',
     },
     ...options,
-  }),
-})
-
-/**
- * Used for Onboard Screens
- */
-export const stackScreenOnboardProps = ({ theme }) => ({
-  options: (props) => ({
-    ...AuthNavigationComponent({ ...props, theme }),
-    gestureEnabled: false,
-    cardStyle: {
-      backgroundColor: theme.colors.backgroundPrimary,
-    },
-    headerTitleStyle: {
-      color: theme.colors.backgroundPrimary,
-    },
-    headerShown: false,
   }),
 })
 

@@ -1,9 +1,9 @@
 [
   {
-    "key": "white.green",
-    "label": "Green and White",
+    "key": "black.green",
+    "label": "Green and Black",
     "theme": {
-      "dark": false,
+      "dark": true,
       "roundness": 4,
       "animation": {
         "scale": 1.0
@@ -11,22 +11,22 @@
       "colors": {
         "primary": "#21ce99",
         "accent": "#03dac4",
-        "background": "#ffffff",
+        "background": "#000000",
         "surface": "#ffffff",
         "error": "#B00020",
-        "text": "#000000",
+        "text": "#FFFFFF",
         "disabled": "#363636",
         "placeholder": "#9A9B9C",
         "backdrop": "rgba(0, 0, 0, 0.5)",
         "notification": "#f50057",
-        "input": "#fafafa",
+        "input": "#292929",
         "navigation": "#21ce99",
         "button": "#21ce99",
         "buttonText": "#FFFFFF",
-        "backgroundPrimary": "#fafafa",
-        "backgroundSecondary": "#eeeeee",
+        "backgroundPrimary": "#000000",
+        "backgroundSecondary": "#222224",
         "border": "#A2A7AB",
-        "primaryIcon": "#000000"
+        "primaryIcon": "#FAFAFA"
       },
       "fonts": {
         "regular": {
@@ -56,12 +56,11 @@
         "large": 12
       }
     }
-  },
-  {
-    "key": "black.green",
-    "label": "Green and Black",
+  },{
+    "key": "white.green",
+    "label": "Green and White",
     "theme": {
-      "dark": true,
+      "dark": false,
       "roundness": 4,
       "animation": {
         "scale": 1.0
@@ -69,22 +68,22 @@
       "colors": {
         "primary": "#21ce99",
         "accent": "#03dac4",
-        "background": "#000000",
+        "background": "#ffffff",
         "surface": "#ffffff",
         "error": "#B00020",
-        "text": "#FFFFFF",
+        "text": "#000000",
         "disabled": "#363636",
         "placeholder": "#9A9B9C",
         "backdrop": "rgba(0, 0, 0, 0.5)",
         "notification": "#f50057",
-        "input": "#292929",
+        "input": "#fafafa",
         "navigation": "#21ce99",
         "button": "#21ce99",
         "buttonText": "#FFFFFF",
-        "backgroundPrimary": "#000000",
-        "backgroundSecondary": "#222224",
+        "backgroundPrimary": "#fafafa",
+        "backgroundSecondary": "#eeeeee",
         "border": "#A2A7AB",
-        "primaryIcon": "#FAFAFA"
+        "primaryIcon": "#000000"
       },
       "fonts": {
         "regular": {

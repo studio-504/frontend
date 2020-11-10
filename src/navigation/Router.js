@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import NetworkComponent from 'components/Network'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
+import { TransitionPresets } from '@react-navigation/stack'
 
 const Stack = createStackNavigator()
 
@@ -25,7 +26,16 @@ const Router = () => {
         <Stack.Screen
           name="Auth"
           component={AuthNavigator}
-          {...navigationOptions.stackScreenModalStaticProps}
+          options={({ route, navigation }) => ({
+            headerShown: false,
+            gestureEnabled: true,
+            cardOverlayEnabled: true,
+            headerStatusBarHeight:
+              navigation.dangerouslyGetState().routes.indexOf(route) > 0
+                ? 0
+                : undefined,
+            ...TransitionPresets.ModalPresentationIOS,
+          })}
         />
       </Stack.Navigator>
     </FeedContextComponent.Provider>
