@@ -1,16 +1,17 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, memo } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
   View,
   TouchableOpacity,
 } from 'react-native'
-import MapView from 'react-native-maps'
+import ReactNativeMapView from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 import compose from 'ramda/src/compose'
 import Layout from 'constants/Layout'
 import prop from 'ramda/src/prop'
 import path from 'ramda/src/path'
+import equals from 'ramda/src/equals'
 import useAsync from 'react-use/lib/useAsync'
 import { openSettings } from 'react-native-permissions'
 
@@ -59,6 +60,25 @@ MapFieldError.propTypes = {
   error: PropTypes.any,
 }
 
+const mapViewPropsEqual = (prevProps, nextProps) => equals(prevProps.coordinates, nextProps.coordinates)
+
+const MapView = memo(({ mapRef, coordinates }) => (
+  <ReactNativeMapView
+    ref={mapRef}
+    style={styles.map}
+    region={coordinates.value}
+    showsUserLocation
+    showsMyLocationButton
+    loadingEnabled={true}
+    minZoomLevel={14}
+ />
+), mapViewPropsEqual)
+
+MapView.propTypes = {
+  mapRef: PropTypes.any,
+  coordinates: PropTypes.any,
+}
+
 const MapField = ({
   form,
   field,
@@ -101,14 +121,9 @@ const MapField = ({
   return (
     <View style={styling.root}>
       <MapView
-        ref={mapRef}
-        style={styles.map}
-        region={coordinates.value}
-        showsUserLocation
-        showsMyLocationButton
-        loadingEnabled={true}
-        minZoomLevel={14}
-     />
+        mapRef={mapRef}
+        coordinates={coordinates}
+      />
     </View>
   )
 }
