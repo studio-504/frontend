@@ -15,6 +15,7 @@ const PickerField = ({
   form,
   field,
   hideError,
+  items,
   ...props
 }) => {
   const styling = styles(theme)
@@ -37,6 +38,7 @@ const PickerField = ({
     <View style={styling.root}>
       <RNPickerSelect
         {...props}
+        items={items}
         onValueChange={onChangeText}
         style={{ inputIOS: styling.inputIOS, placeholder: styling.placeholder }}
         onOpen={onFocus}
@@ -103,6 +105,7 @@ PickerField.propTypes = {
   autoCapitalize: PropTypes.string,
   mode: PropTypes.string,
   returnKeyType: PropTypes.string,
+  items: PropTypes.array,
 }
 
 PickerField.defaultProps = {
@@ -120,6 +123,7 @@ PickerField.defaultProps = {
   autoCapitalize: 'none',
   mode: 'outlined',
   returnKeyType: 'done',
+  items: [],
 }
 
 export default withTheme(PickerField)

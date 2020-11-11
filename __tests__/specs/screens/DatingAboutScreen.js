@@ -30,9 +30,9 @@ describe('DatingAboutScreen', () => {
   it('toggle collapsed sections', () => {
     const { queryByAccessibilityLabel } = setup()
 
-    expect(queryByAccessibilityLabel('DateOfBirthMonth')).toBeTruthy()
+    expect(queryByAccessibilityLabel('dateOfBirthMonth')).toBeTruthy()
     fireEvent.press(queryByAccessibilityLabel('Toggle Your Date of Birth'))
-    expect(queryByAccessibilityLabel('DateOfBirthMonth')).toBeFalsy()
+    expect(queryByAccessibilityLabel('dateOfBirthMonth')).toBeFalsy()
 
     expect(queryByAccessibilityLabel('gender')).toBeFalsy()
     fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
@@ -53,7 +53,7 @@ describe('DatingAboutScreen', () => {
 
     openAllSections(getByAccessibilityLabel)
 
-    testField(getByAccessibilityLabel('DateOfBirthMonth'), { value: 'January' })
+    testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
     testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
     testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
     testField(getByAccessibilityLabel('gender'), { value: 'Your Gender' })
@@ -67,7 +67,7 @@ describe('DatingAboutScreen', () => {
 
     openAllSections(getByAccessibilityLabel)
 
-    testField(getByAccessibilityLabel('DateOfBirthMonth'), { value: 'April' })
+    testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'April' })
     testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '21' })
     testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '1990' })
     testField(getByAccessibilityLabel('gender'), { value: 'Female' })

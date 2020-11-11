@@ -1,20 +1,17 @@
 import { useEffect } from 'react'
-import propOr from 'ramda/src/propOr'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as navigationActions from 'navigation/actions'
 import { useNavigation } from '@react-navigation/native'
-import dayjs from 'dayjs'
-
-const getDateOfBirth = propOr('2000-01-01', 'dateOfBirth')
+import * as helpers from 'components/DatingMatch/helpers'
 
 const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
   const usersEditProfile = useSelector(state => state.users.usersEditProfile)
-  const dateOfBirthParsed = dayjs(getDateOfBirth(user), 'YYYY-MM-DD')
+  const dateOfBirthParsed = helpers.getDateOfBirth(user)
 
   const usersEditProfileRequest = (payload) =>
     dispatch(usersActions.usersEditProfileRequest(payload))
@@ -30,7 +27,7 @@ const DatingAboutService = ({ children }) => {
    * Form helpers
    */
   const handleFormTransform = (values) => ({
-    dateOfBirth: `${values.dateOfBirthYear}-${values.dateOfBirthMonth}-${values.dateOfBirthDay}`,
+    dateOfBirth: helpers.makeDateOfBirth(values),
     gender: values.gender,
     fullName: values.fullName,
     bio: values.bio,
@@ -45,9 +42,9 @@ const DatingAboutService = ({ children }) => {
   const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
-    dateOfBirthYear: dateOfBirthParsed.format('YYYY'), 
-    dateOfBirthMonth: dateOfBirthParsed.format('MM'), 
-    dateOfBirthDay: dateOfBirthParsed.format('DD'), 
+    dateOfBirthYear: dateOfBirthParsed.dateOfBirthYear, 
+    dateOfBirthMonth: dateOfBirthParsed.dateOfBirthMonth, 
+    dateOfBirthDay: dateOfBirthParsed.dateOfBirthDay, 
     gender: user.gender,
     fullName: user.fullName,
     bio: user.bio,
@@ -56,7 +53,6 @@ const DatingAboutService = ({ children }) => {
   const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle({}))
 
   return children({
-    user,
     form: {
       handleFormSubmit,
       formInitialValues,

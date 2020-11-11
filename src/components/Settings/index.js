@@ -81,7 +81,7 @@ const Settings = ({
             },
             {
               label: t('Dating'),
-              onPress: () => navigationActions.navigateDatingAbout(navigation)(),
+              onPress: () => navigationActions.navigateDatingSettings(navigation)(),
               icon: <DatingIcon fill={theme.colors.text} />,
             },
             {
