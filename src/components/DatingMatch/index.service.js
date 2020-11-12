@@ -4,25 +4,13 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as navigationActions from 'navigation/actions'
 import { useNavigation } from '@react-navigation/native'
-import path from 'ramda/src/path'
-import dayjs from 'dayjs'
+import * as helpers from 'components/DatingMatch/helpers'
 
 const DatingMatchService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
   const usersEditProfile = useSelector(state => state.users.usersEditProfile)
-  const usersAge = dayjs().diff(user.dateOfBirth, 'year')
-
-  const lowerBoundAge = (age) => {
-    if (age <= 23 || !age) return 18
-    return age - 5
-  }
-
-  const upperBoundAge = (age) => {
-    if (age <= 23 || !age) return 23
-    return age + 5
-  }
 
   const usersEditProfileRequest = (payload) =>
     dispatch(usersActions.usersEditProfileRequest(payload))
@@ -56,10 +44,10 @@ const DatingMatchService = ({ children }) => {
   const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
-    matchAgeRangeMin: path(['matchAgeRange', 'min'], user) || lowerBoundAge(usersAge),
-    matchAgeRangeMax: path(['matchAgeRange', 'max'], user) || upperBoundAge(usersAge),
-    matchGenders: path(['matchGenders', 0], user) || 'FEMALE',
-    matchLocationRadius: user.matchLocationRadius || 50,
+    matchAgeRangeMin: helpers.getMatchAgeRangeMin(user),
+    matchAgeRangeMax: helpers.getMatchAgeRangeMax(user),
+    matchGenders: helpers.getMatchGenders(user),
+    matchLocationRadius: helpers.getMatchLocationRadius(user),
     location: user.location,
   }
 

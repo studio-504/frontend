@@ -57,6 +57,14 @@ describe('Settings component', () => {
     testNavigate(navigation, 'App.Root.Home.Profile.Privacy')
   })
 
+  it('Dating', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('Dating'))
+
+    testNavigate(navigation, 'DatingSettings')
+  })
+
   it('Follow & Invite Friends', () => {
     const { getByText } = setup()
 
