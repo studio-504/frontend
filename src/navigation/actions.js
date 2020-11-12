@@ -60,7 +60,7 @@ export const navigateDatingProfile = withAuthValidation(navigateToPath('DatingPr
 /**
  * Profile
  */
-export const navigateProfileSelf = withAuthValidation(navigateToPath('App.Root.Home.Profile'))
+export const navigateProfileSelf = withAuthValidation(navigateToPath('App.Root.Home.Profile.ProfileSelf'))
 export const navigateSettings = withAuthValidation(navigateToPath('App.Root.Home.Profile.Settings'))
 export const navigateProfilePhotoUpload = withAuthValidation(navigateToPath('App.Root.Home.Profile.ProfilePhotoUpload'))
 export const navigateProfilePhoto = navigateToPath('App.Root.Home.Profile.ProfilePhoto')
