@@ -1,25 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import { useNavigation } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersSelector from 'store/ducks/users/selectors'
 import * as helpers from 'components/DatingMatch/helpers'
+import propEq from 'ramda/src/propEq'
+import path from 'ramda/src/path'
+
+const getDisableDatingByStatus = propEq('datingStatus', 'DISABLED')
+const getErrorText = path(['error', 'text'])
 
 const DatingSettingsService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
+  const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
+  const [disableDating, setDisableDating] = useState(getDisableDatingByStatus(user))
 
   const usersEditProfileIdle = () => dispatch(usersActions.usersEditProfileIdle())
-  const handleErrorClose = usersEditProfileIdle
+  const usersSetUserDatingStatusIdle = () => dispatch(usersActions.usersSetUserDatingStatusIdle())
+  const handleErrorClose = () => {
+    usersEditProfileIdle()
+    usersSetUserDatingStatusIdle()
+  }
 
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
-      usersEditProfileIdle()
+      handleErrorClose()
       navigation.goBack()
     }
   }, [usersEditProfile.status])
+
+  useEffect(() => {
+    if (usersSetUserDatingStatus.status === 'failure') {
+      setDisableDating(getDisableDatingByStatus(user))
+    }
+  }, [usersSetUserDatingStatus.status])
+
+  useEffect(() => handleErrorClose, [])
 
   const handleFormTransform = (values) => ({
     dateOfBirth: helpers.makeDateOfBirth(values),
@@ -40,8 +60,14 @@ const DatingSettingsService = ({ children }) => {
     dispatch(usersActions.usersEditProfileRequest(handleFormTransform(values)))
   }
 
+  const toggleDatingStatusRequest = () => {
+    const status = disableDating ? 'ENABLED' : 'DISABLED'
+    dispatch(usersActions.usersSetUserDatingStatusRequest({ status }))
+    setDisableDating(!disableDating)
+  }
+
   const formSubmitLoading = usersEditProfile.status === 'loading'
-  const formErrorMessage = usersEditProfile.error.text
+  const formErrorMessage = getErrorText(usersEditProfile) || getErrorText(usersSetUserDatingStatus)
 
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
   const formInitialValues = {
@@ -65,6 +91,8 @@ const DatingSettingsService = ({ children }) => {
     formSubmitLoading,
     formErrorMessage,
     handleErrorClose,
+    disableDating,
+    toggleDatingStatusRequest,
   })
 }
 

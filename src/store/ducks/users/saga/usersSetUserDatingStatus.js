@@ -1,4 +1,4 @@
-import { put, takeLatest, getContext } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
@@ -7,7 +7,6 @@ import * as queryService from 'services/Query'
 import * as errors from 'store/ducks/users/errors'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
-import * as navigationActions from 'navigation/actions'
 
 /**
  *
@@ -46,18 +45,6 @@ function* usersSetUserDatingStatusRequest(req) {
   }
 }
 
-function* usersSetUserDatingStatusSuccess() {
-  const ReactNavigationRef = yield getContext('ReactNavigationRef')
-  navigationActions.navigateDating(ReactNavigationRef.current)()
-}
-
-function* usersSetUserDatingStatusFailure() {
-  const ReactNavigationRef = yield getContext('ReactNavigationRef')
-  navigationActions.navigateDating(ReactNavigationRef.current)()
-}
-
 export default () => [
   takeLatest(constants.USERS_SET_USER_DATING_STATUS_REQUEST, usersSetUserDatingStatusRequest),
-  takeLatest(constants.USERS_SET_USER_DATING_STATUS_SUCCESS, usersSetUserDatingStatusSuccess),
-  takeLatest(constants.USERS_SET_USER_DATING_STATUS_FAILURE, usersSetUserDatingStatusFailure),
 ]

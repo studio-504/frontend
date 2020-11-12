@@ -13,6 +13,8 @@ const DatingSettings = ({
   formSubmitLoading, 
   formErrorMessage,
   handleErrorClose,
+  disableDating,
+  toggleDatingStatusRequest,
 }) => {
   const styling = styles(theme)
 
@@ -30,6 +32,8 @@ const DatingSettings = ({
             handleFormSubmit={handleFormSubmit}
             formInitialValues={formInitialValues}
             formSubmitLoading={formSubmitLoading}
+            disableDating={disableDating}
+            toggleDatingStatusRequest={toggleDatingStatusRequest}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -44,11 +48,14 @@ DatingSettings.propTypes = {
   formSubmitLoading: PropTypes.bool, 
   handleErrorClose: PropTypes.func,
   formErrorMessage: PropTypes.string,
+  disableDating: PropTypes.bool,
+  toggleDatingStatusRequest: PropTypes.func, 
 }
 
 DatingSettings.defaultProps = {
   formSubmitLoading: false, 
   formErrorMessage: null,
+  disableDating: false,
 }
 
 const styles = (theme) =>
@@ -56,9 +63,6 @@ const styles = (theme) =>
     root: {
       flex: 1,
       backgroundColor: theme.colors.backgroundPrimary,
-    },
-    form: {
-      padding: theme.spacing.base,
     },
   })
 
