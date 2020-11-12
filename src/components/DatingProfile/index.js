@@ -8,14 +8,24 @@ import { Text } from 'react-native-paper'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import UploadAvatar from 'components/UploadAvatar'
+import AuthErrorTemplate from 'templates/Auth/Error'
 
-const DatingProfile = ({ t, theme, user, usersSetUserDatingStatus, usersSetUserDatingStatusRequest }) => {
+const DatingProfile = ({
+  t,
+  theme,
+  user,
+  usersSetUserDatingStatus,
+  usersSetUserDatingStatusRequest,
+  formErrorMessage,
+  handleErrorClose,
+}) => {
   const styling = styles(theme)
 
   return (
     <UploadAvatar>
       {({ openUploadAvatarMenu, isAvatarEmpty }) => (
         <View style={styling.root}>
+          {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
           <View style={styling.card}>
             <DatingCard user={user} />
           </View>
@@ -68,6 +78,12 @@ DatingProfile.propTypes = {
   user: PropTypes.any,
   usersSetUserDatingStatus: PropTypes.any,
   usersSetUserDatingStatusRequest: PropTypes.func,
+  formErrorMessage: PropTypes.string,
+  handleErrorClose: PropTypes.func,
+}
+
+DatingProfile.defaultProps = {
+  formErrorMessage: null,
 }
 
 export default withTranslation()(withTheme(DatingProfile))

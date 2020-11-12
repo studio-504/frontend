@@ -1,4 +1,3 @@
-import { Alert } from 'react-native'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -13,6 +12,12 @@ const DatingProfileService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
 
+  const formErrorMessage = usersSetUserDatingStatus.error.text
+
+  const handleErrorClose = () => {
+    dispatch(usersActions.usersSetUserDatingStatusIdle())
+  }
+
   const usersSetUserDatingStatusRequest = () =>
     dispatch(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))
 
@@ -22,22 +27,14 @@ const DatingProfileService = ({ children }) => {
     }
   }, [usersSetUserDatingStatus.status])
 
-  useEffect(() => {
-    if (usersSetUserDatingStatus.status === 'failure') {
-      Alert.alert(usersSetUserDatingStatus.error.text)
-    }
-  }, [usersSetUserDatingStatus.status])
-
-  const onUnmount = () => {
-    dispatch(usersActions.usersSetUserDatingStatusIdle())
-  }
-
-  useEffect(() => onUnmount, [])
+  useEffect(() => handleErrorClose, [])
 
   return children({
     user,
     usersSetUserDatingStatus,
     usersSetUserDatingStatusRequest,
+    formErrorMessage,
+    handleErrorClose,
   })
 }
 
