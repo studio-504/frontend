@@ -198,6 +198,7 @@ export const genderOptions = [
 ]
 
 export const locationOptions = [
+  { label: '5 mi', value: 5 },
   { label: '15 mi', value: 15 },
   { label: '30 mi', value: 30 },
   { label: '50 mi', value: 50 },
