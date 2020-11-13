@@ -18,6 +18,8 @@ const formSchema = Yup.object().shape({
   matchAgeRangeMax: Validation.matchAgeRangeMax,
   matchLocationRadius: Validation.matchLocationRadius,
   matchGenders: Validation.matchGenders,
+  matchHeightRangeMin: Validation.height,
+  matchHeightRangeMax: Validation.height,
 })
 
 const DatingMatchForm = ({
@@ -77,6 +79,38 @@ const DatingMatchForm = ({
           items={Validation.genderOptions}
         />
       </CollapsableComponent>
+
+      <CollapsableComponent
+        style={styles.input}
+        title="Match Height"
+        helper="Change match height"
+        active={false}
+        success={values.matchHeightRange}
+        errors={values.matchHeightRange}
+        accessibilityLabel="Toggle Match Height"
+      >
+        <View style={styles.row}>
+          <View style={styles.item}>
+            <Field
+              name="matchHeightRangeMin"
+              textInputProps={{ accessibilityLabel: 'matchHeightRangeMin' }}
+              component={PickerField}
+              placeholder={{ label: 'Match Minimum Height', value: undefined }}
+              items={Validation.heightOptions}
+            />
+          </View>
+          <View style={styles.item}>
+            <Field
+              name="matchHeightRangeMax"
+              textInputProps={{ accessibilityLabel: 'matchHeightRangeMax' }}
+              component={PickerField}
+              placeholder={{ label: 'Match Maximum Height', value: undefined }}
+              items={Validation.heightOptions}
+            />
+          </View>
+        </View>
+      </CollapsableComponent>
+
       <CollapsableComponent
         style={styles.input}
         title="Match Location Range"
@@ -106,7 +140,7 @@ const DatingMatchForm = ({
         <Field name="location" component={MapField} placeholder={t('Match Location')} />
       </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -138,22 +172,24 @@ DatingMatchForm.propTypes = {
 }
 
 export default withTranslation()(({
-  form,
+  handleFormSubmit,
+  formInitialValues,
+  formSubmitLoading,
+  formSubmitDisabled,
   ...props
 }) => (
   <Formik
-    initialValues={form.formInitialValues}
+    initialValues={formInitialValues}
     validationSchema={formSchema}
-    onSubmit={form.handleFormSubmit}
+    onSubmit={handleFormSubmit}
     enableReinitialize
   >
     {(formikProps) => (
       <DatingMatchForm
         {...formikProps}
         {...props}
-        {...form}
-        loading={form.formSubmitLoading}
-        disabled={form.formSubmitDisabled}
+        loading={formSubmitLoading}
+        disabled={formSubmitDisabled}
       />
     )}
   </Formik>

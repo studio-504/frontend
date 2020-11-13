@@ -5,10 +5,14 @@ import compose from 'ramda/src/compose'
 import replace from 'ramda/src/replace'
 import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
+import range from 'ramda/src/range'
 import debounce from 'debounce-async'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
 
+/**
+ * Constants
+ */
 const ERRORS = {
   dateOfBirthMonth: 'Month must be selected',
   dateOfBirthDay: 'Date must be selected',
@@ -22,7 +26,11 @@ const ERRORS = {
   matchGendersError: 'Gender must be a selected',
   onlyNumbers: 'must only contain numbers',
   noWhitespace: 'no whitespace',
+  height: 'Height must be selected',
 }
+
+const MIN_HEIGHT = 130
+const MAX_HEIGHT = 250
 
 /**
  * Validators
@@ -137,6 +145,11 @@ export const matchGenders = Yup.string()
   .typeError(ERRORS.matchGendersError)
   .required(ERRORS.matchGendersError)
 
+export const height = Yup.number()
+  .min(MIN_HEIGHT)
+  .max(MAX_HEIGHT)
+  .required(ERRORS.height)
+
 /**
  * Selectors
  */
@@ -244,3 +257,5 @@ export const getMaxAgeOptions = (matchAgeRangeMin) => {
     return { label: `${value}`, value }
   })
 }
+
+export const heightOptions = range(MIN_HEIGHT, MAX_HEIGHT + 1).map(value => ({ label: `${value}`, value }))
