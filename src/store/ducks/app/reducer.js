@@ -30,9 +30,6 @@ const appReadyRequest = (state) => update(state, {
 })
 
 const appReadySuccess = (state, action) => update(state, {
-  user: {
-    $set: action.payload.data,
-  },
   appReady: {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
