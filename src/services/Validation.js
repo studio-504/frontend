@@ -29,8 +29,8 @@ const ERRORS = {
   height: 'Height must be selected',
 }
 
-const MIN_HEIGHT = 130
-const MAX_HEIGHT = 250
+const MIN_HEIGHT = 0
+const MAX_HEIGHT = 275
 
 /**
  * Validators
