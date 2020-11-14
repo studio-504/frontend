@@ -91,9 +91,11 @@ export const setUserDetails = `
     $dateOfBirth: AWSDate,
     $gender: UserGender,
     $location: LocationInput,
+    $height: Int,
     $matchAgeRange: AgeRangeInput,
     $matchGenders: [UserGender!],
-    $matchLocationRadius: Int
+    $matchLocationRadius: Int,
+    $matchHeightRange: HeightRangeInput,
   ) {
     setUserDetails(
       username: $username,
@@ -112,9 +114,11 @@ export const setUserDetails = `
       dateOfBirth: $dateOfBirth,
       gender: $gender,
       location: $location,
+      height: $height,
       matchAgeRange: $matchAgeRange,
       matchGenders: $matchGenders,
       matchLocationRadius: $matchLocationRadius,
+      matchHeightRange: $matchHeightRange,
     ) {
       ...singleUserFragment
     }
