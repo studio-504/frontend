@@ -85,8 +85,8 @@ const DatingMatchForm = ({
         title="Match Height"
         helper="Change match height"
         active={false}
-        success={values.matchHeightRange}
-        errors={values.matchHeightRange}
+        success={values.matchHeightRangeMin && values.matchHeightRangeMax}
+        error={errors.matchHeightRangeMin || errors.matchHeightRangeMax}
         accessibilityLabel="Toggle Match Height"
       >
         <View style={styles.row}>
