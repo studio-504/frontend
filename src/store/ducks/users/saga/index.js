@@ -11,6 +11,7 @@ import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
+import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import * as Logger from 'services/Logger'
 
@@ -748,4 +749,5 @@ export default () => [
   takeLatest(constants.USERS_DELETE_AVATAR_REQUEST, usersDeleteProfilePhoto),
   takeLatest(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST, usersReportScreenViewsRequest),
   takeLatest(constants.USERS_CHANGE_AVATAR_REQUEST, usersChangeAvatarRequest),
+  takeLatest(constants.USERS_SET_USER_DATING_STATUS_REQUEST, usersSetUserDatingStatusRequest),
 ]
