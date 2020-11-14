@@ -27,6 +27,10 @@ const DatingProfileService = ({ children }) => {
     }
   }, [usersSetUserDatingStatus.status])
 
+  useEffect(() => {  
+    dispatch(usersActions.usersGetProfileSelfRequest())
+  }, [])
+
   useEffect(() => handleErrorClose, [])
 
   return children({
