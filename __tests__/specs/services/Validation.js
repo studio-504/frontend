@@ -2,6 +2,7 @@ import * as Validation from 'services/Validation'
 import { repeat, join, times } from 'ramda'
 import API from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
+import range from 'ramda/src/range'
 
 jest.mock('@aws-amplify/api', () => ({
   graphql: jest.fn().mockResolvedValue({ data: { usernameStatus: 'AVAILABLE' } }),
@@ -47,6 +48,15 @@ describe('Validation service', () => {
   })
 
   describe('Validators', () => {
+    it('height', async () => {
+      expect(await Validation.height.isValid(undefined)).toBeFalsy()
+      expect(await Validation.height.isValid('')).toBeFalsy()
+      expect(await Validation.height.isValid(-1)).toBeFalsy()
+      expect(await Validation.height.isValid(130)).toBeTruthy()
+      expect(await Validation.height.isValid(275)).toBeTruthy()
+      expect(await Validation.height.isValid(276)).toBeFalsy()
+    })
+
     it('email', async () => {
       expect(await Validation.email.isValid(undefined)).toBeFalsy()
       expect(await Validation.email.isValid('')).toBeFalsy()
@@ -548,6 +558,10 @@ describe('Validation service', () => {
         { label: '84', value: 84 },
         { label: '85', value: 85 },
       ])
+    })
+
+    it('heightOptions', () => {
+      expect(Validation.heightOptions).toEqual(range(0, 276).map((value) => ({ label: `${value}`, value })))
     })
 
     it('getMaxAgeOptions', () => {

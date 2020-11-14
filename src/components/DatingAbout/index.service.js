@@ -12,13 +12,10 @@ const DatingAboutService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersEditProfile = useSelector(state => state.users.usersEditProfile)
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
-
-  const usersEditProfileRequest = (payload) =>
-    dispatch(usersActions.usersEditProfileRequest(payload))
   
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
-      dispatch(usersActions.usersEditProfileIdle({}))
+      dispatch(usersActions.usersEditProfileIdle())
       navigationActions.navigateDatingMatch(navigation)()
     }
   }, [usersEditProfile.status])
@@ -31,14 +28,14 @@ const DatingAboutService = ({ children }) => {
     gender: values.gender,
     fullName: values.fullName,
     bio: values.bio,
+    height: values.height,
   })
 
   const handleFormSubmit = (values) => {
-    usersEditProfileRequest(handleFormTransform(values))
+    dispatch(usersActions.usersEditProfileRequest(handleFormTransform(values)))
   }
 
   const formSubmitLoading = usersEditProfile.status === 'loading'
-  const formSubmitDisabled = usersEditProfile.status === 'loading'
   const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
@@ -48,19 +45,17 @@ const DatingAboutService = ({ children }) => {
     gender: user.gender,
     fullName: user.fullName,
     bio: user.bio,
+    height: user.height,
   }
 
-  const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle({}))
+  const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle())
 
   return children({
-    form: {
-      handleFormSubmit,
-      formInitialValues,
-      formSubmitLoading,
-      formSubmitDisabled,
-      formErrorMessage,
-      handleErrorClose,
-    },
+    handleFormSubmit,
+    formInitialValues,
+    formSubmitLoading,
+    formErrorMessage,
+    handleErrorClose,
   })
 }
 
