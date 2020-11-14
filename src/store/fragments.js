@@ -29,7 +29,12 @@ export const userFragment = `
       longitude
       accuracy
     }
+    height
     matchAgeRange {
+      min
+      max
+    }
+    matchHeightRange {
       min
       max
     }
