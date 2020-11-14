@@ -31,7 +31,6 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
     onPress: handleSubmit,
     title: t('Update'),
     disabled: loading,
-    hidden: disableDating,
   })
 
   return (
