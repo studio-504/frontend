@@ -79,7 +79,6 @@ export const initialState = {
     data: {},
     status: 'idle',
     error: {},
-    payload: {},
   },
   usersEditProfile: {
     data: {},
@@ -544,10 +543,9 @@ const usersGetProfileIdle = (state) => update(state, {
 /**
  *
  */
-const usersGetProfileSelfRequest = (state, action) => update(state, {
+const usersGetProfileSelfRequest = (state) => update(state, {
   usersGetProfileSelf: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
   },
 })
 

@@ -29,7 +29,7 @@ function* chatMessageSubscription() {
 
     yield put(chatActions.chatGetChatRequest({ chatId }))
     yield put(chatActions.chatGetChatsRequest())
-    yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+    yield put(usersActions.usersGetProfileSelfRequest())
   })
 
   /**

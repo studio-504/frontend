@@ -1,5 +1,6 @@
 import { all, call } from 'redux-saga/effects'
 import { createPath } from 'navigation/helpers'
+import * as entitiesActions from 'store/ducks/entities/actions'
 
 export const applyActions = (actions, reducer) => {
   let state
@@ -48,4 +49,13 @@ export const testField = (field, props) => {
   Object.keys(props).forEach((key) => {
     expect(field.props[key]).toEqual(props[key])
   })
+}
+
+export const testEntitiesMerge = (saga, entities = {}) => {
+  return saga
+    .put(entitiesActions.entitiesAlbumsMerge({ data: entities.albums || {} }))
+    .put(entitiesActions.entitiesPostsMerge({ data: entities.posts || {} }))
+    .put(entitiesActions.entitiesUsersMerge({ data: entities.users || {} }))
+    .put(entitiesActions.entitiesCommentsMerge({ data: entities.comments || {} }))
+    .put(entitiesActions.entitiesImagesMerge({ data: entities.images || {} }))
 }

@@ -11,6 +11,8 @@ import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
+import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
+import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import * as Logger from 'services/Logger'
 
@@ -340,42 +342,6 @@ function* usersGetProfileRequest(req) {
     yield put(actions.usersGetProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
     yield put(actions.usersGetProfileFailure({ payload: req.payload, message: errorWrapper(error) }))
-  }
-}
-
-/**
- *
- */
-function* usersGetProfileSelfRequestData(req, api) {
-  const dataSelector = path(['data', 'self'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersGetProfileSelfRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
-  try {
-    const data = yield queryService.apiRequest(queries.self)
-    const next = yield usersGetProfileSelfRequestData(req, data)
-    yield put(actions.usersGetProfileSelfSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersGetProfileSelfFailure({ payload: req.payload, message: errorWrapper(error) }))
   }
 }
 
@@ -748,4 +714,5 @@ export default () => [
   takeLatest(constants.USERS_DELETE_AVATAR_REQUEST, usersDeleteProfilePhoto),
   takeLatest(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST, usersReportScreenViewsRequest),
   takeLatest(constants.USERS_CHANGE_AVATAR_REQUEST, usersChangeAvatarRequest),
+  takeLatest(constants.USERS_SET_USER_DATING_STATUS_REQUEST, usersSetUserDatingStatusRequest),
 ]
