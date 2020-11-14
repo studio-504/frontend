@@ -27,7 +27,6 @@ function* subscriptionNotificationStart() {
     }
 
     const payload = path(['value', 'data', 'onNotification'], eventData)
-    const userId = path(['userId'], payload)
     const type = path(['type'], payload)
 
     /**

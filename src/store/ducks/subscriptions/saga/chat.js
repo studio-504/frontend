@@ -10,7 +10,7 @@ import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
  *
  */
 function* chatMessageSubscription() {
-  const { channel, subscriptionState, userId } = yield call(createChannel, {
+  const { channel, subscriptionState } = yield call(createChannel, {
     query: chatQueries.onChatMessageNotification,
     identifier: 'onChatMessageNotification',
   })
