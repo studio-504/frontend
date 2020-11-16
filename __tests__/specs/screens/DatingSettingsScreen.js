@@ -28,9 +28,14 @@ const user = {
     min: 30,
     max: 40,
   },
+  matchHeightRange: {
+    min: 140,
+    max: 180,
+  },
   matchLocationRadius: 15,
   matchGenders: ['MALE'],
   bio: 'Bio',
+  height: 170,
 }
 
 const setup = () => renderWithStore(<DatingSettingsScreen />)
@@ -69,10 +74,13 @@ describe('DatingSettingsScreen', () => {
       testField(getByAccessibilityLabel('gender'), { value: 'Your Gender' })
       testField(getByAccessibilityLabel('fullName'), { value: undefined })
       testField(getByAccessibilityLabel('bio'), { value: undefined })
+      testField(getByAccessibilityLabel('height'), { value: 'Height' })
 
       expect(getByText('Match Settings')).toBeTruthy()
       testField(getByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(getByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
+      testField(getByAccessibilityLabel('matchHeightRangeMin'), { value: 'Match Minimum Height' })
+      testField(getByAccessibilityLabel('matchHeightRangeMax'), { value: 'Match Maximum Height' })
       testField(getByAccessibilityLabel('matchGenders'), { value: 'Female' })
       testField(getByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
 
@@ -90,11 +98,15 @@ describe('DatingSettingsScreen', () => {
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '1990' })
       testField(getByAccessibilityLabel('gender'), { value: 'Male' })
       testField(getByAccessibilityLabel('fullName'), { value: 'fullName' })
+      testField(getByAccessibilityLabel('bio'), { value: 'Bio' })
+      testField(getByAccessibilityLabel('height'), { value: '170' })
       testField(getByAccessibilityLabel('matchAgeRangeMin'), { value: '30' })
       testField(getByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
+      testField(getByAccessibilityLabel('matchHeightRangeMin'), { value: '140' })
+      testField(getByAccessibilityLabel('matchHeightRangeMax'), { value: '180' })
       testField(getByAccessibilityLabel('matchGenders'), { value: 'Male' })
       testField(getByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
-      testField(getByAccessibilityLabel('bio'), { value: 'Bio' })
+      
     })
 
     it('submit form', async () => {
@@ -111,6 +123,7 @@ describe('DatingSettingsScreen', () => {
       })
 
       expect(usersEditProfileRequest).toHaveBeenCalledWith({
+        height: 170,
         bio: 'Bio',
         dateOfBirth: '1990-04-21',
         disableDating: undefined,
@@ -120,6 +133,7 @@ describe('DatingSettingsScreen', () => {
         matchAgeRange: { max: 40, min: 30 },
         matchGenders: 'MALE',
         matchLocationRadius: 15,
+        matchHeightRange: { max: 180, min: 140 },
       })
 
       usersEditProfileRequest.mockRestore()

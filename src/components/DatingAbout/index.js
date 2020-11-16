@@ -6,21 +6,33 @@ import {
 } from 'react-native'
 import DatingAboutForm from 'components/DatingAbout/Form'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import AuthErrorTemplate from 'templates/Auth/Error'
 import { withTheme } from 'react-native-paper'
 
 const DatingAbout = ({
   theme,
-  form,
+  handleFormSubmit,
+  formInitialValues,
+  formSubmitLoading,
+  formErrorMessage,
+  handleErrorClose,
 }) => {
   const styling = styles(theme)
   
   return (
     <View style={styling.root}>
+      {formErrorMessage ?
+        <AuthErrorTemplate
+          text={formErrorMessage}
+          onClose={handleErrorClose}
+        />
+      : null}
       <KeyboardAwareScrollView>
         <View style={styling.form}>
           <DatingAboutForm
-            form={form}
+            handleFormSubmit={handleFormSubmit}
+            formInitialValues={formInitialValues}
+            formSubmitLoading={formSubmitLoading}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -40,7 +52,16 @@ const styles = theme => StyleSheet.create({
 
 DatingAbout.propTypes = {
   theme: PropTypes.any,
-  form: PropTypes.any,
+  handleFormSubmit: PropTypes.func,
+  formInitialValues: PropTypes.any,
+  formSubmitLoading: PropTypes.bool,
+  formErrorMessage: PropTypes.string,
+  handleErrorClose: PropTypes.func,
+}
+
+DatingAbout.defaultProps = {
+  formErrorMessage: null,
+  formSubmitLoading: false, 
 }
 
 export default withTheme(DatingAbout)

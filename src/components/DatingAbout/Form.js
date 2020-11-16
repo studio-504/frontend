@@ -20,6 +20,7 @@ const formSchema = Yup.object().shape({
   gender: Validation.gender,
   fullName: Validation.fullName,
   bio: Validation.bio,
+  height: Validation.height,
 })
 
 const DatingAboutForm = ({
@@ -110,8 +111,25 @@ const DatingAboutForm = ({
       >
         <Field name="bio" component={TextField} placeholder={t('Bio')} accessibilityLabel="bio" />
       </CollapsableComponent>
+      <CollapsableComponent
+        style={styles.input}
+        title="Height"
+        helper="Change your height"
+        active={false}
+        success={values.height}
+        error={errors.height}
+        accessibilityLabel="Toggle Height"
+      >
+        <Field
+          name="height"
+          textInputProps={{ accessibilityLabel: 'height' }}
+          component={PickerField}
+          placeholder={{ label: 'Height', value: undefined }}
+          items={Validation.heightOptions}
+        />
+      </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -143,22 +161,22 @@ DatingAboutForm.propTypes = {
 }
 
 export default withTranslation()(({
-  form,
+  handleFormSubmit,
+  formInitialValues,
+  formSubmitLoading,
   ...props
 }) => (
   <Formik
-    initialValues={form.formInitialValues}
+    initialValues={formInitialValues}
     validationSchema={formSchema}
-    onSubmit={form.handleFormSubmit}
+    onSubmit={handleFormSubmit}
     enableReinitialize
   >
     {(formikProps) => (
       <DatingAboutForm
         {...formikProps}
         {...props}
-        {...form}
-        loading={form.formSubmitLoading}
-        disabled={form.formSubmitDisabled}
+        loading={formSubmitLoading}
       />
     )}
   </Formik>

@@ -23,7 +23,7 @@ const DatingProfileService = ({ children }) => {
 
   useEffect(() => {
     if (usersSetUserDatingStatus.status === 'success') {
-      navigationActions.navigateDating(navigation)
+      navigationActions.navigateDating(navigation)()
     }
   }, [usersSetUserDatingStatus.status])
 

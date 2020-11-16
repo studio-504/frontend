@@ -18,10 +18,13 @@ const formSchema = Yup.object().shape({
   gender: Validation.gender,
   fullName: Validation.fullName,
   bio: Validation.bio,
+  height: Validation.height,
   matchAgeRangeMin: Validation.matchAgeRangeMin,
   matchAgeRangeMax: Validation.matchAgeRangeMax,
   matchLocationRadius: Validation.matchLocationRadius,
   matchGenders: Validation.matchGenders,
+  matchHeightRangeMin: Validation.height,
+  matchHeightRangeMax: Validation.height,
 })
 
 const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDating, toggleDatingStatusRequest }) => {
@@ -86,6 +89,15 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
         <View style={styling.row}>
           <Field name="bio" component={TextField} placeholder={t('Bio')} accessibilityLabel="bio" />
         </View>
+        <View style={styling.row}>
+          <Field
+            name="height"
+            textInputProps={{ accessibilityLabel: 'height' }}
+            component={PickerField}
+            placeholder={{ label: 'Height', value: undefined }}
+            items={Validation.heightOptions}
+          />
+        </View>
 
         <Title style={styling.title}>{t('Match Settings')}</Title>
         <View style={[styling.row, styling.group]}>
@@ -105,6 +117,26 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
               component={PickerField}
               placeholder={{ label: 'Match Maximum Age', value: undefined }}
               items={Validation.getMaxAgeOptions(values.matchAgeRangeMin)}
+            />
+          </View>
+        </View>
+        <View style={[styling.row, styling.group]}>
+          <View style={styling.item}>
+            <Field
+              name="matchHeightRangeMin"
+              textInputProps={{ accessibilityLabel: 'matchHeightRangeMin' }}
+              component={PickerField}
+              placeholder={{ label: 'Match Minimum Height', value: undefined }}
+              items={Validation.heightOptions}
+            />
+          </View>
+          <View style={styling.item}>
+            <Field
+              name="matchHeightRangeMax"
+              textInputProps={{ accessibilityLabel: 'matchHeightRangeMax' }}
+              component={PickerField}
+              placeholder={{ label: 'Match Maximum Height', value: undefined }}
+              items={Validation.heightOptions}
             />
           </View>
         </View>

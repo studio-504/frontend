@@ -10,11 +10,10 @@ const DatingMatchService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const usersEditProfile = useSelector(state => state.users.usersEditProfile)
+  const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
 
-  const usersEditProfileRequest = (payload) =>
-    dispatch(usersActions.usersEditProfileRequest(payload))
-  
+  const usersEditProfileRequest = (payload) => dispatch(usersActions.usersEditProfileRequest(payload))
+
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
       dispatch(usersActions.usersEditProfileIdle({}))
@@ -29,6 +28,10 @@ const DatingMatchService = ({ children }) => {
     matchAgeRange: {
       min: values.matchAgeRangeMin,
       max: values.matchAgeRangeMax,
+    },
+    matchHeightRange: {
+      min: values.matchHeightRangeMin,
+      max: values.matchHeightRangeMax,
     },
     matchGenders: values.matchGenders,
     matchLocationRadius: values.matchLocationRadius,
@@ -46,6 +49,8 @@ const DatingMatchService = ({ children }) => {
   const formInitialValues = {
     matchAgeRangeMin: helpers.getMatchAgeRangeMin(user),
     matchAgeRangeMax: helpers.getMatchAgeRangeMax(user),
+    matchHeightRangeMin: helpers.getMatchHeightRangeMin(user),
+    matchHeightRangeMax: helpers.getMatchHeightRangeMax(user),
     matchGenders: helpers.getMatchGenders(user),
     matchLocationRadius: helpers.getMatchLocationRadius(user),
     location: user.location,
@@ -54,14 +59,12 @@ const DatingMatchService = ({ children }) => {
   const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle({}))
 
   return children({
-    form: {
-      handleFormSubmit,
-      formInitialValues,
-      formSubmitLoading,
-      formSubmitDisabled,
-      formErrorMessage,
-      handleErrorClose,
-    },
+    handleFormSubmit,
+    formInitialValues,
+    formSubmitLoading,
+    formSubmitDisabled,
+    formErrorMessage,
+    handleErrorClose,
   })
 }
 
