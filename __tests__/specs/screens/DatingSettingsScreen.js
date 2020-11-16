@@ -246,18 +246,5 @@ describe('DatingSettingsScreen', () => {
 
       usersSetUserDatingStatusRequest.mockRestore()
     })
-
-    it('toggle submit button', async () => {
-      const { getByAccessibilityLabel } = setup()
-
-      expect(getHeaderProps().hidden).toBe(false)
-      useHeader.mockClear()
-
-      await act(async () => {
-        fireEvent.press(getByAccessibilityLabel('disableDating'))
-      })
-
-      expect(getHeaderProps().hidden).toBe(true)
-    })
   })
 })

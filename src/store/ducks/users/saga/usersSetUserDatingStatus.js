@@ -15,7 +15,6 @@ function* usersSetUserDatingStatusRequestData(req, api) {
   const dataSelector = path(['data', 'setUserDatingStatus'])
 
   const data = dataSelector(api)
-  const meta = {}
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
@@ -27,7 +26,6 @@ function* usersSetUserDatingStatusRequestData(req, api) {
 
   return {
     data: normalized.result,
-    meta,
     payload,
   }
 }
@@ -36,12 +34,14 @@ function* usersSetUserDatingStatusRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.setUserDatingStatus, req.payload)
     const next = yield usersSetUserDatingStatusRequestData(req, data)
-    yield put(actions.usersSetUserDatingStatusSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
+    yield put(actions.usersSetUserDatingStatusSuccess({ data: next.data, payload: next.payload }))
   } catch (error) {
-    yield put(actions.usersSetUserDatingStatusFailure({
-      message: errors.getMessagePayload(constants.USERS_SET_USER_DATING_STATUS_FAILURE, 'GENERIC', error.message),
-      payload: req.payload,
-    }))
+    yield put(
+      actions.usersSetUserDatingStatusFailure({
+        message: errors.getMessagePayload(constants.USERS_SET_USER_DATING_STATUS_FAILURE, 'GENERIC', error.message),
+        payload: req.payload,
+      }),
+    )
   }
 }
 
