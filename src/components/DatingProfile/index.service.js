@@ -11,6 +11,7 @@ const DatingProfileService = ({ children }) => {
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
+  const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
 
   const formErrorMessage = usersSetUserDatingStatus.error.text
 
@@ -29,6 +30,7 @@ const DatingProfileService = ({ children }) => {
 
   useEffect(() => {  
     dispatch(usersActions.usersGetProfileSelfRequest())
+    dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 
   useEffect(() => handleErrorClose, [])
@@ -39,6 +41,7 @@ const DatingProfileService = ({ children }) => {
     usersSetUserDatingStatusRequest,
     formErrorMessage,
     handleErrorClose,
+    usersImagePostsGet,
   })
 }
 

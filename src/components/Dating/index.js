@@ -10,9 +10,12 @@ import DatingPlaceholder from 'components/Dating/Placeholder'
 import LoadingComponent from 'components/Loading'
 import Swiper from 'react-native-deck-swiper'
 import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+
+const getUserPosts = pathOr([], ['posts', 'items'])
 
 const Dating = ({
   theme,
@@ -24,7 +27,7 @@ const Dating = ({
 }) => {
   const styling = styles(theme)
   const swiperRef = useRef(null)
-  const renderCard = useCallback((datingUser) => <DatingCard user={datingUser} />, [])
+  const renderCard = useCallback((datingUser) => <DatingCard user={datingUser} posts={getUserPosts(datingUser)} />, [])
 
   const loadingVisibility = useMemo(() =>
     path(['status'], datingMatchedUsers) === 'loading'
