@@ -6,7 +6,6 @@ export const useHeader = ({
   onPress,
   title,
   disabled,
-  hidden,
 }) => {
   const navigation = useNavigation()
 
@@ -14,8 +13,8 @@ export const useHeader = ({
    *
    */
   const headerRight = useCallback(() =>
-    <HeaderRight onPress={onPress} title={title} disabled={disabled} hidden={hidden} />
-  , [disabled, hidden])
+    <HeaderRight onPress={onPress} title={title} disabled={disabled} />
+  , [disabled])
   
   /**
    *
@@ -24,6 +23,6 @@ export const useHeader = ({
     navigation.setOptions({
       headerRight,
     })
-  }, [disabled, hidden])
+  }, [disabled])
 }
 
