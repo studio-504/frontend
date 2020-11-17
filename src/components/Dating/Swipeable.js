@@ -2,7 +2,8 @@ import React, { useRef, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import {
   Animated,
-  TouchableWithoutFeedback,
+  View,
+  StyleSheet,
 } from 'react-native'
 import {
   FlingGestureHandler,
@@ -16,17 +17,21 @@ const Swipeable = ({ children }) => {
   const [flingPosition, setFlingPosition] = useState('DOWN')
 
   const STATIC_VIEW_HEIGHT_MIN = 152
-  const STATIC_VIEW_HEIGHT_MAX = 1000
+  const STATIC_VIEW_HEIGHT_MAX = useRef(1000)
 
   const animatedHeight = new Animated.Value(STATIC_VIEW_HEIGHT_MIN)
   const animatedHeightRef = useRef(animatedHeight)
+
+  const handleOnLayout = ({ nativeEvent }) => {
+    STATIC_VIEW_HEIGHT_MAX.current = nativeEvent.layout.height
+  }
 
   /**
    * Expand handler
    */
   const onUpFlingHandlerStateChange = useCallback(() => {
     Animated.timing(animatedHeight, {
-      toValue: STATIC_VIEW_HEIGHT_MAX,
+      toValue: STATIC_VIEW_HEIGHT_MAX.current,
       duration: 300,
     }).start()
     setFlingPosition('UP')
@@ -54,7 +59,7 @@ const Swipeable = ({ children }) => {
   }, [flingPosition])
 
   return (
-    <TouchableWithoutFeedback>
+    <View style={styles.root} onLayout={handleOnLayout}>
       <FlingGestureHandler
         direction={Directions.UP}
         onHandlerStateChange={onUpFlingHandlerStateChange}
@@ -72,9 +77,15 @@ const Swipeable = ({ children }) => {
           })}
         </FlingGestureHandler>
       </FlingGestureHandler>
-    </TouchableWithoutFeedback>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+})
 
 Swipeable.propTypes = {
   children: PropTypes.any,
