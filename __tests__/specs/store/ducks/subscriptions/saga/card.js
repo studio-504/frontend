@@ -39,7 +39,7 @@ describe('cardSubscription', () => {
     const checkSuccess = (saga) => {
       saga.not.put(usersActions.usersGetCardsRequest({}))
       saga.not.put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-      saga.not.put(usersActions.usersGetProfileSelfRequest({ userId }))
+      saga.not.put(usersActions.usersGetProfileSelfRequest())
       saga.not.put(usersActions.usersGetPendingFollowersRequest({ userId }))
 
       return saga
@@ -97,7 +97,7 @@ describe('cardSubscription', () => {
       const saga = createSaga(store)
         .put(usersActions.usersGetCardsRequest({}))
         .put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-        .put(usersActions.usersGetProfileSelfRequest({ userId }))
+        .put(usersActions.usersGetProfileSelfRequest())
         .put(usersActions.usersGetPendingFollowersRequest({ userId }))
 
       const promise = saga.silentRun()

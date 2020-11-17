@@ -6,24 +6,20 @@ import * as ReactRedux from 'react-redux'
 import * as albumsActions from 'store/ducks/albums/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as albumsSelector from 'store/ducks/albums/selectors'
-import * as albumsReducer from 'store/ducks/albums/reducer'
+import * as usersActions from 'store/ducks/users/actions'
+import * as usersSelector from 'store/ducks/users/selectors'
 
 const user = {
   userId: 'id123',
+  username: 'username',
 }
 
+jest.spyOn(usersSelector, 'usersGetProfileSelfSelector').mockReturnValue({ data: user })
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
-jest.spyOn(albumsSelector, 'albumsGetSelector')
-
 jest.spyOn(ReactRedux, 'useDispatch')
 
 const dispatch = jest.fn()
 ReactRedux.useDispatch.mockReturnValue(dispatch)
-
-albumsSelector.albumsGetSelector.mockImplementation(() =>
-  jest.fn().mockReturnValue(albumsReducer.initialState.albumsGet),
-)
 
 jest.mock('components/Cache', () => jest.fn().mockReturnValue(null))
 
@@ -44,13 +40,15 @@ describe('ProfileSelfScreen', () => {
       dispatch.mockClear()
       authSelector.authUserSelector.mockReturnValue(user)
       useRoute.mockReturnValue({ params: {} })
+      navigation.setOptions.mockClear()
     })
 
     it('request data for authorized user', () => {
       setup()
 
-      expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest(user))
-      expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest(user))
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersGetProfileSelfRequest())
+      expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest({ userId: 'id123' }))
+      expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest({ userId: 'id123' }))
     })
 
     it('request data for user from route params', () => {
@@ -58,15 +56,23 @@ describe('ProfileSelfScreen', () => {
       useRoute.mockReturnValue({ params })
       setup()
 
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersGetProfileSelfRequest())
       expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest(params))
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest(params))
     })
 
-    it('not load data for not authorized user', () => {
+    it('not load albums and posts for not authorized user', () => {
       authSelector.authUserSelector.mockReturnValue({})
       setup()
 
-      expect(dispatch).not.toHaveBeenCalled()
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersGetProfileSelfRequest())
+      expect(dispatch).toHaveBeenCalledTimes(1)
+    })
+
+    it('set username as screen title', () => {
+      setup()
+
+      expect(navigation.setOptions).toHaveBeenCalledWith({ title: user.username })
     })
   })
 })

@@ -10,7 +10,7 @@ import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
  *
  */
 function* chatMessageSubscription() {
-  const { channel, subscriptionState, userId } = yield call(createChannel, {
+  const { channel, subscriptionState } = yield call(createChannel, {
     query: chatQueries.onChatMessageNotification,
     identifier: 'onChatMessageNotification',
   })
@@ -29,7 +29,7 @@ function* chatMessageSubscription() {
 
     yield put(chatActions.chatGetChatRequest({ chatId }))
     yield put(chatActions.chatGetChatsRequest())
-    yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+    yield put(usersActions.usersGetProfileSelfRequest())
   })
 
   /**
