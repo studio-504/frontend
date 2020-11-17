@@ -22,24 +22,23 @@ const ThemeModal = ({
   onDiscardClick,
 }) => {
   const activeTheme = useSelector(authSelector.themeSelector)
-
   const styling = styles(theme)
   
   return (
     <Modal isVisible={isVisible}>
-      <View style={styling.root}>
+      <View accessibilityLabel="Theme Modal" style={styling.root}>
         <View style={styling.header}>
           <PaperProvider theme={activeTheme}>
             <View style={styling.action}>
               <Paragraph style={styling.text}>{t('This is preview of selected theme')}</Paragraph>
-            </View>
+            </View> 
 
             <View style={styling.action}>
               <View style={styling.actionItem}>
-                <DefaultButton label={t('Apply Theme')} onPress={onApplyClick} />
+                <DefaultButton accessibilityLabel="Apply Theme"  label={t('Apply Theme')} onPress={onApplyClick} />
               </View>
               <View style={styling.actionItem}>
-                <DefaultButton label={t('Discard Theme')} onPress={onDiscardClick} />
+                <DefaultButton accessibilityLabel="Discard Theme" label={t('Discard Theme')} onPress={onDiscardClick} />
               </View>
             </View>
           </PaperProvider>

@@ -17,11 +17,11 @@ const ThemeRowActionTemplate = ({
     <View style={styling.root}>
       <View style={styling.component}>
         {enabled ?
-          <DefaultButton label="Disable" onPress={onDisablePress} size="compact" />
+          <DefaultButton accessibilityLabel="Disable Theme" label="Disable" onPress={onDisablePress} size="compact" />
         : null}
-
+ 
         {!enabled ?
-          <DefaultButton label="Enable" onPress={onEnablePress} mode="outlined" size="compact" />
+          <DefaultButton accessibilityLabel="Enable Theme" label="Enable" onPress={onEnablePress} mode="outlined" size="compact" />
         : null}
       </View>
     </View>

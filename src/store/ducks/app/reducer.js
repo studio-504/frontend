@@ -10,14 +10,6 @@ export const initialState = {
     payload: {},
     meta: {},
   },
-
-  appThemePreview: {
-    data: {
-      name: null,
-      theme: {},
-    },
-    status: 'idle',
-  },
 }
 
 /**
@@ -56,43 +48,9 @@ const appReadyIdle = (state) => update(state, {
   appReady: { $set: initialState.appReady },
 })
 
-/**
- *
- */
-const appThemePreviewRequest = (state) => update(state, {
-  appThemePreview: {
-    status: { $set: 'loading' },
-  },
-})
-
-const appThemePreviewSuccess = (state, action) => update(state, {
-  appThemePreview: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-  },
-})
-
-const appThemePreviewFailure = (state) => update(state, {
-  appThemePreview: {
-    status: { $set: 'failure' },
-  },
-})
-
-const appThemePreviewIdle = (state) => update(state, {
-  appThemePreview: {
-    data: { $set: initialState.appThemePreview.data },
-    status: { $set: 'idle' },
-  },
-})
-
 export default handleActions({
   [constants.APP_READY_REQUEST]: appReadyRequest,
   [constants.APP_READY_SUCCESS]: appReadySuccess,
   [constants.APP_READY_FAILURE]: appReadyFailure,
   [constants.APP_READY_IDLE]: appReadyIdle,
-
-  [constants.APP_THEME_PREVIEW_REQUEST]: appThemePreviewRequest,
-  [constants.APP_THEME_PREVIEW_SUCCESS]: appThemePreviewSuccess,
-  [constants.APP_THEME_PREVIEW_FAILURE]: appThemePreviewFailure,
-  [constants.APP_THEME_PREVIEW_IDLE]: appThemePreviewIdle,
 }, initialState)
