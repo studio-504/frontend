@@ -84,7 +84,6 @@ describe('rootReducer', () => {
   it('save app state on signout', () => {
     const state = applyActions([
       appActions.appReadyRequest(),
-      appActions.appThemePreviewRequest(),
     ], rootReducer)
 
     expect(state.app).not.toEqual(initialState.app)
