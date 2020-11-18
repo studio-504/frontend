@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
@@ -17,7 +17,10 @@ export const AuthProvider = ({
 }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUserSelector)
+  const [swipeDisabled, setSwipeDisabled] = useState(false)
+  
   const isUserActive = user.userStatus === 'ACTIVE'
+  const swipeEnabled = isUserActive && !swipeDisabled
 
   /**
    * Constructor function to fetch: Translations, Themes and Auth data
@@ -47,7 +50,7 @@ export const AuthProvider = ({
   })
 
   return (
-    <AuthContext.Provider value={{ user, isUserActive }}>
+    <AuthContext.Provider value={{ user, swipeEnabled, setSwipeDisabled }}>
       {children}
     </AuthContext.Provider>
   )

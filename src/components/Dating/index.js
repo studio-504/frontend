@@ -1,13 +1,14 @@
-import React, { useRef, useCallback, useMemo } from 'react'
+import React, { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
   View,
+  ScrollView,
+  RefreshControl,
 } from 'react-native'
 import DatingCard from 'components/Dating/Card'
 import DatingActions from 'components/Dating/Actions'
 import DatingPlaceholder from 'components/Dating/Placeholder'
-import LoadingComponent from 'components/Loading'
 import Swiper from 'react-native-deck-swiper'
 import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
@@ -29,60 +30,48 @@ const Dating = ({
   const swiperRef = useRef(null)
   const renderCard = useCallback((datingUser) => <DatingCard user={datingUser} posts={getUserPosts(datingUser)} />, [])
 
-  const loadingVisibility = useMemo(() =>
-    path(['status'], datingMatchedUsers) === 'loading'
-  , [datingMatchedUsers])
-
-  const placeholderVisibility = useMemo(() =>
-    path(['status'], datingMatchedUsers) !== 'loading' && !path(['data', 'length'], datingMatchedUsers)
-  , [datingMatchedUsers])
-
-  const matchesVisibility = useMemo(() =>
-    path(['status'], datingMatchedUsers) === 'success' && path(['data', 'length'], datingMatchedUsers)
-  , [datingMatchedUsers])
-
-  const actionsVisibility = useMemo(() =>
-    path(['status'], datingMatchedUsers) === 'success' && path(['data', 'length'], datingMatchedUsers)
-  , [datingMatchedUsers])
+  const loadingVisibility = path(['status'], datingMatchedUsers) === 'loading'
+  const matchesVisibility = path(['data', 'length'], datingMatchedUsers)
 
   return (
-    <View style={styling.root}>
-      <View style={styling.carousel}>
-        {loadingVisibility ?
-          <LoadingComponent />
-        : null}
-
-        {placeholderVisibility ?
-          <DatingPlaceholder
-            datingMatchedUsersRequest={datingMatchedUsersRequest}
-          />
-        : null}
-
-        {matchesVisibility ?
-          <Swiper
-            ref={swiperRef}
-            cards={datingMatchedUsers.data}
-            onSwipedLeft={handleSwipedLeft}
-            onSwipedRight={handleSwipedRight}
-            onSwipedAll={datingMatchedUsersIdle}
-            renderCard={renderCard}
-            cardIndex={0}
-            stackSize={3}
-            verticalSwipe={false}
-            cardVerticalMargin={theme.spacing.base}
-            cardHorizontalMargin={theme.spacing.base}
-            backgroundColor={theme.colors.backgroundPrimary}
-            cardStyle={styling.card}
-          />
-        : null}
-      </View>
-
-      {actionsVisibility ?
-        <View style={styling.actions}>
-          <DatingActions swiperRef={swiperRef} />
-        </View>
-      : null}
-    </View>
+    <ScrollView
+      contentContainerStyle={styling.root}
+      refreshControl={
+        <RefreshControl
+          tintColor={theme.colors.border}
+          refreshing={loadingVisibility}
+          onRefresh={datingMatchedUsersRequest}
+        />
+      }
+    > 
+      {matchesVisibility ?
+        <React.Fragment>
+          <View style={styling.carousel}>
+            <Swiper
+              ref={swiperRef}
+              cards={datingMatchedUsers.data}
+              onSwipedLeft={handleSwipedLeft}
+              onSwipedRight={handleSwipedRight}
+              onSwipedAll={datingMatchedUsersIdle}
+              renderCard={renderCard}
+              cardIndex={0}
+              stackSize={3}
+              verticalSwipe={false}
+              cardVerticalMargin={theme.spacing.base}
+              cardHorizontalMargin={theme.spacing.base}
+              backgroundColor={theme.colors.backgroundPrimary}
+              cardStyle={styling.card}
+            />
+          </View>
+          <View style={styling.actions}>
+            <DatingActions swiperRef={swiperRef} />
+          </View>
+        </React.Fragment>
+      : <DatingPlaceholder
+          datingMatchedUsersRequest={datingMatchedUsersRequest}
+        />
+      }    
+    </ScrollView>
   )
 }
 
@@ -99,9 +88,6 @@ const styles = theme => StyleSheet.create({
   },
   card: {
     height: '100%',
-  },
-  placeholder: {
-    padding: theme.spacing.base,
   },
 })
 
