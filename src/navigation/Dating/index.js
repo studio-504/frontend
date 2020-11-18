@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { withTheme } from 'react-native-paper'
 
@@ -13,7 +13,7 @@ import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingPreviewScreen from 'screens/DatingPreviewScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native'
 
 const Stack = createStackNavigator()
 
