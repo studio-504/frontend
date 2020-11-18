@@ -4,3 +4,4 @@ import compose from 'ramda/src/compose'
 const signupRoot = prop('signup')
 export const signupCreate = compose(prop('signupCreate'), signupRoot)
 export const signupConfirm = compose(prop('signupConfirm'), signupRoot)
+export const signupPassword = compose(prop('signupPassword'), signupRoot)
