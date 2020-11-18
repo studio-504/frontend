@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { withTheme } from 'react-native-paper'
 
@@ -13,15 +13,22 @@ import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingPreviewScreen from 'screens/DatingPreviewScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
+import { useFocusEffect } from '@react-navigation/native';
 
 const Stack = createStackNavigator()
 
 const DatingNavigator = () => {
   const { theme } = useContext(ThemeContext)
-  const { user } = useContext(AuthContext)
+  const { user, setSwipeDisabled } = useContext(AuthContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
   const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, user })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
+
+  useFocusEffect(() => {
+    setSwipeDisabled(true)
+
+    return () => setSwipeDisabled(false)
+  })
 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
