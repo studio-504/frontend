@@ -6,16 +6,28 @@ import * as authSelectors from 'store/ducks/auth/selectors'
 import * as authActions from 'store/ducks/auth/actions'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
+import {
+  resetAuthUserPersist,
+  getAuthUserPersist,
+} from 'services/Auth'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import * as Updates from 'services/Updates'
 import translationsJson from 'assets/translations.json'
+import path from 'ramda/src/path'
 
 function* getCachedAuthentication() {
   const AwsAuth = yield getContext('AwsAuth')
-
+  const response = yield getAuthUserPersist()
   const credentials = yield call([AwsAuth, 'currentCredentials'])
+  const cognitoIdentityId = path(['identityId'], credentials)
+  const cachedIdentityId = path(['data', 'self', 'userId'])(response)
+
+  if (cognitoIdentityId !== cachedIdentityId) {
+    yield resetAuthUserPersist()
+  }
+
   return credentials.authenticated || false
 }
 
