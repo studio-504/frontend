@@ -10,32 +10,26 @@ const ProfileSelfService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const usersGetProfile = useSelector(usersSelector.usersGetProfileSelfSelector())
-  const userId = user.userId
-
+  const usersGetProfileSelf = useSelector(usersSelector.usersGetProfileSelfSelector)
+  const username = path(['data', 'username'])(usersGetProfileSelf)
+  
   const profileRef = useRef(null)
-  useScrollToTop(profileRef)
+  useScrollToTop(profileRef) 
 
   useEffect(() => {
-    navigation.setOptions({
-      title: path(['data', 'username'])(usersGetProfile),
-    })
+    dispatch(usersActions.usersGetProfileSelfRequest())
   }, [])
 
-  const usersGetProfileSelfRequest = ({ userId }) => 
-    dispatch(usersActions.usersGetProfileSelfRequest({ userId }))
-
   useEffect(() => {
-    if(!userId) return
-
-    usersGetProfileSelfRequest({ userId })
-  }, [userId])
+    if (username) {
+      navigation.setOptions({ title: username })
+    }
+  }, [username])
 
   return children({
     user,
     profileRef,
-    usersGetProfile,
-    usersGetProfileSelfRequest,
+    usersGetProfile: usersGetProfileSelf,
   })
 }
 

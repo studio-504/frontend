@@ -86,7 +86,7 @@ describe('subscriptionNotificationStart', () => {
       const userId = 1
       const event = { type: 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', userId }
 
-      saga.put(usersActions.usersGetProfileSelfRequest({ userId }))
+      saga.put(usersActions.usersGetProfileSelfRequest())
 
       const promise = saga.silentRun()
 

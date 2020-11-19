@@ -13,11 +13,11 @@ import DatingSwipeable from 'components/Dating/Swipeable'
 import path from 'ramda/src/path'
 
 import { withTheme } from 'react-native-paper'
-import { withTranslation } from 'react-i18next'
 
 const Card = ({
   theme,
   user,
+  posts,
 }) => {
   const styling = styles(theme)
 
@@ -33,12 +33,11 @@ const Card = ({
             <View style={styling.preview}>
               <Image source={{ uri: path(['photo', 'url480p'], user) }} style={styling.image} />
             </View>
-
             <Animated.View style={[styling.about, { height: swipeableProps.animatedHeightRef.current }]}>
               <TouchableOpacity onPress={swipeableProps.onToggleFlingHandlerStateChange}>
                 <DatingAbout {...swipeableProps} user={user} />
-                <DatingGallery {...swipeableProps} user={user} />
               </TouchableOpacity>
+              <DatingGallery posts={posts} />
             </Animated.View>
           </View>
         </View>
@@ -73,6 +72,11 @@ const styles = theme => StyleSheet.create({
 Card.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
+  posts: PropTypes.array,
 }
 
-export default withTranslation()(withTheme(Card))
+Card.defaultProps = {
+  posts: [],
+}
+
+export default withTheme(Card)

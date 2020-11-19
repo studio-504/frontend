@@ -1,4 +1,4 @@
-import { call, put, takeEvery, getContext } from 'redux-saga/effects'
+import { call, put, takeLatest, spawn, getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
@@ -103,7 +103,9 @@ function* onlineData() {
     throw new MissingUserAttributeError()
   }
 
-  return response
+  const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, response)
+  yield handleAuthLogger(response)
+  return next
 }
 
 /**
@@ -121,7 +123,9 @@ function* cachedData() {
     throw new GuestUserError()
   }
 
-  return response
+  const next = yield call(handleAuthDataRequestData, { meta: { type: 'OFFLINE' } }, response)
+  yield handleAuthLogger(response)
+  return next
 }
 
 /**
@@ -141,17 +145,13 @@ function* handleAuthDataRequest(payload = {}) {
     yield createAnonymousUser()
   }
 
-  const data = yield (function* () {
-    try {
-      return yield call(cachedData)
-    } catch (error) {
-      return yield call(onlineData)
-    }
-  })()
-
-  const next = yield call(handleAuthDataRequestData, { meta: { type: 'ONLINE' } }, data)
-  yield handleAuthLogger(data)
-  return next
+  try {
+    const cached = yield call(cachedData)
+    yield spawn(onlineData)
+    return cached
+  } catch (error) {
+    return yield call(onlineData)
+  }
 }
 
 /**
@@ -181,5 +181,5 @@ function* authDataRequest(req) {
 }
 
 export default () => [
-  takeEvery(constants.AUTH_DATA_REQUEST, authDataRequest),
+  takeLatest(constants.AUTH_DATA_REQUEST, authDataRequest),
 ]

@@ -22,14 +22,12 @@ const Placeholder = ({
 
   return (
     <View style={styling.root}>
-      <View style={styling.placeholder}>
+      <View style={styling.title}>
         <Text style={styling.text}>{t('We cannot find potential matches or you have viewed them all based on your search criteria')}.</Text>
       </View>
-      <View style={styling.placeholder}>
-        <DefaultButton label={t('Your Dating Preferences')} onPress={navigationActions.navigateDatingAbout(navigation)} loading={false} />
-      </View>
-      <View style={styling.placeholder}>
-        <DefaultButton label={t('Check again')} onPress={datingMatchedUsersRequest} loading={false} mode="outline" />
+      <View style={styling.actions}>
+        <DefaultButton style={styling.settingsBtn} label={t('Your Dating Preferences')} onPress={navigationActions.navigateDatingAbout(navigation)} />
+        <DefaultButton label={t('Check again')} onPress={datingMatchedUsersRequest} mode="outlined" />
       </View>
     </View>
   )
@@ -39,10 +37,13 @@ const styles = theme => StyleSheet.create({
   root: {
     flex: 1,
     justifyContent: 'center',
-  },
-  placeholder: {
-    paddingVertical: theme.spacing.base,
     paddingHorizontal: theme.spacing.base * 2,
+  },
+  title: {
+    marginBottom: theme.spacing.base * 2,
+  },
+  settingsBtn: {
+    marginBottom: theme.spacing.base,
   },
   text: {
     fontSize: 18,

@@ -73,4 +73,72 @@ describe('Signup reducer', () => {
       })
     })
   })
+
+  describe('signupPassword', () => {
+    const payload = { a: 1, b: 2 }
+    const data = { c: 3 }
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK' })
+
+      expect(selectors.signupPassword(state)).toEqual({
+        data: [],
+        status: 'idle',
+        error: {},
+        payload: {},
+      })
+    })
+
+    it('loading', () => {
+      const state = reducer(undefined, actions.signupPasswordRequest(payload))
+
+      expect(selectors.signupPassword(state)).toEqual({
+        data: [],
+        status: 'loading',
+        error: {},
+        payload,
+      })
+    })
+
+    it('success', () => {
+      const state = reducer(undefined, actions.signupPasswordSuccess({ payload, data }))
+
+      expect(selectors.signupPassword(state)).toEqual({
+        data,
+        status: 'success',
+        error: {},
+        payload,
+      })
+    })
+
+    it('failure', () => {
+      const message = 'Error Message'
+      const state = reducer(undefined, actions.signupPasswordFailure({ message, payload }))
+
+      expect(selectors.signupPassword(state)).toEqual({
+        data: [],
+        status: 'failure',
+        error: message,
+        payload,
+      })
+    })
+
+    it('idle', () => {
+      const state = applyActions(
+        [
+          actions.signupPasswordSuccess({ payload, data }),
+          actions.signupPasswordFailure({ message: 'Error' }),
+          actions.signupPasswordIdle(),
+        ],
+        reducer,
+      )
+
+      expect(selectors.signupPassword(state)).toEqual({
+        data: [],
+        status: 'idle',
+        error: {},
+        payload: {},
+      })
+    })
+  })
 })

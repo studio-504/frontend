@@ -11,16 +11,13 @@ class ThemeScreen extends React.Component {
       <ThemeServiceComponent>
         {(props) => (
           <React.Fragment>
-            {props.appThemePreview.status === 'success' ?
+            {props.appThemePreview !== null ?
               <ThemeModalComponent
-                isVisible={props.appThemePreview.status === 'success'}
-                onApplyClick={() => {
-                  props.usersEditProfileRequest()
-                  props.appThemePreviewIdle()
-                }}
-                onDiscardClick={() => props.appThemePreviewIdle()}
+                isVisible
+                onApplyClick={() => props.appThemePreviewUpdate(props.appThemePreview.key)}
+                onDiscardClick={props.appThemePreviewIdle}
               >
-                <PaperProvider theme={props.appThemePreview.data.theme}>
+                <PaperProvider theme={props.appThemePreview.theme}>
                   <FeedScreen />
                 </PaperProvider>
               </ThemeModalComponent>

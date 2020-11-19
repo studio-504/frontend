@@ -83,7 +83,7 @@ function* authFlowSuccess() {
   yield put(actions.authPrefetchRequest()) 
 
   const navigation = yield NavigationService.getNavigation()
-  navigationActions.navigateApp(navigation)
+  navigationActions.navigateResetToApp(navigation) 
 }
 
 function* authFlowFailure() {

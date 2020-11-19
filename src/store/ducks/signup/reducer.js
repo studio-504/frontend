@@ -10,7 +10,7 @@ export const initialState = {
     payload: {},
   },
   signupPassword: {
-    data: [],
+    data: [], 
     status: 'idle',
     error: {},
     payload: {},
@@ -89,11 +89,7 @@ const signupPasswordFailure = (state, action) => update(state, {
 })
 
 const signupPasswordIdle = (state) => update(state, {
-  signupPassword: {
-    status: { $set: 'idle' },
-    payload: { $set: initialState.signupPassword.payload },
-    error: { $set: initialState.signupPassword.error },
-  },
+  signupPassword: { $set: initialState.signupPassword },
 })
 
 /**

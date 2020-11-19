@@ -33,10 +33,7 @@ describe('Users reducer', () => {
     })
 
     it('idle', () => {
-      const state = applyActions([
-        actions.usersChangeAvatarSuccess(),
-        actions.usersChangeAvatarIdle(),
-      ], reducer)
+      const state = applyActions([actions.usersChangeAvatarSuccess(), actions.usersChangeAvatarIdle()], reducer)
 
       expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle' })
     })
@@ -89,6 +86,91 @@ describe('Users reducer', () => {
         error: error.message,
         payload: {},
       })
+    })
+  })
+
+  describe('usersSetUserDatingStatus', () => {
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK' })
+
+      expect(selectors.usersSetUserDatingStatus(state)).toEqual({
+        data: [],
+        status: 'idle',
+        error: {},
+        payload: {},
+      })
+    })
+
+    it('loading', () => {
+      const payload = { userId: 1 }
+      const state = reducer(undefined, actions.usersSetUserDatingStatusRequest(payload))
+
+      expect(selectors.usersSetUserDatingStatus(state)).toEqual({
+        data: [],
+        status: 'loading',
+        error: {},
+        payload,
+      })
+    })
+
+    it('success', () => {
+      const data = [{ id: 1 }]
+      const state = reducer(undefined, actions.usersSetUserDatingStatusSuccess({ data }))
+
+      expect(selectors.usersSetUserDatingStatus(state)).toEqual({
+        data,
+        status: 'success',
+        error: {},
+        payload: {},
+      })
+    })
+
+    it('failure', () => {
+      const error = { message: 'Error' }
+      const state = reducer(undefined, actions.usersSetUserDatingStatusFailure(error))
+
+      expect(selectors.usersSetUserDatingStatus(state)).toEqual({
+        data: [],
+        status: 'failure',
+        error: error.message,
+        payload: {},
+      })
+    })
+  })
+
+  describe('usersGetProfileSelf', () => {
+    const data = { a: 1, b: 2 }
+    
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK' })
+
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
+    })
+
+    it('loading', () => {
+      const state = reducer(undefined, actions.usersGetProfileSelfRequest())
+
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'loading', error: {} })
+    })
+
+    it('success', () => {
+      
+      const state = reducer(undefined, actions.usersGetProfileSelfSuccess({ data }))
+
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data, status: 'success', error: {} })
+    })
+
+    it('failure', () => {
+      const message = 'Error'
+      const state = reducer(undefined, actions.usersGetProfileSelfFailure({ message }))
+
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'failure', error: message })
+    })
+
+    it('idle', () => {
+      const state = applyActions([actions.usersGetProfileSelfSuccess({ data }), actions.usersGetProfileSelfIdle()], reducer)
+
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
     })
   })
 })

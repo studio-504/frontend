@@ -17,12 +17,14 @@ import themesJson from 'assets/themes.json'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
+const DEFAULT_THEME = 'white.green'
+
 const Theme = ({
   t,
   theme,
   user,
   appThemePreviewRequest,
-  appThemePreviewIdle,
+  appThemePreviewUpdate,
 }) => {
   const styling = styles(theme)
   
@@ -57,8 +59,8 @@ const Theme = ({
               action={
                 <ThemeRowActionComponent
                   enabled={user.themeCode === theme.key}
-                  onEnablePress={() => appThemePreviewRequest({ name: theme.key, theme: theme.theme })}
-                  onDisablePress={appThemePreviewIdle}
+                  onEnablePress={() => appThemePreviewRequest(theme)}
+                  onDisablePress={() => appThemePreviewUpdate(DEFAULT_THEME)}
                 />
               }
             />
@@ -84,8 +86,8 @@ Theme.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   user: PropTypes.any,
-  appThemePreviewRequest: PropTypes.any,
-  appThemePreviewIdle: PropTypes.any,
+  appThemePreviewRequest: PropTypes.func,
+  appThemePreviewUpdate: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(Theme))

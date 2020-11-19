@@ -40,7 +40,7 @@ describe('chatMessageSubscription', () => {
     const checkSuccess = (saga) => {
       saga.not.put(chatActions.chatGetChatRequest({ chatId }))
       saga.not.put(chatActions.chatGetChatsRequest())
-      saga.not.put(usersActions.usersGetProfileSelfRequest({ userId }))
+      saga.not.put(usersActions.usersGetProfileSelfRequest())
 
       return saga
     }
@@ -101,7 +101,7 @@ describe('chatMessageSubscription', () => {
       const saga = createSaga(store)
         .put(chatActions.chatGetChatRequest({ chatId }))
         .put(chatActions.chatGetChatsRequest())
-        .put(usersActions.usersGetProfileSelfRequest({ userId }))
+        .put(usersActions.usersGetProfileSelfRequest())
 
       const promise = saga.silentRun()
 

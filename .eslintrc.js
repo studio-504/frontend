@@ -59,6 +59,7 @@ module.exports = {
           'silentRun',
           'run',
           'testField',
+          'testNavigate',
         ],
       },
     ],

@@ -15,8 +15,8 @@ const usersEditProfile = () => path(['users', 'usersEditProfile'])
 const usersGetProfileSelf = () => path(['users', 'usersGetProfileSelf'])
 
 export const authUserSelector = createSelector(
-  [authUser(), authData(), usersEditProfile(), usersGetProfileSelf(), usersSelector.usersDeleteAvatar, usersSelector.usersChangeAvatar, entitiesSelector.entities],
-  (authUser, authData, usersEditProfile, usersGetProfileSelf, usersDeleteAvatar, usersChangeAvatar, entities) => {
+  [authUser(), authData(), usersEditProfile(), usersGetProfileSelf(), usersSelector.usersDeleteAvatar, usersSelector.usersChangeAvatar, usersSelector.usersSetUserDatingStatus, entitiesSelector.entities],
+  (authUser, authData, usersEditProfile, usersGetProfileSelf, usersDeleteAvatar, usersChangeAvatar, usersSetUserDatingStatus, entities) => {
     return normalizer.denormalizeUserGet(authUser, entities)
   },
 )

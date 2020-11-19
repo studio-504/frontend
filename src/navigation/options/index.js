@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { HeaderStyleInterpolators, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack'
 import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
 
+import { AuthContext } from 'services/providers/Auth'
 import * as navigationActions from 'navigation/actions'
 import path from 'ramda/src/path'
 import Layout from 'constants/Layout'
@@ -75,21 +76,25 @@ const HomeNavigationComponent = ({ navigation, theme, user }) => ({
   headerRight: homeHeaderRight({ navigation, theme, user }),
 })
 
-const pager = ({ isUserActive, ...props }) => {
+const AppViewPagerAdapter = (props) => {
+  const { swipeEnabled } = useContext(AuthContext)
   const currentIndex = path(['navigationState', 'index'])(props)
   const nextIndex = path(['navigationState', 'routes', currentIndex, 'state', 'index'])(props)
-  const swipeEnabled = isUserActive && (!nextIndex || nextIndex === 0)
-  return <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled} />
+  const hasNextScreen = !nextIndex || nextIndex === 0
+
+  return <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled && hasNextScreen} />
 }
 
-export const tabNavigatorDefaultProps = ({ isUserActive }) => ({
+const pager = (props) => <AppViewPagerAdapter {...props} />
+
+export const tabNavigatorDefaultProps = () => ({
   initialRouteName: 'Root',
   tabBar: () => null,
   lazy: true,
   sceneContainerStyle: {
     backgroundColor: 'transparent',
   },
-  pager: props => pager({ ...props, isUserActive }),
+  pager,
   gestureEnabled: false,
 })
 
@@ -235,6 +240,17 @@ export const stackScreenModalStaticProps = ({
     gestureEnabled: false,
     headerShown: false,
     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+  }),
+})
+
+export const stackScreenStaleStaticProps = ({
+  options: () => ({
+    cardStyle: {
+      backgroundColor: '#000000',
+    },
+    gestureEnabled: false,
+    headerShown: false,
+    animationEnabled: false,
   }),
 })
 

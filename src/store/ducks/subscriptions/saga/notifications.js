@@ -27,14 +27,13 @@ function* subscriptionNotificationStart() {
     }
 
     const payload = path(['value', 'data', 'onNotification'], eventData)
-    const userId = path(['userId'], payload)
     const type = path(['type'], payload)
 
     /**
      * Fires when one of the user's followeds changes their first story
      */
     if (type === 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED') {
-      return yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+      return yield put(usersActions.usersGetProfileSelfRequest())
     }
 
     /**

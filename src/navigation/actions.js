@@ -56,11 +56,12 @@ export const navigateDating = withAuthValidation(navigateToPath('Dating'))
 export const navigateDatingAbout = withAuthValidation(navigateToPath('DatingAbout'))
 export const navigateDatingMatch = withAuthValidation(navigateToPath('DatingMatch'))
 export const navigateDatingProfile = withAuthValidation(navigateToPath('DatingProfile'))
+export const navigateDatingSettings = withAuthValidation(navigateToPath('DatingSettings'))
 
 /**
  * Profile
  */
-export const navigateProfileSelf = withAuthValidation(navigateToPath('App.Root.Home.Profile'))
+export const navigateProfileSelf = withAuthValidation(navigateToPath('App.Root.Home.Profile.ProfileSelf'))
 export const navigateSettings = withAuthValidation(navigateToPath('App.Root.Home.Profile.Settings'))
 export const navigateProfilePhotoUpload = withAuthValidation(navigateToPath('App.Root.Home.Profile.ProfilePhotoUpload'))
 export const navigateProfilePhoto = navigateToPath('App.Root.Home.Profile.ProfilePhoto')
@@ -117,6 +118,7 @@ export const navigateComments = withAuthValidation(pushToPath('Comments'))
  */
 export const navigateBack = (navigation) => navigation.goBack()
 export const navigateApp = navigateToPath('App')
+export const navigateResetToApp = (navigation) => navigation.reset({ index: 0, routes: [{ name: 'App' }] })
 export const navigateHome = navigateToPath('App.Root.Home.Feed')
 export const navigateSearch = navigateToPath('App.Root.Home.Search')
 export const navigateCamera = withAuthValidation(navigateToPath('Camera'))

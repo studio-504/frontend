@@ -13,7 +13,7 @@ import Config from 'react-native-config'
  *
  */
 function* handleSignupPasswordRequest(payload) {
-  const publicKey = forge.pki.publicKeyFromPem(Config.AWS_API_PUBLIC_KEY) 
+  const publicKey = forge.pki.publicKeyFromPem(Config.REAL_PUBLIC_KEY_PEM) 
   const password = forge.util.encodeUtf8(payload.password)
   const encrypted = publicKey.encrypt(password, 'RSA-OAEP')
   const encryptedPassword = forge.util.encode64(encrypted)

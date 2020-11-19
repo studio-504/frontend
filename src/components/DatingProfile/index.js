@@ -7,38 +7,43 @@ import { Text } from 'react-native-paper'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import UploadAvatar from 'components/UploadAvatar'
+import AuthErrorTemplate from 'templates/Auth/Error'
 
-const DatingProfile = ({ t, theme, user, usersSetUserDatingStatus, usersSetUserDatingStatusRequest }) => {
+const DatingProfile = ({
+  t,
+  theme,
+  user,
+  usersSetUserDatingStatus,
+  usersSetUserDatingStatusRequest,
+  formErrorMessage,
+  handleErrorClose,
+  usersImagePostsGet,
+}) => {
   const styling = styles(theme)
 
   return (
-    <UploadAvatar>
-      {({ openUploadAvatarMenu, isAvatarEmpty }) => (
-        <View style={styling.root}>
-          <View style={styling.card}>
-            <DatingCard user={user} />
-          </View>
-          <View style={styling.actions}>
-            {isAvatarEmpty ? (
-              <View style={styling.actions}>
-                <DefaultButton label={t('Upload Profile Picture')} onPress={openUploadAvatarMenu} />
-                <Text style={styling.text}>{t('Before start dating, change Profile Picture')}</Text>
-              </View>
-            ) : (
-              <View style={styling.actions}>
-                <DefaultButton
-                  label={t('Start Dating')}
-                  onPress={usersSetUserDatingStatusRequest}
-                  loading={usersSetUserDatingStatus.status === 'loading'}
-                />
-                <Text style={styling.text}>{t('Preview your dating profile and start dating')}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      )}
-    </UploadAvatar>
+    <View style={styling.root}>
+      {formErrorMessage ?
+        <AuthErrorTemplate
+          text={formErrorMessage}
+          onClose={handleErrorClose}
+        />
+      : null}
+      <View style={styling.card}>
+        <DatingCard user={user} posts={usersImagePostsGet.data} />
+      </View>
+      <View style={styling.actions}>
+        <DefaultButton
+          style={styling.submitBtn}
+          accessibilityLabel="Submit"
+          label={t('Start Dating')}
+          onPress={usersSetUserDatingStatusRequest}
+          loading={usersSetUserDatingStatus.status === 'loading'}
+          disabled={usersSetUserDatingStatus.status === 'loading'}
+        />
+        <Text style={styling.text}>{t('Preview your dating profile and start dating')}</Text>
+      </View>
+    </View>
   )
 }
 
@@ -52,11 +57,12 @@ const styles = (theme) =>
       padding: theme.spacing.base,
     },
     actions: {
-      height: 120,
-      marginTop: theme.spacing.base,
-      padding: theme.spacing.base,
-      justifyContent: 'space-around',
+      paddingHorizontal: theme.spacing.base,
+      marginBottom: theme.spacing.base * 2,
     },
+    submitBtn: {
+      marginBottom: theme.spacing.base,
+    },  
     text: {
       textAlign: 'center',
     },
@@ -68,6 +74,15 @@ DatingProfile.propTypes = {
   user: PropTypes.any,
   usersSetUserDatingStatus: PropTypes.any,
   usersSetUserDatingStatusRequest: PropTypes.func,
+  formErrorMessage: PropTypes.string,
+  handleErrorClose: PropTypes.func,
+  usersImagePostsGet: PropTypes.shape({
+    data: PropTypes.array,
+  }),
+}
+
+DatingProfile.defaultProps = {
+  formErrorMessage: null,
 }
 
 export default withTranslation()(withTheme(DatingProfile))
