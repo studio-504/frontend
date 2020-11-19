@@ -6,13 +6,14 @@ import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as authActions from 'store/ducks/auth/actions'
 import * as usersActions from 'store/ducks/users/actions'
-
 import UploadAvatar from 'components/UploadAvatar'
 import path from 'ramda/src/path'
+import { useOTAVersion } from 'services/OTA'
 
 const SettingsService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const { appVersion } = useOTAVersion()
 
   const usersDeleteAvatar = useSelector(usersSelector.usersDeleteAvatar)
   const settingsErrorMessage = path(['error', 'text'])(usersDeleteAvatar)
@@ -33,6 +34,7 @@ const SettingsService = ({ children }) => {
           user,
           openUploadAvatarMenu,
           authForgotRequest,
+          appVersion,
         })
       }
     </UploadAvatar>

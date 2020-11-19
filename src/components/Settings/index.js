@@ -21,8 +21,6 @@ import DatingIcon from 'assets/svg/settings/Dating'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
 
-import DeviceInfo from 'react-native-device-info'
-
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import * as navigationActions from 'navigation/actions'
@@ -38,6 +36,7 @@ const Settings = ({
   user,
   openUploadAvatarMenu,
   authForgotRequest,
+  appVersion,
 }) => {
   const styling = styles(theme)
 
@@ -123,8 +122,7 @@ const Settings = ({
             </RowsItemComponent>
           )}
         </RowsComponent>
-
-        <Caption style={styling.helper}>v{DeviceInfo.getReadableVersion()}</Caption>
+        <Caption style={styling.helper}>{`v${appVersion}`}</Caption>
       </ScrollView>
       {settingsErrorMessage ? <AuthErrorTemplate text={settingsErrorMessage} onClose={handleErrorClose} /> : null}
     </React.Fragment>
@@ -160,10 +158,12 @@ Settings.propTypes = {
   settingsErrorMessage: PropTypes.string,
   openUploadAvatarMenu: PropTypes.func,
   authForgotRequest: PropTypes.func,
+  appVersion: PropTypes.string,
 }
 
 Settings.defaultProps = {
   settingsErrorMessage: null,
+  appVersion: '',
 }
 
 export default withTranslation()(withTheme(Settings))
