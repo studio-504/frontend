@@ -4,7 +4,7 @@ import * as actions from 'store/ducks/auth/actions'
 import authFlow from 'store/ducks/auth/saga/authFlow'
 import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
 
-const navigation = { navigate: jest.fn() }
+const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 describe('Auth flow', () => {
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('Auth flow', () => {
       .dispatch(actions.authFlowSuccess())
       .silentRun()
 
-    testNavigate(navigation, 'App')
+    expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
   })
 
   it('redirect to auth home on failure', async () => {
