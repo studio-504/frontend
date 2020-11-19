@@ -15,9 +15,10 @@ import Router from 'navigation/Router'
 
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-  installMode: codePush.InstallMode.ON_NEXT_RESTART,
+  installMode: codePush.InstallMode.ON_NEXT_RESUME,
   mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
   deploymentKey: Config.CODE_PUSH_DEPLOYMENT_KEY,
+  minimumBackgroundDuration: 60 * 5,
 }
 
 // codePush.sync(codePushOptions)
