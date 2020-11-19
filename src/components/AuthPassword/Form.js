@@ -36,7 +36,14 @@ const PasswordForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID={testIDs.form.password} name="password" component={TextField} placeholder={t('Password')} secureTextEntry keyboardType="default" textContentType="password" autoCompleteType="password" autoFocus />
+        <Field 
+          {...Validation.getInputTypeProps('password')}
+          testID={testIDs.form.password} 
+          name="password" 
+          component={TextField} 
+          placeholder={t('Password')} 
+          autoFocus 
+        />
       </View>
       <View style={styling.input}>
         <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />

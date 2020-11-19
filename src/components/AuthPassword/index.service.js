@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import * as signupActions from 'store/ducks/signup/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Validation from 'services/Validation'
+import * as signupSelectors from 'store/ducks/signup/selectors'
 
 const AuthPasswordComponentService = ({ children }) => {
   const dispatch = useDispatch()
-
-  const signupPassword = useSelector(state => state.signup.signupPassword)
+  const signupPassword = useSelector(signupSelectors.signupPassword)
 
   const onUnmount = () => {
     dispatch(signupActions.signupPasswordIdle())
