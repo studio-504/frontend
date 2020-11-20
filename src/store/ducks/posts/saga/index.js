@@ -604,7 +604,7 @@ function* commentsDeleteRequest(req) {
 
     yield put(actions.commentsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    console.log({error})
+    console.log({ error })
     yield put(actions.commentsDeleteFailure({ message: errorWrapper(error), payload: req.payload }))
   }
 }

@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects'
 import * as entitiesActions from 'store/ducks/entities/actions'
 
-export function* entitiesMerge({entities}) {
+export function* entitiesMerge({ entities }) {
   yield put(entitiesActions.entitiesAlbumsMerge({ data: entities.albums || {} }))
   yield put(entitiesActions.entitiesPostsMerge({ data: entities.posts || {} }))
   yield put(entitiesActions.entitiesUsersMerge({ data: entities.users || {} }))
