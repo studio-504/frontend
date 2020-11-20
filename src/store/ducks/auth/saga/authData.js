@@ -9,11 +9,11 @@ import {
   getAuthUserPersist,
 } from 'services/Auth'
 
-import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 import Config from 'react-native-config'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
 
@@ -77,13 +77,9 @@ export function* handleAuthDataRequestData(req, api) {
   const data = dataSelector(api)
   const meta = req.meta || {}
   const payload = req.payload || {}
-
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
