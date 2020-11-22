@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 import * as datingActions from 'store/ducks/dating/actions'
 import * as datingSelector from 'store/ducks/dating/selectors'
 import path from 'ramda/src/path'
@@ -9,10 +10,8 @@ const DatingService = ({ children }) => {
   const dispatch = useDispatch()
   const datingMatchedUsers = useSelector(datingSelector.datingMatchedUsersSelector())
 
-  useEffect(() => {
-    dispatch(datingActions.datingMatchedUsersRequest({ matchStatus: 'POTENTIAL' }))
-  }, [])
-  
+  useFocusEffect(React.useCallback(datingMatchedUsersRequest, []))
+
   const datingMatchedUsersRequest = () =>
     dispatch(datingActions.datingMatchedUsersRequest({ matchStatus: 'POTENTIAL' }))
 
