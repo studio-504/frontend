@@ -81,7 +81,7 @@ describe('DatingSettingsScreen', () => {
       testField(getByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
       testField(getByAccessibilityLabel('matchHeightRangeMin'), { value: 'Match Minimum Height' })
       testField(getByAccessibilityLabel('matchHeightRangeMax'), { value: 'Match Maximum Height' })
-      testField(getByAccessibilityLabel('matchGenders'), { value: 'Female' })
+      testField(getByAccessibilityLabel('matchGenders'), { value: 'Match Gender' })
       testField(getByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
 
       expect(getByText('Toggle Dating')).toBeTruthy()

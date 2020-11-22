@@ -26,7 +26,19 @@ export const getMatchAgeRangeMax = (user) => {
 export const getMatchHeightRangeMin = path(['matchHeightRange', 'min'])
 export const getMatchHeightRangeMax = path(['matchHeightRange', 'max'])
 
-export const getMatchGenders = pathOr('FEMALE', ['matchGenders', 0])
+export const getMatchGenders = (user) => {
+  const gender = path(['gender'], user)
+  const matchGenders = path(['matchGenders', 0], user)
+
+  if (matchGenders) {
+    return matchGenders
+  } else if (gender) {
+    return gender === 'MALE' ? 'FEMALE' : 'MALE'
+  } else {
+    return undefined
+  }
+}
+
 export const getMatchLocationRadius = pathOr(50, ['matchLocationRadius'])
 
 export const getDateOfBirth = (user) => {
