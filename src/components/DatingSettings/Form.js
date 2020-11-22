@@ -44,7 +44,8 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
           <View style={styling.item}>
             <Field
               name="dateOfBirthMonth"
-              textInputProps={{ accessibilityLabel: 'dateOfBirthMonth' }}
+              accessibilityLabel="dateOfBirthMonth"
+              label={t('Month')}
               component={PickerField}
               placeholder={{ label: 'Month', value: undefined }}
               items={Validation.monthsOptions}
@@ -53,7 +54,8 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
           <View style={styling.item}>
             <Field
               name="dateOfBirthDay"
-              textInputProps={{ accessibilityLabel: 'dateOfBirthDay' }}
+              accessibilityLabel="dateOfBirthDay"
+              label={t('Day')}
               component={PickerField}
               placeholder={{ label: 'Day', value: undefined }}
               items={Validation.datesOptions}
@@ -62,7 +64,8 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
           <View style={styling.item}>
             <Field
               name="dateOfBirthYear"
-              textInputProps={{ accessibilityLabel: 'dateOfBirthYear' }}
+              accessibilityLabel="dateOfBirthYear"
+              label={t('Year')}
               component={PickerField}
               placeholder={{ label: 'Year', value: undefined }}
               items={Validation.yearsOptions}
@@ -72,8 +75,9 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
         <View style={styling.row}>
           <Field
             name="gender"
-            textInputProps={{ accessibilityLabel: 'gender' }}
+            accessibilityLabel="gender"
             component={PickerField}
+            label={t('Your Gender')}
             placeholder={{ label: 'Your Gender', value: undefined }}
             items={Validation.genderOptions}
           />
@@ -92,8 +96,9 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
         <View style={styling.row}>
           <Field
             name="height"
-            textInputProps={{ accessibilityLabel: 'height' }}
+            accessibilityLabel="height"
             component={PickerField}
+            label={t('Height')}
             placeholder={{ label: 'Height', value: undefined }}
             items={Validation.heightOptions}
           />
@@ -104,18 +109,20 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
           <View style={styling.item}>
             <Field
               name="matchAgeRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMin' }}
+              accessibilityLabel="matchAgeRangeMin"
               component={PickerField}
-              placeholder={{ label: 'Match Minimum Age', value: undefined }}
+              label={t('Minimum Age')}
+              placeholder={{ label: 'Minimum Age', value: undefined }}
               items={Validation.minAgeOptions}
             />
           </View>
           <View style={styling.item}>
             <Field
               name="matchAgeRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMax' }}
+              accessibilityLabel="matchAgeRangeMax"
               component={PickerField}
-              placeholder={{ label: 'Match Maximum Age', value: undefined }}
+              label={t('Maximum Age')}
+              placeholder={{ label: 'Maximum Age', value: undefined }}
               items={Validation.getMaxAgeOptions(values.matchAgeRangeMin)}
             />
           </View>
@@ -124,18 +131,20 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
           <View style={styling.item}>
             <Field
               name="matchHeightRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMin' }}
+              accessibilityLabel="matchHeightRangeMin"
               component={PickerField}
-              placeholder={{ label: 'Match Minimum Height', value: undefined }}
+              label={t('Minimum Height')}
+              placeholder={{ label: 'Minimum Height', value: undefined }}
               items={Validation.heightOptions}
             />
           </View>
           <View style={styling.item}>
             <Field
               name="matchHeightRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMax' }}
+              accessibilityLabel="matchHeightRangeMax"
               component={PickerField}
-              placeholder={{ label: 'Match Maximum Height', value: undefined }}
+              label={t('Maximum Height')}
+              placeholder={{ label: 'Maximum Height', value: undefined }}
               items={Validation.heightOptions}
             />
           </View>
@@ -143,23 +152,25 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
         <View style={styling.row}>
           <Field
             name="matchGenders"
-            textInputProps={{ accessibilityLabel: 'matchGenders' }}
+            accessibilityLabel="matchGenders"
             component={PickerField}
-            placeholder={{ label: 'Match Gender', value: undefined }}
+            label={t('Gender')}
+            placeholder={{ label: 'Gender', value: undefined }}
             items={Validation.genderOptions}
           />
         </View>
         <View style={styling.row}>
           <Field
             name="matchLocationRadius"
-            textInputProps={{ accessibilityLabel: 'matchLocationRadius' }}
+            accessibilityLabel="matchLocationRadius"
             component={PickerField}
-            placeholder={{ label: 'Match Location Range', value: undefined }}
+            label={t('Location Range')}
+            placeholder={{ label: 'Location Range', value: undefined }}
             items={Validation.locationOptions}
           />
         </View>
         <View style={styling.row}>
-          <Field name="location" component={MapField} placeholder={t('Match Location')} accessibilityLabel="location" />
+          <Field name="location" component={MapField} placeholder={t('Location')} accessibilityLabel="location" />
         </View>
       </View>
       <View style={styling.footer}>
