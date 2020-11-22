@@ -10,7 +10,10 @@ const DatingService = ({ children }) => {
   const dispatch = useDispatch()
   const datingMatchedUsers = useSelector(datingSelector.datingMatchedUsersSelector())
 
-  useFocusEffect(React.useCallback(datingMatchedUsersRequest, []))
+  useFocusEffect(React.useCallback(() => {
+    datingMatchedUsersRequest()
+    return () => {}
+  }, []))
 
   const datingMatchedUsersRequest = () =>
     dispatch(datingActions.datingMatchedUsersRequest({ matchStatus: 'POTENTIAL' }))
