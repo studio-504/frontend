@@ -71,10 +71,10 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
-      testField(getByAccessibilityLabel('gender'), { value: 'Your Gender' })
+      testField(getByAccessibilityLabel('gender'), { value: '' })
       testField(getByAccessibilityLabel('bio'), { value: undefined })
       testField(getByAccessibilityLabel('fullName'), { value: undefined })
-      testField(getByAccessibilityLabel('height'), { value: 'Height' })
+      testField(getByAccessibilityLabel('height'), { value: '' })
 
       authSelector.authUserSelector.mockReturnValue(user)
     })
@@ -92,7 +92,7 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('gender'), { value: 'Female' })
       testField(getByAccessibilityLabel('fullName'), { value: user.fullName })
       testField(getByAccessibilityLabel('bio'), { value: 'bio' })
-      testField(getByAccessibilityLabel('height'), { value: '170' })
+      testField(getByAccessibilityLabel('height'), { value: '170 cm' })
     })
 
     it('submit form', async () => {

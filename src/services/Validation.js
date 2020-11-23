@@ -259,4 +259,4 @@ export const getMaxAgeOptions = (matchAgeRangeMin) => {
   })
 }
 
-export const heightOptions = range(MIN_HEIGHT, MAX_HEIGHT + 1).map(value => ({ label: `${value}`, value }))
+export const heightOptions = range(MIN_HEIGHT, MAX_HEIGHT + 1).map(value => ({ label: `${value} cm`, value }))
