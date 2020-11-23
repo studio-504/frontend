@@ -35,7 +35,7 @@ const useProfilePhoto = (props) => {
   const handleLibrarySnap = () => camera.handleLibrarySnap()
   const handleSkipUpload = () => navigation.goBack()
   const usersDeleteAvatarRequest = () => dispatch(usersActions.usersDeleteAvatarRequest())
-  const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation)
+  const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation, { backRoute })
 
   return {
     handleLibrarySnap,
