@@ -8,7 +8,7 @@ import * as selectors from 'store/ducks/posts/selectors'
 jest.spyOn(queryService, 'apiRequest')
 
 const errorWrapper = (err) => err.message
-
+ 
 describe('postsGetTrendingPostsSaga', () => {
   const action = actions.postsGetTrendingPostsRequest({ limit: 100 })
   const data = { data: { trendingPosts: { items: [], nextToken: null } } }

@@ -5,6 +5,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
 import { errorWrapper } from 'store/helpers'
+import { testEntitiesMerge } from 'tests/utils/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -18,10 +19,13 @@ describe('usersImagePostsGetRequest', () => {
 
   it('success', async () => {
     const response = { data: { user: { posts: { items: [{ postId: 1 }, { postId: 2 }] } } } }
+    const entities = { posts: { 1: { postId: 1 }, 2: { postId: 2 } } }
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    await expectSaga(usersImagePostsGetRequest, action)
+    const saga = expectSaga(usersImagePostsGetRequest, action)
+
+    await testEntitiesMerge(saga, entities)
       .provide([[getContext('errorWrapper'), errorWrapper]])
 
       .put(usersActions.usersImagePostsGetSuccess({ data: [1, 2] }))
