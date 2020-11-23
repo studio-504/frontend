@@ -176,8 +176,8 @@ const DatingSettingsForm = ({ t, theme, handleSubmit, values, loading, disableDa
       <View style={styling.footer}>
         <Title style={styling.title}>{t('Toggle Dating')}</Title>
         <View style={styling.switch}>
-          <Text style={styling.label}>{t('Disable Dating')}</Text>
-          <Switch value={disableDating} onValueChange={toggleDatingStatusRequest} accessibilityLabel="disableDating" />
+          <Text style={styling.label}>{t('Dating')}</Text>
+          <Switch value={!disableDating} onValueChange={toggleDatingStatusRequest} accessibilityLabel="disableDating" />
         </View>
       </View>
     </View>
