@@ -5,6 +5,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
 import { errorWrapper } from 'store/helpers'
+import { testEntitiesMerge } from 'tests/utils/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -19,10 +20,13 @@ describe('usersSetUserDatingStatusRequest', () => {
   it('success', async () => {
     const user = { userId: 1 }
     const response = { data: { setUserDatingStatus: user } }
+    const entities = { users: { 1: user } }
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    await expectSaga(usersSetUserDatingStatusRequest, action)
+    const saga = expectSaga(usersSetUserDatingStatusRequest, action)
+
+    await testEntitiesMerge(saga, entities)
       .provide([[getContext('errorWrapper'), errorWrapper]])
 
       .put(usersActions.usersSetUserDatingStatusSuccess({ data: 1, payload }))
@@ -41,7 +45,7 @@ describe('usersSetUserDatingStatusRequest', () => {
     await expectSaga(usersSetUserDatingStatusRequest, action)
       .provide([[getContext('errorWrapper'), errorWrapper]])
 
-      .put(usersActions.usersSetUserDatingStatusFailure({ message, payload  }))
+      .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
 
       .silentRun()
   })

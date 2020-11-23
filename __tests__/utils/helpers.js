@@ -58,4 +58,6 @@ export const testEntitiesMerge = (saga, entities = {}) => {
     .put(entitiesActions.entitiesUsersMerge({ data: entities.users || {} }))
     .put(entitiesActions.entitiesCommentsMerge({ data: entities.comments || {} }))
     .put(entitiesActions.entitiesImagesMerge({ data: entities.images || {} }))
+    .put(entitiesActions.entitiesMessagesMerge({ data: entities.messages || {} }))
+    .put(entitiesActions.entitiesChatsMerge({ data: entities.chats || {} }))
 }

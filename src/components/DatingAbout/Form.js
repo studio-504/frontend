@@ -48,7 +48,7 @@ const DatingAboutForm = ({
               component={PickerField}
               placeholder={{ label: 'Month', value: undefined }}
               items={Validation.monthsOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthMonth' }}
+              accessibilityLabel="dateOfBirthMonth"
             />
           </View>
           <View style={styles.item}>
@@ -57,7 +57,7 @@ const DatingAboutForm = ({
               component={PickerField}
               placeholder={{ label: 'Day', value: undefined }}
               items={Validation.datesOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthDay' }}
+              accessibilityLabel="dateOfBirthDay"
             />
           </View>
           <View style={styles.item}>
@@ -66,7 +66,7 @@ const DatingAboutForm = ({
               component={PickerField}
               placeholder={{ label: 'Year', value: undefined }}
               items={Validation.yearsOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthYear' }}
+              accessibilityLabel="dateOfBirthYear"
             />
           </View>
         </View>
@@ -86,7 +86,7 @@ const DatingAboutForm = ({
           component={PickerField}
           placeholder={{ label: 'Your Gender', value: undefined }}
           items={Validation.genderOptions}
-          textInputProps={{ accessibilityLabel: 'gender' }}
+          accessibilityLabel="gender"
         />
       </CollapsableComponent>
       <CollapsableComponent
@@ -122,7 +122,7 @@ const DatingAboutForm = ({
       >
         <Field
           name="height"
-          textInputProps={{ accessibilityLabel: 'height' }}
+          accessibilityLabel="height"
           component={PickerField}
           placeholder={{ label: 'Height', value: undefined }}
           items={Validation.heightOptions}

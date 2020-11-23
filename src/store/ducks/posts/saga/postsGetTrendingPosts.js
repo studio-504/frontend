@@ -6,10 +6,10 @@ import assocPath from 'ramda/src/assocPath'
 import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as constants from 'store/ducks/posts/constants'
-import * as entitiesActions from 'store/ducks/entities/actions'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import * as selectors from 'store/ducks/posts/selectors'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
  *
@@ -39,11 +39,7 @@ export function* postsGetTrendingPostsRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
