@@ -68,7 +68,7 @@ describe('DatingMatchScreen', () => {
 
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
-      testField(queryByAccessibilityLabel('matchGenders'), { value: 'Match Gender' })
+      testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
 
       authSelector.authUserSelector.mockReturnValue(user)

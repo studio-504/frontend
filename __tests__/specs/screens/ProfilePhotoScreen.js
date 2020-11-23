@@ -18,7 +18,7 @@ jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('services/providers/Camera', () => jest.fn())
 jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
-const navigation = { replace: jest.fn(), navigate: jest.fn() }
+const navigation = { replace: jest.fn(), navigate: jest.fn(), goBack: jest.fn() }
 const dispatch = jest.fn()
 const handleLibrarySnap = jest.fn()
 
