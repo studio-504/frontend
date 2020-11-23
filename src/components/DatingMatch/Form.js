@@ -44,7 +44,7 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchAgeRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMin' }}
+              accessibilityLabel="matchAgeRangeMin"
               component={PickerField}
               placeholder={{ label: 'Match Minimum Age', value: undefined }}
               items={Validation.minAgeOptions}
@@ -53,7 +53,7 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchAgeRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMax' }}
+              accessibilityLabel="matchAgeRangeMax"
               component={PickerField}
               placeholder={{ label: 'Match Maximum Age', value: undefined }}
               items={Validation.getMaxAgeOptions(values.matchAgeRangeMin)}
@@ -73,7 +73,7 @@ const DatingMatchForm = ({
       >
         <Field
           name="matchGenders"
-          textInputProps={{ accessibilityLabel: 'matchGenders' }}
+          accessibilityLabel="matchGenders"
           component={PickerField}
           placeholder={{ label: 'Match Gender', value: undefined }}
           items={Validation.genderOptions}
@@ -93,7 +93,7 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchHeightRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMin' }}
+              accessibilityLabel="matchHeightRangeMin"
               component={PickerField}
               placeholder={{ label: 'Match Minimum Height', value: undefined }}
               items={Validation.heightOptions}
@@ -102,7 +102,7 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchHeightRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMax' }}
+              accessibilityLabel="matchHeightRangeMax"
               component={PickerField}
               placeholder={{ label: 'Match Maximum Height', value: undefined }}
               items={Validation.heightOptions}
@@ -122,7 +122,7 @@ const DatingMatchForm = ({
       >
         <Field
           name="matchLocationRadius"
-          textInputProps={{ accessibilityLabel: 'matchLocationRadius' }}
+          accessibilityLabel="matchLocationRadius"
           component={PickerField}
           placeholder={{ label: 'Match Location Range', value: undefined }}
           items={Validation.locationOptions}
