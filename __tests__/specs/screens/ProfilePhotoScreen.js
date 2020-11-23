@@ -18,7 +18,7 @@ jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('services/providers/Camera', () => jest.fn())
 jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
-const navigation = { replace: jest.fn(), navigate: jest.fn() }
+const navigation = { replace: jest.fn(), navigate: jest.fn(), goBack: jest.fn() }
 const dispatch = jest.fn()
 const handleLibrarySnap = jest.fn()
 
@@ -47,7 +47,7 @@ describe('Profile Picture screen', () => {
     const { getByText } = setup()
 
     fireEvent.press(getByText('Skip Photo Upload'))
-    expect(navigation.replace).toHaveBeenCalledWith('Settings')
+    expect(navigation.goBack).toHaveBeenCalled()
   })
 
   it('Take a Photo', () => {
@@ -57,7 +57,10 @@ describe('Profile Picture screen', () => {
     expect(confirm).toHaveBeenCalled()
 
     confirm.mock.calls[0][0].onConfirm()
-    expect(navigation.navigate).toHaveBeenCalledWith('Camera', { nextRoute: 'ProfilePhotoUpload' })
+    expect(navigation.navigate).toHaveBeenCalledWith('Camera', {
+      nextRoute: 'ProfilePhotoUpload',
+      backRoute: 'ProfileSelf',
+    })
   })
 
   it('Redirect anonymous user', () => {
@@ -68,7 +71,10 @@ describe('Profile Picture screen', () => {
     expect(confirm).toHaveBeenCalled()
 
     confirm.mock.calls[0][0].onConfirm()
-    testNavigate(navigation, 'App.Root.ProfileUpgrade')
+    testNavigate(navigation, 'Camera', {
+      backRoute: 'ProfileSelf',
+      nextRoute: 'ProfilePhotoUpload',
+    })
   })
 
   it('Choose From Gallery', () => {
@@ -81,6 +87,7 @@ describe('Profile Picture screen', () => {
     testNavigate(navigation, 'App.Root.Home.Profile.ProfilePhotoUpload', {
       type: 'IMAGE',
       photos: [payload[0].preview],
+      backRoute: 'ProfileSelf',
     })
 
     fireEvent.press(getByText('Choose From Gallery'))

@@ -561,7 +561,7 @@ describe('Validation service', () => {
     })
 
     it('heightOptions', () => {
-      expect(Validation.heightOptions).toEqual(range(0, 276).map((value) => ({ label: `${value} cm`, value })))
+      expect(Validation.heightOptions).toEqual(range(1, 276).map((value) => ({ label: `${value} cm`, value })))
     })
 
     it('getMaxAgeOptions', () => {

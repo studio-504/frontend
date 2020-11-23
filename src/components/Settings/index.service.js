@@ -24,7 +24,7 @@ const SettingsService = ({ children }) => {
   const authForgotRequest = () => dispatch(authActions.authForgotRequest({ username: user.email }))
 
   return (
-    <UploadAvatar>
+    <UploadAvatar backRoute="ProfileSelf">
       {({ openUploadAvatarMenu }) =>
         children({
           authSignoutRequest,
