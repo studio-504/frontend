@@ -21,7 +21,7 @@ const DatingSettings = ({
   const navigation = useNavigation()
 
   return ( 
-    <UploadAvatar>
+    <UploadAvatar backRoute="Dating">
       {({ openUploadAvatarMenu, isAvatarEmpty }) => (
         <View style={styling.root}>
           <View style={styling.placeholder}>

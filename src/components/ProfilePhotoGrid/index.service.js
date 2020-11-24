@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import * as navigationActions from 'navigation/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'navigation/HeaderRight'
 import { VERIFICATION_TYPE } from 'components/Verification'
+import path from 'ramda/src/path'
 
 const ProfilePhotoGridService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const route = useRoute()
   const user = useSelector(authSelector.authUserSelector)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
@@ -21,7 +23,14 @@ const ProfilePhotoGridService = ({ children }) => {
 
   useEffect(() => {
     if (usersChangeAvatar.status === 'success') {
-      navigation.goBack()
+      const backRoute = path(['params', 'backRoute'], route)
+
+      if (backRoute) {
+        navigation.replace(backRoute)
+      } else {
+        navigation.goBack()
+      }
+
       dispatch(usersActions.usersChangeAvatarIdle())
     }
   }, [usersChangeAvatar.status])

@@ -4,13 +4,14 @@ import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import useUpload, { useUploadState } from 'services/providers/Upload'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import { pageHeaderLeft } from 'navigation/options'
 
 const ProfilePhotoUploadComponentService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const route = useRoute()
 
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
   const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
@@ -69,7 +70,15 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
    */
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
-      handleClose()
+      const backRoute = path(['params', 'backRoute'], route)
+
+      clearProfilePhotoUpload()
+
+      if (backRoute) {
+        navigation.replace(backRoute)
+      } else {
+        navigation.goBack()
+      }
     }
   }, [usersEditProfile.status])
 

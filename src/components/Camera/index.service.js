@@ -17,7 +17,8 @@ const CameraService = ({ children }) => {
   const handleProcessedPhoto = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     const nextRoute = path(['params', 'nextRoute'])(route)
-    const nextPayload = ({ type: 'IMAGE', photos: [payload[0].preview] }) 
+    const backRoute = path(['params', 'backRoute'])(route)
+    const nextPayload = ({ type: 'IMAGE', photos: [payload[0].preview], backRoute }) 
 
     if (nextRoute) {
       navigateToPath(nextRoute)(navigation, nextPayload)
