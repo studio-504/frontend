@@ -4,13 +4,11 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { TextInput, Text } from 'react-native-paper'
 import { ErrorMessage } from 'formik'
-
-import { withTheme } from 'react-native-paper'
+import TextInput from 'components/TextInput'
+import { Text } from 'react-native-paper'
 
 const TextField = ({
-  theme,
   form,
   field,
   placeholder,
@@ -18,8 +16,6 @@ const TextField = ({
   testID,
   ...props
 }) => {
-  const styling = styles
-  
   const onFocus = () => {
     form.setFieldTouched(field.name, true)
     props.handleFieldFocus && props.handleFieldFocus()
@@ -36,24 +32,21 @@ const TextField = ({
   }
 
   return (
-    <View style={styling.root}>
+    <View style={styles.root}>
       <TextInput
         {...props}
-        style={styling.input}
         name={field.name}
         onChangeText={onChangeText}
         onBlur={onBlur}
         onFocus={onFocus}
         value={field.value}
         placeholder={placeholder}
-        placeholderTextColor={theme.colors.placeholder}
         label={placeholder}
-        dense={true}
         testID={testID}
       />
 
       {!hideError ?
-        <ErrorMessage name={field.name} render={msg => <Text style={styling.error}>{msg}</Text>} />
+        <ErrorMessage name={field.name} render={msg => <Text style={styles.error}>{msg}</Text>} />
       : null}
     </View>
   )
@@ -64,12 +57,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: -6,
   },
-  input: {
-    padding: 0,
-    margin: 0,
-    fontSize: 14,
-    height: 38,
-  },
   error: {
     textAlign: 'right',
     fontSize: 11,
@@ -78,7 +65,6 @@ const styles = StyleSheet.create({
 })
 
 TextField.propTypes = {
-  theme: PropTypes.any,
   field: PropTypes.any,
   form: PropTypes.any,
   placeholder: PropTypes.any,
@@ -118,4 +104,4 @@ TextField.defaultProps = {
   returnKeyType: 'done',
 }
 
-export default withTheme(TextField)
+export default TextField

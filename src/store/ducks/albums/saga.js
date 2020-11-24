@@ -2,12 +2,12 @@ import { put, takeLatest } from 'redux-saga/effects'
 import * as actions from 'store/ducks/albums/actions'
 import * as queries from 'store/ducks/albums/queries'
 import * as constants from 'store/ducks/albums/constants'
-import * as entitiesActions from 'store/ducks/entities/actions'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import omit from 'ramda/src/omit'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
  * 
@@ -21,11 +21,7 @@ function* albumsGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeAlbumsGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -55,11 +51,7 @@ function* albumsSingleGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeAlbumGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -90,11 +82,7 @@ function* albumsPostsGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -134,11 +122,7 @@ function* albumsCreateRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeAlbumGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -168,11 +152,7 @@ function* albumsEditRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeAlbumGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -192,7 +172,7 @@ function* albumsEditRequest(req) {
 }
 
 /**
- * 
+ *  
  */
 function* albumsDeleteRequestData(req, api) {
   const dataSelector = path(['data', 'deleteAlbum'])
@@ -202,11 +182,7 @@ function* albumsDeleteRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeAlbumGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,

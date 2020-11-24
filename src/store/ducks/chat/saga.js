@@ -6,8 +6,8 @@ import * as actions from 'store/ducks/chat/actions'
 import * as queries from 'store/ducks/chat/queries'
 import * as constants from 'store/ducks/chat/constants'
 import * as queryService from 'services/Query'
-import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
  * 
@@ -21,13 +21,7 @@ function* chatGetChatsRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatsGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
-  yield put(entitiesActions.entitiesMessagesMerge({ data: normalized.entities.messages || {} }))
-  yield put(entitiesActions.entitiesChatsMerge({ data: normalized.entities.chats || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -57,13 +51,7 @@ function* chatGetChatRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
-  yield put(entitiesActions.entitiesMessagesMerge({ data: normalized.entities.messages || {} }))
-  yield put(entitiesActions.entitiesChatsMerge({ data: normalized.entities.chats || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -93,13 +81,7 @@ function* chatCreateDirectRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
-  yield put(entitiesActions.entitiesMessagesMerge({ data: normalized.entities.messages || {} }))
-  yield put(entitiesActions.entitiesChatsMerge({ data: normalized.entities.chats || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,

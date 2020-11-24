@@ -68,7 +68,7 @@ describe('DatingMatchScreen', () => {
 
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
-      testField(queryByAccessibilityLabel('matchGenders'), { value: 'Female' })
+      testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
 
       authSelector.authUserSelector.mockReturnValue(user)
@@ -82,6 +82,26 @@ describe('DatingMatchScreen', () => {
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
+    })
+
+    it('opposite gender for male', () => {
+      authSelector.authUserSelector.mockReturnValue({ gender: 'MALE' })
+      const { queryByAccessibilityLabel } = setup()
+      openAllSections(queryByAccessibilityLabel)
+
+      testField(queryByAccessibilityLabel('matchGenders'), { value: 'Female' })
+
+      authSelector.authUserSelector.mockReturnValue(user)
+    })
+
+    it('opposite gender for female', () => {
+      authSelector.authUserSelector.mockReturnValue({ gender: 'FEMALE' })
+      const { queryByAccessibilityLabel } = setup()
+      openAllSections(queryByAccessibilityLabel)
+
+      testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
+
+      authSelector.authUserSelector.mockReturnValue(user)
     })
 
     it('submit form', async () => {

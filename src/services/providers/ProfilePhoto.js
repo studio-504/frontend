@@ -1,31 +1,49 @@
-import { useContext } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
-import * as cameraActions from 'store/ducks/camera/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersActions from 'store/ducks/users/actions'
+import * as helpers from 'components/UploadAvatar/helpers'
 import * as navigationActions from 'navigation/actions'
+import * as cameraActions from 'store/ducks/camera/actions'
 import useCamera from 'services/providers/Camera'
-import { AuthContext } from 'services/providers/Auth'
+import path from 'ramda/src/path'
 
-function useProfilePhoto() {
+const useProfilePhoto = (props) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { user } = useContext(AuthContext)
+  const user = useSelector(authSelector.authUserSelector)
+  const isAvatarEmpty = helpers.isAvatarEmpty(user)
+  const backRoute = path(['backRoute'], props)
 
   const camera = useCamera({
     handleProcessedPhoto: (payload) => {
       dispatch(cameraActions.cameraCaptureRequest(payload))
-      navigationActions.navigateProfilePhotoUpload(navigation, { type: 'IMAGE', photos: [payload[0].preview] })()
+      navigationActions.navigateProfilePhotoUpload(navigation, {
+        type: 'IMAGE',
+        photos: [payload[0].preview],
+        backRoute,
+      })()
     },
   })
 
-  const handleCameraSnap = navigationActions.navigateCamera(navigation, { nextRoute: 'ProfilePhotoUpload' }, { protected: true, user })
-  const handleSkipUpload = () => navigation.replace('Settings')
+  const handleCameraSnap = navigationActions.navigateCamera(
+    navigation,
+    { nextRoute: 'ProfilePhotoUpload', backRoute },
+    { protected: true, user },
+  )
+
   const handleLibrarySnap = () => camera.handleLibrarySnap()
+  const handleSkipUpload = () => navigation.goBack()
+  const usersDeleteAvatarRequest = () => dispatch(usersActions.usersDeleteAvatarRequest())
+  const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation, { backRoute })
 
   return {
     handleLibrarySnap,
     handleCameraSnap,
     handleSkipUpload,
+    usersDeleteAvatarRequest,
+    navigateProfilePhotoGrid,
+    isAvatarEmpty,
   }
 }
 
