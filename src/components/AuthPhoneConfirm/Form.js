@@ -24,7 +24,13 @@ const PhoneConfirmForm = ({
   return (
     <View style={styles.root}>
       <View style={styles.input}>
-        <Field name="confirmationCode" component={TextField} placeholder={t('Confirmation Code')} keyboardType="number-pad" textContentType="oneTimeCode" autoCompleteType="off" autoFocus maxLength={6} />
+        <Field
+          {...Validation.getInputTypeProps('confirmationCode')}
+          name="confirmationCode"
+          component={TextField}
+          placeholder={t('Confirmation Code')}
+          autoFocus
+        />
       </View>
 
       <View style={styles.input}>

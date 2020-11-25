@@ -26,11 +26,12 @@ const EmailConfirmForm = ({
     <View style={styles.root}>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('confirmationCode')}
           testID={testIDs.form.confirmationCode}
           component={TextField}
           name="confirmationCode"
           placeholder="Confirmation Code"
-          {...Validation.getInputTypeProps('confirmationCode')}
+          autoFocus
         />
       </View>
 

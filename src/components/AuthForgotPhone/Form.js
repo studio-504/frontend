@@ -33,7 +33,13 @@ const ForgotForm = ({
   return (
     <View style={styles.root}>
       <View style={styles.input}>
-        <Field name="phone" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" autoFocus />
+        <Field
+          {...Validation.getInputTypeProps('phone')}
+          name="phone"
+          component={PhoneField}
+          placeholder={t('Phone Number')}
+          autoFocus
+        />
       </View>
       <View style={styles.input}>
         <DefaultButton label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />

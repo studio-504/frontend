@@ -9,20 +9,16 @@ import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
 import { useHeader } from 'components/ProfileEdit/header'
-
+import * as Validation from 'services/Validation'
+ 
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3)
-    .max(50)
-    .matches(/^\S*$/, 'no whitespace')
-    .trim()
-    .required(),
-  fullname: Yup.string().nullable(),
-  bio: Yup.string().nullable(),
-  email: Yup.string().nullable(),
-  phoneNumber: Yup.string().nullable(),
+  username: Validation.username,
+  fullname: Validation.fullName,
+  bio: Validation.bio,
+  email: Validation.email,
+  phoneNumber: Validation.phone,
   privacyStatus: Yup.string().nullable(),
 })
 
@@ -54,11 +50,15 @@ const ProfileEditForm = ({
         <Field name="bio" component={TextField} placeholder={t('Bio')} />
       </View>
       <View style={styling.input}>
-        <Field name="phoneNumber" component={TextField} placeholder={t('Phone Number')} keyboardType="phone-pad" autoCompleteType="tel" />
+        <Field
+          name="phoneNumber"
+          component={TextField}
+          placeholder={t('Phone Number')}
+          keyboardType="phone-pad"
+          autoCompleteType="tel"
+        />
       </View>
-      <View style={styling.input}>
-        {PrivacyComponent}
-      </View>
+      <View style={styling.input}>{PrivacyComponent}</View>
       <View style={styling.input}>
         <DefaultButton label={t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
