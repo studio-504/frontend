@@ -17,13 +17,12 @@ const TextField = ({
   ...props
 }) => {
   const onFocus = () => {
-    form.setFieldTouched(field.name, true)
     props.handleFieldFocus && props.handleFieldFocus()
   }
 
   const onBlur = (event) => {
     form.handleBlur(field.name)(event)
-    form.setFieldTouched(field.name, false)
+    form.setFieldTouched(field.name)
     props.handleFieldBlur && props.handleFieldBlur()
   }
 
