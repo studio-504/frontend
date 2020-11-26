@@ -283,7 +283,6 @@ describe('Validation service', () => {
         keyboardType: 'number-pad',
         textContentType: 'oneTimeCode',
         autoCompleteType: 'off',
-        autoFocus: true,
         maxLength: 6,
       })
     })
