@@ -19,6 +19,8 @@ import MembershipScreen from 'screens/MembershipScreen'
 import ArchivedScreen from 'screens/ArchivedScreen'
 import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 import DatingSettingsScreen from 'screens/DatingSettingsScreen'
+import DatingMatchScreen from 'screens/DatingMatchScreen'
+import DatingAboutScreen from 'screens/DatingAboutScreen'
 
 const Stack = createStackNavigator()
 
@@ -98,6 +100,16 @@ const ProfileNavigator = () => {
         name="DatingSettings"
         component={DatingSettingsScreen}
         {...stackScreenPageProps({ options: { title: 'Dating Preferences' } })}
+      />
+      <Stack.Screen
+        name="DatingMatch"
+        component={DatingMatchScreen}
+        {...stackScreenPageProps({ options: { title: 'Match Settings' } })}
+      />
+      <Stack.Screen
+        name="DatingAbout"
+        component={DatingAboutScreen}
+        {...stackScreenPageProps({ options: { title: 'Edit Profile' } })}
       />
       {navigationFragments.media({
         Stack,

@@ -79,6 +79,22 @@ describe('DatingSettingsScreen', () => {
       testNavigate(navigation, 'DatingAbout')
     })
 
+    it('Match Settings', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Match Settings'))
+
+      testNavigate(navigation, 'DatingMatch')
+    })
+
+    it('Join Diamond', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Join Diamond'))
+
+      testNavigate(navigation, 'App.Root.Home.Profile.Membership')
+    })
+
     it('Change Profile Picture', () => {
       const { getByText } = setup()
 

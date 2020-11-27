@@ -41,7 +41,7 @@ const DatingSettingsService = ({ children }) => {
 
   const navigateDatingMatch = navigationActions.navigateDatingMatch(navigation)
   const navigateDatingAbout = navigationActions.navigateDatingAbout(navigation)
-  const navigateMembership = navigationActions.navigateMembership(navigation)
+  const navigateMembership = () => navigationActions.navigateMembership(navigation)
 
   return (
     <UploadAvatar backRoute="DatingSettings">
