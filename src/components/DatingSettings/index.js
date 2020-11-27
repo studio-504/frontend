@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
-import { withTheme, Title, Switch, Text, Caption } from 'react-native-paper'
+import { withTheme, Switch, Text } from 'react-native-paper'
 import AuthErrorTemplate from 'templates/Auth/Error'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
@@ -87,7 +87,7 @@ const DatingSettings = ({
         </RowsComponent>
         <RowsItemComponent hasBorders>
           <UserRowComponent
-            avatar={<SettingsAvatar icon={<DatingIcon />} />}
+            avatar={<SettingsAvatar icon={<DatingIcon fill={theme.colors.text} />} />}
             onPress={toggleDatingStatusRequest}
             content={<Text>{t('Enable Dating')}</Text>}
             action={
