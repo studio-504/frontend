@@ -179,7 +179,6 @@ export const getInputTypeProps = (type) => {
         keyboardType: 'number-pad',
         textContentType: 'oneTimeCode',
         autoCompleteType: 'off',
-        autoFocus: true,
         maxLength: 6,
       }
     case 'password':
@@ -196,6 +195,13 @@ export const getInputTypeProps = (type) => {
         keyboardType: 'default',
         textContentType: 'username',
         autoCompleteType: 'username',
+      }
+    case 'phone':
+      return {
+        accessibilityLabel: 'phone',
+        keyboardType: 'number-pad',
+        textContentType: 'telephoneNumber',
+        autoCompleteType: 'tel',
       }
     default:
       return {}

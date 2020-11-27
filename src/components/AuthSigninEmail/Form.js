@@ -35,13 +35,31 @@ const SigninForm = ({
   return (
     <View style={styles.root}>
       <View style={styles.input}>
-        <Field testID={testIDs.form.email} name="email" component={TextField} placeholder={t('Email')} keyboardType="default" textContentType="email" autoCompleteType="email" />
+        <Field
+          {...Validation.getInputTypeProps('email')}
+          testID={testIDs.form.email}
+          name="email"
+          component={TextField}
+          placeholder={t('Email')}          
+        />
       </View>
       <View style={styles.input}>
-        <Field testID={testIDs.form.password} name="password" component={TextField} placeholder={t('Password')} secureTextEntry keyboardType="default" textContentType="password" autoCompleteType="password" />
+        <Field
+          {...Validation.getInputTypeProps('password')}
+          testID={testIDs.form.password}
+          name="password"
+          component={TextField}
+          placeholder={t('Password')}
+        />
       </View>
       <View style={styles.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={submitDisabled}
+        />
       </View>
     </View>
   )

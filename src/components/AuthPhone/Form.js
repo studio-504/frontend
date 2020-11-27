@@ -26,10 +26,23 @@ const PhoneForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID={testIDs.form.phone} name="phone" component={PhoneField} placeholder={t('Phone Number')} keyboardType="phone-pad" textContentType="telephoneNumber" autoCompleteType="tel" autoFocus />
+        <Field
+          {...Validation.getInputTypeProps('phone')}
+          testID={testIDs.form.phone}
+          name="phone"
+          component={PhoneField}
+          placeholder={t('Phone Number')}
+          autoFocus
+        />
       </View>
       <View style={styling.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={loading}
+        />
       </View>
     </View>
   )

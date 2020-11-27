@@ -29,29 +29,30 @@ const ForgotConfirmForm = ({
     <View style={styles.root}>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('username')}
           testID={testIDs.form.username}
           name="username"
           component={TextField}
           placeholder={t('Phone or Email')}
-          {...Validation.getInputTypeProps('username')}
         />
       </View>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('confirmationCode')}
           testID={testIDs.form.confirmationCode}
           name="confirmationCode"
           component={TextField}
           placeholder={t('Confirmation Code')}
-          {...Validation.getInputTypeProps('confirmationCode')}
+          autoFocus
         />
       </View>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('password')}
           testID={testIDs.form.password}
           name="password"
           component={TextField}
           placeholder={t('New Password')}
-          {...Validation.getInputTypeProps('password')}
         />
       </View>
       <View style={styles.input}>

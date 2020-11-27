@@ -35,11 +35,11 @@ const EmailForm = ({
     <View style={styles.root}>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('email')}
           testID={testIDs.form.email}
           name="email"
           placeholder="Email"
           component={TextField}
-          {...Validation.getInputTypeProps('email')}
         />
       </View>
       <View style={styles.input}>
