@@ -12,6 +12,7 @@ import path from 'ramda/src/path'
 const getDisableDatingByStatus = propEq('datingStatus', 'DISABLED')
 const getErrorText = path(['error', 'text'])
 
+// eslint-disable-next-line react/prop-types
 const DatingSettingsService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()

@@ -30,7 +30,7 @@ const DatingSettings = ({
           <View style={styling.placeholder}>
             {isAvatarEmpty ?
               <DefaultButton label={t('Upload Profile Picture')} onPress={openUploadAvatarMenu} loading={false} /> :
-              <DefaultButton label={t('Your Dating Preferences')} onPress={navigationActions.navigateDatingAbout(navigation, {nextAction: true})} loading={false} />
+              <DefaultButton label={t('Your Dating Preferences')} onPress={navigationActions.navigateDatingAbout(navigation, { nextAction: true })} loading={false} />
             }
           </View>
         </View>

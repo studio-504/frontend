@@ -107,6 +107,7 @@ const DatingSettings = ({
 DatingSettings.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
+  user: PropTypes.any,
   handleErrorClose: PropTypes.func,
   formErrorMessage: PropTypes.string,
   disableDating: PropTypes.bool,
@@ -163,7 +164,6 @@ const styles = (theme) =>
       fontWeight: '400',
     },
     footer: {
-      backgroundColor: 'green',
       padding: theme.spacing.base,
       backgroundColor: theme.colors.backgroundSecondary,
     },
