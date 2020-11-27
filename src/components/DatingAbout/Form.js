@@ -25,6 +25,7 @@ const formSchema = Yup.object().shape({
 
 const DatingAboutForm = ({
   t,
+  nextAction,
   handleSubmit,
   loading,
   values,
@@ -129,7 +130,7 @@ const DatingAboutForm = ({
         />
       </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={nextAction ? t('Next') : t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -153,11 +154,16 @@ const styles = StyleSheet.create({
 
 DatingAboutForm.propTypes = {
   t: PropTypes.any,
+  nextAction: PropTypes.bool,
   handleSubmit: PropTypes.any,
   loading: PropTypes.any,
   values: PropTypes.any,
   setFieldValue: PropTypes.any,
   errors: PropTypes.any,
+}
+
+DatingAboutForm.defaultProps = {
+  nextAction: false,
 }
 
 export default withTranslation()(({
