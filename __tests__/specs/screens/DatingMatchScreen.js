@@ -5,7 +5,7 @@ import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { testField, testNavigate } from 'tests/utils/helpers'
 import * as usersActions from 'store/ducks/users/actions'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const user = {
   matchAgeRange: {
@@ -25,6 +25,7 @@ const setup = () => renderWithStore(<DatingMatchScreen />)
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
+  useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
 }))
 
 jest.mock('@react-native-community/geolocation', () => ({ getCurrentPosition: jest.fn() }))
@@ -33,7 +34,7 @@ jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
 jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANTED)
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
-const navigation = { navigate: jest.fn() }
+const navigation = { navigate: jest.fn(), useRoute: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
 describe('DatingMatchScreen', () => {
@@ -153,10 +154,28 @@ describe('DatingMatchScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingProfile')
+      testNavigate(navigation, 'DatingProfile', { nextAction: true })
       expect(usersEditProfileIdle).toHaveBeenCalled()
 
       usersEditProfileIdle.mockRestore()
+    })
+
+    it('goBack when nextAction empty', async () => {
+      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
+      useRoute.mockReturnValue({ params: {} })
+      const { store, queryByText } = setup()
+
+      expect(queryByText('Next')).toBeFalsy()
+      expect(queryByText('Update')).toBeTruthy()
+
+      await act(async () => {
+        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
+      })
+
+      testNavigate(navigation, 'DatingSettings')
+      expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
+      usersEditProfileIdle.mockRestore()
+      useRoute.mockReturnValue({ params: { nextAction: true } })
     })
   })
 

@@ -2,7 +2,7 @@ import React from 'react'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
 import { testField, testNavigate } from 'tests/utils/helpers'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersActions from 'store/ducks/users/actions'
@@ -18,7 +18,11 @@ const user = {
 
 const setup = () => renderWithStore(<DatingAboutScreen />)
 
-jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useFocusEffect: jest.fn() }))
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
+  useFocusEffect: jest.fn(),
+  useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
+}))
 
 const navigation = { navigate: jest.fn() }
 useNavigation.mockReturnValue(navigation)
@@ -28,6 +32,10 @@ jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANT
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
 describe('DatingAboutScreen', () => {
+  afterEach(() => {
+    navigation.navigate.mockClear()
+  })
+
   const openAllSections = (queryByAccessibilityLabel) => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Full Name'))
@@ -138,10 +146,27 @@ describe('DatingAboutScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingMatch')
-      expect(usersEditProfileIdle).toHaveBeenCalled()
-
+      testNavigate(navigation, 'DatingMatch', { nextAction: true })
+      expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
       usersEditProfileIdle.mockRestore()
+    })
+
+    it('goBack when nextAction empty', async () => {
+      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
+      useRoute.mockReturnValue({ params: {} })
+      const { store, queryByText } = setup()
+
+      expect(queryByText('Next')).toBeFalsy()
+      expect(queryByText('Update')).toBeTruthy()
+
+      await act(async () => {
+        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
+      })
+
+      testNavigate(navigation, 'DatingSettings')
+      expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
+      usersEditProfileIdle.mockRestore()
+      useRoute.mockReturnValue({ params: { nextAction: true } })
     })
   })
 
