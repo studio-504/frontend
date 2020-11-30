@@ -17,6 +17,7 @@ export const feedPostFragment = `
   fragment postUserFragment on User {
     userId
     username
+    datingStatus
     viewCountsHidden
     commentsDisabled
     likesDisabled
