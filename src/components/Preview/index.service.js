@@ -48,7 +48,7 @@ export const PostPreviewService = ({ children }) => {
       thumbnailSource: { uri: path(['data', 'postedBy', 'photo', 'url480p'])(postsSingleGet) },
       imageSource: { uri: path(['data', 'postedBy', 'photo', 'url480p'])(postsSingleGet) },
     },
-    title: path(['data', 'postedBy', 'username'])(postsSingleGet),
+    user: path(['data', 'postedBy'])(postsSingleGet),
     subtitle: `Posted ${dayjs(path(['data', 'postedAt'])(postsSingleGet)).from(dayjs())}`,
   }), [postsSingleGet])
 

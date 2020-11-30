@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { Text, Caption } from 'react-native-paper'
 import Avatar from 'templates/Avatar'
-
+import Username from 'components/Post/Username'
 import { withTheme } from 'react-native-paper'
 
 const UserPreview = ({
@@ -15,7 +15,7 @@ const UserPreview = ({
     thumbnailSource,
     imageSource,
   },
-  title,
+  user,
   subtitle,
 }) => {
   const styling = styles(theme)
@@ -28,7 +28,7 @@ const UserPreview = ({
       />
 
       <View style={styling.profileText}>
-        <Text>{title}</Text>
+        <Username user={user} />
         <Caption>{subtitle}</Caption>
       </View>
     </View>
@@ -49,7 +49,9 @@ const styles = theme => StyleSheet.create({
 UserPreview.propTypes = {
   theme: PropTypes.any,
   image: PropTypes.any,
-  title: PropTypes.any,
+  user: PropTypes.shape({
+    username: PropTypes.string
+  }),
   subtitle: PropTypes.any,
 }
 
