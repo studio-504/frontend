@@ -78,10 +78,9 @@ const Header = ({
       </TouchableOpacity>
 
       <View style={styling.headerText}>
-        <Username 
-          onPress={() => navigationActions.navigateProfile(navigation, { userId: path(['postedBy', 'userId'], post) })} 
-          user={post.postedBy} 
-        />
+        <TouchableOpacity onPress={() => navigationActions.navigateProfile(navigation, { userId: path(['postedBy', 'userId'], post) })} >
+          <Username user={post.postedBy} />
+        </TouchableOpacity>
 
         {repostVisiblity ? (
           <TouchableOpacity
