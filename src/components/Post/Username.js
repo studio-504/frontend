@@ -6,14 +6,18 @@ import DiamondIcon from 'assets/svg/post/Diamond'
 import * as purchasesConstants from 'store/ducks/purchases/constants'
 import path from 'ramda/src/path'
 
+export const renderDiamond = ({ user, theme }) => {
+  return path(['subscriptionLevel'], user) === purchasesConstants.SUBSCRIPTION_LEVEL.DIAMOND ? (
+    <DiamondIcon fill={theme.colors.text} />
+  ) : null
+}
+
 const Username = ({ theme, user }) => (
   <View style={styles.root}>
     <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
       {path(['username'], user)}
     </Text>
-    {user.subscriptionLevel === purchasesConstants.SUBSCRIPTION_LEVEL.DIAMOND ? (
-      <DiamondIcon style={styles.icon} fill={theme.colors.text} />
-    ) : null}
+    {renderDiamond({ user, theme })}
   </View>
 )
 
@@ -23,9 +27,6 @@ const styles = StyleSheet.create({
   },
   username: {
     marginRight: 4,
-  },
-  icon: {
-    height: 1,
   },
 })
 
