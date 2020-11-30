@@ -17,6 +17,7 @@ import * as UserService from 'services/User'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
+import Username from 'components/Post/Username'
 
 const Comment = ({
   theme,
@@ -39,13 +40,9 @@ const Comment = ({
         />
       </TouchableOpacity>
       <TouchableOpacity style={styling.comment} onPress={() => handleUserReply(comment.commentedBy.username)}>
+        <Username user={pathOr(null, ['commentedBy'])(comment)} />
         <Paragraph>
           {[
-            /**
-             * Username of comment owner
-             */
-            <Text key="username" style={styling.author}>{pathOr('', ['commentedBy', 'username'])(comment)} </Text>,
-
             /**
              * Tagged @username occurrences with attached user object
              */
