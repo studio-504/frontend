@@ -48,7 +48,12 @@ const ProfilePhotoGridService = ({ children }) => {
    *
    */
   const headerRight = () => (
-    <HeaderRight onPress={changeAvatarRequest} title="Update" hidden={!selectedPost.postId} />
+    <HeaderRight 
+      title="Update" 
+      onPress={changeAvatarRequest} 
+      hidden={!selectedPost.postId} 
+      loading={usersChangeAvatar.status === 'loading'} 
+    />
   )
 
   /**
@@ -58,7 +63,7 @@ const ProfilePhotoGridService = ({ children }) => {
     navigation.setOptions({
       headerRight,
     })
-  }, [selectedPost.postId])
+  }, [selectedPost.postId, usersChangeAvatar.status])
 
   const handleOpenVerification = navigationActions.navigateVerification(navigation, {
     actionType: VERIFICATION_TYPE.BACK,
