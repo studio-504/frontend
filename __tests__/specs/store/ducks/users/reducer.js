@@ -8,39 +8,49 @@ const reducer = combineReducers({ users })
 
 describe('Users reducer', () => {
   describe('usersChangeAvatar', () => {
+    const error = 'error'
+
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle' })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle', error: {} })
     })
 
     it('loading', () => {
       const state = reducer(undefined, actions.usersChangeAvatarRequest())
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'loading' })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'loading', error: {} })
     })
 
     it('success', () => {
       const state = reducer(undefined, actions.usersChangeAvatarSuccess())
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'success' })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'success', error: {} })
     })
 
     it('failure', () => {
-      const state = reducer(undefined, actions.usersChangeAvatarFailure())
+      const state = reducer(undefined, actions.usersChangeAvatarFailure({ message: { text: error } }))
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'failure' })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'failure', error: { text: error } })
     })
 
     it('idle', () => {
-      const state = applyActions([actions.usersChangeAvatarSuccess(), actions.usersChangeAvatarIdle()], reducer)
+      const state = applyActions(
+        [
+          actions.usersChangeAvatarSuccess(),
+          actions.usersChangeAvatarFailure({ message: { text: error } }),
+          actions.usersChangeAvatarIdle(),
+        ],
+        reducer,
+      )
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle' })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle', error: {} })
     })
   })
 
   describe('usersImagePostsGet', () => {
     const selector = selectors.usersImagePostsGetSelector()
+    
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
@@ -140,7 +150,7 @@ describe('Users reducer', () => {
 
   describe('usersGetProfileSelf', () => {
     const data = { a: 1, b: 2 }
-    
+
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
@@ -154,7 +164,6 @@ describe('Users reducer', () => {
     })
 
     it('success', () => {
-      
       const state = reducer(undefined, actions.usersGetProfileSelfSuccess({ data }))
 
       expect(selectors.usersGetProfileSelf(state)).toEqual({ data, status: 'success', error: {} })
@@ -168,7 +177,10 @@ describe('Users reducer', () => {
     })
 
     it('idle', () => {
-      const state = applyActions([actions.usersGetProfileSelfSuccess({ data }), actions.usersGetProfileSelfIdle()], reducer)
+      const state = applyActions(
+        [actions.usersGetProfileSelfSuccess({ data }), actions.usersGetProfileSelfIdle()],
+        reducer,
+      )
 
       expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
     })

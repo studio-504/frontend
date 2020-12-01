@@ -380,7 +380,9 @@ function* usersChangeAvatarRequest(req) {
     yield usersEditProfileRequestData(req, data)
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
-    yield put(actions.usersChangeAvatarFailure(error))
+    yield put(actions.usersChangeAvatarFailure({ 
+      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error.message), 
+    }))
   }
 }
 

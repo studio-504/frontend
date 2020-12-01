@@ -16,8 +16,9 @@ const ProfilePhotoGridService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
-
+  
   const usersImagePostsGetRequest = () => dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
+  const usersChangeAvatarIdle = () => dispatch(usersActions.usersChangeAvatarIdle())
 
   useEffect(() => {
     usersImagePostsGetRequest()
@@ -33,7 +34,7 @@ const ProfilePhotoGridService = ({ children }) => {
         navigation.goBack()
       }
 
-      dispatch(usersActions.usersChangeAvatarIdle())
+      usersChangeAvatarIdle()
     }
   }, [usersChangeAvatar.status])
 
@@ -63,12 +64,17 @@ const ProfilePhotoGridService = ({ children }) => {
     actionType: VERIFICATION_TYPE.BACK,
   })
 
+  const formErrorMessage = usersChangeAvatar.error.text
+  const handleErrorClose = usersChangeAvatarIdle
+
   return children({
     usersImagePostsGetRequest,
     usersImagePostsGet,
     handlePostPress,
     selectedPost,
     handleOpenVerification,
+    formErrorMessage,
+    handleErrorClose,
   })
 }
 
