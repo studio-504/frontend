@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { Text, Caption } from 'react-native-paper'
+import { Caption } from 'react-native-paper'
 import Avatar from 'templates/Avatar'
 import Username from 'components/Post/Username'
 import { withTheme } from 'react-native-paper'
@@ -50,7 +50,7 @@ UserPreview.propTypes = {
   theme: PropTypes.any,
   image: PropTypes.any,
   user: PropTypes.shape({
-    username: PropTypes.string
+    username: PropTypes.string,
   }),
   subtitle: PropTypes.any,
 }
