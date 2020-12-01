@@ -1,7 +1,6 @@
 import React from 'react'
 import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
-import { testField, testNavigate } from 'tests/utils/helpers'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersActions from 'store/ducks/users/actions'
