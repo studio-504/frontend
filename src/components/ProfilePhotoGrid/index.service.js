@@ -17,8 +17,10 @@ const ProfilePhotoGridService = ({ children }) => {
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
 
+  const usersImagePostsGetRequest = () => dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
+
   useEffect(() => {
-    dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
+    usersImagePostsGetRequest()
   }, [])
 
   useEffect(() => {
@@ -62,6 +64,7 @@ const ProfilePhotoGridService = ({ children }) => {
   })
 
   return children({
+    usersImagePostsGetRequest,
     usersImagePostsGet,
     handlePostPress,
     selectedPost,

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   ScrollView,
+  RefreshControl,
 } from 'react-native'
 import path from 'ramda/src/path'
 import GridComponent from 'templates/Grid'
@@ -23,39 +24,47 @@ const ProfilePhotoGrid = ({
   handlePostPress,
   selectedPost,
   handleOpenVerification,
+  usersImagePostsGetRequest,
 }) => {
   const styling = styles(theme)
 
-  return (
-    <View style={styling.root}>
+  return (  
+    <ScrollView
+      style={styling.root}
+      refreshControl={
+        <RefreshControl
+          tintColor={theme.colors.border}
+          refreshing={usersImagePostsGet.status === 'loading'}
+          onRefresh={usersImagePostsGetRequest}
+        />
+      }
+    >
       <View style={styling.bookmark}>
         <Subheading style={styling.subtitle}>{t('Only Verified Posts Can Be Set as a Profile Picture')}</Subheading>
         <DefaultButton label={t('How to pass verification?')} onPress={handleOpenVerification} mode="outlined" />
       </View>
-      <ScrollView>
-        <GridComponent items={path(['data'])(usersImagePostsGet)}>
-          {(post, priorityIndex) => (
-            <GridItemComponent
-              onPress={() => handlePostPress(post)}
-              active={selectedPost.postId === post.postId}
-              activeIcon={<CheckedIcon fill={theme.colors.iconPrimary} />}
-              inactiveIcon={<UncheckedIcon fill={theme.colors.iconPrimary} />}
-            >
-              <CacheComponent
-                thread="default"
-                images={[
-                  [path(['image', 'url64p'])(post), true],
-                  [path(['image', 'url480p'])(post), true],
-                ]}
-                fallback={path(['image', 'url480p'])(post)}
-                priorityIndex={priorityIndex}
-                resizeMode="cover"
-              />
-            </GridItemComponent>
-          )}
-        </GridComponent>
-      </ScrollView>
-    </View>
+      <GridComponent items={path(['data'])(usersImagePostsGet)}>
+        {(post, priorityIndex) => (
+          <GridItemComponent
+            onPress={() => handlePostPress(post)}
+            active={selectedPost.postId === post.postId}
+            activeIcon={<CheckedIcon fill={theme.colors.iconPrimary} />}
+            inactiveIcon={<UncheckedIcon fill={theme.colors.iconPrimary} />}
+          >
+            <CacheComponent
+              thread="default"
+              images={[
+                [path(['image', 'url64p'])(post), true],
+                [path(['image', 'url480p'])(post), true],
+              ]}
+              fallback={path(['image', 'url480p'])(post)}
+              priorityIndex={priorityIndex}
+              resizeMode="cover"
+            />
+          </GridItemComponent>
+        )}
+      </GridComponent>
+    </ScrollView>
   )
 }
 const styles = theme => StyleSheet.create({
@@ -91,6 +100,7 @@ ProfilePhotoGrid.propTypes = {
   handlePostPress: PropTypes.any,
   selectedPost: PropTypes.any,
   handleOpenVerification: PropTypes.func,
+  usersImagePostsGetRequest: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(ProfilePhotoGrid))
