@@ -5,12 +5,14 @@ import { renderWithStore, act, fireEvent } from 'tests/utils'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { useNavigation } from '@react-navigation/native'
-import { testField } from 'tests/utils/helpers'
-import { useHeader } from 'components/DatingSettings/header'
 import * as usersActions from 'store/ducks/users/actions'
 import * as RNPaper from 'react-native-paper'
+import { testNavigate } from 'tests/utils/helpers'
+import UploadAvatar from 'components/UploadAvatar'
 
-const getHeaderProps = () => useHeader.mock.calls[0][0]
+const openUploadAvatarMenu = jest.fn()
+jest.mock('components/UploadAvatar', () => jest.fn())
+UploadAvatar.mockImplementation(({ children }) => children({ openUploadAvatarMenu }))
 
 jest
   .spyOn(RNPaper.Switch, 'render')
@@ -20,22 +22,14 @@ jest
 
 const user = {
   userId: 'id123',
-  gender: 'MALE',
   fullName: 'fullName',
   dateOfBirth: '1990-04-21',
   disableStatus: 'ENABLED',
-  matchAgeRange: {
-    min: 30,
-    max: 40,
-  },
-  matchHeightRange: {
-    min: 140,
-    max: 180,
-  },
-  matchLocationRadius: 15,
-  matchGenders: ['MALE'],
   bio: 'Bio',
-  height: 170,
+  signedUpAt: '2020-04-21',
+  photo: {
+    url480p: 'avatar.jpg',
+  },
 }
 
 const setup = () => renderWithStore(<DatingSettingsScreen />)
@@ -45,11 +39,8 @@ jest.mock('@react-navigation/native', () => ({
   useFocusEffect: jest.fn(),
 }))
 
-const navigation = { setOptions: jest.fn(), goBack: jest.fn() }
+const navigation = { navigate: jest.fn(), goBack: jest.fn() }
 useNavigation.mockReturnValue(navigation)
-
-jest.mock('@react-native-community/geolocation', () => ({ getCurrentPosition: jest.fn() }))
-jest.mock('components/DatingSettings/header', () => ({ useHeader: jest.fn() }))
 
 jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
 jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANTED)
@@ -57,157 +48,63 @@ jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
 describe('DatingSettingsScreen', () => {
   afterEach(() => {
-    navigation.setOptions.mockClear()
+    navigation.navigate.mockClear()
     navigation.goBack.mockClear()
-    useHeader.mockClear()
+    openUploadAvatarMenu.mockClear()
   })
 
-  describe('Form', () => {
-    it('default values', () => {
-      authSelector.authUserSelector.mockReturnValue({})
-      const { getByAccessibilityLabel, getByText } = setup()
-
-      expect(getByText('Account Settings')).toBeTruthy()
-      testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
-      testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
-      testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
-      testField(getByAccessibilityLabel('gender'), { value: '' })
-      testField(getByAccessibilityLabel('fullName'), { value: undefined })
-      testField(getByAccessibilityLabel('bio'), { value: undefined })
-      testField(getByAccessibilityLabel('height'), { value: '' })
-
-      expect(getByText('Match Settings')).toBeTruthy()
-      testField(getByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
-      testField(getByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
-      testField(getByAccessibilityLabel('matchHeightRangeMin'), { value: '' })
-      testField(getByAccessibilityLabel('matchHeightRangeMax'), { value: '' })
-      testField(getByAccessibilityLabel('matchGenders'), { value: '' })
-      testField(getByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
-
-      expect(getByText('Toggle Dating')).toBeTruthy()
-      expect(getByAccessibilityLabel('disableDating')).toBeTruthy()
-
-      authSelector.authUserSelector.mockReturnValue(user)
-    })
-
-    it('values from profile', () => {
+  describe('Header', () => {
+    it('Change Profile Picture', () => {
       const { getByAccessibilityLabel } = setup()
 
-      testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'April' })
-      testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '21' })
-      testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '1990' })
-      testField(getByAccessibilityLabel('gender'), { value: 'Male' })
-      testField(getByAccessibilityLabel('fullName'), { value: 'fullName' })
-      testField(getByAccessibilityLabel('bio'), { value: 'Bio' })
-      testField(getByAccessibilityLabel('height'), { value: '170 cm' })
-      testField(getByAccessibilityLabel('matchAgeRangeMin'), { value: '30' })
-      testField(getByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
-      testField(getByAccessibilityLabel('matchHeightRangeMin'), { value: '140 cm' })
-      testField(getByAccessibilityLabel('matchHeightRangeMax'), { value: '180 cm' })
-      testField(getByAccessibilityLabel('matchGenders'), { value: 'Male' })
-      testField(getByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
-      
+      fireEvent.press(getByAccessibilityLabel('CircleAvatar'))
+
+      expect(openUploadAvatarMenu).toHaveBeenCalled()
     })
 
-    it('submit form', async () => {
-      const usersEditProfileRequest = jest.spyOn(usersActions, 'usersEditProfileRequest')
-      setup()
+    it('User info', () => {
+      const { getByText } = setup()
 
-      expect(useHeader).toHaveBeenCalled()
-      const { title, onPress } = getHeaderProps()
-
-      expect(title).toBe('Update')
-
-      await act(async () => {
-        onPress()
-      })
-
-      expect(usersEditProfileRequest).toHaveBeenCalledWith({
-        height: 170,
-        bio: 'Bio',
-        dateOfBirth: '1990-04-21',
-        disableDating: undefined,
-        fullName: 'fullName',
-        gender: 'MALE',
-        location: undefined,
-        matchAgeRange: { max: 40, min: 30 },
-        matchGenders: 'MALE',
-        matchLocationRadius: 15,
-        matchHeightRange: { max: 180, min: 140 },
-      })
-
-      usersEditProfileRequest.mockRestore()
+      expect(getByText(user.bio)).toBeTruthy()
+      expect(getByText(`${user.fullName}, 30`)).toBeTruthy()
     })
   })
 
-  describe('Submitting state', () => {
-    it('disable submit button', async () => {
-      const { store } = setup()
+  describe('Navigation', () => {
+    it('Edit Profile', () => {
+      const { getByText } = setup()
 
-      expect(getHeaderProps().disabled).toBe(false)
-      useHeader.mockClear()
+      fireEvent.press(getByText('Edit Profile'))
 
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileRequest({ data: {} }))
-      })
-
-      expect(getHeaderProps().disabled).toBe(true)
-    })
-  })
-
-  describe('Success state', () => {
-    it('redirect back and clear state', async () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const usersSetUserDatingStatusIdle = jest.spyOn(usersActions, 'usersSetUserDatingStatusIdle')
-
-      const { store } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
-      })
-
-      expect(navigation.goBack).toHaveBeenCalled()
-      expect(usersEditProfileIdle).toHaveBeenCalled()
-      expect(usersSetUserDatingStatusIdle).toHaveBeenCalled()
-
-      usersEditProfileIdle.mockRestore()
-      usersSetUserDatingStatusIdle.mockRestore()
+      testNavigate(navigation, 'DatingAbout')
     })
 
-    it('clear state on unmount', () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const usersSetUserDatingStatusIdle = jest.spyOn(usersActions, 'usersSetUserDatingStatusIdle')
+    it('Match Settings', () => {
+      const { getByText } = setup()
 
-      const { unmount } = setup()
+      fireEvent.press(getByText('Match Settings'))
 
-      unmount()
+      testNavigate(navigation, 'DatingMatch')
+    })
 
-      expect(usersEditProfileIdle).toHaveBeenCalled()
-      expect(usersSetUserDatingStatusIdle).toHaveBeenCalled()
+    it('Join Diamond', () => {
+      const { getByText } = setup()
 
-      usersEditProfileIdle.mockRestore()
-      usersSetUserDatingStatusIdle.mockRestore()
+      fireEvent.press(getByText('Join Diamond'))
+
+      testNavigate(navigation, 'App.Root.Home.Profile.Membership')
+    })
+
+    it('Change Profile Picture', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Change Profile Picture'))
+
+      expect(openUploadAvatarMenu).toHaveBeenCalled()
     })
   })
 
   describe('Error state', () => {
-    it('toggle usersEditProfile error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
-    })
-
     it('toggle usersSetUserDatingStatus error', async () => {
       const error = 'Error'
       const { store, queryByText, getByLabelText } = setup()

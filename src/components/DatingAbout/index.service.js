@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import * as navigationActions from 'navigation/actions'
-import { useNavigation } from '@react-navigation/native'
 import * as helpers from 'components/DatingMatch/helpers'
+import path from 'ramda/src/path'
 
 const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
@@ -12,11 +13,18 @@ const DatingAboutService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersEditProfile = useSelector(state => state.users.usersEditProfile)
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
+  const route = useRoute()
+  const nextAction = path(['params', 'nextAction'], route)
   
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
       dispatch(usersActions.usersEditProfileIdle())
-      navigationActions.navigateDatingMatch(navigation)()
+
+      if(nextAction) {
+        navigationActions.navigateDatingMatch(navigation, { nextAction: true })()
+      } else {
+        navigationActions.navigateDatingSettings(navigation)()
+      }
     }
   }, [usersEditProfile.status])
 
@@ -51,6 +59,7 @@ const DatingAboutService = ({ children }) => {
   const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle())
 
   return children({
+    nextAction,
     handleFormSubmit,
     formInitialValues,
     formSubmitLoading,

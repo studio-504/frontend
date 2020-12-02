@@ -28,6 +28,7 @@ const DatingMatchForm = ({
   loading,
   values,
   errors,
+  nextAction,
 }) => {
   return (
     <View style={styles.root}>
@@ -140,7 +141,7 @@ const DatingMatchForm = ({
         <Field name="location" component={MapField} placeholder={t('Match Location')} />
       </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={nextAction ? t('Next') : t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -169,6 +170,11 @@ DatingMatchForm.propTypes = {
   values: PropTypes.any,
   setFieldValue: PropTypes.any,
   errors: PropTypes.any,
+  nextAction: PropTypes.bool,
+}
+
+DatingMatchForm.defaultProps = {
+  nextAction: false,
 }
 
 export default withTranslation()(({
