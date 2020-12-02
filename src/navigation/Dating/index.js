@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import PropTypes from 'prop-types'
 import { createStackNavigator } from '@react-navigation/stack'
 import { withTheme } from 'react-native-paper'
 
@@ -10,62 +11,61 @@ import * as navigationFragments from 'navigation/fragments'
 import DatingScreen from 'screens/DatingScreen'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
-import DatingPreviewScreen from 'screens/DatingPreviewScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
 import { useFocusEffect } from '@react-navigation/native'
 
 const Stack = createStackNavigator()
 
-const DatingNavigator = () => {
+const DatingNavigator = ({ navigation }) => {
   const { theme } = useContext(ThemeContext)
   const { user, setSwipeDisabled } = useContext(AuthContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
-  const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, user })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
-
+  const datingHeaderLeft = user.datingStatus === 'ENABLED' ? 
+    navigationOptions.datingHeaderLeft : 
+    navigationOptions.homeHeaderLeft
+    
   useFocusEffect(() => {
     setSwipeDisabled(true)
 
     return () => setSwipeDisabled(false)
   })
-
+ 
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps}>
       <Stack.Screen
         name="Dating"
         component={DatingScreen}
-        {...stackScreenDefaultProps}
+        {...stackScreenPageProps({ options: { 
+          headerTitle: navigationOptions.homeHeaderTitle({ theme }), 
+          headerLeft: datingHeaderLeft({ navigation, theme }),
+          headerRight: navigationOptions.homeHeaderRight({ navigation, theme, user }),
+        } })}
       />
 
       <Stack.Screen
         name="DatingAbout"
         component={DatingAboutScreen}
-        {...stackScreenDefaultProps}
+        {...stackScreenPageProps({ options: { title: 'Dating Profile' } })}
       />
 
       <Stack.Screen
         name="DatingMatch"
         component={DatingMatchScreen}
-        {...stackScreenDefaultProps}
-      />
-
-      <Stack.Screen
-        name="DatingPreview"
-        component={DatingPreviewScreen}
-        {...stackScreenDefaultProps}
+        {...stackScreenPageProps({ options: { title: 'Dating Match' } })}
       />
 
       <Stack.Screen
         name="DatingProfile"
         component={DatingProfileScreen}
-        {...stackScreenDefaultProps}
+        {...stackScreenPageProps({ options: { title: 'Dating Preview' } })}
       />
 
       <Stack.Screen
         name="ProfilePhotoUpload"
         component={ProfilePhotoUploadScreen}
-        {...stackScreenDefaultProps}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
 
       {navigationFragments.media({
@@ -74,6 +74,10 @@ const DatingNavigator = () => {
       })}
     </Stack.Navigator>
   )
+}
+
+DatingNavigator.propTypes = {
+  navigation: PropTypes.any,
 }
 
 export default withTheme(DatingNavigator)
