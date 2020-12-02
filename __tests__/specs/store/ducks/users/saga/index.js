@@ -232,13 +232,17 @@ describe('Users saga', () => {
         .silentRun()
     })
 
-    it('fail', async () => {
+    it('failure', async () => {
       const error = new Error('Error')
       queryService.apiRequest.mockRejectedValueOnce(error)
 
       await expectSaga(testAsRootSaga(users))
         .call([queryService, 'apiRequest'], queries.setUserDetails, { photoPostId: postId })
-        .put(usersActions.usersChangeAvatarFailure(error))
+        .put(
+          usersActions.usersChangeAvatarFailure({
+            message: { code: 'GENERIC', text: 'Profile photo change failed. Please try again', nativeError: 'Error' },
+          }),
+        )
 
         .dispatch(usersActions.usersChangeAvatarRequest({ postId: 1 }))
         .silentRun()
