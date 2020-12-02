@@ -27,14 +27,12 @@ const styles = StyleSheet.create({
   rootDefault: {
     borderBottomColor: 'transparent',
     borderBottomWidth: 1,
-    paddingBottom: 6,
-    marginBottom: 6,
+    paddingVertical: 6,
   },
   rootBorder: {
     borderBottomColor: '#33333340',
     borderBottomWidth: 1,
-    paddingBottom: 6,
-    marginBottom: 6,
+    paddingVertical: 6,
   },
   component: {
     height: 42,

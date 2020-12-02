@@ -11,6 +11,7 @@ import AuthErrorTemplate from 'templates/Auth/Error'
 
 const DatingMatch = ({
   theme,
+  nextAction,
   handleFormSubmit,
   formInitialValues,
   formSubmitLoading,
@@ -31,6 +32,7 @@ const DatingMatch = ({
       <KeyboardAwareScrollView>
         <View style={styling.form}>
           <DatingMatchForm
+            nextAction={nextAction}
             handleFormSubmit={handleFormSubmit}
             formInitialValues={formInitialValues}
             formSubmitLoading={formSubmitLoading}
@@ -54,6 +56,7 @@ const styles = theme => StyleSheet.create({
 
 DatingMatch.propTypes = {
   theme: PropTypes.any,
+  nextAction: PropTypes.bool,
   handleFormSubmit: PropTypes.func,
   formInitialValues: PropTypes.any,
   formSubmitLoading: PropTypes.bool,
@@ -63,6 +66,7 @@ DatingMatch.propTypes = {
 }
 
 DatingMatch.defaultProps = {
+  nextAction: false,
   formErrorMessage: null,
   formSubmitLoading: false, 
   formSubmitDisabled: false,
