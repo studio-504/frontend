@@ -5,7 +5,6 @@ import compose from 'ramda/src/compose'
 import replace from 'ramda/src/replace'
 import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
-import range from 'ramda/src/range'
 import debounce from 'debounce-async'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
@@ -29,8 +28,8 @@ const ERRORS = {
   height: 'Height must be selected',
 }
 
-const MIN_HEIGHT = 1
-const MAX_HEIGHT = 275
+export const MIN_HEIGHT = 2.54
+export const MAX_HEIGHT = 297.18
 
 /**
  * Validators
@@ -207,57 +206,3 @@ export const getInputTypeProps = (type) => {
       return {}
   }
 }
-
-/**
- * Options
- */
-export const locationOptions = [
-  { label: '5 mi', value: 5 },
-  { label: '15 mi', value: 15 },
-  { label: '30 mi', value: 30 },
-  { label: '50 mi', value: 50 },
-  { label: '100 mi', value: 100 },
-]
-
-export const monthsOptions = [
-  { label: 'January', value: '01' },
-  { label: 'February', value: '02' },
-  { label: 'March', value: '03' },
-  { label: 'April', value: '04' },
-  { label: 'May', value: '05' },
-  { label: 'June', value: '06' },
-  { label: 'July', value: '07' },
-  { label: 'August', value: '08' },
-  { label: 'September', value: '09' },
-  { label: 'October', value: '10' },
-  { label: 'November', value: '11' },
-  { label: 'December', value: '12' },
-]
-
-export const datesOptions = Array.from({ length: 31 }, (_, i) => {
-  const value = `${i + 1}`.padStart(2, '0')
-
-  return { label: value, value }
-})
-
-export const yearsOptions = Array.from({ length: 103 }, (_, i) => {
-  const value = `${i + 1900}`
-
-  return { label: value, value }
-})
-
-export const minAgeOptions = Array.from({ length: 68 }, (_, i) => {
-  const value = i + 18
-
-  return { label: `${value}`, value }
-})
-
-export const getMaxAgeOptions = (matchAgeRangeMin) => {
-  return Array.from({ length: 68 + 18 - matchAgeRangeMin }, (_, i) => {
-    const value = i + matchAgeRangeMin
-
-    return { label: `${value}`, value }
-  })
-}
-
-export const heightOptions = range(MIN_HEIGHT, MAX_HEIGHT + 1).map(value => ({ label: `${value} cm`, value }))
