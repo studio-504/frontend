@@ -211,11 +211,6 @@ export const getInputTypeProps = (type) => {
 /**
  * Options
  */
-export const genderOptions = [
-  { label: 'Male', value: 'MALE' },
-  { label: 'Female', value: 'FEMALE' },
-]
-
 export const locationOptions = [
   { label: '5 mi', value: 5 },
   { label: '15 mi', value: 15 },

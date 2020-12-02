@@ -325,13 +325,6 @@ describe('Validation service', () => {
       ])
     })
 
-    it('genderOptions', () => {
-      expect(Validation.genderOptions).toEqual([
-        { label: 'Male', value: 'MALE' },
-        { label: 'Female', value: 'FEMALE' },
-      ])
-    })
-
     it('locationOptions', () => {
       expect(Validation.locationOptions).toEqual([
         { label: '5 mi', value: 5 },

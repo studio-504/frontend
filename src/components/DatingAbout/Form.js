@@ -12,6 +12,7 @@ import { Formik, Field } from 'formik'
 import { withTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
+import { genderOptions } from 'constants/Genders'
 
 const formSchema = Yup.object().shape({
   dateOfBirthMonth: Validation.dateOfBirthMonth,
@@ -86,7 +87,7 @@ const DatingAboutForm = ({
           name="gender"
           component={PickerField}
           placeholder={{ label: 'Your Gender', value: undefined }}
-          items={Validation.genderOptions}
+          items={genderOptions}
           accessibilityLabel="gender"
         />
       </CollapsableComponent>

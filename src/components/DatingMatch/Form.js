@@ -12,6 +12,7 @@ import { Formik, Field } from 'formik'
 import { withTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
+import { genderOptions } from 'constants/Genders'
 
 const formSchema = Yup.object().shape({
   matchAgeRangeMin: Validation.matchAgeRangeMin,
@@ -77,7 +78,7 @@ const DatingMatchForm = ({
           accessibilityLabel="matchGenders"
           component={PickerField}
           placeholder={{ label: 'Match Gender', value: undefined }}
-          items={Validation.genderOptions}
+          items={genderOptions}
         />
       </CollapsableComponent>
 
