@@ -2,7 +2,8 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import ActionSheet from 'components/ActionSheet'
-import { Text, Caption } from 'react-native-paper'
+import Username from 'components/Post/Username'
+import { Caption } from 'react-native-paper'
 import path from 'ramda/src/path'
 import Avatar from 'templates/Avatar'
 import MoreIcon from 'assets/svg/action/More'
@@ -15,6 +16,7 @@ import PrivacyService from 'services/Privacy'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
+
 
 const Header = ({
   t,
@@ -76,8 +78,8 @@ const Header = ({
       </TouchableOpacity>
 
       <View style={styling.headerText}>
-        <TouchableOpacity onPress={() => navigationActions.navigateProfile(navigation, { userId: path(['postedBy', 'userId'], post) })}>
-          <Text style={styling.headerUsername}>{path(['postedBy', 'username'])(post)}</Text>
+        <TouchableOpacity onPress={() => navigationActions.navigateProfile(navigation, { userId: path(['postedBy', 'userId'], post) })} >
+          <Username user={post.postedBy} />
         </TouchableOpacity>
 
         {repostVisiblity ? (
@@ -187,13 +189,13 @@ const Header = ({
 const styles = (theme) =>
   StyleSheet.create({
     header: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       padding: theme.spacing.base,
     },
     headerText: {
       paddingHorizontal: 8,
-      justifyContent: 'center',
       flex: 1,
     },
     headerAction: {
@@ -202,7 +204,6 @@ const styles = (theme) =>
       height: 38,
       width: 38,
     },
-    headerUsername: {},
     headerStatus: {
       color: '#676767',
       marginRight: 4,

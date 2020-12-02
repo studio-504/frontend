@@ -7,38 +7,45 @@ import {
 import { Subheading, Text, Caption } from 'react-native-paper'
 import path from 'ramda/src/path'
 import dayjs from 'dayjs'
-
+import { renderDiamond } from 'components/Post/Username'
 import { withTranslation } from 'react-i18next'
+import { withTheme } from 'react-native-paper'
 
 const ProfileAbout = ({
   t,
+  theme,
   usersGetProfile,
 }) => {
-  const styling = styles
+  const user = path(['data'])(usersGetProfile)
   
   return (
-    <View style={styling.root}>
-      <Subheading style={styling.itemTitle}>{path(['data', 'fullName'])(usersGetProfile)}</Subheading>
-      {path(['data', 'bio', 'length'])(usersGetProfile) ?
-        <Text style={styling.itemText}>{path(['data', 'bio'])(usersGetProfile)}</Text>
+    <View>
+      <View style={styles.username}>
+        <Subheading style={styles.fullName}>{path(['fullName'])(user)}</Subheading>
+        {renderDiamond({ user, theme })}
+      </View>
+      {path(['bio', 'length'])(user) ?
+        <Text>{path(['bio'])(user)}</Text>
       : null}
-      <Caption style={styling.itemText}>{t('Joined')} {dayjs(path(['data', 'signedUpAt'])(usersGetProfile)).from(dayjs())}</Caption>
+      <Caption>{t('Joined')} {dayjs(path(['signedUpAt'])(user)).from(dayjs())}</Caption>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  root: {
+  username: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  itemTitle: {
-  },
-  itemText: {
+  fullName: {
+    marginRight: 4,
   },
 })
 
 ProfileAbout.propTypes = {
+  theme: PropTypes.any,
   usersGetProfile: PropTypes.any,
   t: PropTypes.any,
 }
 
-export default withTranslation()(ProfileAbout)
+export default withTranslation()(withTheme(ProfileAbout))
