@@ -26,6 +26,8 @@ const ERRORS = {
   onlyNumbers: 'must only contain numbers',
   noWhitespace: 'no whitespace',
   height: 'Height must be selected',
+  minHeight: 'Height must be greater than 0',
+  maxHeight: 'Height must be less than 10\'',
 }
 
 export const MIN_HEIGHT = 2.54
@@ -145,8 +147,9 @@ export const matchGenders = Yup.string()
   .required(ERRORS.matchGendersError)
 
 export const height = Yup.number()
-  .min(MIN_HEIGHT)
-  .max(MAX_HEIGHT)
+  .typeError(ERRORS.height)
+  .min(MIN_HEIGHT, ERRORS.minHeight)
+  .max(MAX_HEIGHT, ERRORS.maxHeight)
   .required(ERRORS.height)
 
 /**
