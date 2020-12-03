@@ -18,6 +18,7 @@ const Gallery = ({ posts }) => {
           post={post} 
           priorityIndex={priorityIndex} 
           thread="dating/profile" 
+          disabled
         />
       )}
     />
