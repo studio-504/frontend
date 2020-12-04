@@ -30,8 +30,8 @@ const ERRORS = {
   maxHeight: 'Height must be less than 10\'',
 }
 
-export const MIN_HEIGHT = 2.54
-export const MAX_HEIGHT = 297.18
+export const MIN_HEIGHT = 1
+export const MAX_HEIGHT = 117
 
 /**
  * Validators
