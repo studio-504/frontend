@@ -121,6 +121,21 @@ export const tabNavigatorAuthProps = ({ theme }) => ({
   pager,
 })
 
+export const tabNavigatorDatingWizardProps = ({ theme }) => ({
+  sceneContainerStyle: {
+    backgroundColor: theme.colors.backgroundPrimary,
+  },
+  tabBarOptions: {
+    activeTintColor: theme.colors.text,
+    inactiveTintColor: theme.colors.text,
+    style: {
+      backgroundColor: theme.colors.backgroundSecondary,
+    },
+    indicatorStyle: {
+      backgroundColor: theme.colors.primary,
+    },
+  },
+})
 
 export const stackNavigatorDefaultProps = ({ theme }) => ({
   screenOptions: {

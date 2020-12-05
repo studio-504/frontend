@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as navigationActions from 'navigation/actions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as helpers from 'components/DatingMatch/helpers'
 import pathOr from 'ramda/src/pathOr'
@@ -18,14 +17,9 @@ const DatingMatchService = ({ children }) => {
   const usersEditProfileRequest = (payload) => dispatch(usersActions.usersEditProfileRequest(payload))
 
   useEffect(() => {
-    if (usersEditProfile.status === 'success') {
+    if (usersEditProfile.status === 'success' && nextAction === false) {
       dispatch(usersActions.usersEditProfileIdle({}))
-
-      if(nextAction) {
-        navigationActions.navigateDatingProfile(navigation, { nextAction: true })()
-      } else {
-        navigationActions.navigateDatingSettings(navigation)()
-      }
+      navigation.goBack()
     }
   }, [usersEditProfile.status])
 

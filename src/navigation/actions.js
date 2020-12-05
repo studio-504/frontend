@@ -57,6 +57,7 @@ export const navigateDatingAbout = withAuthValidation(navigateToPath('DatingAbou
 export const navigateDatingMatch = withAuthValidation(navigateToPath('DatingMatch'))
 export const navigateDatingProfile = withAuthValidation(navigateToPath('DatingProfile'))
 export const navigateDatingSettings = withAuthValidation(navigateToPath('DatingSettings'))
+export const navigateDatingWizard = withAuthValidation(navigateToPath('DatingWizard'))
 
 /**
  * Profile

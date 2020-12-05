@@ -39,7 +39,7 @@ const DatingSettings = ({
       {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
       <View style={styling.header}>
         <TouchableOpacity style={styling.avatar} onPress={openUploadAvatarMenu}>
-          <CircleAvatar image={path(['photo', 'url480p'], user)} />
+          <CircleAvatar image={path(['photo', 'url480p'], user)} hasBorder />
         </TouchableOpacity>
         <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">
           {user.fullName}
