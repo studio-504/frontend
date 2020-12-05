@@ -18,7 +18,8 @@ const PostsGridThumbnail = ({
   post,
   priorityIndex,
   thread,
-}) => {
+  disabled,
+}) => { 
   const styling = styles
   const navigation = useNavigation()
 
@@ -67,7 +68,7 @@ const PostsGridThumbnail = ({
   return (
     <View style={styling.root}>
       <GridItemComponent
-        onPress={handleOnPress}
+        onPress={disabled ? null : handleOnPress}
         active={isActive}
         activeIcon={activeIcon}
         inactiveIcon={null}
@@ -103,6 +104,11 @@ PostsGridThumbnail.propTypes = {
   post: PropTypes.any,
   priorityIndex: PropTypes.any,
   thread: PropTypes.any,
+  disabled: PropTypes.bool,
+}
+
+PostsGridThumbnail.defaultProps = {
+  disabled: false,
 }
 
 export default PostsGridThumbnail
