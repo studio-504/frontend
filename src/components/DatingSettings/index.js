@@ -14,6 +14,7 @@ import NextIcon from 'assets/svg/settings/Next'
 import FiltersIcon from 'assets/svg/dating/Filters'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import DatingIcon from 'assets/svg/settings/Dating'
+import CardIcon from 'assets/svg/dating/Card'
 import { withTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import path from 'ramda/src/path'
@@ -28,6 +29,7 @@ const DatingSettings = ({
   toggleDatingStatusRequest,
   navigateDatingMatch,
   navigateDatingAbout,
+  navigateDatingProfile,
   navigateMembership,
   openUploadAvatarMenu,
 }) => {
@@ -52,6 +54,11 @@ const DatingSettings = ({
       <View style={styling.inner}>
         <RowsComponent
           items={[
+            {
+              label: t('Preview Profile'),
+              onPress: navigateDatingProfile,
+              icon: <CardIcon fill={theme.colors.text} />,
+            },
             {
               label: t('Match Settings'),
               onPress: navigateDatingMatch,
@@ -116,6 +123,7 @@ DatingSettings.propTypes = {
   navigateDatingAbout: PropTypes.func,
   navigateMembership: PropTypes.func,
   openUploadAvatarMenu: PropTypes.func,
+  navigateDatingProfile: PropTypes.func,
 }
 
 DatingSettings.defaultProps = {
