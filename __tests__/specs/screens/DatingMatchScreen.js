@@ -13,8 +13,8 @@ const user = {
     max: 40,
   },
   matchHeightRange: {
-    min: 131,
-    max: 180,
+    min: 90,
+    max: 100,
   },
   matchLocationRadius: 15,
   matchGenders: ['MALE'],
@@ -126,8 +126,8 @@ describe('DatingMatchScreen', () => {
           min: 30,
         },
         matchHeightRange: {
-          max: 180,
-          min: 131,
+          max: 100,
+          min: 90,
         },
       })
 

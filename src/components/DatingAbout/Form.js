@@ -12,6 +12,7 @@ import { Formik, Field } from 'formik'
 import { withTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
+import * as Units from 'constants/Units'
 
 const formSchema = Yup.object().shape({
   dateOfBirthMonth: Validation.dateOfBirthMonth,
@@ -48,7 +49,7 @@ const DatingAboutForm = ({
               name="dateOfBirthMonth"
               component={PickerField}
               placeholder={{ label: 'Month', value: undefined }}
-              items={Validation.monthsOptions}
+              items={Units.monthsOptions}
               accessibilityLabel="dateOfBirthMonth"
             />
           </View>
@@ -57,7 +58,7 @@ const DatingAboutForm = ({
               name="dateOfBirthDay"
               component={PickerField}
               placeholder={{ label: 'Day', value: undefined }}
-              items={Validation.datesOptions}
+              items={Units.datesOptions}
               accessibilityLabel="dateOfBirthDay"
             />
           </View>
@@ -66,7 +67,7 @@ const DatingAboutForm = ({
               name="dateOfBirthYear"
               component={PickerField}
               placeholder={{ label: 'Year', value: undefined }}
-              items={Validation.yearsOptions}
+              items={Units.yearsOptions}
               accessibilityLabel="dateOfBirthYear"
             />
           </View>
@@ -86,7 +87,7 @@ const DatingAboutForm = ({
           name="gender"
           component={PickerField}
           placeholder={{ label: 'Your Gender', value: undefined }}
-          items={Validation.genderOptions}
+          items={Units.genderOptions}
           accessibilityLabel="gender"
         />
       </CollapsableComponent>
@@ -126,7 +127,7 @@ const DatingAboutForm = ({
           accessibilityLabel="height"
           component={PickerField}
           placeholder={{ label: 'Height', value: undefined }}
-          items={Validation.heightOptions}
+          items={Units.heightOptions}
         />
       </CollapsableComponent>
       <View style={styles.input}>
