@@ -69,8 +69,8 @@ const styles = (theme) =>
     },
     button: {
       alignItems: 'center',
-      flex: 1,
-      flexShrink: 0,
+      flex: 1.2,
+      flexShrink: 1,
     },
     number: {
       width: 32,

@@ -41,7 +41,7 @@ const DatingWizardNavigator = ({ navigation }) => {
   }
 
   useEffect(() => {
-    if (usersEditProfile.status === 'success') {
+    if (usersEditProfile.status === 'success' && step !== STEPS.AVATAR) {
       dispatch(usersActions.usersEditProfileIdle())
       handleNext()
     }

@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersActions from 'store/ducks/users/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
 import { useNavigation } from '@react-navigation/native'
 import * as navigationActions from 'navigation/actions'
+import { useFocusEffect } from '@react-navigation/native'
 
 const DatingProfileService = ({ children }) => {
   const dispatch = useDispatch()
@@ -28,12 +29,12 @@ const DatingProfileService = ({ children }) => {
     }
   }, [usersSetUserDatingStatus.status])
 
-  useEffect(() => {  
+  useEffect(() => {
     dispatch(usersActions.usersGetProfileSelfRequest())
     dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 
-  useEffect(() => handleErrorClose, [])
+  useFocusEffect(useCallback(() => handleErrorClose, []))
 
   return children({
     user,

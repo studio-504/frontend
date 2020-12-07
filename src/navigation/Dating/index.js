@@ -13,6 +13,7 @@ import DatingAboutScreen from 'screens/DatingAboutScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
+import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
 import DatingWizardNavigator from 'components/DatingWizard'
 import { useFocusEffect } from '@react-navigation/native'
 
@@ -74,6 +75,12 @@ const DatingNavigator = ({ navigation }) => {
       <Stack.Screen
         name="ProfilePhotoUpload"
         component={ProfilePhotoUploadScreen}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
+      />
+
+      <Stack.Screen
+        name="ProfilePhotoGrid"
+        component={ProfilePhotoGridScreen}
         {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
 

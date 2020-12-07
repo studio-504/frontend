@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import UploadAvatar from 'components/UploadAvatar'
 
 const DatingAvatarService = ({ children }) => {
-  return <UploadAvatar backRoute="DatingAvatar">{children}</UploadAvatar>
+  return <UploadAvatar backRoute="DatingWizard">{children}</UploadAvatar>
 }
 
 DatingAvatarService.propTypes = {

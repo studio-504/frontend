@@ -52,16 +52,6 @@ describe('DatingProfileScreen', () => {
       )
     })
 
-    it('clear state on unmount', () => {
-      const usersSetUserDatingStatusIdle = jest.spyOn(usersActions, 'usersSetUserDatingStatusIdle')
-      const { unmount } = setup()
-
-      unmount()
-      expect(usersSetUserDatingStatusIdle).toHaveBeenCalled()
-
-      usersSetUserDatingStatusIdle.mockRestore()
-    })
-
     it('start dating button', async () => {
       const { getByAccessibilityLabel } = setup()
 

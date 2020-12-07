@@ -75,7 +75,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
       clearProfilePhotoUpload()
 
       if (backRoute) {
-        navigation.replace(backRoute)
+        navigation.navigate(backRoute)
       } else {
         navigation.goBack()
       }
