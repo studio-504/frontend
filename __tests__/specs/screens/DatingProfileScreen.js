@@ -75,7 +75,7 @@ describe('DatingProfileScreen', () => {
     })
 
     it('open dating button', async () => {
-      authSelector.authUserSelector.mockReturnValue({...user, datingStatus: 'ENABLED'})
+      authSelector.authUserSelector.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
       const { queryByText } = setup()
 
       expect(queryByText('Start Dating')).toBeFalsy()
