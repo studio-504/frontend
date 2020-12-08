@@ -5,6 +5,13 @@ import * as Google from 'services/Google'
 import * as Apple from 'services/Apple'
 import DeviceInfo from 'react-native-device-info'
 
+const headers = {
+  'x-real-version': DeviceInfo.getReadableVersion(),
+  'x-real-device': DeviceInfo.getDeviceId(),
+  'x-real-system': DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion(),
+  'x-real-uid': DeviceInfo.getUniqueId(),
+}
+
 /**
  * AWS Configuration
  */
@@ -26,11 +33,7 @@ export const amplifyConfig = () => {
       aws_appsync_region: Config.AWS_COGNITO_REGION,
       aws_appsync_authenticationType: Config.AWS_APPSYNC_AUTHENTICATION_TYPE,
       aws_appsync_apiKey: 'null',
-      graphql_headers: () => ({
-        'x-real-version': DeviceInfo.getReadableVersion(),
-        'x-real-device': DeviceInfo.getDeviceId(),
-        'x-real-system': DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion(),
-      }),
+      graphql_headers: () => headers,
     },
   }
 
