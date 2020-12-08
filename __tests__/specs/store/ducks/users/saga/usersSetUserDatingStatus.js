@@ -59,7 +59,7 @@ describe('usersSetUserDatingStatusRequest', () => {
       const error = new Error('Error')
       const message = {
         code: 'GENERIC',
-        text: 'Unable to set user dating status',
+        text: 'Unable to enable dating',
         nativeError: '',
       }
 
@@ -74,7 +74,7 @@ describe('usersSetUserDatingStatusRequest', () => {
     it('GENERIC by default', async () => {
       const message = {
         code: 'GENERIC',
-        text: 'Unable to set user dating status',
+        text: 'Unable to enable dating',
         nativeError: '',
       }
 
@@ -93,7 +93,7 @@ describe('usersSetUserDatingStatusRequest', () => {
     })
 
     it('MISSING_PHOTO_POST_ID', async () => {
-      await testGqlError({ code: 'MISSING_PHOTO_POST_ID', text: 'Please, upload a profile photo' })
+      await testGqlError({ code: 'MISSING_PHOTO_POST_ID', text: 'Please upload a profile photo' })
     })
 
     it('MISSING_AGE', async () => {
@@ -129,15 +129,15 @@ describe('usersSetUserDatingStatusRequest', () => {
     })
 
     it('WRONG_AGE_MIN', async () => {
-      await testGqlError({ code: 'WRONG_AGE_MIN', text: 'Wrong min age' })
+      await testGqlError({ code: 'WRONG_AGE_MIN', text: 'Invalid min age' })
     })
 
     it('WRONG_AGE_MAX', async () => {
-      await testGqlError({ code: 'WRONG_AGE_MAX', text: 'Wrong max age' })
+      await testGqlError({ code: 'WRONG_AGE_MAX', text: 'Invalid max age' })
     })
 
     it('WRONG_THREE_HOUR_PERIOD', async () => {
-      await testGqlError({ code: 'WRONG_THREE_HOUR_PERIOD', text: 'You can change dating status once per 3 hours' })
+      await testGqlError({ code: 'WRONG_THREE_HOUR_PERIOD', text: 'You can only enable dating once per day' })
     })
   })
 })

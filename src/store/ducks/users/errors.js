@@ -36,7 +36,7 @@ const messageCodes = {
   [constants.USERS_SET_USER_DATING_STATUS_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Unable to set user dating status',
+      text: 'Unable to enable dating',
     },
     MISSING_FULL_NAME: {
       code: 'MISSING_FULL_NAME',
@@ -44,7 +44,7 @@ const messageCodes = {
     },
     MISSING_PHOTO_POST_ID: {
       code: 'MISSING_PHOTO_POST_ID',
-      text: 'Please, upload a profile photo',
+      text: 'Please upload a profile photo',
     },
     MISSING_AGE: {
       code: 'MISSING_AGE',
@@ -80,15 +80,15 @@ const messageCodes = {
     },
     WRONG_AGE_MIN: {
       code: 'WRONG_AGE_MIN',
-      text: 'Wrong min age',
+      text: 'Invalid min age',
     },
     WRONG_AGE_MAX: {
       code: 'WRONG_AGE_MAX',
-      text: 'Wrong max age',
+      text: 'Invalid max age',
     },
     WRONG_THREE_HOUR_PERIOD: {
       code: 'WRONG_THREE_HOUR_PERIOD',
-      text: 'You can change dating status once per 3 hours',
+      text: 'You can only enable dating once per day',
     },
   },
 }
