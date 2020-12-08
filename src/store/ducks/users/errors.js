@@ -26,6 +26,12 @@ const messageCodes = {
       text: 'Profile photo delete failed. Please try again',
     },
   },
+  [constants.USERS_CHANGE_AVATAR_FAILURE]: {
+    GENERIC: {
+      code: 'GENERIC',
+      text: 'Profile photo change failed. Please try again',
+    },
+  },
   [constants.USERS_SET_USER_DATING_STATUS_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',

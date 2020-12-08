@@ -35,14 +35,11 @@ const ForgotForm = ({
     <View style={styles.root}>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('email')}
           testID={testIDs.form.email}
-          accessibilityLabel="email"
           name="email"
           component={TextField}
           placeholder={t('Email')}
-          keyboardType="email-address"
-          textContentType="emailAddress"
-          autoCompleteType="email"
         />
       </View>
       <View style={styles.input}>

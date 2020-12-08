@@ -67,9 +67,7 @@ const Dating = ({
             <DatingActions swiperRef={swiperRef} />
           </View>
         </React.Fragment>
-      : <DatingPlaceholder
-          datingMatchedUsersRequest={datingMatchedUsersRequest}
-        />
+      : <DatingPlaceholder />
       }    
     </ScrollView>
   )

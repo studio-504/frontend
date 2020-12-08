@@ -1,26 +1,28 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import UploadAvatarComponent from 'components/UploadAvatar/component'
-import UploadAvatarService from 'components/UploadAvatar/index.service'
+import useProfilePhoto from 'services/providers/ProfilePhoto'
 
-const UploadAvatar = ({ children }) => {
+const UploadAvatar = ({ children, backRoute }) => {
+  const { isAvatarEmpty, ...props } = useProfilePhoto({ backRoute })
   const actionSheetRef = useRef(null)
   const openUploadAvatarMenu = () => actionSheetRef.current && actionSheetRef.current.show()
 
   return (
-    <UploadAvatarService>
-      {({ isAvatarEmpty, ...props }) => (
-        <>
-          {children({ openUploadAvatarMenu, isAvatarEmpty })}
-          <UploadAvatarComponent {...props} isAvatarEmpty={isAvatarEmpty} actionSheetRef={actionSheetRef} />
-        </>
-      )}
-    </UploadAvatarService>
+    <React.Fragment>
+      {children({ openUploadAvatarMenu, isAvatarEmpty })}
+      <UploadAvatarComponent {...props} isAvatarEmpty={isAvatarEmpty} actionSheetRef={actionSheetRef} />
+    </React.Fragment>
   )
 }
 
 UploadAvatar.propTypes = {
   children: PropTypes.any.isRequired,
+  backRoute: PropTypes.string,
+}
+
+UploadAvatar.defaultProps = {
+  backRoute: null,
 }
 
 export default UploadAvatar

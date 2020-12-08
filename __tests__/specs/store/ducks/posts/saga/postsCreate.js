@@ -110,6 +110,7 @@ describe('Create post saga', () => {
     describe('Keep handle socket events when received post is not equal processingPost', () => {
       it('handle POST_COMPLETED event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
+          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostCompleted({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()
@@ -117,6 +118,7 @@ describe('Create post saga', () => {
 
       it('handle POST_ERROR event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
+          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostError({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()

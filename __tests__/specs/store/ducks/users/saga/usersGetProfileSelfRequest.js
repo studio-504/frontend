@@ -10,7 +10,7 @@ import { errorWrapper } from 'store/helpers'
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
 const action = usersActions.usersGetProfileSelfRequest()
-
+ 
 describe('usersGetProfileSelfRequest', () => {
   afterEach(() => {
     queryService.apiRequest.mockClear()

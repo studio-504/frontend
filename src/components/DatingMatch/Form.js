@@ -12,6 +12,7 @@ import { Formik, Field } from 'formik'
 import { withTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
+import * as Units from 'constants/Units'
 
 const formSchema = Yup.object().shape({
   matchAgeRangeMin: Validation.matchAgeRangeMin,
@@ -28,6 +29,7 @@ const DatingMatchForm = ({
   loading,
   values,
   errors,
+  nextAction,
 }) => {
   return (
     <View style={styles.root}>
@@ -44,19 +46,19 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchAgeRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMin' }}
+              accessibilityLabel="matchAgeRangeMin"
               component={PickerField}
               placeholder={{ label: 'Match Minimum Age', value: undefined }}
-              items={Validation.minAgeOptions}
+              items={Units.minAgeOptions}
             />
           </View>
           <View style={styles.item}>
             <Field
               name="matchAgeRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchAgeRangeMax' }}
+              accessibilityLabel="matchAgeRangeMax"
               component={PickerField}
               placeholder={{ label: 'Match Maximum Age', value: undefined }}
-              items={Validation.getMaxAgeOptions(values.matchAgeRangeMin)}
+              items={Units.getMaxAgeOptions(values.matchAgeRangeMin)}
             />
           </View>
         </View>
@@ -73,10 +75,10 @@ const DatingMatchForm = ({
       >
         <Field
           name="matchGenders"
-          textInputProps={{ accessibilityLabel: 'matchGenders' }}
+          accessibilityLabel="matchGenders"
           component={PickerField}
           placeholder={{ label: 'Match Gender', value: undefined }}
-          items={Validation.genderOptions}
+          items={Units.genderOptions}
         />
       </CollapsableComponent>
 
@@ -93,19 +95,19 @@ const DatingMatchForm = ({
           <View style={styles.item}>
             <Field
               name="matchHeightRangeMin"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMin' }}
+              accessibilityLabel="matchHeightRangeMin"
               component={PickerField}
               placeholder={{ label: 'Match Minimum Height', value: undefined }}
-              items={Validation.heightOptions}
+              items={Units.heightOptions}
             />
           </View>
           <View style={styles.item}>
             <Field
               name="matchHeightRangeMax"
-              textInputProps={{ accessibilityLabel: 'matchHeightRangeMax' }}
+              accessibilityLabel="matchHeightRangeMax"
               component={PickerField}
               placeholder={{ label: 'Match Maximum Height', value: undefined }}
-              items={Validation.heightOptions}
+              items={Units.heightOptions}
             />
           </View>
         </View>
@@ -122,10 +124,10 @@ const DatingMatchForm = ({
       >
         <Field
           name="matchLocationRadius"
-          textInputProps={{ accessibilityLabel: 'matchLocationRadius' }}
+          accessibilityLabel="matchLocationRadius"
           component={PickerField}
           placeholder={{ label: 'Match Location Range', value: undefined }}
-          items={Validation.locationOptions}
+          items={Units.locationOptions}
         />
       </CollapsableComponent>
       <CollapsableComponent
@@ -140,7 +142,7 @@ const DatingMatchForm = ({
         <Field name="location" component={MapField} placeholder={t('Match Location')} />
       </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={nextAction ? t('Next') : t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -169,6 +171,11 @@ DatingMatchForm.propTypes = {
   values: PropTypes.any,
   setFieldValue: PropTypes.any,
   errors: PropTypes.any,
+  nextAction: PropTypes.bool,
+}
+
+DatingMatchForm.defaultProps = {
+  nextAction: false,
 }
 
 export default withTranslation()(({

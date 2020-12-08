@@ -12,6 +12,7 @@ import { Formik, Field } from 'formik'
 import { withTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
+import * as Units from 'constants/Units'
 
 const formSchema = Yup.object().shape({
   dateOfBirthMonth: Validation.dateOfBirthMonth,
@@ -25,6 +26,7 @@ const formSchema = Yup.object().shape({
 
 const DatingAboutForm = ({
   t,
+  nextAction,
   handleSubmit,
   loading,
   values,
@@ -47,8 +49,8 @@ const DatingAboutForm = ({
               name="dateOfBirthMonth"
               component={PickerField}
               placeholder={{ label: 'Month', value: undefined }}
-              items={Validation.monthsOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthMonth' }}
+              items={Units.monthsOptions}
+              accessibilityLabel="dateOfBirthMonth"
             />
           </View>
           <View style={styles.item}>
@@ -56,8 +58,8 @@ const DatingAboutForm = ({
               name="dateOfBirthDay"
               component={PickerField}
               placeholder={{ label: 'Day', value: undefined }}
-              items={Validation.datesOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthDay' }}
+              items={Units.datesOptions}
+              accessibilityLabel="dateOfBirthDay"
             />
           </View>
           <View style={styles.item}>
@@ -65,8 +67,8 @@ const DatingAboutForm = ({
               name="dateOfBirthYear"
               component={PickerField}
               placeholder={{ label: 'Year', value: undefined }}
-              items={Validation.yearsOptions}
-              textInputProps={{ accessibilityLabel: 'dateOfBirthYear' }}
+              items={Units.yearsOptions}
+              accessibilityLabel="dateOfBirthYear"
             />
           </View>
         </View>
@@ -85,8 +87,8 @@ const DatingAboutForm = ({
           name="gender"
           component={PickerField}
           placeholder={{ label: 'Your Gender', value: undefined }}
-          items={Validation.genderOptions}
-          textInputProps={{ accessibilityLabel: 'gender' }}
+          items={Units.genderOptions}
+          accessibilityLabel="gender"
         />
       </CollapsableComponent>
       <CollapsableComponent
@@ -122,14 +124,14 @@ const DatingAboutForm = ({
       >
         <Field
           name="height"
-          textInputProps={{ accessibilityLabel: 'height' }}
+          accessibilityLabel="height"
           component={PickerField}
           placeholder={{ label: 'Height', value: undefined }}
-          items={Validation.heightOptions}
+          items={Units.heightOptions}
         />
       </CollapsableComponent>
       <View style={styles.input}>
-        <DefaultButton accessibilityLabel="Submit" label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton accessibilityLabel="Submit" label={nextAction ? t('Next') : t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )
@@ -153,11 +155,16 @@ const styles = StyleSheet.create({
 
 DatingAboutForm.propTypes = {
   t: PropTypes.any,
+  nextAction: PropTypes.bool,
   handleSubmit: PropTypes.any,
   loading: PropTypes.any,
   values: PropTypes.any,
   setFieldValue: PropTypes.any,
   errors: PropTypes.any,
+}
+
+DatingAboutForm.defaultProps = {
+  nextAction: false,
 }
 
 export default withTranslation()(({

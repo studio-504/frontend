@@ -2,27 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import * as navigationActions from 'navigation/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'navigation/HeaderRight'
 import { VERIFICATION_TYPE } from 'components/Verification'
+import path from 'ramda/src/path'
 
 const ProfilePhotoGridService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const route = useRoute()
   const user = useSelector(authSelector.authUserSelector)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
+  
+  const usersImagePostsGetRequest = () => dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
+  const usersChangeAvatarIdle = () => dispatch(usersActions.usersChangeAvatarIdle())
 
   useEffect(() => {
-    dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
+    usersImagePostsGetRequest()
   }, [])
 
   useEffect(() => {
     if (usersChangeAvatar.status === 'success') {
-      navigation.goBack()
-      dispatch(usersActions.usersChangeAvatarIdle())
+      const backRoute = path(['params', 'backRoute'], route)
+
+      if (backRoute) {
+        navigation.replace(backRoute)
+      } else {
+        navigation.goBack()
+      }
+
+      usersChangeAvatarIdle()
     }
   }, [usersChangeAvatar.status])
 
@@ -36,7 +48,12 @@ const ProfilePhotoGridService = ({ children }) => {
    *
    */
   const headerRight = () => (
-    <HeaderRight onPress={changeAvatarRequest} title="Update" hidden={!selectedPost.postId} />
+    <HeaderRight 
+      title="Update" 
+      onPress={changeAvatarRequest} 
+      hidden={!selectedPost.postId} 
+      loading={usersChangeAvatar.status === 'loading'} 
+    />
   )
 
   /**
@@ -46,17 +63,23 @@ const ProfilePhotoGridService = ({ children }) => {
     navigation.setOptions({
       headerRight,
     })
-  }, [selectedPost.postId])
+  }, [selectedPost.postId, usersChangeAvatar.status])
 
   const handleOpenVerification = navigationActions.navigateVerification(navigation, {
     actionType: VERIFICATION_TYPE.BACK,
   })
 
+  const formErrorMessage = usersChangeAvatar.error.text
+  const handleErrorClose = usersChangeAvatarIdle
+
   return children({
+    usersImagePostsGetRequest,
     usersImagePostsGet,
     handlePostPress,
     selectedPost,
     handleOpenVerification,
+    formErrorMessage,
+    handleErrorClose,
   })
 }
 

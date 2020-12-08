@@ -17,6 +17,7 @@ export const gridPostFragment = `
   fragment postUserFragment on User {
     userId
     username
+    datingStatus
     viewCountsHidden
     commentsDisabled
     likesDisabled

@@ -1,26 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native'
-import ProfileIcon from 'assets/svg/auth/Profile'
+import { StyleSheet, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import pathOr from 'ramda/src/pathOr'
-
+import CircleAvatar from 'templates/CircleAvatar'
 import { withTheme } from 'react-native-paper'
 
-const Photo = ({
-  theme,
-  activeUpload,
-}) => {
+const Photo = ({ theme, activeUpload }) => {
   const styling = styles
   const progress = pathOr(0, ['meta', 'progress'])(activeUpload)
-  const image = (
-    pathOr(null, ['payload', 'preview', 0])(activeUpload) ||
+  const image = 
+    pathOr(null, ['payload', 'preview', 0])(activeUpload) || 
     pathOr(null, ['payload', 'image', 'url480p'])(activeUpload)
-  )
 
   return (
     <View style={styling.root}>
@@ -31,21 +22,9 @@ const Photo = ({
         tintColor={theme.colors.primary}
         backgroundColor={theme.colors.disabled}
       />
-
-      {!image ?
-        <View style={styling.icon}>
-          <ProfileIcon fill={theme.colors.disabled} />
-        </View>
-      : null}
-
-      {image ?
-        <View style={styling.icon}>
-          <Image
-            source={{ uri: image }}
-            style={styling.image}
-          />
-        </View>
-      : null}
+      <View style={styling.icon}>
+        <CircleAvatar image={image} />
+      </View>
     </View>
   )
 }
@@ -58,11 +37,6 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     padding: 4,
-  },
-  image: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
   },
 })
 

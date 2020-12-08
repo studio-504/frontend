@@ -41,7 +41,7 @@ const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload
               />
             </View>
             <View style={styles.item}>
-              <DefaultButton label={t('Skip Photo Upload')} onPress={handleSkipUpload} loading={false} />
+              <DefaultButton label={t('Skip Photo Upload')} onPress={handleSkipUpload} loading={false} mode="text" />
             </View>
           </View>
         </View>
@@ -54,19 +54,22 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-  component: {
-    paddingHorizontal: 24,
+  content: {
     flex: 1,
   },
-  content: {
+  component: {
+    paddingHorizontal: 24,
     flex: 1,
   },
   headerRight: {
     color: '#ffffff',
   },
+  actions: {
+    flex: 1,
+  },
   item: {
     marginBottom: 12,
-  },
+  }, 
 })
 
 ProfilePhoto.propTypes = {

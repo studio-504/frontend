@@ -128,6 +128,7 @@ export const initialState = {
   },
   usersChangeAvatar: {
     status: 'idle',
+    error: {},
   },
 
   usersGetFollowerUsersCache: {},
@@ -781,16 +782,15 @@ const usersChangeAvatarSuccess = (state) => update(state, {
   },
 })
 
-const usersChangeAvatarFailure = (state) => update(state, {
+const usersChangeAvatarFailure = (state, action) => update(state, {
   usersChangeAvatar: {
     status: { $set: 'failure' },
+    error: { $set: action.payload.message },
   },
 })
 
 const usersChangeAvatarIdle = (state) => update(state, {
-  usersChangeAvatar: {
-    status: { $set: 'idle' },
-  },
+  usersChangeAvatar: { $set: initialState.usersChangeAvatar },
 })
 
 /**

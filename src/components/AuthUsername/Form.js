@@ -36,10 +36,23 @@ const UsernameForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID={testIDs.form.username} name="username" component={TextField} placeholder={t('Username')} keyboardType="default" textContentType="username" autoCompleteType="username" autoFocus />
+        <Field
+          {...Validation.getInputTypeProps('username')}
+          testID={testIDs.form.username}
+          name="username"
+          component={TextField}
+          placeholder={t('Username')}
+          autoFocus
+        />
       </View>
       <View style={styling.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={submitDisabled}
+        />
       </View>
     </View>
   )

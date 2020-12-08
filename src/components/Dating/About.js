@@ -12,6 +12,7 @@ import dayjs from 'dayjs'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import propOr from 'ramda/src/propOr'
 
 const About = ({
   t,
@@ -21,11 +22,12 @@ const About = ({
 }) => {
   const styling = styles(theme)
   const age = user.dateOfBirth ? `, ${dayjs().diff(user.dateOfBirth, 'year')}` : null
+  const firstName = propOr('', 'fullName', user).split(' ')[0]
 
   return (
     <Animated.View style={styling.root}>
       <View style={styling.title}>
-        <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">{user.fullName} {age}</Text>
+        <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">{firstName}{age}</Text>
           
         {flingPosition === 'DOWN' ?
           <InfoIcon fill={theme.colors.text} />

@@ -12,6 +12,7 @@ import LogoIcon from 'assets/svg/header/Logo'
 import CameraIcon from 'assets/svg/header/Camera'
 import DirectIcon from 'assets/svg/header/Direct'
 import BackIcon from 'assets/svg/header/Back'
+import FiltersIcon from 'assets/svg/dating/Filters'
 
 export const pageHeaderLeft = ({ onPress, testID = null, theme }) => {
   if (!onPress) {
@@ -31,16 +32,21 @@ export const chatHeaderLeft = ({ navigation, theme }) => () => (
   </TouchableOpacity>
 )
 
+export const datingHeaderLeft = ({ navigation, theme }) => () => (
+  <TouchableOpacity style={styles.button} onPress={navigationActions.navigateDatingMatch(navigation)}>
+    <FiltersIcon fill={path(['colors', 'primaryIcon'], theme)} />
+  </TouchableOpacity>
+)
 
-const homeHeaderLeft = ({ theme, navigation, user }) => () => (
+export const homeHeaderLeft = ({ theme, navigation, user }) => () => (
   <TouchableOpacity style={styles.button} onPress={navigationActions.navigateCamera(navigation, {}, { protected: true, user })}>
     <CameraIcon fill={path(['colors', 'primaryIcon'], theme)} />
   </TouchableOpacity>
 )
 
-const homeHeaderTitle = ({ theme }) => () => <LogoIcon height="28" fill={path(['colors', 'primaryIcon'], theme)} />
+export const homeHeaderTitle = ({ theme }) => () => <LogoIcon height="28" fill={path(['colors', 'primaryIcon'], theme)} />
 
-const homeHeaderRight = ({ theme, navigation, user }) => () => (
+export const homeHeaderRight = ({ theme, navigation, user }) => () => (
   <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation, {}, { protected: true, user })}>
     <DirectIcon fill={path(['colors', 'primaryIcon'], theme)} user={user} />
   </TouchableOpacity>
@@ -72,7 +78,7 @@ const HomeNavigationComponent = ({ navigation, theme, user }) => ({
     shadowColor: 'transparent',
   },
   headerLeft: homeHeaderLeft({ navigation, theme, user }),
-  headerTitle: homeHeaderTitle({ navigation, theme }),
+  headerTitle: homeHeaderTitle({ theme }),
   headerRight: homeHeaderRight({ navigation, theme, user }),
 })
 

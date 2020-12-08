@@ -7,7 +7,6 @@ import * as queries from 'store/ducks/users/queries'
 import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
 import * as errors from 'store/ducks/users/errors'
-import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
@@ -15,6 +14,7 @@ import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSe
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import * as Logger from 'services/Logger'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
  *
@@ -28,11 +28,7 @@ function* usersSearchRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -64,11 +60,7 @@ function* usersDeleteRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -101,11 +93,7 @@ function* usersGetFollowerUsersRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -138,11 +126,7 @@ function* usersGetFollowedUsersRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -175,11 +159,7 @@ function* usersGetPendingFollowersRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -212,11 +192,7 @@ function* usersGetFollowedUsersWithStoriesRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -248,11 +224,7 @@ function* usersAcceptFollowerUserRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -284,11 +256,7 @@ function* usersDeclineFollowerUserRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -320,11 +288,7 @@ function* usersGetProfileRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -357,11 +321,7 @@ function* usersEditProfileRequestData(req, api) {
 
   const normalized = normalizer.normalizeUserGet(data)
 
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -420,7 +380,9 @@ function* usersChangeAvatarRequest(req) {
     yield usersEditProfileRequestData(req, data)
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
-    yield put(actions.usersChangeAvatarFailure(error))
+    yield put(actions.usersChangeAvatarFailure({ 
+      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error.message), 
+    }))
   }
 }
 
@@ -435,11 +397,7 @@ function* usersFollowRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -472,11 +430,7 @@ function* usersUnfollowRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -509,11 +463,7 @@ function* usersBlockRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -546,11 +496,7 @@ function* usersUnblockRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,
@@ -584,11 +530,7 @@ function* usersGetTrendingUsersRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,

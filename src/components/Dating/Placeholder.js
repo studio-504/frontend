@@ -15,7 +15,6 @@ import { withTranslation } from 'react-i18next'
 const Placeholder = ({
   t,
   theme,
-  datingMatchedUsersRequest,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -26,8 +25,8 @@ const Placeholder = ({
         <Text style={styling.text}>{t('We cannot find potential matches or you have viewed them all based on your search criteria')}.</Text>
       </View>
       <View style={styling.actions}>
-        <DefaultButton style={styling.settingsBtn} label={t('Your Dating Preferences')} onPress={navigationActions.navigateDatingAbout(navigation)} />
-        <DefaultButton label={t('Check again')} onPress={datingMatchedUsersRequest} mode="outlined" />
+        <DefaultButton style={styling.settingsBtn} label={t('Change your Match Preferences')} onPress={navigationActions.navigateDatingAbout(navigation, { nextAction: true })} />
+        <Text style={styling.emptyText}>{t('Pull down to refresh')}</Text>
       </View>
     </View>
   )
@@ -50,12 +49,17 @@ const styles = theme => StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',  
   },
+  emptyText: {
+    fontSize: 14,
+    fontWeight: '300',
+    textAlign: 'center',
+    color: theme.colors.placeholder,
+  },
 })
 
 Placeholder.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
-  datingMatchedUsersRequest: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(Placeholder))

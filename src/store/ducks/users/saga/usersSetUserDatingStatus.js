@@ -5,8 +5,8 @@ import * as queries from 'store/ducks/users/queries'
 import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
 import * as errors from 'store/ducks/users/errors'
-import * as entitiesActions from 'store/ducks/entities/actions'
 import * as normalizer from 'normalizer/schemas'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
  *
@@ -18,11 +18,7 @@ function* usersSetUserDatingStatusRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield put(entitiesActions.entitiesAlbumsMerge({ data: normalized.entities.albums || {} }))
-  yield put(entitiesActions.entitiesPostsMerge({ data: normalized.entities.posts || {} }))
-  yield put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users || {} }))
-  yield put(entitiesActions.entitiesCommentsMerge({ data: normalized.entities.comments || {} }))
-  yield put(entitiesActions.entitiesImagesMerge({ data: normalized.entities.images || {} }))
+  yield entitiesMerge(normalized)
 
   return {
     data: normalized.result,

@@ -1,4 +1,4 @@
-git_url("git@github.com:Imcloug/REAL-CERTS.git")
+git_url("git@github.com:real-social-media/certs.git")
 
 storage_mode("git")
 

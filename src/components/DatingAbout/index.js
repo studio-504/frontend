@@ -10,6 +10,7 @@ import AuthErrorTemplate from 'templates/Auth/Error'
 import { withTheme } from 'react-native-paper'
 
 const DatingAbout = ({
+  nextAction,
   theme,
   handleFormSubmit,
   formInitialValues,
@@ -30,6 +31,7 @@ const DatingAbout = ({
       <KeyboardAwareScrollView>
         <View style={styling.form}>
           <DatingAboutForm
+            nextAction={nextAction}
             handleFormSubmit={handleFormSubmit}
             formInitialValues={formInitialValues}
             formSubmitLoading={formSubmitLoading}
@@ -52,6 +54,7 @@ const styles = theme => StyleSheet.create({
 
 DatingAbout.propTypes = {
   theme: PropTypes.any,
+  nextAction: PropTypes.bool,
   handleFormSubmit: PropTypes.func,
   formInitialValues: PropTypes.any,
   formSubmitLoading: PropTypes.bool,
@@ -62,6 +65,7 @@ DatingAbout.propTypes = {
 DatingAbout.defaultProps = {
   formErrorMessage: null,
   formSubmitLoading: false, 
+  nextAction: false,
 }
 
 export default withTheme(DatingAbout)
