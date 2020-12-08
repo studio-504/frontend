@@ -72,7 +72,7 @@ export const postsFeedGetSelector = () => createDeepEqualSelector(
 /**
  *
  */
-const postsSingleGet = () => path(['posts', 'postsSingleGet'])
+export const postsSingleGet = () => path(['posts', 'postsSingleGet'])
 
 export const postsSingleGetSelector = (postId) => createDeepEqualSelector(
   [postsSingleGet(), postsOnymouslyLike(), postsDislike(), postsReportPostViewsRequest(), entitiesSelector.entities],
