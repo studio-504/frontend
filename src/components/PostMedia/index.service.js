@@ -27,10 +27,10 @@ const PostMediaService = ({ children }) => {
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
 
   useEffect(() => {
-    if(!postId || !postUserId) return
+    if (!postId || !postUserId) return
     
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-  }, [postId])
+  }, [postId, postUserId])
 
   useEffect(() => {
     if (postsDelete.status === 'loading') {
@@ -88,8 +88,9 @@ const PostMediaService = ({ children }) => {
     handleScrollPrev,
     handleScrollNext,
     actionSheetRefs,
-    textPostRefs,
+    textPostRefs, 
   })
 }
 
 export default PostMediaService
+
