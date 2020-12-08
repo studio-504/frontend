@@ -16,12 +16,15 @@ const PostMediaService = ({ children }) => {
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
+  const username = path(['data', 'postedBy', 'username'])(postsSingleGet)
 
   useEffect(() => {
-    navigation.setOptions({
-      title: path(['data', 'postedBy', 'username'])(postsSingleGet),
-    })
-  }, [path(['data', 'postedBy', 'username'])(postsSingleGet)])
+    if (username) {
+      navigation.setOptions({
+        title: username,
+      })
+    }
+  }, [username])
 
   const postsSingleGetRequest = ({ postId }) =>
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
@@ -29,7 +32,7 @@ const PostMediaService = ({ children }) => {
   useEffect(() => {
     if (!postId || !postUserId) return
     
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    postsSingleGetRequest({ postId })
   }, [postId, postUserId])
 
   useEffect(() => {

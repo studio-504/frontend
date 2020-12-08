@@ -59,7 +59,7 @@ const PostMedia = ({
       <FlatList
         bounces={false}
         ref={feedRef}
-        keyExtractor={ item => item.postId}
+        keyExtractor={item => item.postId}
         data={data}
         refreshControl={
           <RefreshControl
