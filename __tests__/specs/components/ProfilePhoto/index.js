@@ -1,21 +1,23 @@
 import React from 'react'
 import { renderWithProviders, fireEvent } from 'tests/utils'
 import ProfilePhoto from 'components/ProfilePhoto'
-import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
+import CircleAvatar from 'templates/CircleAvatar'
 import { confirm } from 'components/Alert'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
-jest.mock('components/ProfilePhotoUpload/Photo', () => jest.fn().mockReturnValue(null))
+jest.mock('templates/CircleAvatar', () => jest.fn().mockReturnValue(null))
 jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
 const handleLibrarySnap = jest.fn()
 const handleCameraSnap = jest.fn()
 const handleSkipUpload = jest.fn()
+const openUploadAvatarMenu = jest.fn()
 
 const requiredProps = {
   handleLibrarySnap,
   handleCameraSnap,
   handleSkipUpload,
+  openUploadAvatarMenu,
 }
 
 const setup = () => renderWithProviders(<ProfilePhoto {...requiredProps} />)
@@ -34,7 +36,7 @@ describe('Profile Picture screen', () => {
     getByText('Add an Unmodified Profile Picture')
     getByText('Our AI detects photoshop & filters')
 
-    expect(PhotoComponent).toHaveBeenCalled()
+    expect(CircleAvatar).toHaveBeenCalled()
   })
 
   it('Skip Photo Upload', () => {
@@ -45,7 +47,7 @@ describe('Profile Picture screen', () => {
   })
 
   it('Take a Photo', () => {
-    const { getByText  } = setup()
+    const { getByText } = setup()
 
     fireEvent.press(getByText('Take a Photo'))
     expect(confirm).toHaveBeenCalled()

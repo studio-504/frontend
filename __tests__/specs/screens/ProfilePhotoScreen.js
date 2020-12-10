@@ -10,7 +10,9 @@ import * as authSelector from 'store/ducks/auth/selectors'
 import { AuthProvider } from 'services/providers/Auth'
 import { testNavigate } from 'tests/utils/helpers'
 
-jest.spyOn(authSelector, 'authUserSelector').mockReturnValue({ userStatus: 'ACTIVE' })
+jest
+  .spyOn(authSelector, 'authUserSelector')
+  .mockReturnValue({ userStatus: 'ACTIVE', photo: { url: 'placeholder-photos/' } })
 
 jest.mock('components/ProfilePhotoUpload/Photo', () => jest.fn().mockReturnValue(null))
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (cb) => cb() }))

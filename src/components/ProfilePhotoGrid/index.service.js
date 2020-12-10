@@ -29,7 +29,7 @@ const ProfilePhotoGridService = ({ children }) => {
       const backRoute = path(['params', 'backRoute'], route)
 
       if (backRoute) {
-        navigation.replace(backRoute)
+        navigation.navigate(backRoute)
       } else {
         navigation.goBack()
       }

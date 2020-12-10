@@ -4,14 +4,14 @@ import UploadAvatarComponent from 'components/UploadAvatar/component'
 import useProfilePhoto from 'services/providers/ProfilePhoto'
 
 const UploadAvatar = ({ children, backRoute }) => {
-  const { isAvatarEmpty, ...props } = useProfilePhoto({ backRoute })
+  const props = useProfilePhoto({ backRoute })
   const actionSheetRef = useRef(null)
   const openUploadAvatarMenu = () => actionSheetRef.current && actionSheetRef.current.show()
 
   return (
     <React.Fragment>
-      {children({ openUploadAvatarMenu, isAvatarEmpty })}
-      <UploadAvatarComponent {...props} isAvatarEmpty={isAvatarEmpty} actionSheetRef={actionSheetRef} />
+      {children({ openUploadAvatarMenu, ...props })}
+      <UploadAvatarComponent {...props} actionSheetRef={actionSheetRef} />
     </React.Fragment>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
-import { testField, testNavigate } from 'tests/utils/helpers'
+import { testField } from 'tests/utils/helpers'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -24,7 +24,7 @@ jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
 }))
 
-const navigation = { navigate: jest.fn() }
+const navigation = { goBack: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
 jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
@@ -33,7 +33,7 @@ jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
 describe('DatingAboutScreen', () => {
   afterEach(() => {
-    navigation.navigate.mockClear()
+    navigation.goBack.mockClear()
   })
 
   const openAllSections = (queryByAccessibilityLabel) => {
@@ -138,19 +138,6 @@ describe('DatingAboutScreen', () => {
   })
 
   describe('Success state', () => {
-    it('redirect next and clear state', async () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const { store } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
-      })
-
-      testNavigate(navigation, 'DatingMatch', { nextAction: true })
-      expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
-      usersEditProfileIdle.mockRestore()
-    })
-
     it('goBack when nextAction empty', async () => {
       const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
       useRoute.mockReturnValue({ params: {} })
@@ -163,7 +150,7 @@ describe('DatingAboutScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingSettings')
+      expect(navigation.goBack).toHaveBeenCalled()
       expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
       usersEditProfileIdle.mockRestore()
       useRoute.mockReturnValue({ params: { nextAction: true } })

@@ -3,7 +3,7 @@ import DatingMatchScreen from 'screens/DatingMatchScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import { testField, testNavigate } from 'tests/utils/helpers'
+import { testField } from 'tests/utils/helpers'
 import * as usersActions from 'store/ducks/users/actions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
@@ -34,7 +34,7 @@ jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
 jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANTED)
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
-const navigation = { navigate: jest.fn(), useRoute: jest.fn() }
+const navigation = { goBack: jest.fn(), useRoute: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
 describe('DatingMatchScreen', () => {
@@ -42,6 +42,10 @@ describe('DatingMatchScreen', () => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Gender'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Location Range'))
   }
+
+  afterEach(() => {
+    navigation.goBack.mockClear()
+  })
 
   describe('Form', () => {
     it('toggle collapsed sections', () => {
@@ -146,20 +150,6 @@ describe('DatingMatchScreen', () => {
   })
 
   describe('Success state', () => {
-    it('redirect next and clear state', async () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const { store } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
-      })
-
-      testNavigate(navigation, 'DatingProfile', { nextAction: true })
-      expect(usersEditProfileIdle).toHaveBeenCalled()
-
-      usersEditProfileIdle.mockRestore()
-    })
-
     it('goBack when nextAction empty', async () => {
       const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
       useRoute.mockReturnValue({ params: {} })
@@ -172,7 +162,7 @@ describe('DatingMatchScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingSettings')
+      expect(navigation.goBack).toHaveBeenCalled()
       expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
       usersEditProfileIdle.mockRestore()
       useRoute.mockReturnValue({ params: { nextAction: true } })

@@ -13,6 +13,7 @@ const useProfilePhoto = (props) => {
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
   const isAvatarEmpty = helpers.isAvatarEmpty(user)
+  const avatarUrl = path(['photo', 'url480p'])(user)
   const backRoute = path(['backRoute'], props)
 
   const camera = useCamera({
@@ -38,12 +39,15 @@ const useProfilePhoto = (props) => {
   const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation, { backRoute })
 
   return {
+    user,
+    navigation,
     handleLibrarySnap,
     handleCameraSnap,
     handleSkipUpload,
     usersDeleteAvatarRequest,
     navigateProfilePhotoGrid,
     isAvatarEmpty,
+    avatarUrl,
   }
 }
 
