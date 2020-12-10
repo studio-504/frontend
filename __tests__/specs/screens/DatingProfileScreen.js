@@ -53,13 +53,29 @@ describe('DatingProfileScreen', () => {
     })
 
     it('start dating button', async () => {
-      const { getByAccessibilityLabel } = setup()
+      const { queryByText } = setup()
+
+      expect(queryByText('Open Dating')).toBeFalsy()
 
       await act(async () => {
-        fireEvent.press(getByAccessibilityLabel('Submit'))
+        fireEvent.press(queryByText('Start Dating'))
       })
 
       expect(dispatch).toHaveBeenCalledWith(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))
+    })
+
+    it('open dating button', async () => {
+      authSelector.authUserSelector.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
+      const { queryByText } = setup()
+
+      expect(queryByText('Start Dating')).toBeFalsy()
+
+      await act(async () => {
+        fireEvent.press(queryByText('Open Dating'))
+      })
+
+      testNavigate(navigation, 'Dating')
+      authSelector.authUserSelector.mockReturnValue(user)
     })
   })
 

@@ -13,7 +13,7 @@ const DatingProfileService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
-
+  const navigateDating = navigationActions.navigateDating(navigation)
   const formErrorMessage = usersSetUserDatingStatus.error.text
 
   const handleErrorClose = () => {
@@ -25,7 +25,7 @@ const DatingProfileService = ({ children }) => {
 
   useEffect(() => {
     if (usersSetUserDatingStatus.status === 'success') {
-      navigationActions.navigateDating(navigation)()
+      navigateDating()
     }
   }, [usersSetUserDatingStatus.status])
 
@@ -43,6 +43,7 @@ const DatingProfileService = ({ children }) => {
     formErrorMessage,
     handleErrorClose,
     usersImagePostsGet,
+    navigateDating,
   })
 }
 

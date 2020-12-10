@@ -71,6 +71,14 @@ describe('DatingSettingsScreen', () => {
   })
 
   describe('Navigation', () => {
+    it('Preview Profile', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Preview Profile'))
+
+      testNavigate(navigation, 'DatingProfile')
+    })
+
     it('Edit Profile', () => {
       const { getByText } = setup()
 

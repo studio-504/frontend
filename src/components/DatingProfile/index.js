@@ -18,6 +18,7 @@ const DatingProfile = ({
   formErrorMessage,
   handleErrorClose,
   usersImagePostsGet,
+  navigateDating,
 }) => {
   const styling = styles(theme)
 
@@ -33,14 +34,22 @@ const DatingProfile = ({
         <DatingCard user={user} posts={usersImagePostsGet.data} />
       </View>
       <View style={styling.actions}>
-        <DefaultButton
-          style={styling.submitBtn}
-          accessibilityLabel="Submit"
-          label={t('Start Dating')}
-          onPress={usersSetUserDatingStatusRequest}
-          loading={usersSetUserDatingStatus.status === 'loading'}
-          disabled={usersSetUserDatingStatus.status === 'loading'}
-        />
+        {user.datingStatus === 'ENABLED' ? 
+          <DefaultButton
+            style={styling.submitBtn}
+            label={t('Open Dating')}
+            onPress={navigateDating}
+          /> : 
+          <DefaultButton
+            style={styling.submitBtn}
+            accessibilityLabel="Submit"
+            label={t('Start Dating')}
+            onPress={usersSetUserDatingStatusRequest}
+            loading={usersSetUserDatingStatus.status === 'loading'}
+            disabled={usersSetUserDatingStatus.status === 'loading'}
+          />
+        }
+        
         <Text style={styling.text}>{t('Preview your dating profile and start dating')}</Text>
       </View>
     </View>
@@ -79,6 +88,7 @@ DatingProfile.propTypes = {
   usersImagePostsGet: PropTypes.shape({
     data: PropTypes.array,
   }),
+  navigateDating: PropTypes.func,
 }
 
 DatingProfile.defaultProps = {

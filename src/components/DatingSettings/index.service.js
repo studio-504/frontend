@@ -42,6 +42,7 @@ const DatingSettingsService = ({ children }) => {
 
   const navigateDatingMatch = navigationActions.navigateDatingMatch(navigation)
   const navigateDatingAbout = navigationActions.navigateDatingAbout(navigation)
+  const navigateDatingProfile = navigationActions.navigateDatingProfile(navigation)
   const navigateMembership = () => navigationActions.navigateMembership(navigation)
 
   return (
@@ -57,6 +58,7 @@ const DatingSettingsService = ({ children }) => {
           navigateDatingAbout,
           navigateMembership,
           openUploadAvatarMenu,
+          navigateDatingProfile,
         })
       }
     </UploadAvatar>
