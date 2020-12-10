@@ -74,7 +74,7 @@ export const initialState = {
     meta: {},
   },
   postsSingleGet: {
-    data: [],
+    data: {},
     status: 'idle',
     error: {},
     payload: {},

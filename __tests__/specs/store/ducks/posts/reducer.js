@@ -39,10 +39,10 @@ describe('Posts reducer', () => {
     })
 
     it('not clear data on request', () => {
-      const state = applyActions([
-        actions.postsGetTrendingPostsSuccess({ data, meta }), 
-        actions.postsGetTrendingPostsRequest(),
-      ], reducer)
+      const state = applyActions(
+        [actions.postsGetTrendingPostsSuccess({ data, meta }), actions.postsGetTrendingPostsRequest()],
+        reducer,
+      )
 
       expect(selectPostsGetTrendingPosts(state)).toEqual({
         data,
@@ -51,7 +51,7 @@ describe('Posts reducer', () => {
         payload: undefined,
         status: 'loading',
         filters: {},
-      }) 
+      })
     })
 
     it('filters', () => {
@@ -59,6 +59,77 @@ describe('Posts reducer', () => {
       const state = reducer(undefined, actions.postsGetTrendingPostsChangeFilters(filters))
 
       expect(selectors.postsGetTrendingPostsFilters(state)).toEqual(filters)
+    })
+  })
+
+  describe('postsSingleGet', () => {
+    const data = { id: 1 }
+    const meta = { a: 1, b: 2 }
+    const payload = { postId: 'id123', userId: 'id434' }
+    const selectPostsSingleGet = selectors.postsSingleGet()
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK_ACTION' })
+
+      expect(selectPostsSingleGet(state)).toEqual({
+        data: {},
+        error: {},
+        meta: {},
+        payload: {},
+        status: 'idle',
+      })
+    })
+
+    it('success', () => {
+      const state = reducer(undefined, actions.postsSingleGetSuccess({ data, payload, meta }))
+
+      expect(selectPostsSingleGet(state)).toEqual({
+        data,
+        error: {},
+        meta: {},
+        payload: {},
+        status: 'success',
+      })
+    })
+
+    it('not clear data on request', () => {
+      const state = applyActions(
+        [actions.postsSingleGetSuccess({ data, meta }), actions.postsSingleGetRequest()],
+        reducer,
+      )
+
+      expect(selectPostsSingleGet(state)).toEqual({
+        data,
+        error: {},
+        meta: {},
+        payload: undefined,
+        status: 'loading',
+      })
+    })
+
+    it('error state', () => {
+      const error = new Error('Error')
+      const state = reducer(undefined, actions.postsSingleGetFailure(error))
+
+      expect(selectPostsSingleGet(state)).toEqual({
+        data: {},
+        error: {},
+        meta: {},
+        payload: {},
+        status: 'failure',
+      })
+    })
+
+    it('idle', () => {
+      const state = applyActions([actions.postsSingleGetSuccess({ data, meta }), actions.postsSingleGetIdle()], reducer)
+
+      expect(selectPostsSingleGet(state)).toEqual({
+        data: {},
+        error: {},
+        meta: {},
+        payload: {},
+        status: 'idle',
+      })
     })
   })
 })
