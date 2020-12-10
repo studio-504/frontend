@@ -85,7 +85,7 @@ const Settings = ({
             },
             {
               label: t('Follow & Invite Friends'),
-              onPress: () => navigationActions.navigateInviteFriends(navigation),
+              onPress: () => navigationActions.navigateInviteFriends(navigation)(),
               icon: <ContactsIcon fill={theme.colors.text} />,
             },
             {

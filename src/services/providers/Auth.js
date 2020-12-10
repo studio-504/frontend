@@ -50,7 +50,7 @@ export const AuthProvider = ({
   })
 
   return (
-    <AuthContext.Provider value={{ user, swipeEnabled, setSwipeDisabled }}>
+    <AuthContext.Provider value={{ user, swipeEnabled, setSwipeDisabled, isUserActive }}>
       {children}
     </AuthContext.Provider>
   )
