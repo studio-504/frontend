@@ -34,7 +34,7 @@ function* usersSetUserDatingStatusRequest(req) {
   } catch (error) {
     yield put(
       actions.usersSetUserDatingStatusFailure({
-        message: errors.getMessagePayload(constants.USERS_SET_USER_DATING_STATUS_FAILURE, 'GENERIC', error.message),
+        message: errors.getGraphqlErrorMessage(constants.USERS_SET_USER_DATING_STATUS_FAILURE, error),
         payload: req.payload,
       }),
     )
