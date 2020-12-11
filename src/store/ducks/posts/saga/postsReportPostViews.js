@@ -1,4 +1,4 @@
-import { all, put, fork, take, flush, getContext, actionChannel, delay, call } from 'redux-saga/effects'
+import { all, put, fork, take, flush, getContext, actionChannel, delay, call, select } from 'redux-saga/effects'
 import { buffers } from 'redux-saga'
 import path from 'ramda/src/path'
 import uniq from 'ramda/src/uniq'
@@ -7,6 +7,7 @@ import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as constants from 'store/ducks/posts/constants'
 import * as entitiesActions from 'store/ducks/entities/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
 import * as queryService from 'services/Query'
 
 function* handlePostsReportPostViewsRequest(payload) {
@@ -22,6 +23,10 @@ export function* postsReportPostViewsRequest(req) {
   const errorWrapper = yield getContext('errorWrapper')
 
   try {
+    const userId = yield select(authSelector.authUserIdSelector)
+
+    if (!userId) return
+
     const data = yield call([queryService, 'apiRequest'], queries.reportPostViews, req.payload)
     const selector = path(['data', 'reportPostViews'])
     const meta = {}
