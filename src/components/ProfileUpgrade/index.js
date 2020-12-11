@@ -4,8 +4,8 @@ import { TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import InfoIcon from 'assets/svg/verification/Info'
 import color from 'color'
-import Actions from 'components/AuthHome/Actions'
-
+import ActionsComponent from 'components/AuthHome/Actions'
+import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
@@ -19,6 +19,7 @@ const ProfileUpgrade = ({
   authSigninAppleRequest,
   authSigninAnonymous,
   authSigninAnonymousRequest,
+  navigateSignin,
 }) => {
   const styling = styles(theme)
 
@@ -38,20 +39,22 @@ const ProfileUpgrade = ({
         </View>
 
         <View style={styling.actions}>
-          <Actions
+          <ActionsComponent
             authSigninGoogle={authSigninGoogle}
             authSigninGoogleRequest={authSigninGoogleRequest}
             authSigninApple={authSigninApple}
             authSigninAppleRequest={authSigninAppleRequest}
             authSigninAnonymous={authSigninAnonymous}
             authSigninAnonymousRequest={authSigninAnonymousRequest}
+            hideAnonymousBtn
           />
         </View>
 
-        <View style={styling.description}>
+        <View style={styling.footer}>
           <Text style={styling.descriptionText}>
             {t('You must create an account to chat, follow, create, like or use dating.' )}
           </Text>
+          <DefaultButton label={t('Already Have an Account? Log In')} onPress={navigateSignin} style={styling.signInBtn} />
         </View>
       </SafeAreaView>
     </View>
@@ -100,15 +103,19 @@ const styles = (theme) =>
       fontWeight: '500',
       color: color(theme.colors.text).fade(0.4).string(),
     },
-    description: {
-      paddingHorizontal: 48,
-      paddingVertical: 24,
+    footer: {
+      paddingHorizontal: theme.spacing.base * 2,
+      marginBottom: theme.spacing.base,
     },
     descriptionText: {
       fontSize: 12,
       fontWeight: '300',
       paddingBottom: 6,
       textAlign: 'center',
+      marginBottom: theme.spacing.base * 3,
+    },
+    signInBtn: {
+      backgroundColor: '#333333',
     },
   })
 
@@ -122,6 +129,7 @@ ProfileUpgrade.propTypes = {
   authSigninAppleRequest: PropTypes.any,
   authSigninAnonymous: PropTypes.any,
   authSigninAnonymousRequest: PropTypes.any,
+  navigateSignin: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(ProfileUpgrade))
