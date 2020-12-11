@@ -10,6 +10,8 @@ const navigation = { addListener: jest.fn().mockReturnValue(unsubscribe), getCur
 const provideNavigation = [getContext('ReactNavigationRef'), { current: navigation }]
 const applyOnChange = (navigation) => navigation.addListener.mock.calls[0][1]()
 const route = { name: 'ROUTE' }
+const user = { userId: 'us-east-1:f554ea33-7315-4e60-8e85-c86ad0ee6f0e' }
+const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
 
 describe('navigationSubscription', () => {
   afterEach(() => {
@@ -23,9 +25,24 @@ describe('navigationSubscription', () => {
     navigation.getCurrentRoute.mockReturnValueOnce(undefined).mockReturnValueOnce(route)
 
     const promise = expectSaga(navigationSubscription)
+      .withState(authorizedState)
       .provide([provideNavigation])
 
       .put(usersActions.usersReportScreenViewsRequest({ screens: [route.name] }))
+      .silentRun()
+
+    applyOnChange(navigation)
+
+    return promise
+  })
+
+  it('prevent event when user is not authorized', () => {
+    navigation.getCurrentRoute.mockReturnValueOnce(undefined).mockReturnValueOnce(route)
+
+    const promise = expectSaga(navigationSubscription)
+      .provide([provideNavigation])
+
+      .not.put(usersActions.usersReportScreenViewsRequest({ screens: [route.name] }))
       .silentRun()
 
     applyOnChange(navigation)
@@ -37,6 +54,7 @@ describe('navigationSubscription', () => {
     navigation.getCurrentRoute.mockReturnValueOnce(route).mockReturnValueOnce(route)
 
     const promise = expectSaga(navigationSubscription)
+      .withState(authorizedState)
       .provide([provideNavigation])
 
       .not.put(usersActions.usersReportScreenViewsRequest({ screens: [route.name] }))
@@ -55,6 +73,7 @@ describe('navigationSubscription', () => {
     navigation.getCurrentRoute.mockReturnValueOnce(route).mockImplementationOnce(throwError)
 
     const promise = expectSaga(navigationSubscription)
+      .withState(authorizedState)
       .provide([provideNavigation])
 
       .not.put(usersActions.usersReportScreenViewsRequest({ screens: [route.name] }))
