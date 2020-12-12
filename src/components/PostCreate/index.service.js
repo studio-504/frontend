@@ -55,7 +55,7 @@ const PostCreateService = ({
     actionType: VERIFICATION_TYPE.BACK,
     showHeader: true,
   })
-
+ 
   return children({
     type,
     albumsGet,

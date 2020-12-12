@@ -132,4 +132,50 @@ describe('Posts reducer', () => {
       })
     })
   })
+
+  describe('postsShare', () => {
+    const data = { id: 1 }
+    const meta = { a: 1, b: 2 }
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK_ACTION' })
+
+      expect(selectors.postsShare(state)).toEqual({
+        data: {},
+        status: 'idle',
+        payload: {},
+      })
+    })
+
+    it('success', () => {
+      const state = reducer(undefined, actions.postsShareSuccess({ data, meta }))
+
+      expect(selectors.postsShare(state)).toEqual({
+        data,
+        payload: {},
+        status: 'success',
+      })
+    })
+
+    it('error state', () => {
+      const error = new Error('Error')
+      const state = reducer(undefined, actions.postsShareFailure(error))
+
+      expect(selectors.postsShare(state)).toEqual({
+        data: {},
+        payload: {},
+        status: 'failure',
+      })
+    })
+
+    it('idle', () => {
+      const state = applyActions([actions.postsShareSuccess({ data, meta }), actions.postsShareIdle()], reducer)
+
+      expect(selectors.postsShare(state)).toEqual({
+        data: {},
+        status: 'idle',
+        payload: {},
+      })
+    })
+  })
 })

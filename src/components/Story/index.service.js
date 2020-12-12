@@ -30,9 +30,6 @@ const StoryService = ({ children }) => {
   const nextUserStoryPool = pathOr([], [userStoryIndex + 1], stories)
   const prevUserStoryPool = pathOr([], [userStoryIndex - 1], stories)
 
-  const postsShareRequest = (payload) =>
-    dispatch(postsActions.postsShareRequest(payload))
-
   const postsOnymouslyLikeRequest = (payload) =>
     dispatch(postsActions.postsOnymouslyLikeRequest(payload))
 
@@ -108,10 +105,8 @@ const StoryService = ({ children }) => {
     onPrevStory,
     onCloseStory,
     onSnapItem,
-    postsShareRequest,
     postsOnymouslyLikeRequest,
     postsDislikeRequest,
-
     textPostRefs,
     createTextPostRef,
     getTextPostRef,

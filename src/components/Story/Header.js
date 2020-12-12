@@ -127,17 +127,7 @@ const styles = StyleSheet.create({
 
 Header.propTypes = {
   t: PropTypes.any,
-  user: PropTypes.any,
   post: PropTypes.any,
-  handleEditPress: PropTypes.any,
-  postsArchiveRequest: PropTypes.any,
-  postsFlagRequest: PropTypes.any,
-  postsDeleteRequest: PropTypes.any,
-  postsShareRequest: PropTypes.any,
-  postsRestoreArchivedRequest: PropTypes.any,
-  handlePostShare: PropTypes.any,
-  createActionSheetRef: PropTypes.any,
-  actionSheetRef: PropTypes.any,
 }
 
 export default withTranslation()(Header)

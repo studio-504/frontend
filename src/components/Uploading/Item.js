@@ -131,7 +131,6 @@ UploadingItem.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   post: PropTypes.any,
-  handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlagRequest: PropTypes.any,
   postsCreateRequest: PropTypes.func,
