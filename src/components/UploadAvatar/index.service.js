@@ -5,7 +5,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as helpers from 'components/UploadAvatar/helpers'
 import * as navigationActions from 'navigation/actions'
 import * as cameraActions from 'store/ducks/camera/actions'
-import useCamera from 'services/providers/Camera'
+import useLibrary from 'services/providers/Camera/useLibrary'
 import path from 'ramda/src/path'
 
 const useProfilePhoto = (props) => {
@@ -15,25 +15,28 @@ const useProfilePhoto = (props) => {
   const isAvatarEmpty = helpers.isAvatarEmpty(user)
   const avatarUrl = path(['photo', 'url480p'])(user)
   const backRoute = path(['backRoute'], props)
+  const multiple = false
 
-  const camera = useCamera({
-    handleProcessedPhoto: (payload) => {
-      dispatch(cameraActions.cameraCaptureRequest(payload))
-      navigationActions.navigateProfilePhotoUpload(navigation, {
-        type: 'IMAGE',
-        photos: [payload[0].preview],
-        backRoute,
-      })()
-    },
+  const handleProcessedPhoto = (payload) => {
+    dispatch(cameraActions.cameraCaptureRequest(payload))
+    navigationActions.navigateProfilePhotoUpload(navigation, {
+      type: 'IMAGE',
+      photos: [payload[0].preview],
+      backRoute,
+    })()
+  }
+
+  const { handleLibrarySnap } = useLibrary({
+    handleProcessedPhoto,
+    multiple,
   })
 
-  const handleCameraSnap = navigationActions.navigateCamera(
+  const navigateCamera = navigationActions.navigateCamera(
     navigation,
-    { nextRoute: 'ProfilePhotoUpload', backRoute },
+    { nextRoute: 'ProfilePhotoUpload', backRoute, multiple },
     { protected: true, user },
   )
-
-  const handleLibrarySnap = () => camera.handleLibrarySnap()
+  
   const handleSkipUpload = () => navigation.goBack()
   const usersDeleteAvatarRequest = () => dispatch(usersActions.usersDeleteAvatarRequest())
   const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation, { backRoute })
@@ -42,7 +45,7 @@ const useProfilePhoto = (props) => {
     user,
     navigation,
     handleLibrarySnap,
-    handleCameraSnap,
+    navigateCamera,
     handleSkipUpload,
     usersDeleteAvatarRequest,
     navigateProfilePhotoGrid,

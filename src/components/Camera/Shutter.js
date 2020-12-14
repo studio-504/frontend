@@ -21,7 +21,7 @@ const Shutter = ({
   return (
     <View style={styling.root}>
       <View style={styling.action}>
-        <TouchableOpacity style={styling.item} onPress={() => handleLibrarySnap(true)}>
+        <TouchableOpacity style={styling.item} onPress={handleLibrarySnap}>
           <UploadIcon
             fill="#ffffff"
           />
@@ -90,7 +90,7 @@ Shutter.propTypes = {
   handleFlipToggle: PropTypes.any,
   handleCameraSnap: PropTypes.any,
   handleFlashToggle: PropTypes.any,
-  handleLibrarySnap: PropTypes.any,
+  handleLibrarySnap: PropTypes.func,
 }
 
 export default withTheme(Shutter)

@@ -138,7 +138,7 @@ CameraComponent.propTypes = {
   flashMode: PropTypes.any,
   flipMode: PropTypes.any,
   handleFlipToggle: PropTypes.any,
-  handleLibrarySnap: PropTypes.any,
+  handleLibrarySnap: PropTypes.func,
   handleCameraSnap: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   postsCreateRequest: PropTypes.any,
