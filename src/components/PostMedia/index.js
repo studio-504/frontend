@@ -18,8 +18,6 @@ const PostMedia = ({
   t,
   theme,
   user, 
-  postsShareRequest,
-  handleEditPress,
   postsArchiveRequest,
   postsRestoreArchivedRequest,
   postsFlag,
@@ -73,13 +71,11 @@ const PostMedia = ({
           <PostComponent
             user={user}
             post={post}
-            handleEditPress={handleEditPress}
             postsArchiveRequest={postsArchiveRequest}
             postsRestoreArchivedRequest={postsRestoreArchivedRequest}
             postsFlagRequest={postsFlagRequest}
             postsDeleteRequest={postsDeleteRequest}
             changeAvatarRequest={changeAvatarRequest}
-            postsShareRequest={postsShareRequest}
             postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
             postsDislikeRequest={postsDislikeRequest}
             priorityIndex={index}
@@ -114,8 +110,6 @@ PostMedia.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
   feedRef: PropTypes.any,
-  postsShareRequest: PropTypes.any,
-  handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,

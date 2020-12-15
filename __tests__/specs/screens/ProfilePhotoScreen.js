@@ -87,8 +87,6 @@ describe('Profile Picture screen', () => {
     useCamera.mock.calls[0][0].handleProcessedPhoto(payload)
     expect(dispatch).toHaveBeenCalledWith(cameraActions.cameraCaptureRequest(payload))
     testNavigate(navigation, 'App.Root.Home.Profile.ProfilePhotoUpload', {
-      type: 'IMAGE',
-      photos: [payload[0].preview],
       backRoute: 'ProfileSelf',
     })
 

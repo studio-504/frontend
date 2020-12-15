@@ -26,8 +26,6 @@ const PostComponent = ({
   theme,
   user,
   post,
-  postsShareRequest,
-  handleEditPress,
   postsArchiveRequest,
   postsFlagRequest,
   postsDeleteRequest,
@@ -73,11 +71,9 @@ const PostComponent = ({
       <HeaderComponent
         user={user}
         post={post}
-        handleEditPress={handleEditPress}
         postsArchiveRequest={postsArchiveRequest}
         postsFlagRequest={postsFlagRequest}
         postsDeleteRequest={postsDeleteRequest}
-        postsShareRequest={postsShareRequest}
         postsRestoreArchivedRequest={postsRestoreArchivedRequest}
         handlePostShare={handlePostShare}
         createActionSheetRef={createActionSheetRef}
@@ -127,7 +123,6 @@ const PostComponent = ({
       <ActionComponent
         user={user}
         post={post}
-        postsShareRequest={postsShareRequest}
         postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
         postsDislikeRequest={postsDislikeRequest}
         handlePostShare={handlePostShare}
@@ -178,8 +173,6 @@ PostComponent.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
   feedRef: PropTypes.any,
-  postsShareRequest: PropTypes.any,
-  handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,

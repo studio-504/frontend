@@ -154,6 +154,6 @@ describe('PostType screen', () => {
 
     handleProcessedPhoto(payload)
     expect(dispatch).toHaveBeenCalledWith(cameraActions.cameraCaptureRequest(payload))
-    testNavigate(navigation, 'PostCreate', { photos: ['preview'], type: 'IMAGE' })
+    testNavigate(navigation, 'PostCreate', { type: 'IMAGE' })
   })
 })

@@ -47,9 +47,6 @@ const styles = theme => StyleSheet.create({
 
 Albums.propTypes = {
   theme: PropTypes.any,
-  postsSingleGet: PropTypes.any,
-  postsShare: PropTypes.any,
-  postsShareRequest: PropTypes.any,
   albumsGet: PropTypes.any,
   user: PropTypes.any,
 }

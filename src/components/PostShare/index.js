@@ -13,7 +13,7 @@ import PreviewUserComponent from 'components/Preview/User'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
-const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, watermark, route }) => {
+const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, route }) => {
   const styling = styles(theme)
   const post = path(['data'])(postsSingleGet)
   const photoUrl = route.params.renderUri || path(['image', 'url'])(post)
@@ -23,7 +23,7 @@ const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, wa
       photoUrl,
       type: 'cameraroll',
       title: 'Camera roll export',
-      watermark,
+      watermark: true,
       post,
     })
 
@@ -32,7 +32,7 @@ const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, wa
       photoUrl,
       type: 'repost',
       title: 'Repost',
-      watermark,
+      watermark: false,
       post,
     })
 
@@ -41,7 +41,7 @@ const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, wa
       photoUrl,
       type: 'instagramPost',
       title: 'Instagram export',
-      watermark,
+      watermark: true,
       post,
     })
 
@@ -142,7 +142,6 @@ PostShare.propTypes = {
     }),
   }),
   postsShareRequest: PropTypes.func.isRequired,
-  watermark: PropTypes.any,
   route: PropTypes.shape({
     params: PropTypes.shape({
       renderUri: PropTypes.string,

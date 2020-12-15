@@ -148,17 +148,17 @@ const PostCreateForm = ({
         <DefaultButton label={t('Create Post')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
 
+      {handleOpenVerification ? 
+        <View style={styling.input}>
+          <DefaultButton label={t('How to pass verification?')} onPress={handleOpenVerification} mode="outlined" disabled={loading} />
+        </View>
+      : null }
+
       {cameraCaptureLength > 1 ?
         <View style={styling.helper}>
           <Caption>{cameraCaptureLength - 1} more post left to be uploaded</Caption>
         </View>
       : null}
-
-      {handleOpenVerification ? 
-        <View style={styling.input}>
-          <DefaultButton label={t('How to pass verification?')} onPress={handleOpenVerification} mode="outlined" disabled={loading} />
-        </View>
-      :null }
     </View>
   )
 }
@@ -205,13 +205,13 @@ const FormWrapper = ({
 }) => (
   <Formik
     initialValues={{
-      lifetime: null,
+      lifetime: null, 
       postType: props.postType,
       likesDisabled: props.user.likesDisabled,
       commentsDisabled: props.user.commentsDisabled,
       sharingDisabled: props.user.sharingDisabled,
-      verificationHidden: props.user.verificationHidden,
-      text: '',
+      verificationHidden: props.user.verificationHidden, 
+      text: path(['text'])(cameraCapture),
       preview: [path(['preview'])(cameraCapture)],
       images: [path(['uri'])(cameraCapture)],
       takenInReal: path(['takenInReal'])(cameraCapture),
