@@ -13,7 +13,7 @@ import * as Validation from 'services/Validation'
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
-  phone: Validation.phone,
+  phone: Validation.phone.required(),
 })
 
 const ForgotForm = ({
