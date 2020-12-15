@@ -11,7 +11,7 @@ import { withTheme } from 'react-native-paper'
 const ProfilePhoto = ({
   t,
   handleLibrarySnap,
-  handleCameraSnap,
+  navigateCamera,
   handleSkipUpload,
   isAvatarEmpty,
   openUploadAvatarMenu,
@@ -28,7 +28,7 @@ const ProfilePhoto = ({
 
   const actions = isAvatarEmpty
     ? [
-        { label: t('Take a Photo'), onPress: confirmProfilePhotoUpload(handleCameraSnap) },
+        { label: t('Take a Photo'), onPress: confirmProfilePhotoUpload(navigateCamera) },
         { label: t('Choose From Gallery'), onPress: confirmProfilePhotoUpload(handleLibrarySnap) },
       ]
     : [{ label: t('Change Profile Picture'), onPress: openUploadAvatarMenu, mode: 'text' }]
@@ -78,7 +78,7 @@ ProfilePhoto.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   handleLibrarySnap: PropTypes.func.isRequired,
-  handleCameraSnap: PropTypes.func.isRequired,
+  navigateCamera: PropTypes.func.isRequired,
   handleSkipUpload: PropTypes.func.isRequired,
   isAvatarEmpty: PropTypes.bool,
   required: PropTypes.bool,

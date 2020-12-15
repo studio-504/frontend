@@ -9,7 +9,7 @@ const UploadAvatar = ({
   handleLibrarySnap,
   navigateProfilePhotoGrid,
   usersDeleteAvatarRequest,
-  handleCameraSnap,
+  navigateCamera,
   isAvatarEmpty,
   actionSheetRef,
 }) => {
@@ -35,7 +35,7 @@ const UploadAvatar = ({
       options={[
         {
           name: t('Take a Photo'),
-          onPress: confirmProfilePhotoUpload(handleCameraSnap),
+          onPress: confirmProfilePhotoUpload(navigateCamera),
         },
         {
           name: t('Choose From Gallery'),
@@ -66,7 +66,7 @@ UploadAvatar.propTypes = {
   handleLibrarySnap: PropTypes.func,
   navigateProfilePhotoGrid: PropTypes.func,
   usersDeleteAvatarRequest: PropTypes.func,
-  handleCameraSnap: PropTypes.func,
+  navigateCamera: PropTypes.func,
   isAvatarEmpty: PropTypes.bool,
   actionSheetRef: PropTypes.any,
 }

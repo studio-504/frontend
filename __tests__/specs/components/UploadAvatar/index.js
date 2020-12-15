@@ -34,8 +34,8 @@ describe('UploadAvatar component', () => {
   })
 
   it('Take a Photo', () => {
-    const handleCameraSnap = jest.fn()
-    setup({ handleCameraSnap })
+    const navigateCamera = jest.fn()
+    setup({ navigateCamera })
 
     const { options } = ActionSheet.mock.calls[0][0]
     const { name, onPress } = options[0]
@@ -52,7 +52,7 @@ describe('UploadAvatar component', () => {
     })
 
     onConfirm()
-    expect(handleCameraSnap).toHaveBeenCalled()
+    expect(navigateCamera).toHaveBeenCalled()
   })
 
   it('Choose From Gallery', () => {

@@ -9,24 +9,25 @@ jest.mock('templates/CircleAvatar', () => jest.fn().mockReturnValue(null))
 jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
 const handleLibrarySnap = jest.fn()
-const handleCameraSnap = jest.fn()
+const navigateCamera = jest.fn()
 const handleSkipUpload = jest.fn()
 const openUploadAvatarMenu = jest.fn()
 
 const requiredProps = {
   handleLibrarySnap,
-  handleCameraSnap,
+  navigateCamera,
   handleSkipUpload,
   openUploadAvatarMenu,
 }
 
-const setup = () => renderWithProviders(<ProfilePhoto {...requiredProps} />)
+const setup = (props) => renderWithProviders(<ProfilePhoto {...requiredProps} {...props} />)
 
 describe('Profile Picture screen', () => {
   afterEach(() => {
     handleLibrarySnap.mockClear()
-    handleCameraSnap.mockClear()
+    navigateCamera.mockClear()
     handleSkipUpload.mockClear()
+    openUploadAvatarMenu.mockClear()
     confirm.mockClear()
   })
 
@@ -59,7 +60,7 @@ describe('Profile Picture screen', () => {
     })
 
     onConfirm()
-    expect(handleCameraSnap).toHaveBeenCalled()
+    expect(navigateCamera).toHaveBeenCalled()
   })
 
   it('Choose From Gallery', () => {
@@ -76,5 +77,13 @@ describe('Profile Picture screen', () => {
 
     onConfirm()
     expect(handleLibrarySnap).toHaveBeenCalled()
+  })
+
+  it('Change Profile Picture', () => {
+    const { getByText } = setup({ isAvatarEmpty: false })
+
+    fireEvent.press(getByText('Change Profile Picture'))
+
+    expect(openUploadAvatarMenu).toHaveBeenCalled()
   })
 })
