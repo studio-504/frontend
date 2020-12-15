@@ -4,12 +4,15 @@ import SettingsComponent from 'components/Settings'
 import { testNavigate } from 'tests/utils/helpers'
 
 jest.mock('components/ActionSheet', () => jest.fn().mockReturnValue(null))
-jest.mock('components/Alert', () => ({  confirm: jest.fn() }))
+jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 jest.mock('templates/Avatar', () => () => null)
 jest.mock('templates/SettingsAvatar', () => () => null)
 
+const usersDelete = { status: 'idle' }
 const navigation = { navigate: jest.fn() }
-const setup = (props) => renderWithProviders(<SettingsComponent navigation={navigation} {...props} />)
+const requiredProps = { usersDelete, navigation }
+
+const setup = (props) => renderWithProviders(<SettingsComponent {...requiredProps} {...props} />)
 
 describe('Settings component', () => {
   afterEach(() => {
