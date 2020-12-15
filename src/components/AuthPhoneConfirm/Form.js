@@ -29,7 +29,6 @@ const PhoneConfirmForm = ({
           name="confirmationCode"
           component={TextField}
           placeholder={t('Confirmation Code')}
-          autoFocus
         />
       </View>
 

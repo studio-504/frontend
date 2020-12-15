@@ -31,7 +31,6 @@ const EmailConfirmForm = ({
           component={TextField}
           name="confirmationCode"
           placeholder="Confirmation Code"
-          autoFocus
         />
       </View>
 

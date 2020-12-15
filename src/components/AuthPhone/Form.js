@@ -32,7 +32,6 @@ const PhoneForm = ({
           name="phone"
           component={PhoneField}
           placeholder={t('Phone Number')}
-          autoFocus
         />
       </View>
       <View style={styling.input}>
