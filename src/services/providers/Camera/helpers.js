@@ -1,5 +1,12 @@
 import { Keyboard } from 'react-native'
+import * as Logger from 'services/Logger'
 import { getScreenAspectRatio } from 'services/Dimensions'
+
+export const handleError = error => {
+  if (error.code !== 'E_PICKER_CANCELLED') {
+    Logger.captureException(error)
+  }
+}
 
 /**
  * Formatting crop coordinates to match graphql supported format

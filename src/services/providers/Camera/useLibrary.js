@@ -1,7 +1,6 @@
 import CropPicker from 'react-native-image-crop-picker'
 import mapSeries from 'async/mapSeries'
-import * as Logger from 'services/Logger'
-import { autoKeyboardClose, cropperOptions, requestPayload } from 'services/providers/Camera/helpers'
+import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
 
 /**
  * Asset format definition is required for createPost graphql query
@@ -73,7 +72,7 @@ const useLibrary = ({ handleProcessedPhoto = () => {}, multiple = true }) => {
 
       return handleProcessedPhoto(payloadSeries)
     } catch (error) {
-      Logger.captureException(error)
+      handleError(error)
     }
   }
 

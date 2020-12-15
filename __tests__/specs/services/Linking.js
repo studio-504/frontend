@@ -2,6 +2,7 @@
 import { Linking } from 'react-native'
 import * as LinkingService from 'services/Linking'
 import { testNavigate } from 'tests/utils/helpers'
+import * as Logger from 'services/Logger'
 
 jest.spyOn(Linking, 'openURL')
 
@@ -186,9 +187,18 @@ describe('deeplinkNavigation redirect routes', () => {
     testNavigate(navigation, 'Auth.AuthUsername', { _: baseUrl, userId, action: 'signup' })
   })
 
-  it('open url', () => {
-    const rootUrl = 'https:/google.com'
+  it('open direct url', () => {
+    const rootUrl = 'https://google.com'
+    const scope = { setExtra: jest.fn() }
+
+    Logger.withScope.mockImplementationOnce((callback) => callback(scope))
+
     LinkingService.deeplinkNavigation(navigation)(rootUrl)
     expect(Linking.openURL).toHaveBeenLastCalledWith(rootUrl)
+
+    expect(Logger.captureMessage).toHaveBeenCalledWith('FEED_CARDS_UNSUPPORTED_CARD')
+    expect(scope.setExtra).toHaveBeenCalledWith('action', rootUrl)
+    expect(scope.setExtra).toHaveBeenCalledWith('code', 'NOT_SUPPORTED_IN_APP_CARD_ERROR')
+    expect(scope.setExtra).toHaveBeenCalledWith('message', 'The in-app card is not supported')
   })
 })

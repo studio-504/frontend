@@ -15,7 +15,7 @@ const PostTypeService = ({ children }) => {
 
   const handleProcessedPhoto = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
-    navigationActions.navigatePostCreate(navigation, { type: 'IMAGE', photos: [payload[0].preview] })
+    navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
   }
 
   const library = useLibrary({ handleProcessedPhoto })

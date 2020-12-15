@@ -30,7 +30,7 @@ describe('PostShare component', () => {
       photoUrl,
       type: 'repost',
       title: 'Repost',
-      watermark,
+      watermark: false,
       post,
     })
   })

@@ -142,3 +142,8 @@ export const postsGetTrendingPostsSelector = () => createDeepEqualSelector(
  *
  */
 export const postsCreate = path(['posts', 'postsCreate'])
+
+/**
+ *
+ */
+export const postsShare = path(['posts', 'postsShare'])

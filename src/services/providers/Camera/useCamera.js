@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react'
 import CropPicker from 'react-native-image-crop-picker'
-import * as Logger from 'services/Logger'
 import { useSelector } from 'react-redux'
 import useToggle from 'react-use/lib/useToggle'
 import * as postsSelector from 'store/ducks/posts/selectors'
-import { autoKeyboardClose, cropperOptions, requestPayload } from 'services/providers/Camera/helpers'
+import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
 
 /**
  * react-native-camera request object
@@ -55,7 +54,7 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
       cameraRef.current.resumePreview()
       autoKeyboardClose()
     } catch (error) {
-      Logger.captureException(error)
+      handleError(error)
     }
   }
 

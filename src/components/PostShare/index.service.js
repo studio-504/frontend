@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import useToggle from 'react-use/lib/useToggle'
-import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
+import { useRoute, useNavigation } from '@react-navigation/native'
+import path from 'ramda/src/path'
 import * as postsSelector from 'store/ducks/posts/selectors'
 
 const ShareService = ({ children }) => {
@@ -14,44 +13,30 @@ const ShareService = ({ children }) => {
   const postId = path(['params', 'postId'])(route)
   const postUserId = path(['params', 'userId'])(route)
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
-  const postsShare = useSelector(state => state.posts.postsShare)
-  const cameraCapture = useSelector(state => state.camera.cameraCapture)
+  const postsShare = useSelector((state) => state.posts.postsShare)
 
-  const [watermark, handleWatermark] = useToggle(true)
-  
-  const postsSingleGetRequest = ({ postId }) =>
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-
-  const postsShareRequest = (payload) =>
-    dispatch(postsActions.postsShareRequest(payload))
+  const postsShareRequest = (payload) => dispatch(postsActions.postsShareRequest(payload))
 
   useEffect(() => {
-    if(!postId || !postUserId) return
-    
+    if (!postId || !postUserId) return
+
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-  }, [postId])
+  }, [postId, postUserId])
 
   useEffect(() => {
-    if (postsShare.status === 'success' && cameraCapture.status === 'success') {
-      navigationActions.navigatePostCreate(navigation, { type: 'IMAGE', photos: [] })
-    }
-
     if (postsShare.status === 'success') {
-      dispatch(postsActions.postsShareIdle({}))
-      navigationActions.navigateBack(navigation)
+      dispatch(postsActions.postsShareIdle())
+
+      if (postsShare.payload.type !== 'repost') {
+        navigationActions.navigateBack(navigation)
+      }
     }
-  }, [
-    postsShare.status,
-    cameraCapture.status,
-  ])
+  }, [postsShare.status])
 
   return children({
     postsSingleGet,
-    postsSingleGetRequest,
     postsShare,
     postsShareRequest,
-    watermark,
-    handleWatermark,
     route,
   })
 }

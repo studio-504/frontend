@@ -15,7 +15,7 @@ import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
 
 const formSchema = Yup.object().shape({
-  phone: Validation.phone,
+  phone: Validation.phone.required(),
   password: Validation.password,
 })
 

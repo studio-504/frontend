@@ -13,7 +13,6 @@ import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGet
 import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
-import * as Logger from 'services/Logger'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
@@ -555,12 +554,6 @@ const isCardSupported = (card) => {
   try {
     return LinkingService.deeplinkPath(card.action)
   } catch (error) {
-    Logger.withScope((scope) => {
-      scope.setExtra('action', card.action)
-      scope.setExtra('code', error.code)
-      scope.setExtra('message', error.message)
-      Logger.captureMessage('FEED_CARDS_UNSUPPORTED_CARD')
-    })
     return false
   }
 }

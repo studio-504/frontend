@@ -97,7 +97,7 @@ export const addPhotoPost = `
     $commentsDisabled: Boolean,
     $likesDisabled: Boolean,
     $sharingDisabled: Boolean,
-    $takenInReal: Boolean,
+    $takenInReal: Boolean = false,
     $originalFormat: String,
     $originalMetadata: String,
     $imageFormat: ImageFormat,

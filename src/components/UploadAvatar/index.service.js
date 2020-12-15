@@ -20,8 +20,6 @@ const useProfilePhoto = (props) => {
   const handleProcessedPhoto = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     navigationActions.navigateProfilePhotoUpload(navigation, {
-      type: 'IMAGE',
-      photos: [payload[0].preview],
       backRoute,
     })()
   }

@@ -21,8 +21,8 @@ const CameraService = ({ children }) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     const nextRoute = path(['params', 'nextRoute'])(route)
     const backRoute = path(['params', 'backRoute'])(route)
-    const nextPayload = { type: 'IMAGE', photos: [payload[0].preview], backRoute }
-
+    const nextPayload = ({ type: 'IMAGE', backRoute }) 
+ 
     if (nextRoute) {
       navigateToPath(nextRoute)(navigation, nextPayload)
     } else {

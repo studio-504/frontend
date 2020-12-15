@@ -113,9 +113,7 @@ export const initialState = {
   postsShare: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
-    meta: {},
   },
   postsReportPostViews: {
     data: {},
