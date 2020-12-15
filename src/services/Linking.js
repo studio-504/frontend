@@ -67,7 +67,7 @@ export const deeplinkNavigation = (navigation) => (action) => {
         navigationActions.navigateProfilePhoto(navigation, params)
         break
       case ACTIONS.INVITE_FRIENDS:
-        navigationActions.navigateInviteFriends(navigation, params)
+        navigationActions.navigateInviteFriends(navigation, params)()
         break
       case ACTIONS.SIGNUP:
         navigationActions.navigateAuthUsername(navigation, params)
