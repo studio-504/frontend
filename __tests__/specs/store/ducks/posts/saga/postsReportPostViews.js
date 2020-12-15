@@ -16,6 +16,8 @@ jest.mock('services/Query', () => ({ apiRequest: jest.fn() }))
 
 const reportPostViews = [1, 2, 3]
 const payload = { postIds: [1, 5], viewType: 'THUMBNAIL' }
+const user = { userId: 'us-east-1:f554ea33-7315-4e60-8e85-c86ad0ee6f0e' }
+const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
 
 queryService.apiRequest.mockResolvedValue({ data: { reportPostViews } })
 
@@ -23,6 +25,7 @@ describe('Post report post views', () => {
   describe('postsReportPostViewsRequest', () => {
     it('success', () => {
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
+        .withState(authorizedState)
         .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
@@ -39,10 +42,20 @@ describe('Post report post views', () => {
         .silentRun()
     })
 
+    it('not authorized user', () => {
+      return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
+        .provide([[getContext('errorWrapper'), errorWrapper]])
+
+        .not.call([queryService, 'apiRequest'], queries.reportPostViews, payload)
+       
+        .silentRun()
+    })
+
     it('optimistic unviewed count update', () => {
       const payload = { postIds: [1, 5], viewType: 'FOCUS' }
       
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
+        .withState(authorizedState)
         .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
@@ -64,6 +77,7 @@ describe('Post report post views', () => {
       queryService.apiRequest.mockRejectedValueOnce(error)
 
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
+        .withState(authorizedState)
         .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)

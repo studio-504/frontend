@@ -22,10 +22,11 @@ const Actions = ({
   authSigninAppleRequest,
   authSigninAnonymous,
   authSigninAnonymousRequest,
+  hideAnonymousBtn,
 }) => {
   const styling = styles
   const navigation = useNavigation()
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.item}>
@@ -37,9 +38,11 @@ const Actions = ({
       <View style={styling.item}>
         <DefaultButton testID={testIDs.actions.appleBtn} icon={AppleIcon} label={t('Continue with Apple')} onPress={authSigninAppleRequest} loading={authSigninApple.status === 'loading'} style={styling.apple} labelStyle={styling.labelStyle} />
       </View>
-      <View style={styling.item}>
-        <DefaultButton testID={testIDs.actions.anonymousBtn}  label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
-      </View>
+      {hideAnonymousBtn === false ? 
+        <View style={styling.item}>
+          <DefaultButton testID={testIDs.actions.anonymousBtn}  label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
+        </View> 
+      : null}
     </View>
   )
 }
@@ -52,6 +55,11 @@ Actions.propTypes = {
   authSigninAppleRequest: PropTypes.any,
   authSigninAnonymous: PropTypes.any,
   authSigninAnonymousRequest: PropTypes.any,
+  hideAnonymousBtn: PropTypes.bool,
+}
+
+Actions.defaultProps = {
+  hideAnonymousBtn: false,
 }
 
 const styles = StyleSheet.create({

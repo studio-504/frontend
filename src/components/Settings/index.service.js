@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
@@ -16,12 +16,20 @@ const SettingsService = ({ children }) => {
   const { appVersion } = useOTAVersion()
 
   const usersDeleteAvatar = useSelector(usersSelector.usersDeleteAvatar)
+  const usersDelete = useSelector((state) => state.users.usersDelete)
   const settingsErrorMessage = path(['error', 'text'])(usersDeleteAvatar)
   const user = useSelector(authSelector.authUserSelector)
 
   const authSignoutRequest = () => dispatch(authActions.authSignoutRequest())
   const handleErrorClose = () => dispatch(usersActions.usersDeleteAvatarIdle({}))
   const authForgotRequest = () => dispatch(authActions.authForgotRequest({ username: user.email }))
+  const usersDeleteRequest = () => dispatch(usersActions.usersDeleteRequest())
+
+  useEffect(() => {
+    if (usersDelete.status === 'success') {
+      authSignoutRequest()
+    }
+  }, [usersDelete.status])
 
   return (
     <UploadAvatar backRoute="ProfileSelf">
@@ -35,6 +43,8 @@ const SettingsService = ({ children }) => {
           openUploadAvatarMenu,
           authForgotRequest,
           appVersion,
+          usersDelete,
+          usersDeleteRequest,
         })
       }
     </UploadAvatar>

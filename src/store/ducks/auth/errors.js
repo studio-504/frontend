@@ -25,7 +25,7 @@ const messageCodes = {
     },
     NETWORK: {
       code: 'NETWORK',
-      text: 'Cannot proceed due to network error',
+      text: 'Can\'t proceed due to network error',
     },
   },
 
@@ -238,7 +238,7 @@ const messageCodes = {
   [constants.AUTH_RESET_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
-      text: 'Cannot reset cognito credentials',
+      text: 'Can\'t reset cognito credentials',
     },
   },
 }

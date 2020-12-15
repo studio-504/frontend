@@ -85,7 +85,6 @@ export const phone = Yup.string()
   .min(3)
   .max(50)
   .trim()
-  .required()
 
 export const password = Yup.string()
   .min(8)
@@ -121,11 +120,9 @@ export const gender = Yup.string()
 
 export const fullName = Yup.string()
   .typeError(ERRORS.fullName)
-  .required(ERRORS.fullName)
 
 export const bio = Yup.string()
   .typeError(ERRORS.bio)
-  .required(ERRORS.bio)
 
 export const matchAgeRangeMin = Yup.number()
   .typeError(ERRORS.matchAgeRangeMin)

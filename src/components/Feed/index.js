@@ -6,6 +6,7 @@ import ListHeaderComponent from 'components/Feed/ListHeaderComponent'
 import BookmarkComponent from 'components/Feed/Bookmark'
 import PostComponent from 'components/Post'
 import PostServiceComponent from 'components/Post/index.service'
+import Placeholder from 'components/Feed/Placeholder'
 import ScrollService from 'services/Scroll'
 import useViewable from 'services/providers/Viewable'
 
@@ -31,6 +32,8 @@ const Feed = ({
   getTextPostRef,
 }) => {
   const styling = styles(theme)
+  const data = path(['data'])(postsFeedGet)
+  const isEmpty = postsFeedGet.status === 'success' && data.length === 0
 
   const scroll = ScrollService({
     resource: postsFeedGet,
@@ -66,19 +69,25 @@ const Feed = ({
         </PostServiceComponent>
       </React.Fragment>
     ),
-    [path(['data'])(postsFeedGet)],
+    [data],
   )
+
+  const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />
+  const renderFooter = () => isEmpty ? null : scroll.loadingmore ? renderActivityIndicator() : renderBookmark()
+  const renderLoader = () => scroll.refreshing ? renderActivityIndicator() : null
+  const renderEmpty = () => isEmpty ? <Placeholder /> : renderLoader()
 
   return (
     <View testID={testIDs.root} style={styling.root}>
       <FlatList
         ref={feedRef}
         keyExtractor={(item) => item.postId}
-        data={path(['data'])(postsFeedGet)}
+        data={data}
+        contentContainerStyle={isEmpty ? styling.emptyContainer : null}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={15}
         scrollEventThrottle={500}
-        ListEmptyComponent={scroll.refreshing && <ActivityIndicator tintColor={theme.colors.border} />}
+        ListEmptyComponent={renderEmpty}
         refreshControl={
           <RefreshControl
             tintColor={theme.colors.border}
@@ -90,7 +99,7 @@ const Feed = ({
         viewabilityConfig={viewabilityConfigRef.current}
         ListHeaderComponent={ListHeaderComponent}
         renderItem={renderItem}
-        ListFooterComponent={scroll.loadingmore ? ActivityIndicator : renderBookmark}
+        ListFooterComponent={renderFooter}
         ListFooterComponentStyle={styling.loading}
       />
     </View>
@@ -104,6 +113,9 @@ const styles = (theme) =>
     },
     loading: {
       paddingVertical: 16,
+    },
+    emptyContainer: {
+      flex: 1,
     },
   })
 

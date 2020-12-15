@@ -19,8 +19,8 @@ const formSchema = Yup.object().shape({
   dateOfBirthDay: Validation.dateOfBirthDay,
   dateOfBirthYear: Validation.dateOfBirthYear,
   gender: Validation.gender,
-  fullName: Validation.fullName,
-  bio: Validation.bio,
+  fullName: Validation.fullName.required(),
+  bio: Validation.bio.required(),
   height: Validation.height,
 })
 

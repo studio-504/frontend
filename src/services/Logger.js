@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/react-native'
 import Config from 'react-native-config'
 import pick from 'ramda/src/pick'
 import codePush from 'react-native-code-push' 
+import { CancelRequestOnSignoutError } from 'services/Errors'
  
 /**
  * By including and configuring Sentry, the SDK will automatically attach global handlers
@@ -23,7 +24,9 @@ Sentry.init({
  */
 export const captureException = (error) => {
   try {
-    Sentry.captureException(error)
+    if (!(error instanceof CancelRequestOnSignoutError)) {
+      Sentry.captureException(error)
+    }
   } catch (error) {
     // ignore
   }
@@ -34,7 +37,9 @@ export const captureException = (error) => {
  */
 export const captureMessage = (error) => {
   try {
-    Sentry.captureMessage(error)
+    if (!(error instanceof CancelRequestOnSignoutError)) {
+      Sentry.captureMessage(error)
+    }
   } catch (error) {
     // ignore
   }
