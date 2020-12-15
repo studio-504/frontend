@@ -1,13 +1,8 @@
 import UrlPattern from 'url-pattern'
 import { Linking } from 'react-native'
 import * as navigationActions from 'navigation/actions'
-
-class NotSupportedInAppCardError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'NOT_SUPPORTED_IN_APP_CARD_ERROR'
-  }
-}
+import * as Logger from 'services/Logger'
+import { NotSupportedInAppCardError } from 'services/Errors'
 
 const options = { segmentValueCharset: ':a-zA-Z0-9_-' }
 
@@ -76,6 +71,13 @@ export const deeplinkNavigation = (navigation) => (action) => {
         break
     }
   } catch (error) {
+    Logger.withScope((scope) => {
+      scope.setExtra('action', action)
+      scope.setExtra('code', error.code)
+      scope.setExtra('message', error.message)
+      Logger.captureMessage('FEED_CARDS_UNSUPPORTED_CARD')
+    })
+
     if (error.code === 'NOT_SUPPORTED_IN_APP_CARD_ERROR') {
       return Linking.openURL(action)
     }

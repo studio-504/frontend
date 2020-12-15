@@ -122,6 +122,12 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
     compressImageQuality: 1,
   })
 
+  const handleError = error => {
+    if (error.code !== 'E_PICKER_CANCELLED') {
+      Logger.captureException(error)
+    }
+  }
+
   /**
    * Handle camera photo capture
    */
@@ -139,7 +145,7 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
       cameraRef.current.resumePreview()
       autoKeyboardClose()
     } catch (error) {
-      Logger.captureException(error)
+      handleError(error)
     }
   }
 
@@ -169,7 +175,7 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
 
       return handleProcessedPhoto(payloadSeries)
     } catch (error) {
-      Logger.captureException(error)
+      handleError(error)
     }
   }
 
