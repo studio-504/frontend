@@ -40,6 +40,7 @@ useNavigation.mockReturnValue(navigation)
 describe('DatingMatchScreen', () => {
   const openAllSections = (queryByAccessibilityLabel) => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Gender'))
+    fireEvent.press(queryByAccessibilityLabel('Toggle Match Height'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Location Range'))
   }
 
@@ -53,6 +54,7 @@ describe('DatingMatchScreen', () => {
 
       expect(queryByAccessibilityLabel('matchAgeRangeMin')).toBeTruthy()
       expect(queryByAccessibilityLabel('matchAgeRangeMax')).toBeTruthy()
+
       fireEvent.press(queryByAccessibilityLabel('Toggle Match Age'))
       expect(queryByAccessibilityLabel('matchAgeRangeMin')).toBeFalsy()
       expect(queryByAccessibilityLabel('matchAgeRangeMax')).toBeFalsy()
@@ -64,6 +66,12 @@ describe('DatingMatchScreen', () => {
       expect(queryByAccessibilityLabel('matchLocationRadius')).toBeFalsy()
       fireEvent.press(queryByAccessibilityLabel('Toggle Match Location Range'))
       expect(queryByAccessibilityLabel('matchLocationRadius')).toBeTruthy()
+
+      expect(queryByAccessibilityLabel('matchHeightRangeMin')).toBeFalsy()
+      expect(queryByAccessibilityLabel('matchHeightRangeMax')).toBeFalsy()
+      fireEvent.press(queryByAccessibilityLabel('Toggle Match Height'))
+      expect(queryByAccessibilityLabel('matchHeightRangeMin')).toBeTruthy()
+      expect(queryByAccessibilityLabel('matchHeightRangeMax')).toBeTruthy()
     })
 
     it('default values', () => {
@@ -71,6 +79,8 @@ describe('DatingMatchScreen', () => {
       const { queryByAccessibilityLabel } = setup()
       openAllSections(queryByAccessibilityLabel)
 
+      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '0\'1"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '9\'9"' })
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
@@ -85,6 +95,8 @@ describe('DatingMatchScreen', () => {
 
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '30' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '7\'6"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '8\'4"' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
     })

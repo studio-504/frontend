@@ -5,6 +5,7 @@ import * as authSelector from 'store/ducks/auth/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as helpers from 'components/DatingMatch/helpers'
 import pathOr from 'ramda/src/pathOr'
+import * as Units from 'constants/Units'
 
 const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
@@ -47,7 +48,7 @@ const DatingAboutService = ({ children }) => {
     gender: user.gender,
     fullName: user.fullName,
     bio: user.bio,
-    height: user.height,
+    height: user.height ? user.height : Units.DEFAULT_HEIGHT,
   }
 
   const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle())
