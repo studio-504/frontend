@@ -34,7 +34,7 @@ const ProfileDelete = ({ t, theme, usersDelete, usersDeleteRequest }) => {
       <DefaultButton
         mode="outlined"
         color={theme.colors.text}
-        label={t('Delete your Profile')}
+        label={t('Delete Your Profile')}
         onPress={handleProfileDelete}
         loading={isLoading}
         disabled={isLoading}
