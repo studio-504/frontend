@@ -38,9 +38,9 @@ const messageCodes = {
       code: 'GENERIC',
       text: 'Unable to enable dating',
     },
-    MISSING_FULL_NAME: {
-      code: 'MISSING_FULL_NAME',
-      text: 'Fullname is missing',
+    MISSING_DISPLAY_NAME: {
+      code: 'MISSING_DISPLAY_NAME',
+      text: 'Display name is missing',
     },
     MISSING_PHOTO_POST_ID: {
       code: 'MISSING_PHOTO_POST_ID',

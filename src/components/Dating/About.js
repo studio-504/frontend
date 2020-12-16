@@ -12,7 +12,6 @@ import dayjs from 'dayjs'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import propOr from 'ramda/src/propOr'
 
 const About = ({
   t,
@@ -21,13 +20,13 @@ const About = ({
   flingPosition,
 }) => {
   const styling = styles(theme)
-  const age = user.dateOfBirth ? `, ${dayjs().diff(user.dateOfBirth, 'year')}` : null
-  const firstName = propOr('', 'fullName', user).split(' ')[0]
+  const age = user.dateOfBirth ? dayjs().diff(user.dateOfBirth, 'year') : null
+  const title = [user.displayName, age].filter(i => i).join(', ')
 
   return (
     <Animated.View style={styling.root}>
       <View style={styling.title}>
-        <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">{firstName}{age}</Text>
+        <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
           
         {flingPosition === 'DOWN' ?
           <InfoIcon fill={theme.colors.text} />
@@ -37,7 +36,7 @@ const About = ({
           <DownIcon fill={theme.colors.primary} />
         : null}
       </View>
-      <Text style={styling.bio} numberOfLines={3} ellipsizeMode="tail">{user.bio}</Text>
+      {user.bio ? <Text style={styling.bio} numberOfLines={3} ellipsizeMode="tail">{user.bio}</Text> : null}
       <Text style={styling.joined} numberOfLines={1} ellipsizeMode="tail">{t('Joined')} {dayjs(user.signedUpAt).from(dayjs())}</Text>
     </Animated.View>
   )

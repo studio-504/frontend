@@ -10,7 +10,7 @@ import * as usersActions from 'store/ducks/users/actions'
 const user = {
   userId: 'id123',
   gender: 'FEMALE',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   height: 108,
   bio: 'bio',
@@ -38,7 +38,7 @@ describe('DatingAboutScreen', () => {
 
   const openAllSections = (queryByAccessibilityLabel) => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
-    fireEvent.press(queryByAccessibilityLabel('Toggle Full Name'))
+    fireEvent.press(queryByAccessibilityLabel('Toggle Display Name'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Bio'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Height'))
   }
@@ -55,9 +55,9 @@ describe('DatingAboutScreen', () => {
       fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
       expect(queryByAccessibilityLabel('gender')).toBeTruthy()
 
-      expect(queryByAccessibilityLabel('fullName')).toBeFalsy()
-      fireEvent.press(queryByAccessibilityLabel('Toggle Full Name'))
-      expect(queryByAccessibilityLabel('fullName')).toBeTruthy()
+      expect(queryByAccessibilityLabel('displayName')).toBeFalsy()
+      fireEvent.press(queryByAccessibilityLabel('Toggle Display Name'))
+      expect(queryByAccessibilityLabel('displayName')).toBeTruthy()
 
       expect(queryByAccessibilityLabel('bio')).toBeFalsy()
       fireEvent.press(queryByAccessibilityLabel('Toggle Bio'))
@@ -81,7 +81,7 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
       testField(getByAccessibilityLabel('gender'), { value: '' })
       testField(getByAccessibilityLabel('bio'), { value: undefined })
-      testField(getByAccessibilityLabel('fullName'), { value: undefined })
+      testField(getByAccessibilityLabel('displayName'), { value: undefined })
       testField(getByAccessibilityLabel('height'), { value: '' })
 
       authSelector.authUserSelector.mockReturnValue(user)
@@ -98,7 +98,7 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '21' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '1990' })
       testField(getByAccessibilityLabel('gender'), { value: 'Female' })
-      testField(getByAccessibilityLabel('fullName'), { value: user.fullName })
+      testField(getByAccessibilityLabel('displayName'), { value: user.displayName })
       testField(getByAccessibilityLabel('bio'), { value: 'bio' })
       testField(getByAccessibilityLabel('height'), { value: '9\'0"' })
     })
@@ -115,7 +115,7 @@ describe('DatingAboutScreen', () => {
         height: 108,
         bio: 'bio',
         dateOfBirth: '1990-04-21',
-        fullName: 'fullName',
+        displayName: 'displayName',
         gender: 'FEMALE',
       })
 

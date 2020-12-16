@@ -24,6 +24,7 @@ export const feedPostFragment = `
     sharingDisabled
     verificationHidden
     fullName
+    displayName
     themeCode
     bio
     blockedStatus
@@ -38,6 +39,7 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -45,6 +47,7 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -52,6 +55,7 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -59,6 +63,7 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -66,6 +71,7 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
 
     photo {

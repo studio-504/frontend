@@ -77,6 +77,7 @@ export const setUserDetails = `
   mutation setUserDetails(
     $username: String,
     $fullName: String,
+    $displayName: String,
     $bio: String,
     $photoPostId: ID,
     $privacyStatus: PrivacyStatus,
@@ -100,6 +101,7 @@ export const setUserDetails = `
     setUserDetails(
       username: $username,
       fullName: $fullName,
+      displayName: $displayName,
       bio: $bio,
       photoPostId: $photoPostId,
       privacyStatus: $privacyStatus,

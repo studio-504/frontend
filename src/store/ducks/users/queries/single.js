@@ -18,6 +18,7 @@ export const singleUserFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -62,6 +63,7 @@ export const singleUserFragment = `
     verificationHidden
     postCount
     fullName
+    displayName
     themeCode
     bio
     email

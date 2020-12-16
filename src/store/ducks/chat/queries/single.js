@@ -18,6 +18,7 @@ export const singleChatFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
     photo {
       ...userImageFragment

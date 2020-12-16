@@ -12,7 +12,7 @@ import DatingCard from 'components/Dating/Card'
 const user = {
   userId: 'id123',
   gender: 'FEMALE',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   height: 170,
   bio: 'bio',
