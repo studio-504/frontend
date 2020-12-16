@@ -48,7 +48,6 @@ function* handleAuthPrefetchAuthenticated() {
    */
   yield put(subscriptionsActions.subscriptionsMainRequest())
   yield put(subscriptionsActions.subscriptionsPollRequest())
-  yield put(subscriptionsActions.subscriptionsPrefetchRequest())
 
   /**
    * Data which is important to load but not belongs to home screen
