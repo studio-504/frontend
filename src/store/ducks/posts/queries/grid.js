@@ -24,6 +24,7 @@ export const gridPostFragment = `
     sharingDisabled
     verificationHidden
     fullName
+    displayName
     themeCode
     bio
     blockedStatus

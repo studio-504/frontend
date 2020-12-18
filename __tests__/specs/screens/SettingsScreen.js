@@ -56,7 +56,7 @@ describe('SettingsScreen', () => {
     it('layout', () => {
       const { getByText } = setup()
 
-      expect(getByText('Delete your Profile')).toBeTruthy()
+      expect(getByText('Delete Your Profile')).toBeTruthy()
       expect(getByText('Be aware that this action is non-reversible!')).toBeTruthy()
     })
 
@@ -64,7 +64,7 @@ describe('SettingsScreen', () => {
       const { getByText } = setup()
 
       await act(async () => {
-        fireEvent.press(getByText('Delete your Profile'))
+        fireEvent.press(getByText('Delete Your Profile'))
       })
 
       expect(Alert.alert).toHaveBeenCalled()
@@ -86,7 +86,7 @@ describe('SettingsScreen', () => {
       const { getByText } = setup()
 
       await act(async () => {
-        fireEvent.press(getByText('Delete your Profile'))
+        fireEvent.press(getByText('Delete Your Profile'))
       })
 
       await act(async () => {
@@ -106,7 +106,7 @@ describe('SettingsScreen', () => {
         store.dispatch(usersActions.usersDeleteRequest())
       })
 
-      expect(getByText('Delete your Profile')).toBeDisabled()
+      expect(getByText('Delete Your Profile')).toBeDisabled()
     })
   })
 })

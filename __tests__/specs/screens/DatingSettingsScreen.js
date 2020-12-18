@@ -22,7 +22,7 @@ jest
 
 const user = {
   userId: 'id123',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   disableStatus: 'ENABLED',
   bio: 'Bio',
@@ -66,7 +66,7 @@ describe('DatingSettingsScreen', () => {
       const { getByText } = setup()
 
       expect(getByText(user.bio)).toBeTruthy()
-      expect(getByText(`${user.fullName}, 30`)).toBeTruthy()
+      expect(getByText(`${user.displayName}, 30`)).toBeTruthy()
     })
   })
 

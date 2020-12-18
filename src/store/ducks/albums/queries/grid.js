@@ -18,6 +18,7 @@ export const gridAlbumFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
@@ -25,6 +26,7 @@ export const gridAlbumFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 

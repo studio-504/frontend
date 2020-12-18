@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
+import * as postsActions from 'store/ducks/posts/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import useAppState from 'services/AppState'
@@ -38,7 +39,7 @@ export const AuthProvider = ({
       if (user.userId) {
         dispatch(subscriptionsActions.subscriptionsMainRequest())
         dispatch(subscriptionsActions.subscriptionsPollRequest())
-        dispatch(subscriptionsActions.subscriptionsPrefetchRequest())
+        dispatch(postsActions.postsFeedGetRequest())
       }
     },
     onBackground: () => {

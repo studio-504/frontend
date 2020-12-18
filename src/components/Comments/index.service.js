@@ -27,6 +27,19 @@ const CommentsService = ({ children }) => {
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
 
   const commentsRef = useRef()
+  const formRef = useRef()
+
+  const resetForm = () => {
+    try {
+      formRef.current.resetForm()
+      
+      setTimeout(() => {
+        Keyboard.dismiss()
+      }, 0)
+    } catch(error) {
+      // ignore
+    }
+  }
 
   useEffect(() => {
     const commentIndex = postsCommentsGet.data.findIndex(item => item.commentId === actionId)
@@ -42,22 +55,29 @@ const CommentsService = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.commentsAddIdle({}))
-  }, [commentsAdd.status === 'success'])
+    if (commentsAdd.status === 'success') {
+      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.commentsAddIdle({}))
+      resetForm()
+    }
+  }, [commentsAdd.status])
 
   useEffect(() => {
-    dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.commentsDeleteIdle({}))
-  }, [commentsDelete.status === 'success'])
+    if (commentsDelete.status === 'success') {
+      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.commentsDeleteIdle({}))
+    }
+  }, [commentsDelete.status])
 
   useEffect(() => {
-    dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.commentsFlagIdle({}))
-  }, [commentsFlag.status === 'success'])
+    if (commentsFlag.status === 'success') {
+      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.commentsFlagIdle({}))
+    }
+  }, [commentsFlag.status])
 
   const commentsAddRequest = ({ text }) => {
     const commentId = uuid()
@@ -99,8 +119,6 @@ const CommentsService = ({ children }) => {
 
   const marginBottom = offset + ifIphoneX(40, 0)
   
-  
-
   /**
    * FlatList feed config ref, used for reporting scroll events
    */
@@ -117,18 +135,17 @@ const CommentsService = ({ children }) => {
     text: useRef(null),
   })
 
-  const [replyUser, setReplyUser] = useState(null)
   const handleUserReply = (username) => {
-    setReplyUser(`@${username} `)
-    if (inputRefs.current.text.current) {
+    try {
+      formRef.current.setFieldValue('text', `@${username} `)
       inputRefs.current.text.current.focus()
+    } catch(error) {
+      // ignore
     }
   }
 
-  const handleFormSubmit = (values, { resetForm }) => {
+  const handleFormSubmit = (values) => {
     commentsAddRequest(values)
-    resetForm()
-    Keyboard.dismiss()
   }
 
   const formSubmitLoading = commentsAdd.status === 'loading'
@@ -136,7 +153,7 @@ const CommentsService = ({ children }) => {
   const formErrorMessage = commentsAdd.error.text
 
   const formInitialValues = {
-    text: replyUser,
+    text: '',
   }
 
   const handleFormTransform = (values) => ({
@@ -145,13 +162,8 @@ const CommentsService = ({ children }) => {
 
   const handleErrorClose = () => dispatch(postsActions.commentsAddIdle({}))
 
-
-  
-
   return children({
     user,
-    commentsAdd,
-    commentsAddRequest,
     commentsDeleteRequest,
     commentsFlagRequest,
     postsCommentsGet,
@@ -170,6 +182,7 @@ const CommentsService = ({ children }) => {
     formSubmitDisabled,
     formInitialValues,
     inputRefs,
+    formRef,
   })
 }
 

@@ -58,7 +58,7 @@ const DatingWizardNavigator = ({ navigation }) => {
       <Tab.Screen
         name={STEPS.AVATAR}
         options={{
-          tabBarLabel: 'Avatar',
+          tabBarLabel: 'Photo',
         }}
       >
         {(props) => <DatingAvatarScreen {...props} handleNext={handleNext} />}
