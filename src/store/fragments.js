@@ -57,6 +57,7 @@ export const userFragment = `
     verificationHidden
     postCount
     fullName
+    displayName
     themeCode
     bio
     email

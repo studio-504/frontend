@@ -163,6 +163,11 @@ describe('Validation service', () => {
       expect(await Validation.fullName.isValid('Test Fullname')).toBeTruthy()
     })
 
+    it('displayName', async () => {
+      expect(await Validation.displayName.isValid(undefined)).toBeFalsy()
+      expect(await Validation.displayName.isValid('Test displayName')).toBeTruthy()
+    })
+
     it('bio', async () => {
       expect(await Validation.bio.isValid(undefined)).toBeTruthy()
       expect(await Validation.bio.isValid('Test Bio')).toBeTruthy()

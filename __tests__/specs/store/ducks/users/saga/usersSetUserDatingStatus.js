@@ -88,8 +88,8 @@ describe('usersSetUserDatingStatusRequest', () => {
         .run()
     })
 
-    it('MISSING_FULL_NAME', async () => {
-      await testGqlError({ code: 'MISSING_FULL_NAME', text: 'Fullname is missing' })
+    it('MISSING_DISPLAY_NAME', async () => {
+      await testGqlError({ code: 'MISSING_DISPLAY_NAME', text: 'Display name is missing' })
     })
 
     it('MISSING_PHOTO_POST_ID', async () => {

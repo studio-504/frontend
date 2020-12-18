@@ -18,6 +18,7 @@ const ERRORS = {
   dateOfBirthYear: 'Year must be selected',
   gender: 'Gender must be selected',
   fullName: 'Name must be entered',
+  displayName: 'Name must be entered',
   bio: 'Bio must be filled',
   matchAgeRangeMin: 'Minimum age must be a selected',
   matchAgeRangeMax: 'Maximum age must be a selected',
@@ -120,9 +121,15 @@ export const gender = Yup.string()
 
 export const fullName = Yup.string()
   .typeError(ERRORS.fullName)
+  .nullable()
+
+export const displayName = Yup.string()
+  .typeError(ERRORS.displayName)
+  .required(ERRORS.displayName)
 
 export const bio = Yup.string()
   .typeError(ERRORS.bio)
+  .nullable()
 
 export const matchAgeRangeMin = Yup.number()
   .typeError(ERRORS.matchAgeRangeMin)

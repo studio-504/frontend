@@ -28,7 +28,7 @@ const DatingAboutService = ({ children }) => {
   const handleFormTransform = (values) => ({
     dateOfBirth: helpers.makeDateOfBirth(values),
     gender: values.gender,
-    fullName: values.fullName,
+    displayName: values.displayName,
     bio: values.bio,
     height: values.height,
   })
@@ -45,7 +45,7 @@ const DatingAboutService = ({ children }) => {
     dateOfBirthMonth: dateOfBirthParsed.dateOfBirthMonth, 
     dateOfBirthDay: dateOfBirthParsed.dateOfBirthDay, 
     gender: user.gender,
-    fullName: user.fullName,
+    displayName: user.displayName,
     bio: user.bio,
     height: user.height,
   }

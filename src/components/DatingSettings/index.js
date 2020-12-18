@@ -44,7 +44,7 @@ const DatingSettings = ({
           <CircleAvatar image={path(['photo', 'url480p'], user)} hasBorder />
         </TouchableOpacity>
         <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">
-          {user.fullName}
+          {user.displayName}
           {age}
         </Text>
         <Text style={styling.bio} numberOfLines={3} ellipsizeMode="tail">

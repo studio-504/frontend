@@ -10,9 +10,9 @@ import * as Validation from 'services/Validation'
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
-  bio: Validation.bio.nullable(),
+  bio: Validation.bio,
   phoneNumber: Validation.phone.nullable(),
-  fullName: Validation.fullName.nullable(),
+  fullName: Validation.fullName,
 })
 
 const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {

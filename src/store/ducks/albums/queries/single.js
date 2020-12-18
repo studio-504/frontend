@@ -18,6 +18,7 @@ export const singleAlbumFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
   }
 
