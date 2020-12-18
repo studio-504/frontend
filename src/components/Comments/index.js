@@ -15,6 +15,7 @@ import SwipableTemplate from 'templates/Swipable'
 import useRefs from 'services/providers/Refs'
 import tryCatch from 'ramda/src/tryCatch'
 
+import AuthErrorTemplate from 'templates/Auth/Error'
 import PreviewServiceComponent from 'components/Preview/index.service'
 import PreviewPostComponent from 'components/Preview/Post'
 import PreviewUserComponent from 'components/Preview/User'
@@ -39,6 +40,9 @@ const Comments = ({
   formSubmitDisabled,
   formInitialValues,
   inputRefs,
+  formErrorMessage,
+  handleErrorClose,
+  formRef,
 }) => {
   const styling = styles(theme)
   const commentRefs = useRefs({ keyPath: ['commentId'] })
@@ -52,6 +56,12 @@ const Comments = ({
 
   return (
     <View style={styling.root}>
+      {formErrorMessage ?
+        <AuthErrorTemplate
+          text={formErrorMessage}
+          onClose={handleErrorClose}
+        />
+      : null}
       <FlatList
         ref={commentsRef}
         style={styling.comments}
@@ -94,7 +104,7 @@ const Comments = ({
           }, 500)
         }}
         renderItem={({ item: comment }) => {
-          const tappable = (
+          const isOwner = (
             path(['postedBy', 'userId'])(postsSingleGet.data) === user.userId ||
             path(['commentedBy', 'userId'])(comment) === user.userId
           )
@@ -106,8 +116,7 @@ const Comments = ({
             commentsFlagRequest({ commentId: comment.commentId })
             commentRefs.getRef(comment).close()
           }
-          const rowProps = tappable ? ({
-            handleReportPress,
+          const rowProps = isOwner ? ({
             handleDeletePress,
           }) : ({
             handleReportPress,
@@ -137,6 +146,7 @@ const Comments = ({
           formSubmitDisabled={formSubmitDisabled}
           formInitialValues={formInitialValues}
           inputRefs={inputRefs}
+          formRef={formRef}
         />
       </View>
     </View>
@@ -185,6 +195,13 @@ Comments.propTypes = {
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
   inputRefs: PropTypes.any,
+  formErrorMessage: PropTypes.string,
+  handleErrorClose: PropTypes.func,
+  formRef: PropTypes.any,
+}
+
+Comments.defaultProps = {
+  formErrorMessage: null,
 }
 
 export default withTheme(Comments)
