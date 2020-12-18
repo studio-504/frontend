@@ -132,14 +132,14 @@ const DatingMatchForm = ({
       </CollapsableComponent>
       <CollapsableComponent
         style={styles.input}
-        title="Match Location"
-        helper="Change match location"
+        title="Your Location"
+        helper="Change your location"
         active={false}
         success={values.location}
         error={errors.location}
-        accessibilityLabel="Toggle Match Location"
+        accessibilityLabel="Toggle Your Location"
       >
-        <Field name="location" component={MapField} placeholder={t('Match Location')} />
+        <Field name="location" component={MapField} placeholder={t('Your Location')} />
       </CollapsableComponent>
       <View style={styles.input}>
         <DefaultButton accessibilityLabel="Submit" label={nextAction ? t('Next') : t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
