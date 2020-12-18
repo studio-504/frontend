@@ -19,6 +19,7 @@ export const singleAlbumFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment singleAlbumFragment on Album {

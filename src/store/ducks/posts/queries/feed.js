@@ -28,6 +28,7 @@ export const feedPostFragment = `
     bio
     blockedStatus
     blockerStatus
+    subscriptionLevel
 
     photo {
       ...imageFragment
@@ -39,6 +40,7 @@ export const feedPostFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment commentUserFragment on User {
@@ -46,6 +48,7 @@ export const feedPostFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment taggedUserFragment on User {
@@ -53,6 +56,7 @@ export const feedPostFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment albumUserFragment on User {
@@ -60,6 +64,7 @@ export const feedPostFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment likedUserFragment on User {
@@ -67,6 +72,7 @@ export const feedPostFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
 
     photo {
       ...imageFragment

@@ -19,6 +19,7 @@ export const findContacts = `
       user {
         userId
         username
+        subscriptionLevel
         followedStatus
         photo {
           url64p

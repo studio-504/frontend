@@ -86,16 +86,16 @@ describe('Purchases reducer', () => {
       })
     })
   
-    it('clear error on success', () => {
+    it('clear error on request', () => {
       const state = applyActions([
         actions.purchaseFailure(error.message),
         actions.retryPurchaseFailure(error.message),
-        actions.retryPurchaseSuccess(),
+        actions.retryPurchaseRequest(),
       ], reducer) 
   
       expect(selectors.retryPurchase(state)).toEqual({
         error: '',
-        status: 'success',
+        status: 'loading',
       })
 
       expect(selectors.purchasesRequest(state)).toEqual({

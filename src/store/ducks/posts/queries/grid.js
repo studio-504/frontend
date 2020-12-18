@@ -28,6 +28,7 @@ export const gridPostFragment = `
     bio
     blockedStatus
     blockerStatus
+    subscriptionLevel
 
     photo {
       ...imageFragment

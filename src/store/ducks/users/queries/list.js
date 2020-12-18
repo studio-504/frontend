@@ -19,6 +19,7 @@ export const listUserFragment = `
     username
     fullName
     themeCode
+    subscriptionLevel
   }
 
   fragment userStoryFragment on Post {
