@@ -6,7 +6,6 @@ import * as albums from 'store/ducks/albums/reducer'
 import * as purchases from 'store/ducks/purchases/reducer'
 import * as chat from 'store/ducks/chat/reducer'
 import * as users from 'store/ducks/users/reducer'
-import * as app from 'store/ducks/app/reducer'
 import * as cache from 'store/ducks/cache/reducer'
 import * as entities from 'store/ducks/entities/reducer'
 import * as subscriptions from 'store/ducks/subscriptions/reducer'
@@ -15,14 +14,12 @@ import * as dating from 'store/ducks/dating/reducer'
 import rootReducer from 'store/reducers'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as authActions from 'store/ducks/auth/actions'
-import * as appActions from 'store/ducks/app/actions'
 import { applyActions } from 'tests/utils/helpers'
 import Storage  from 'services/Storage'
 
 jest.spyOn(Storage, 'clearAll')
 
 const initialState = {
-  app: app.initialState,
   network: { isConnected: true, actionQueue: [], isQueuePaused: false },
   auth: auth.initialState,
   signup: signup.initialState,
@@ -78,16 +75,6 @@ describe('rootReducer', () => {
 
     expect(state.entities).toEqual(initialState.entities)
     expect(state).toEqual(initialState)
-    expect(Storage.clearAll).toHaveBeenCalled()
-  })
-
-  it('save app state on signout', () => {
-    const state = applyActions([
-      appActions.appReadyRequest(),
-    ], rootReducer)
-
-    expect(state.app).not.toEqual(initialState.app)
-    expect(rootReducer(state, authActions.authSignoutSuccess()).app).toEqual(state.app)
     expect(Storage.clearAll).toHaveBeenCalled()
   })
 })

@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
 import { AuthProvider } from 'services/providers/Auth'
-import { AppProvider } from 'services/providers/App'
 import { ThemeProvider } from 'services/providers/Theme'
 import { ReduxNetworkProvider } from 'react-native-offline'
 import initializeStore from 'store/index'
@@ -30,13 +29,11 @@ const Application = ({ navigationRef }) => {
     <Provider store={store}>
       <ReduxNetworkProvider>
         <PersistGate persistor={persistor}>
-          <AppProvider>
-            <AuthProvider>
-              <ThemeProvider>
-                <Router />
-              </ThemeProvider>
-            </AuthProvider>
-          </AppProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <Router />
+            </ThemeProvider>
+          </AuthProvider>
         </PersistGate>
       </ReduxNetworkProvider>
     </Provider>
