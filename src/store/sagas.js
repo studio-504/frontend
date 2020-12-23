@@ -9,8 +9,6 @@ import contacts from 'store/ducks/contacts/saga'
 
 import users from 'store/ducks/users/saga'
 
-import appReady from 'store/ducks/app/saga/appReady'
-
 import authForgot from 'store/ducks/auth/saga/authForgot'
 import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
 import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
@@ -55,8 +53,6 @@ const captureErrors = (payload) => {
 
 export default function* rootSaga(persistor) {
   yield all([]
-    .concat(appReady())
-
     .concat(camera())
     .concat(albums())
     .concat(chat())

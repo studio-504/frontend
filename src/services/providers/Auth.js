@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as authActions from 'store/ducks/auth/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -22,13 +21,6 @@ export const AuthProvider = ({
   
   const isUserActive = user.userStatus === 'ACTIVE'
   const swipeEnabled = isUserActive && !swipeDisabled
-
-  /**
-   * Constructor function to fetch: Translations, Themes and Auth data
-   */
-  useEffect(() => {
-    dispatch(authActions.authFlowRequest({ allowAnonymous: false }))
-  }, [])
 
   /**
    * Application version check handler, which forces users to update
