@@ -20,6 +20,7 @@ export const listChatFragment = `
     fullName
     displayName
     themeCode
+    subscriptionLevel
     photo {
       ...userImageFragment
     }

@@ -20,6 +20,7 @@ export const singleAlbumFragment = `
     fullName
     displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment singleAlbumFragment on Album {

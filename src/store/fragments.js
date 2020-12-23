@@ -67,6 +67,7 @@ export const userFragment = `
     postViewedByCount
     blockedStatus
     blockerStatus
+    subscriptionLevel
   }
 
   fragment userFragment on User {

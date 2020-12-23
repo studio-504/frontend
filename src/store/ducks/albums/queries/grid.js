@@ -20,6 +20,7 @@ export const gridAlbumFragment = `
     fullName
     displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment albumUserFragment on User {
@@ -28,6 +29,7 @@ export const gridAlbumFragment = `
     fullName
     displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment postAlbumFragment on Post {

@@ -22,9 +22,10 @@ const purchasesRequest = (state) =>
       status: { $set: 'loading' },
       error: { $set: initialState.purchasesRequest.error },
     },
+    retryPurchase: { $set: initialState.retryPurchase },
   })
 
-const purchasesSuccess = (state) =>
+const purchaseSuccess = (state) =>
   update(state, {
     purchasesRequest: {
       status: { $set: 'success' },
@@ -44,21 +45,17 @@ const purchasesFailure = (state, action) =>
  */
 const retryPurchaseRequest = (state) =>
   update(state, {
+    purchasesRequest: { $set: initialState.purchasesRequest },
     retryPurchase: {
       status: { $set: 'loading' },
+      error: { $set: initialState.retryPurchase.error },
     },
   })
 
 const retryPurchaseSuccess = (state) =>
   update(state, {
-    purchasesRequest: {
-      status: { $set: initialState.purchasesRequest.status },
-      error: { $set: initialState.purchasesRequest.error },
-    },
-
     retryPurchase: {
       status: { $set: 'success' },
-      error: { $set: initialState.retryPurchase.error },
     },
   })
 
@@ -73,7 +70,7 @@ const retryPurchaseFailure = (state, action) =>
 export default handleActions(
   {
     [constants.PURCHASE_REQUEST]: purchasesRequest,
-    [constants.PURCHASE_SUCCESS]: purchasesSuccess,
+    [constants.PURCHASE_SUCCESS]: purchaseSuccess,
     [constants.PURCHASE_FAILURE]: purchasesFailure,
 
     [constants.RETRY_PURCHASE_REQUEST]: retryPurchaseRequest,
