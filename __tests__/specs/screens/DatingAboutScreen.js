@@ -75,14 +75,14 @@ describe('DatingAboutScreen', () => {
       await act(async () => {
         openAllSections(getByAccessibilityLabel)
       })
-
+      
       testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
       testField(getByAccessibilityLabel('gender'), { value: '' })
       testField(getByAccessibilityLabel('bio'), { value: undefined })
+      testField(getByAccessibilityLabel('height'), { value: '5\'0"' })
       testField(getByAccessibilityLabel('displayName'), { value: undefined })
-      testField(getByAccessibilityLabel('height'), { value: '' })
 
       authSelector.authUserSelector.mockReturnValue(user)
     })
