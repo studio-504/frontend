@@ -57,10 +57,10 @@ const Membership = ({
 
   const renderSubscribe = () => (
     <>
-      <Text style={styling.descriptionText}>{t('Become a member today')}</Text>
+      <Text style={styling.descriptionText}>{t('Start with a 1 month free trial')}</Text>
       <DefaultButton
         labelStyle={styling.labelStyle}
-        label={t('Subscribe for $9.99 month')}
+        label={t('Subscribe for $0.99 month')}
         icon={AppleIcon}
         onPress={requestSubscription}
         loading={purchasesRequest.status === 'loading'}
