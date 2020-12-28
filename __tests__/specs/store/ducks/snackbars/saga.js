@@ -1,3 +1,4 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "testBlackListAction", "expectSaga"] }] */
 import { expectSaga } from 'redux-saga-test-plan'
 import { testAsRootSaga } from 'tests/utils/helpers'
 import { showMessage } from 'react-native-flash-message'
@@ -39,18 +40,21 @@ describe('Snackbars saga', () => {
   })
 
   describe('blacklist', () => {
-    it('AUTH_DATA_FAILURE', async () => {
-      await expectSaga(testAsRootSaga(snackbars))
-        .not.call(showMessage, defaultMessage)
-        .dispatch({ type: 'AUTH_DATA_FAILURE' })
-        .silentRun()
-    })
+    const testBlackListAction = (type) => async () => {
+      await expectSaga(testAsRootSaga(snackbars)).not.call(showMessage, defaultMessage).dispatch({ type }).silentRun()
+    }
 
-    it('AUTH_FLOW_FAILURE', async () => {
-      await expectSaga(testAsRootSaga(snackbars))
-        .not.call(showMessage, defaultMessage)
-        .dispatch({ type: 'AUTH_FLOW_FAILURE' })
-        .silentRun()
-    })
+    it('AUTH_DATA_FAILURE', testBlackListAction('AUTH_DATA_FAILURE'))
+    it('AUTH_FLOW_FAILURE', testBlackListAction('AUTH_FLOW_FAILURE'))
+    it('AUTH_TOKEN_FAILURE', testBlackListAction('AUTH_TOKEN_FAILURE'))
+    it('AUTH_RESET_FAILURE', testBlackListAction('AUTH_RESET_FAILURE'))
+    it('AUTH_PREFETCH_FAILURE', testBlackListAction('AUTH_PREFETCH_FAILURE'))
+    it('AUTH_CHECK_FAILURE', testBlackListAction('AUTH_CHECK_FAILURE'))
+    it('CACHE_FETCH_FAILURE', testBlackListAction('CACHE_FETCH_FAILURE'))
+    it('POSTS_REPORT_POST_VIEWS_FAILURE', testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE'))
+    it('SUBSCRIPTIONS_POLL_FAILURE', testBlackListAction('SUBSCRIPTIONS_POLL_FAILURE'))
+    it('SUBSCRIPTIONS_MAIN_FAILURE', testBlackListAction('SUBSCRIPTIONS_MAIN_FAILURE'))
+    it('USERS_SET_APNS_TOKEN_FAILURE', testBlackListAction('USERS_SET_APNS_TOKEN_FAILURE'))
+    it('USERS_REPORT_SCREEN_VIEWS_FAILURE', testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE'))
   })
 })
