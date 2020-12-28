@@ -66,10 +66,10 @@ function* handleAuthPrefetchRequest() {
 
   if (authenticationType === 'COGNITO_AUTHENTICATED') {
     yield call(handleAuthPrefetchAuthenticated)
-  }
-
-  if (authenticationType === 'COGNITO_GUEST') {
+  } else if (authenticationType === 'COGNITO_GUEST') {
     yield call(handleAuthPrefetchCommon)
+  } else {
+    yield put(actions.authSignoutRequest())
   }
 }
 
