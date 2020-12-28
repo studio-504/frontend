@@ -31,15 +31,10 @@ const AuthForgotConfirmComponentService = ({ children }) => {
 
   const formSubmitLoading = authForgotConfirm.status === 'loading'
   const formSubmitDisabled = authForgotConfirm.status === 'loading'
-  const formErrorMessage = authForgotConfirm.error.text
   const formInitialValues = handleFormTransform(authForgot.payload)
 
-  const handleErrorClose = () => dispatch(authActions.authForgotConfirmIdle())
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

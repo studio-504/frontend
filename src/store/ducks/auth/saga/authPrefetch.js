@@ -84,7 +84,7 @@ function* authPrefetchRequest(req) {
     }))
   } catch (error) {
     yield put(actions.authPrefetchFailure({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error),
     }))
   }
 }

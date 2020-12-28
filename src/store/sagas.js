@@ -6,6 +6,7 @@ import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
+import snackbars from 'store/ducks/snackbars/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -41,13 +42,20 @@ import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 
-const captureErrors = (payload) => {
-  const message = path(['payload', 'message'])(payload)
-  const type = path(['type'])(payload)
+const captureErrors = (action) => {
+  const code = path(['payload', 'message', 'code'])(action)
+  const nativeError = path(['payload', 'message', 'nativeError'])(action)
+  const type = path(['type'])(action)
 
   Logger.withScope(scope => {
-    scope.setExtra('message', message)
-    Logger.captureMessage(type)
+    scope.setExtra('action', type)
+    scope.setExtra('code', code)
+
+    if (nativeError === 'string') {
+      Logger.captureMessage(nativeError)
+    } else {
+      Logger.captureException(nativeError)
+    }
   })
 }
 
@@ -92,6 +100,7 @@ export default function* rootSaga(persistor) {
     .concat(datingMatchApprove())
     .concat(datingMatchReject())
 
+    .concat(snackbars())
     .concat([
       takeEvery(action => /FAILURE$/.test(action.type), captureErrors),
     ]),

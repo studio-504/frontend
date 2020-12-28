@@ -1,13 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  StyleSheet,
-} from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import FormComponent from 'components/AuthEmail/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
@@ -16,9 +12,7 @@ import testIDs from './test-ids'
 
 const AuthEmail = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -27,13 +21,6 @@ const AuthEmail = ({
 
   return (
     <View testID={testIDs.root} style={styles.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styles.component}>
         <AuthHeaderTemplate
           title={t('Signup with Email Address')}
@@ -72,9 +59,7 @@ const styles = StyleSheet.create({
 
 AuthEmail.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

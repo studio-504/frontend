@@ -339,12 +339,12 @@ function* usersEditProfileRequest(req) {
 
     if (errorMessage && errorMessage.includes('is not verified')) {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED'),
+        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED', error),
         payload: req.payload,
       }))
     } else {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error),
         payload: req.payload,
       }))
     }
@@ -363,7 +363,7 @@ function* usersDeleteProfilePhoto() {
     yield put(actions.usersDeleteAvatarSuccess())
   } catch (error) {
     yield put(actions.usersDeleteAvatarFailure({
-      message: errors.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error),
     }))
   }
 }
@@ -380,7 +380,7 @@ function* usersChangeAvatarRequest(req) {
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
     yield put(actions.usersChangeAvatarFailure({ 
-      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error.message), 
+      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error), 
     }))
   }
 }

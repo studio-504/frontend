@@ -21,7 +21,7 @@ describe('authSigninAnonymous', () => {
 
   describe('failure', () => {
     it('Failed to obtain flow', async () => {
-      const nativeError = 'Failed to obtain flow'
+      const nativeError = new Error('Failed to obtain flow')
       const message = { code: 'GENERIC', text: 'Failed to create anonymous user', nativeError }
 
       await expectSaga(testAsRootSaga(authSigninAnonymous))

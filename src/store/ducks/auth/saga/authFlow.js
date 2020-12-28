@@ -68,7 +68,7 @@ function* authFlowRequest(req) {
     }))
   } catch (error) {
     yield put(actions.authFlowFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
       meta: {
         authenticated: false,
       },

@@ -23,15 +23,10 @@ const AuthEmailComponentService = ({ children }) => {
 
   const formSubmitLoading = signupCreate.status === 'loading'
   const formSubmitDisabled = signupCreate.status === 'loading'
-  const formErrorMessage = signupCreate.error.text
   const formInitialValues = handleFormTransform(signupCreate.payload)
 
-  const handleErrorClose = () => dispatch(signupActions.signupCreateIdle({}))
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import { Text, Caption } from 'react-native-paper'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
@@ -32,8 +31,6 @@ const Settings = ({
   theme,
   authSignoutRequest,
   navigation,
-  handleErrorClose,
-  settingsErrorMessage,
   user,
   openUploadAvatarMenu,
   authForgotRequest,
@@ -129,7 +126,6 @@ const Settings = ({
         usersDelete={usersDelete}
         usersDeleteRequest={usersDeleteRequest}
       />
-      {settingsErrorMessage ? <AuthErrorTemplate text={settingsErrorMessage} onClose={handleErrorClose} /> : null}
     </ScrollView>
   )
 }
@@ -159,8 +155,6 @@ Settings.propTypes = {
   authSignoutRequest: PropTypes.any,
   navigation: PropTypes.any,
   user: PropTypes.any,
-  handleErrorClose: PropTypes.func,
-  settingsErrorMessage: PropTypes.string,
   openUploadAvatarMenu: PropTypes.func,
   authForgotRequest: PropTypes.func,
   appVersion: PropTypes.string,

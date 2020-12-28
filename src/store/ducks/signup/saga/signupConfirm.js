@@ -40,22 +40,22 @@ function* signupConfirmRequest(req) {
   } catch (error) {
     if (error.code === 'AliasExistsException') {
       yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'ALIAS_EXISTS', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'ALIAS_EXISTS', error),
         payload: req.payload,
       }))
     } else if (error.code === 'ExpiredCodeException') {
       yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_EXPIRED', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_EXPIRED', error),
         payload: req.payload,
       }))
     } else if (error.code === 'CodeMismatchException') {
       yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_MISMATCH', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
         payload: req.payload,
       }))
     } else {
       yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'GENERIC', error),
         payload: req.payload,
       }))
     }

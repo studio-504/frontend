@@ -14,11 +14,6 @@ const DatingProfileService = ({ children }) => {
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const navigateDating = navigationActions.navigateDating(navigation)
-  const formErrorMessage = usersSetUserDatingStatus.error.text
-
-  const handleErrorClose = () => {
-    dispatch(usersActions.usersSetUserDatingStatusIdle())
-  }
 
   const usersSetUserDatingStatusRequest = () =>
     dispatch(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))
@@ -34,14 +29,14 @@ const DatingProfileService = ({ children }) => {
     dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 
-  useFocusEffect(useCallback(() => handleErrorClose, []))
+  useFocusEffect(useCallback(() => {
+    dispatch(usersActions.usersSetUserDatingStatusIdle())
+  }, []))
 
   return children({
     user,
     usersSetUserDatingStatus,
     usersSetUserDatingStatusRequest,
-    formErrorMessage,
-    handleErrorClose,
     usersImagePostsGet,
     navigateDating,
   })

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme, Switch, Text } from 'react-native-paper'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
@@ -23,8 +22,6 @@ const DatingSettings = ({
   t,
   theme,
   user,
-  formErrorMessage,
-  handleErrorClose,
   disableDating,
   toggleDatingStatusRequest,
   navigateDatingMatch,
@@ -38,7 +35,6 @@ const DatingSettings = ({
 
   return (
     <ScrollView style={styling.root}>
-      {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
       <View style={styling.header}>
         <TouchableOpacity style={styling.avatar} onPress={openUploadAvatarMenu}>
           <CircleAvatar image={path(['photo', 'url480p'], user)} hasBorder />
@@ -115,8 +111,6 @@ DatingSettings.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   user: PropTypes.any,
-  handleErrorClose: PropTypes.func,
-  formErrorMessage: PropTypes.string,
   disableDating: PropTypes.bool,
   toggleDatingStatusRequest: PropTypes.func,
   navigateDatingMatch: PropTypes.func,
@@ -127,7 +121,6 @@ DatingSettings.propTypes = {
 }
 
 DatingSettings.defaultProps = {
-  formErrorMessage: null,
   disableDating: false,
 }
 

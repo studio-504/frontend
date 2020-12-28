@@ -11,6 +11,8 @@ import codePush from 'react-native-code-push'
 import Config from 'react-native-config' 
 import linking from 'navigation/linking'
 import Router from 'navigation/Router'
+import FlashMessage from 'react-native-flash-message'
+
 
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
@@ -26,17 +28,18 @@ const Application = ({ navigationRef }) => {
   const { store, persistor } = useMemo(() => initializeStore({ navigationRef }), [])
 
   return (
-    <Provider store={store}>
-      <ReduxNetworkProvider>
-        <PersistGate persistor={persistor}>
-          <AuthProvider>
-            <ThemeProvider>
-              <Router />
-            </ThemeProvider>
-          </AuthProvider>
-        </PersistGate>
-      </ReduxNetworkProvider>
-    </Provider>
+      <Provider store={store}>
+        <ReduxNetworkProvider>
+          <PersistGate persistor={persistor}>
+            <AuthProvider>
+              <ThemeProvider>
+                <Router />
+                <FlashMessage position="top" />
+              </ThemeProvider>
+            </AuthProvider>
+          </PersistGate>
+        </ReduxNetworkProvider>
+      </Provider>
   )
 }
 

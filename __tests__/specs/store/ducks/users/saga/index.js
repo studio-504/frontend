@@ -233,14 +233,14 @@ describe('Users saga', () => {
     })
 
     it('failure', async () => {
-      const error = new Error('Error')
-      queryService.apiRequest.mockRejectedValueOnce(error)
+      const nativeError = new Error('Error')
+      queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(users))
         .call([queryService, 'apiRequest'], queries.setUserDetails, { photoPostId: postId })
         .put(
           usersActions.usersChangeAvatarFailure({
-            message: { code: 'GENERIC', text: 'Profile photo change failed. Please try again', nativeError: 'Error' },
+            message: { code: 'GENERIC', text: 'Profile photo change failed. Please try again', nativeError },
           }),
         )
 

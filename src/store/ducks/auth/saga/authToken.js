@@ -130,7 +130,7 @@ function* authTokenRequest(req) {
     }))
   } catch (error) {
     yield put(actions.authTokenFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
       data: {},
       meta: { type: 'COGNITO_UNAUTHENTICATED' },
     }))

@@ -39,7 +39,6 @@ const DatingAboutService = ({ children }) => {
   }
 
   const formSubmitLoading = usersEditProfile.status === 'loading'
-  const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
     dateOfBirthYear: dateOfBirthParsed.dateOfBirthYear, 
@@ -51,15 +50,11 @@ const DatingAboutService = ({ children }) => {
     height: user.height ? user.height : Units.DEFAULT_HEIGHT,
   }
 
-  const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle())
-
   return children({
     nextAction,
     handleFormSubmit,
     formInitialValues,
     formSubmitLoading,
-    formErrorMessage,
-    handleErrorClose,
   })
 }
 

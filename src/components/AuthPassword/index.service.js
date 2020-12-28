@@ -26,16 +26,11 @@ const AuthPasswordComponentService = ({ children }) => {
 
   const formSubmitLoading = signupPassword.status === 'loading'
   const formSubmitDisabled = signupPassword.status === 'loading'
-  const formErrorMessage = signupPassword.error.text
   const formInitialValues = handleFormTransform(signupPassword.payload)
 
-  const handleErrorClose = () => dispatch(signupActions.signupPasswordIdle({}))
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
     handleFormTransform,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

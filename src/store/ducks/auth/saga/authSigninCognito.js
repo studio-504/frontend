@@ -37,23 +37,23 @@ function* authSigninCognitoRequest(req) {
   } catch (error) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED'),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED', error),
       }))
     } else if (error.code === 'UserNotFoundException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND'),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND', error),
       }))
     } else if (error.code === 'NotAuthorizedException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED'),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED', error),
       }))
     } else if (error.code === 'InvalidParameterException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER'),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER', error),
       }))
     } else {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error),
       }))
     }
   }
