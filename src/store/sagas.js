@@ -43,7 +43,6 @@ import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 
 const captureErrors = (action) => {
-  console.log(action)
   const code = path(['payload', 'message', 'code'])(action)
   const nativeError = path(['payload', 'message', 'nativeError'])(action)
   const type = path(['type'])(action)
