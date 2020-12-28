@@ -33,4 +33,19 @@ describe('Auth prefetch', () => {
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()
   })
+
+  it('unauthenticated', async () => {
+    await expectSaga(testAsRootSaga(authPrefetch))
+      .withState({
+        auth: { authToken: { meta: { type: 'COGNITO_UNAUTHENTICATED' } } },
+      })
+
+      .not.put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      .not.put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+      .not.put(usersActions.usersGetCardsRequest())
+      .put(authActions.authSignoutRequest())
+
+      .dispatch(authActions.authPrefetchRequest())
+      .silentRun()
+  })
 })
