@@ -150,7 +150,6 @@ const CommentsService = ({ children }) => {
 
   const formSubmitLoading = commentsAdd.status === 'loading'
   const formSubmitDisabled = commentsAdd.status === 'loading'
-  const formErrorMessage = commentsAdd.error.text
 
   const formInitialValues = {
     text: '',
@@ -159,8 +158,6 @@ const CommentsService = ({ children }) => {
   const handleFormTransform = (values) => ({
     text: compose(trim, pathOr('', ['text']))(values),
   })
-
-  const handleErrorClose = () => dispatch(postsActions.commentsAddIdle({}))
 
   return children({
     user,
@@ -174,10 +171,8 @@ const CommentsService = ({ children }) => {
     handleUserReply,
     commentsRef,
 
-    formErrorMessage,
     handleFormSubmit,
     handleFormTransform,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

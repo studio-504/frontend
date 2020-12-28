@@ -13,7 +13,6 @@ import CacheComponent from 'components/Cache'
 import CheckedIcon from 'assets/svg/other/Checked'
 import UncheckedIcon from 'assets/svg/other/Unchecked'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import { Subheading, withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
@@ -25,8 +24,6 @@ const ProfilePhotoGrid = ({
   selectedPost,
   handleOpenVerification,
   usersImagePostsGetRequest,
-  formErrorMessage,
-  handleErrorClose,
 }) => {
   const styling = styles(theme)
 
@@ -41,12 +38,6 @@ const ProfilePhotoGrid = ({
         />
       }
     >
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
       <View style={styling.bookmark}>
         <Subheading style={styling.subtitle}>{t('Only Verified Posts Can Be Set as a Profile Picture')}</Subheading>
         <DefaultButton label={t('How to pass verification?')} onPress={handleOpenVerification} mode="outlined" />
@@ -109,8 +100,6 @@ ProfilePhotoGrid.propTypes = {
   selectedPost: PropTypes.any,
   handleOpenVerification: PropTypes.func,
   usersImagePostsGetRequest: PropTypes.func,
-  formErrorMessage: PropTypes.string,
-  handleErrorClose: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(ProfilePhotoGrid))

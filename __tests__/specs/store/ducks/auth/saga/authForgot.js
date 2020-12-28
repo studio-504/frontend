@@ -60,7 +60,7 @@ describe('authForgot', () => {
   describe('failure', () => {
     it('UserNotFoundException', async () => {
       AwsAuth.forgotPassword.mockRejectedValueOnce({ code: 'UserNotFoundException' })
-      const message = { code: 'USER_NOT_FOUND', text: 'User does not exist', nativeError: '' }
+      const message = { code: 'USER_NOT_FOUND', text: 'User does not exist', nativeError: { code: 'UserNotFoundException' } }
 
       await expectSaga(testAsRootSaga(authForgot))
         .provide([
@@ -75,8 +75,9 @@ describe('authForgot', () => {
     })
 
     it('Generic', async () => {
-      AwsAuth.forgotPassword.mockRejectedValueOnce(new Error('Error'))
-      const message = { code: 'GENERIC', text: 'Failed to reset the password', nativeError: 'Error' }
+      const nativeError = new Error('Error')
+      AwsAuth.forgotPassword.mockRejectedValueOnce(nativeError)
+      const message = { code: 'GENERIC', text: 'Failed to reset the password', nativeError }
 
       await expectSaga(testAsRootSaga(authForgot))
         .provide([

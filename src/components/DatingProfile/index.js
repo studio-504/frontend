@@ -7,7 +7,6 @@ import { Text } from 'react-native-paper'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 const DatingProfile = ({
   t,
@@ -15,8 +14,6 @@ const DatingProfile = ({
   user,
   usersSetUserDatingStatus,
   usersSetUserDatingStatusRequest,
-  formErrorMessage,
-  handleErrorClose,
   usersImagePostsGet,
   navigateDating,
 }) => {
@@ -24,12 +21,6 @@ const DatingProfile = ({
 
   return (
     <View style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
       <View style={styling.card}>
         <DatingCard user={user} posts={usersImagePostsGet.data} />
       </View>
@@ -83,16 +74,10 @@ DatingProfile.propTypes = {
   user: PropTypes.any,
   usersSetUserDatingStatus: PropTypes.any,
   usersSetUserDatingStatusRequest: PropTypes.func,
-  formErrorMessage: PropTypes.string,
-  handleErrorClose: PropTypes.func,
   usersImagePostsGet: PropTypes.shape({
     data: PropTypes.array,
   }),
   navigateDating: PropTypes.func,
-}
-
-DatingProfile.defaultProps = {
-  formErrorMessage: null,
 }
 
 export default withTranslation()(withTheme(DatingProfile))

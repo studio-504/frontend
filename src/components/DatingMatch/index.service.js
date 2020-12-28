@@ -46,7 +46,6 @@ const DatingMatchService = ({ children }) => {
 
   const formSubmitLoading = usersEditProfile.status === 'loading'
   const formSubmitDisabled = usersEditProfile.status === 'loading'
-  const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
     matchAgeRangeMin: helpers.getMatchAgeRangeMin(user),
@@ -58,16 +57,12 @@ const DatingMatchService = ({ children }) => {
     location: user.location,
   }
 
-  const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle({}))
-
   return children({
     nextAction,
     handleFormSubmit,
     formInitialValues,
     formSubmitLoading,
     formSubmitDisabled,
-    formErrorMessage,
-    handleErrorClose,
   })
 }
 

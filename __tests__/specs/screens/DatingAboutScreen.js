@@ -156,23 +156,4 @@ describe('DatingAboutScreen', () => {
       useRoute.mockReturnValue({ params: { nextAction: true } })
     })
   })
-
-  describe('Error state', () => {
-    it('toggle usersEditProfile error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
-    })
-  })
 })

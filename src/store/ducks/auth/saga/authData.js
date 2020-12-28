@@ -166,11 +166,11 @@ function* authDataRequest(req) {
       
     if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
       yield put(actions.authDataFailure({
-        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'USER_DOES_NOT_EXIST', error.message),
+        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'USER_DOES_NOT_EXIST', error),
       }))
     } else {
       yield put(actions.authDataFailure({
-        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'GENERIC', error),
       }))
     }
   }

@@ -68,7 +68,7 @@ describe('signupConfirm', () => {
 
   describe('failure', () => {
     it('Unsupported usernameType', async () => {
-      const nativeError = 'Unsupported usernameType'
+      const nativeError = new Error('Unsupported usernameType')
       const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: undefined, confirmationCode }
 
@@ -80,11 +80,11 @@ describe('signupConfirm', () => {
     })
 
     it('AliasExistsException', async () => {
-      const nativeError = 'AliasExistsException'
+      const nativeError = new Error('AliasExistsException')
       const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: 'email', confirmationCode }
 
-      queryService.apiRequest.mockRejectedValueOnce(new Error(nativeError))
+      queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .put(actions.signupConfirmFailure({ message, payload }))
@@ -94,11 +94,11 @@ describe('signupConfirm', () => {
     })
 
     it('ExpiredCodeException', async () => {
-      const nativeError = 'ExpiredCodeException'
+      const nativeError = new Error('ExpiredCodeException')
       const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: 'email', confirmationCode }
 
-      queryService.apiRequest.mockRejectedValueOnce(new Error(nativeError))
+      queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .put(actions.signupConfirmFailure({ message, payload }))
@@ -108,11 +108,11 @@ describe('signupConfirm', () => {
     })
 
     it('CodeMismatchException', async () => {
-      const nativeError = 'CodeMismatchException'
+      const nativeError = new Error('CodeMismatchException')
       const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: 'email', confirmationCode }
 
-      queryService.apiRequest.mockRejectedValueOnce(new Error(nativeError))
+      queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .put(actions.signupConfirmFailure({ message, payload }))

@@ -28,19 +28,14 @@ const AuthPhoneConfirmComponentService = ({ children }) => {
 
   const formSubmitLoading = signupConfirm.status === 'loading'
   const formSubmitDisabled = signupConfirm.status === 'loading'
-  const formErrorMessage = signupConfirm.error.text
 
   const formInitialValues = {
     cognitoUsername: path(['payload', 'phone'])(signupCreate),
     confirmationCode: path(['params', 'confirmationCode'])(route),
   }
 
-  const handleErrorClose = () => dispatch(signupActions.signupConfirmIdle())
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

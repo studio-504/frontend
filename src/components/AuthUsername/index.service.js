@@ -19,25 +19,16 @@ const AuthUsernameComponentService = ({ children }) => {
     dispatch(signupActions.signupUsernameRequest(nextValues))
   }
 
-  const handleClose = () => {
+  useEffect(() => {
     dispatch(signupActions.signupUsernameIdle())
-  }
-
-  const onUnmount = handleClose
-
-  useEffect(() => onUnmount, [])
+  }, [])
 
   const formSubmitLoading = signupUsername.status === 'loading'
   const formSubmitDisabled = signupUsername.status === 'loading'
-  const formErrorMessage = signupUsername.error.text
   const formInitialValues = handleFormTransform(signupUsername.payload)
 
-  const handleErrorClose = handleClose
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

@@ -25,15 +25,10 @@ const AuthForgotComponentService = ({ children }) => {
 
   const formSubmitLoading = authForgot.status === 'loading'
   const formSubmitDisabled = authForgot.status === 'loading'
-  const formErrorMessage = authForgot.error.text
   const formInitialValues = handleFormTransform(authForgot.payload)
 
-  const handleErrorClose = () => dispatch(authActions.authForgotIdle({}))
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

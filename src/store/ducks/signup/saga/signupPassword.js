@@ -35,7 +35,7 @@ function* signupPasswordRequest(req) {
     }))
   } catch (error) {
     yield put(actions.signupPasswordFailure({
-      message: errors.getMessagePayload(constants.SIGNUP_PASSWORD_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.SIGNUP_PASSWORD_FAILURE, 'GENERIC', error),
       payload: req.payload,
     }))
   }
