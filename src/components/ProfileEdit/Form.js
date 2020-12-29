@@ -33,11 +33,10 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {
       </View>
       <View style={styles.input}>
         <Field
+          {...Validation.getInputTypeProps('username')}
           name="username"
-          accessibilityLabel="username"
           component={TextField}
           placeholder={t('Username')}
-          autoCompleteType="name"
         />
       </View>
       <View style={styles.input}>
