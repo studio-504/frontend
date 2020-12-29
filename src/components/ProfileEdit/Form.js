@@ -13,6 +13,7 @@ const formSchema = Yup.object().shape({
   bio: Validation.bio,
   phoneNumber: Validation.phone.nullable(),
   fullName: Validation.fullName,
+  username: Validation.username,
 })
 
 const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {
@@ -31,12 +32,12 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {
         />
       </View>
       <View style={styles.input}>
-        <TextInput
+        <Field
           name="username"
-          label={t('Username')}
-          value={values.username}
           accessibilityLabel="username"
-          disabled
+          component={TextField}
+          placeholder={t('Username')}
+          autoCompleteType="name"
         />
       </View>
       <View style={styles.input}>
