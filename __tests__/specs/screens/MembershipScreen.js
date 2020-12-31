@@ -33,9 +33,9 @@ describe('Membership Screen', () => {
   it('user with basic subscription try to subscribe', () => {
     const { getByText } = setup()
 
-    fireEvent.press(getByText('Subscribe for $9.99 month'))
+    fireEvent.press(getByText('Subscribe for $0.99 month'))
 
-    expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+    expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
   })
 
   it('user with premium subscription try to unsubscribe', () => {
@@ -52,7 +52,7 @@ describe('Membership Screen', () => {
       purchasesSelectors.purchasesRequest.mockReturnValueOnce({ status: 'loading' })
       const { getByText } = setup()
 
-      expect(getByText('Subscribe for $9.99 month')).toBeDisabled()
+      expect(getByText('Subscribe for $0.99 month')).toBeDisabled()
     })
 
     it('retry submitting state', () => {
@@ -70,10 +70,10 @@ describe('Membership Screen', () => {
 
       const { getByText, queryByText } = setup()
 
-      expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
+      expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
     })
 
     it('retry failure', () => {
@@ -81,10 +81,10 @@ describe('Membership Screen', () => {
 
       const { getByText, queryByText } = setup()
 
-      expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
+      expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
     })
 
     it('contact us', () => {

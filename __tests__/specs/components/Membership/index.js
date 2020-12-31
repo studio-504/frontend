@@ -36,9 +36,9 @@ describe('Membership component', () => {
   it('subscribe button', () => {
     const requestSubscription = jest.fn()
     const { getByText, queryByText } = setup({ requestSubscription })
-    const $button = getByText('Subscribe for $9.99 month')
+    const $button = getByText('Subscribe for $0.99 month')
 
-    expect(queryByText('Become a member today')).toBeTruthy()
+    expect(queryByText('Start with a 1 month free trial')).toBeTruthy()
 
     expect($button).toBeEnabled()
     fireEvent.press($button)
@@ -48,7 +48,7 @@ describe('Membership component', () => {
   it('subscribe submitting state', () => {
     const requestSubscription = jest.fn()
     const { getByText } = setup({ requestSubscription, purchasesRequest: { status: 'loading' } })
-    const $button = getByText('Subscribe for $9.99 month')
+    const $button = getByText('Subscribe for $0.99 month')
 
     expect($button).toBeDisabled()
   })
@@ -58,7 +58,7 @@ describe('Membership component', () => {
     const { getByText, queryByText } = setup({ manageSubscriptions, isSubscribed: true })
     const $button = getByText('Unsubscribe')
 
-    expect(queryByText('Become a member today')).not.toBeTruthy()
+    expect(queryByText('Start with a 1 month free trial')).not.toBeTruthy()
 
     fireEvent.press($button)
     expect(manageSubscriptions).toHaveBeenCalled()
@@ -72,7 +72,7 @@ describe('Membership component', () => {
     getByText(error)
 
     expect(queryByText('Unsubscribe')).toBeFalsy()
-    expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
+    expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
 
     fireEvent.press($button)
     expect(retryPurchaseRequest).toHaveBeenCalled()
@@ -86,7 +86,7 @@ describe('Membership component', () => {
     getByText(error)
 
     expect(queryByText('Unsubscribe')).toBeFalsy()
-    expect(queryByText('Subscribe for $9.99 month')).toBeFalsy()
+    expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
 
     fireEvent.press($button)
     expect(retryPurchaseRequest).toHaveBeenCalled()
