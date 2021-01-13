@@ -18,14 +18,18 @@ export const gridAlbumFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment albumUserFragment on User {
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment postAlbumFragment on Post {

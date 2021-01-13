@@ -74,7 +74,7 @@ export const initialState = {
     meta: {},
   },
   postsSingleGet: {
-    data: [],
+    data: {},
     status: 'idle',
     error: {},
     payload: {},
@@ -113,9 +113,7 @@ export const initialState = {
   postsShare: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
-    meta: {},
   },
   postsReportPostViews: {
     data: {},

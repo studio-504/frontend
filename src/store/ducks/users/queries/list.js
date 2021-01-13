@@ -18,7 +18,9 @@ export const listUserFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment userStoryFragment on Post {
@@ -56,6 +58,7 @@ export const listUserFragment = `
     followersCount
     postCount
     fullName
+    displayName
     themeCode
     signedUpAt
     blockedStatus

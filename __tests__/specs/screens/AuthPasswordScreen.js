@@ -63,23 +63,6 @@ describe('AuthPasswordScreen', () => {
     expect(getByText('Next')).toBeDisabled()
   })
 
-  it('error state', async () => {
-    const error = 'Error'
-    const { store, queryByText, getByLabelText } = setup()
-
-    await act(async () => {
-      store.dispatch(signupActions.signupPasswordFailure({ message: { text: error } }))
-    })
-
-    expect(queryByText(error)).toBeTruthy()
-
-    await act(async () => {
-      fireEvent.press(getByLabelText('Close error'))
-    })
-
-    expect(queryByText(error)).toBeFalsy()
-  })
-
   it('clear reducer on unmount', () => {
     jest.spyOn(signupActions, 'signupPasswordIdle')
 

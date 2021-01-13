@@ -57,6 +57,7 @@ export const userFragment = `
     verificationHidden
     postCount
     fullName
+    displayName
     themeCode
     bio
     email
@@ -66,6 +67,7 @@ export const userFragment = `
     postViewedByCount
     blockedStatus
     blockerStatus
+    subscriptionLevel
   }
 
   fragment userFragment on User {

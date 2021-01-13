@@ -86,11 +86,11 @@ function* authSigninGoogleRequest(req) {
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
       yield put(actions.authSigninGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'CANCELED', error.message),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'CANCELED', error),
       }))
     } else {
       yield put(actions.authSigninGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'GENERIC', error),
       }))
     }
   }

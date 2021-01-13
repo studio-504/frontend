@@ -12,14 +12,11 @@ const DefaultButton = ({
   style,
   ...props
 }) => {
-  const styling = styles
-  
-
-  const contentStyle = (size === 'compact') ? styling.compactContent : styling.defaultContent
+  const contentStyle = (size === 'compact') ? styles.compactContent : styles.defaultContent
   const colorStyle = (mode === 'contained') ? { color: theme.colors.buttonText } : {}
 
   return (
-    <Button {...props} contentStyle={contentStyle} uppercase={false} compact mode={mode} labelStyle={[styling.text, colorStyle, labelStyle]} style={[styling.root, style]}>
+    <Button {...props} contentStyle={contentStyle} uppercase={false} compact mode={mode} labelStyle={[styles.text, colorStyle, labelStyle]} style={[styles.root, style]}>
       {label}
     </Button>
   )
@@ -39,7 +36,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.25,
     fontSize: 15,
-    // color: '#ffffff',
   },
 })
 

@@ -88,7 +88,7 @@ describe('Validation service', () => {
     })
 
     it('phone', async () => {
-      expect(await Validation.phone.isValid(undefined)).toBeFalsy()
+      expect(await Validation.phone.isValid(undefined)).toBeTruthy()
       expect(await Validation.phone.isValid('')).toBeFalsy()
       expect(await Validation.phone.isValid('1')).toBeFalsy()
       expect(await Validation.phone.isValid('12')).toBeFalsy()
@@ -159,12 +159,17 @@ describe('Validation service', () => {
     })
 
     it('fullName', async () => {
-      expect(await Validation.fullName.isValid(undefined)).toBeFalsy()
+      expect(await Validation.fullName.isValid(undefined)).toBeTruthy()
       expect(await Validation.fullName.isValid('Test Fullname')).toBeTruthy()
     })
 
+    it('displayName', async () => {
+      expect(await Validation.displayName.isValid(undefined)).toBeFalsy()
+      expect(await Validation.displayName.isValid('Test displayName')).toBeTruthy()
+    })
+
     it('bio', async () => {
-      expect(await Validation.bio.isValid(undefined)).toBeFalsy()
+      expect(await Validation.bio.isValid(undefined)).toBeTruthy()
       expect(await Validation.bio.isValid('Test Bio')).toBeTruthy()
     })
 

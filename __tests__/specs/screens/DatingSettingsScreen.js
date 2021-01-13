@@ -22,7 +22,7 @@ jest
 
 const user = {
   userId: 'id123',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   disableStatus: 'ENABLED',
   bio: 'Bio',
@@ -66,11 +66,19 @@ describe('DatingSettingsScreen', () => {
       const { getByText } = setup()
 
       expect(getByText(user.bio)).toBeTruthy()
-      expect(getByText(`${user.fullName}, 30`)).toBeTruthy()
+      expect(getByText(`${user.displayName}, 30`)).toBeTruthy()
     })
   })
 
   describe('Navigation', () => {
+    it('Preview Profile', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Preview Profile'))
+
+      testNavigate(navigation, 'DatingProfile')
+    })
+
     it('Edit Profile', () => {
       const { getByText } = setup()
 
@@ -101,25 +109,6 @@ describe('DatingSettingsScreen', () => {
       fireEvent.press(getByText('Change Profile Picture'))
 
       expect(openUploadAvatarMenu).toHaveBeenCalled()
-    })
-  })
-
-  describe('Error state', () => {
-    it('toggle usersSetUserDatingStatus error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersSetUserDatingStatusFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
     })
   })
 

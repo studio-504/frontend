@@ -19,7 +19,7 @@ const formSchema = Yup.object().shape({
   dateOfBirthDay: Validation.dateOfBirthDay,
   dateOfBirthYear: Validation.dateOfBirthYear,
   gender: Validation.gender,
-  fullName: Validation.fullName,
+  displayName: Validation.displayName,
   bio: Validation.bio,
   height: Validation.height,
 })
@@ -93,14 +93,14 @@ const DatingAboutForm = ({
       </CollapsableComponent>
       <CollapsableComponent
         style={styles.input}
-        title="Your Full Name"
-        helper="Change your full name"
+        title="Your Display Name"
+        helper="Change your display name"
         active={false}
-        success={values.fullName}
-        error={errors.fullName}
-        accessibilityLabel="Toggle Full Name"
+        success={values.displayName}
+        error={errors.displayName}
+        accessibilityLabel="Toggle Display Name"
       >
-        <Field name="fullName" component={TextField} placeholder={t('Your Full Name')} accessibilityLabel="fullName" />
+        <Field name="displayName" component={TextField} placeholder={t('Your Display Name')} accessibilityLabel="displayName" />
       </CollapsableComponent>
       <CollapsableComponent
         style={styles.input}

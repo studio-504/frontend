@@ -12,7 +12,7 @@ import DatingCard from 'components/Dating/Card'
 const user = {
   userId: 'id123',
   gender: 'FEMALE',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   height: 170,
   bio: 'bio',
@@ -52,24 +52,30 @@ describe('DatingProfileScreen', () => {
       )
     })
 
-    it('clear state on unmount', () => {
-      const usersSetUserDatingStatusIdle = jest.spyOn(usersActions, 'usersSetUserDatingStatusIdle')
-      const { unmount } = setup()
-
-      unmount()
-      expect(usersSetUserDatingStatusIdle).toHaveBeenCalled()
-
-      usersSetUserDatingStatusIdle.mockRestore()
-    })
-
     it('start dating button', async () => {
-      const { getByAccessibilityLabel } = setup()
+      const { queryByText } = setup()
+
+      expect(queryByText('Open Dating')).toBeFalsy()
 
       await act(async () => {
-        fireEvent.press(getByAccessibilityLabel('Submit'))
+        fireEvent.press(queryByText('Start Dating'))
       })
 
       expect(dispatch).toHaveBeenCalledWith(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))
+    })
+
+    it('open dating button', async () => {
+      authSelector.authUserSelector.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
+      const { queryByText } = setup()
+
+      expect(queryByText('Start Dating')).toBeFalsy()
+
+      await act(async () => {
+        fireEvent.press(queryByText('Open Dating'))
+      })
+
+      testNavigate(navigation, 'Dating')
+      authSelector.authUserSelector.mockReturnValue(user)
     })
   })
 
@@ -123,25 +129,6 @@ describe('DatingProfileScreen', () => {
       })
 
       testNavigate(navigation, 'Dating')
-    })
-  })
-
-  describe('Error state', () => {
-    it('toggle usersSetUserDatingStatus error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersSetUserDatingStatusFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
     })
   })
 })

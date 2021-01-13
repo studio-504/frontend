@@ -7,7 +7,6 @@ import {
 import FormComponent from 'components/AuthPhone/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
@@ -16,9 +15,7 @@ import testIDs from './test-ids'
 
 const AuthPhone = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -28,13 +25,6 @@ const AuthPhone = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Signup with Phone Number')}
@@ -73,9 +63,7 @@ const styles = StyleSheet.create({
 
 AuthPhone.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

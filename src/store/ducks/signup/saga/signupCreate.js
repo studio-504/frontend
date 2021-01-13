@@ -68,23 +68,23 @@ function* signupCreateRequest(req) {
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error),
       }))
     } else if (error.code === 'UsernameExistsException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error),
       }))
     } else if (error.code === 'InvalidPasswordException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error),
       }))
     } else if (error.code === 'InvalidParameterException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error),
       }))
     } else {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error),
       }))
     }
   }

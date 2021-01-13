@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import * as navigationActions from 'navigation/actions'
 import * as helpers from 'components/DatingMatch/helpers'
-import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
+import * as Units from 'constants/Units'
 
 const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
@@ -14,17 +14,12 @@ const DatingAboutService = ({ children }) => {
   const usersEditProfile = useSelector(state => state.users.usersEditProfile)
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
   const route = useRoute()
-  const nextAction = path(['params', 'nextAction'], route)
+  const nextAction = pathOr(false, ['params', 'nextAction'], route)
   
   useEffect(() => {
-    if (usersEditProfile.status === 'success') {
+    if (usersEditProfile.status === 'success' && nextAction === false) {
       dispatch(usersActions.usersEditProfileIdle())
-
-      if(nextAction) {
-        navigationActions.navigateDatingMatch(navigation, { nextAction: true })()
-      } else {
-        navigationActions.navigateDatingSettings(navigation)()
-      }
+      navigation.goBack()
     }
   }, [usersEditProfile.status])
 
@@ -34,7 +29,7 @@ const DatingAboutService = ({ children }) => {
   const handleFormTransform = (values) => ({
     dateOfBirth: helpers.makeDateOfBirth(values),
     gender: values.gender,
-    fullName: values.fullName,
+    displayName: values.displayName,
     bio: values.bio,
     height: values.height,
   })
@@ -44,27 +39,22 @@ const DatingAboutService = ({ children }) => {
   }
 
   const formSubmitLoading = usersEditProfile.status === 'loading'
-  const formErrorMessage = usersEditProfile.error.text
 
   const formInitialValues = {
     dateOfBirthYear: dateOfBirthParsed.dateOfBirthYear, 
     dateOfBirthMonth: dateOfBirthParsed.dateOfBirthMonth, 
     dateOfBirthDay: dateOfBirthParsed.dateOfBirthDay, 
     gender: user.gender,
-    fullName: user.fullName,
+    displayName: user.displayName,
     bio: user.bio,
-    height: user.height,
+    height: user.height ? user.height : Units.DEFAULT_HEIGHT,
   }
-
-  const handleErrorClose = () => dispatch(usersActions.usersEditProfileIdle())
 
   return children({
     nextAction,
     handleFormSubmit,
     formInitialValues,
     formSubmitLoading,
-    formErrorMessage,
-    handleErrorClose,
   })
 }
 

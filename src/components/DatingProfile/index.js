@@ -7,7 +7,6 @@ import { Text } from 'react-native-paper'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 const DatingProfile = ({
   t,
@@ -15,32 +14,33 @@ const DatingProfile = ({
   user,
   usersSetUserDatingStatus,
   usersSetUserDatingStatusRequest,
-  formErrorMessage,
-  handleErrorClose,
   usersImagePostsGet,
+  navigateDating,
 }) => {
   const styling = styles(theme)
 
   return (
     <View style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
       <View style={styling.card}>
         <DatingCard user={user} posts={usersImagePostsGet.data} />
       </View>
       <View style={styling.actions}>
-        <DefaultButton
-          style={styling.submitBtn}
-          accessibilityLabel="Submit"
-          label={t('Start Dating')}
-          onPress={usersSetUserDatingStatusRequest}
-          loading={usersSetUserDatingStatus.status === 'loading'}
-          disabled={usersSetUserDatingStatus.status === 'loading'}
-        />
+        {user.datingStatus === 'ENABLED' ? 
+          <DefaultButton
+            style={styling.submitBtn}
+            label={t('Open Dating')}
+            onPress={navigateDating}
+          /> : 
+          <DefaultButton
+            style={styling.submitBtn}
+            accessibilityLabel="Submit"
+            label={t('Start Dating')}
+            onPress={usersSetUserDatingStatusRequest}
+            loading={usersSetUserDatingStatus.status === 'loading'}
+            disabled={usersSetUserDatingStatus.status === 'loading'}
+          />
+        }
+        
         <Text style={styling.text}>{t('Preview your dating profile and start dating')}</Text>
       </View>
     </View>
@@ -74,15 +74,10 @@ DatingProfile.propTypes = {
   user: PropTypes.any,
   usersSetUserDatingStatus: PropTypes.any,
   usersSetUserDatingStatusRequest: PropTypes.func,
-  formErrorMessage: PropTypes.string,
-  handleErrorClose: PropTypes.func,
   usersImagePostsGet: PropTypes.shape({
     data: PropTypes.array,
   }),
-}
-
-DatingProfile.defaultProps = {
-  formErrorMessage: null,
+  navigateDating: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(DatingProfile))

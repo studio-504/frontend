@@ -13,7 +13,7 @@ import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
 
 const formSchema = Yup.object().shape({
-  phone: Validation.phone,
+  phone: Validation.phone.required(),
 })
 
 const PhoneForm = ({
@@ -32,7 +32,6 @@ const PhoneForm = ({
           name="phone"
           component={PhoneField}
           placeholder={t('Phone Number')}
-          autoFocus
         />
       </View>
       <View style={styling.input}>

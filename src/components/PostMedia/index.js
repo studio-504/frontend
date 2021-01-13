@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   FlatList,
+  RefreshControl,
 } from 'react-native'
 import PostComponent from 'components/Post'
 import NativeError from 'templates/NativeError'
@@ -11,13 +12,12 @@ import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import isEmpty from 'ramda/src/isEmpty'
 
 const PostMedia = ({
   t,
   theme,
-  user,
-  postsShareRequest,
-  handleEditPress,
+  user, 
   postsArchiveRequest,
   postsRestoreArchivedRequest,
   postsFlag,
@@ -36,8 +36,7 @@ const PostMedia = ({
   textPostRefs,
 }) => {
   const styling = styles(theme)
-
-  const data = postsSingleGet.data ? [postsSingleGet.data] : []
+  const data = isEmpty(postsSingleGet.data) ? [] : [postsSingleGet.data]
 
   const {
     onViewableItemsFocusRef,
@@ -58,21 +57,25 @@ const PostMedia = ({
       <FlatList
         bounces={false}
         ref={feedRef}
-        keyExtractor={ item => item.postId}
+        keyExtractor={item => item.postId}
         data={data}
+        refreshControl={
+          <RefreshControl
+            tintColor={theme.colors.border}
+            refreshing={postsSingleGet.status === 'loading'}
+          />
+        }
         onViewableItemsChanged={onViewableItemsFocusRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
         renderItem={({ item: post, index }) => (
           <PostComponent
             user={user}
             post={post}
-            handleEditPress={handleEditPress}
             postsArchiveRequest={postsArchiveRequest}
             postsRestoreArchivedRequest={postsRestoreArchivedRequest}
             postsFlagRequest={postsFlagRequest}
             postsDeleteRequest={postsDeleteRequest}
             changeAvatarRequest={changeAvatarRequest}
-            postsShareRequest={postsShareRequest}
             postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
             postsDislikeRequest={postsDislikeRequest}
             priorityIndex={index}
@@ -107,8 +110,6 @@ PostMedia.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
   feedRef: PropTypes.any,
-  postsShareRequest: PropTypes.any,
-  handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,

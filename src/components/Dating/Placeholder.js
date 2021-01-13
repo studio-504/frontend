@@ -22,10 +22,10 @@ const Placeholder = ({
   return (
     <View style={styling.root}>
       <View style={styling.title}>
-        <Text style={styling.text}>{t('We cannot find potential matches or you have viewed them all based on your search criteria')}.</Text>
+        <Text style={styling.text}>{t('We can\'t find potential matches or you have viewed them all based on your search criteria')}.</Text>
       </View>
       <View style={styling.actions}>
-        <DefaultButton style={styling.settingsBtn} label={t('Change your Match Preferences')} onPress={navigationActions.navigateDatingAbout(navigation, { nextAction: true })} />
+        <DefaultButton style={styling.settingsBtn} label={t('Change your Match Preferences')} onPress={navigationActions.navigateDatingMatch(navigation)} />
         <Text style={styling.emptyText}>{t('Pull down to refresh')}</Text>
       </View>
     </View>

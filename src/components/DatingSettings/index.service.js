@@ -7,10 +7,8 @@ import * as usersSelector from 'store/ducks/users/selectors'
 import * as navigationActions from 'navigation/actions'
 import UploadAvatar from 'components/UploadAvatar'
 import propEq from 'ramda/src/propEq'
-import path from 'ramda/src/path'
 
 const getDisableDatingByStatus = propEq('datingStatus', 'DISABLED')
-const getErrorText = path(['error', 'text'])
 
 // eslint-disable-next-line react/prop-types
 const DatingSettingsService = ({ children }) => {
@@ -20,17 +18,15 @@ const DatingSettingsService = ({ children }) => {
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const [disableDating, setDisableDating] = useState(getDisableDatingByStatus(user))
 
-  const handleErrorClose = () => {
-    dispatch(usersActions.usersSetUserDatingStatusIdle())
-  }
-
   useEffect(() => {
     if (usersSetUserDatingStatus.status === 'failure') {
       setDisableDating(getDisableDatingByStatus(user))
     }
   }, [usersSetUserDatingStatus.status])
 
-  useEffect(() => handleErrorClose, [])
+  useEffect(() => {
+    dispatch(usersActions.usersSetUserDatingStatusIdle())
+  }, [])
 
   const toggleDatingStatusRequest = () => {
     const status = disableDating ? 'ENABLED' : 'DISABLED'
@@ -38,10 +34,9 @@ const DatingSettingsService = ({ children }) => {
     setDisableDating(!disableDating)
   }
 
-  const formErrorMessage = getErrorText(usersSetUserDatingStatus)
-
   const navigateDatingMatch = navigationActions.navigateDatingMatch(navigation)
   const navigateDatingAbout = navigationActions.navigateDatingAbout(navigation)
+  const navigateDatingProfile = navigationActions.navigateDatingProfile(navigation)
   const navigateMembership = () => navigationActions.navigateMembership(navigation)
 
   return (
@@ -49,14 +44,13 @@ const DatingSettingsService = ({ children }) => {
       {({ openUploadAvatarMenu }) =>
         children({
           user,
-          formErrorMessage,
-          handleErrorClose,
           disableDating,
           toggleDatingStatusRequest,
           navigateDatingMatch,
           navigateDatingAbout,
           navigateMembership,
           openUploadAvatarMenu,
+          navigateDatingProfile,
         })
       }
     </UploadAvatar>

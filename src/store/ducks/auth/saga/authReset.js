@@ -31,7 +31,7 @@ function* authResetRequest(req) {
     }))
   } catch (error) {
     yield put(actions.authResetFailure({
-      message: errors.getMessagePayload(constants.AUTH_RESET_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.AUTH_RESET_FAILURE, 'GENERIC', error),
     }))
   }
 }

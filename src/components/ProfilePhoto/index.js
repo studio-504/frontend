@@ -3,11 +3,21 @@ import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
 import AuthHeaderTemplate from 'templates/Auth/Header'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
-import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
+import CircleAvatar from 'templates/CircleAvatar'
 import { confirm } from 'components/Alert'
 import { withTranslation } from 'react-i18next'
+import { withTheme } from 'react-native-paper'
 
-const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload }) => { 
+const ProfilePhoto = ({
+  t,
+  handleLibrarySnap,
+  navigateCamera,
+  handleSkipUpload,
+  isAvatarEmpty,
+  openUploadAvatarMenu,
+  avatarUrl,
+  required,
+}) => {
   const confirmProfilePhotoUpload = (onConfirm) => () => {
     confirm({
       title: t('Profile Picture Upload'),
@@ -16,34 +26,35 @@ const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload
     })
   }
 
+  const actions = isAvatarEmpty
+    ? [
+        { label: t('Take a Photo'), onPress: confirmProfilePhotoUpload(navigateCamera) },
+        { label: t('Choose From Gallery'), onPress: confirmProfilePhotoUpload(handleLibrarySnap) },
+      ]
+    : [{ label: t('Change Profile Picture'), onPress: openUploadAvatarMenu, mode: 'text' }]
+
   return (
     <View style={styles.root}>
-      <View style={styles.component}>
-        <AuthHeaderTemplate
-          title={t('Add an Unmodified Profile Picture')}
-          subtitle={t('Our AI detects photoshop & filters')}
-        />
-        <View style={styles.content}>
-          <PhotoComponent />
-          <View style={styles.actions}>
-            <View style={styles.item}>
-              <DefaultButton
-                label={t('Take a Photo')}
-                onPress={confirmProfilePhotoUpload(handleCameraSnap)}
-                loading={false}
-              />
+      <AuthHeaderTemplate
+        title={t('Add an Unmodified Profile Picture')}
+        subtitle={t('Our AI detects photoshop & filters')}
+      />
+      <View>
+        <View style={styles.avatar}>
+          <CircleAvatar image={avatarUrl} hasBorder />
+        </View>
+        <View>
+          {actions.map(({ label, onPress, ...props }, index) => (
+            <View key={index} style={styles.item}>
+              <DefaultButton label={label} onPress={onPress} {...props} />
             </View>
-            <View style={styles.item}>
-              <DefaultButton
-                label={t('Choose From Gallery')}
-                onPress={confirmProfilePhotoUpload(handleLibrarySnap)}
-                loading={false}
-              />
-            </View>
+          ))}
+
+          {required === false ? (
             <View style={styles.item}>
               <DefaultButton label={t('Skip Photo Upload')} onPress={handleSkipUpload} loading={false} mode="text" />
             </View>
-          </View>
+          ) : null}
         </View>
       </View>
     </View>
@@ -52,31 +63,33 @@ const ProfilePhoto = ({ t, handleLibrarySnap, handleCameraSnap, handleSkipUpload
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-  },
-  component: {
     paddingHorizontal: 24,
-    flex: 1,
-  },
-  headerRight: {
-    color: '#ffffff',
-  },
-  actions: {
-    flex: 1,
   },
   item: {
     marginBottom: 12,
-  }, 
+  },
+  avatar: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
 })
 
 ProfilePhoto.propTypes = {
   t: PropTypes.any,
+  theme: PropTypes.any,
   handleLibrarySnap: PropTypes.func.isRequired,
-  handleCameraSnap: PropTypes.func.isRequired,
+  navigateCamera: PropTypes.func.isRequired,
   handleSkipUpload: PropTypes.func.isRequired,
+  isAvatarEmpty: PropTypes.bool,
+  required: PropTypes.bool,
+  openUploadAvatarMenu: PropTypes.func.isRequired,
+  avatarUrl: PropTypes.string,
 }
 
-export default withTranslation()(ProfilePhoto)
+ProfilePhoto.defaultProps = {
+  isAvatarEmpty: true,
+  required: false,
+  avatarUrl: null,
+}
+
+export default withTranslation()(withTheme(ProfilePhoto))

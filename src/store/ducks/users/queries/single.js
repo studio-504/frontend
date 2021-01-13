@@ -18,7 +18,9 @@ export const singleUserFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment userStoryFragment on Post {
@@ -62,6 +64,7 @@ export const singleUserFragment = `
     verificationHidden
     postCount
     fullName
+    displayName
     themeCode
     bio
     email

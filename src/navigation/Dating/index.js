@@ -13,6 +13,8 @@ import DatingAboutScreen from 'screens/DatingAboutScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
+import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
+import DatingWizardNavigator from 'components/DatingWizard'
 import { useFocusEffect } from '@react-navigation/native'
 
 const Stack = createStackNavigator()
@@ -22,7 +24,9 @@ const DatingNavigator = ({ navigation }) => {
   const { user, setSwipeDisabled } = useContext(AuthContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
-  const datingHeaderLeft = user.datingStatus === 'ENABLED' ? 
+  const datingEnabled = user.datingStatus === 'ENABLED'
+  const initialRouteName = datingEnabled ? 'Dating' : 'DatingWizard'
+  const datingHeaderLeft = datingEnabled ? 
     navigationOptions.datingHeaderLeft : 
     navigationOptions.homeHeaderLeft
     
@@ -33,7 +37,7 @@ const DatingNavigator = ({ navigation }) => {
   })
  
   return (
-    <Stack.Navigator {...stackNavigatorDefaultProps}>
+    <Stack.Navigator {...stackNavigatorDefaultProps} initialRouteName={initialRouteName}>
       <Stack.Screen
         name="Dating"
         component={DatingScreen}
@@ -42,6 +46,12 @@ const DatingNavigator = ({ navigation }) => {
           headerLeft: datingHeaderLeft({ navigation, theme }),
           headerRight: navigationOptions.homeHeaderRight({ navigation, theme, user }),
         } })}
+      />
+
+      <Stack.Screen
+        name="DatingWizard"
+        component={DatingWizardNavigator}
+        {...stackScreenPageProps({ options: { title: 'Dating Onboarding' } })}
       />
 
       <Stack.Screen
@@ -65,6 +75,12 @@ const DatingNavigator = ({ navigation }) => {
       <Stack.Screen
         name="ProfilePhotoUpload"
         component={ProfilePhotoUploadScreen}
+        {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
+      />
+
+      <Stack.Screen
+        name="ProfilePhotoGrid"
+        component={ProfilePhotoGridScreen}
         {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
 

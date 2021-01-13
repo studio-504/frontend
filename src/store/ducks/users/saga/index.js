@@ -13,7 +13,6 @@ import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGet
 import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
-import * as Logger from 'services/Logger'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
@@ -340,12 +339,12 @@ function* usersEditProfileRequest(req) {
 
     if (errorMessage && errorMessage.includes('is not verified')) {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED'),
+        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED', error),
         payload: req.payload,
       }))
     } else {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error.message),
+        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error),
         payload: req.payload,
       }))
     }
@@ -364,7 +363,7 @@ function* usersDeleteProfilePhoto() {
     yield put(actions.usersDeleteAvatarSuccess())
   } catch (error) {
     yield put(actions.usersDeleteAvatarFailure({
-      message: errors.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error),
     }))
   }
 }
@@ -381,7 +380,7 @@ function* usersChangeAvatarRequest(req) {
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
     yield put(actions.usersChangeAvatarFailure({ 
-      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error.message), 
+      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error), 
     }))
   }
 }
@@ -555,12 +554,6 @@ const isCardSupported = (card) => {
   try {
     return LinkingService.deeplinkPath(card.action)
   } catch (error) {
-    Logger.withScope((scope) => {
-      scope.setExtra('action', card.action)
-      scope.setExtra('code', error.code)
-      scope.setExtra('message', error.message)
-      Logger.captureMessage('FEED_CARDS_UNSUPPORTED_CARD')
-    })
     return false
   }
 }

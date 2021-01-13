@@ -43,7 +43,6 @@ const ForgotConfirmForm = ({
           name="confirmationCode"
           component={TextField}
           placeholder={t('Confirmation Code')}
-          autoFocus
         />
       </View>
       <View style={styles.input}>

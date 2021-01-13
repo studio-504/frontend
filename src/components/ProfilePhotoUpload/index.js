@@ -8,7 +8,6 @@ import DefaultButton from 'components/Formik/Button/DefaultButton'
 import ProgressComponent from 'components/ProfilePhotoUpload/Progress'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTranslation } from 'react-i18next'
 
@@ -22,13 +21,6 @@ const ProfilePhotoUpload = ({
 
   return (
     <View style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Add Profile Picture')}

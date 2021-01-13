@@ -31,7 +31,7 @@ const ChatDirectForm = ({
         <Field name="text" component={TextGrowing} placeholder={t('Send a message')} hideError />
       </View>
       <View style={styling.button}>
-        <DefaultButton label={t('Post')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton label={t('Send')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
     </View>
   )

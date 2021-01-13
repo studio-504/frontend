@@ -26,7 +26,11 @@ const SearchService = ({ children }) => {
   useScrollToTop(feedRef)
 
   const scrollToTop = () => {
-    feedRef.current.scrollToOffset({ animated: true, offset: 0 })
+    try {
+      feedRef.current.scrollToOffset({ animated: true, offset: 0 })
+    } catch(error) {
+      // ignore
+    }
   }
 
   const usersSearchRequest = ({ searchToken }) => {

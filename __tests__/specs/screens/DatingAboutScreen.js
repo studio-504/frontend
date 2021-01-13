@@ -1,7 +1,7 @@
 import React from 'react'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
-import { testField, testNavigate } from 'tests/utils/helpers'
+import { testField } from 'tests/utils/helpers'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -10,7 +10,7 @@ import * as usersActions from 'store/ducks/users/actions'
 const user = {
   userId: 'id123',
   gender: 'FEMALE',
-  fullName: 'fullName',
+  displayName: 'displayName',
   dateOfBirth: '1990-04-21',
   height: 108,
   bio: 'bio',
@@ -24,7 +24,7 @@ jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
 }))
 
-const navigation = { navigate: jest.fn() }
+const navigation = { goBack: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
 jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
@@ -33,12 +33,12 @@ jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
 describe('DatingAboutScreen', () => {
   afterEach(() => {
-    navigation.navigate.mockClear()
+    navigation.goBack.mockClear()
   })
 
   const openAllSections = (queryByAccessibilityLabel) => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
-    fireEvent.press(queryByAccessibilityLabel('Toggle Full Name'))
+    fireEvent.press(queryByAccessibilityLabel('Toggle Display Name'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Bio'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Height'))
   }
@@ -55,9 +55,9 @@ describe('DatingAboutScreen', () => {
       fireEvent.press(queryByAccessibilityLabel('Toggle Gender'))
       expect(queryByAccessibilityLabel('gender')).toBeTruthy()
 
-      expect(queryByAccessibilityLabel('fullName')).toBeFalsy()
-      fireEvent.press(queryByAccessibilityLabel('Toggle Full Name'))
-      expect(queryByAccessibilityLabel('fullName')).toBeTruthy()
+      expect(queryByAccessibilityLabel('displayName')).toBeFalsy()
+      fireEvent.press(queryByAccessibilityLabel('Toggle Display Name'))
+      expect(queryByAccessibilityLabel('displayName')).toBeTruthy()
 
       expect(queryByAccessibilityLabel('bio')).toBeFalsy()
       fireEvent.press(queryByAccessibilityLabel('Toggle Bio'))
@@ -75,14 +75,14 @@ describe('DatingAboutScreen', () => {
       await act(async () => {
         openAllSections(getByAccessibilityLabel)
       })
-
+      
       testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })
       testField(getByAccessibilityLabel('gender'), { value: '' })
       testField(getByAccessibilityLabel('bio'), { value: undefined })
-      testField(getByAccessibilityLabel('fullName'), { value: undefined })
-      testField(getByAccessibilityLabel('height'), { value: '' })
+      testField(getByAccessibilityLabel('height'), { value: '5\'0"' })
+      testField(getByAccessibilityLabel('displayName'), { value: undefined })
 
       authSelector.authUserSelector.mockReturnValue(user)
     })
@@ -98,7 +98,7 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '21' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '1990' })
       testField(getByAccessibilityLabel('gender'), { value: 'Female' })
-      testField(getByAccessibilityLabel('fullName'), { value: user.fullName })
+      testField(getByAccessibilityLabel('displayName'), { value: user.displayName })
       testField(getByAccessibilityLabel('bio'), { value: 'bio' })
       testField(getByAccessibilityLabel('height'), { value: '9\'0"' })
     })
@@ -115,7 +115,7 @@ describe('DatingAboutScreen', () => {
         height: 108,
         bio: 'bio',
         dateOfBirth: '1990-04-21',
-        fullName: 'fullName',
+        displayName: 'displayName',
         gender: 'FEMALE',
       })
 
@@ -138,19 +138,6 @@ describe('DatingAboutScreen', () => {
   })
 
   describe('Success state', () => {
-    it('redirect next and clear state', async () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const { store } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
-      })
-
-      testNavigate(navigation, 'DatingMatch', { nextAction: true })
-      expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
-      usersEditProfileIdle.mockRestore()
-    })
-
     it('goBack when nextAction empty', async () => {
       const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
       useRoute.mockReturnValue({ params: {} })
@@ -163,29 +150,10 @@ describe('DatingAboutScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingSettings')
+      expect(navigation.goBack).toHaveBeenCalled()
       expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
       usersEditProfileIdle.mockRestore()
       useRoute.mockReturnValue({ params: { nextAction: true } })
-    })
-  })
-
-  describe('Error state', () => {
-    it('toggle usersEditProfile error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
     })
   })
 })

@@ -3,7 +3,7 @@ import DatingMatchScreen from 'screens/DatingMatchScreen'
 import { renderWithStore, fireEvent, act } from 'tests/utils'
 import * as RNPermissions from 'react-native-permissions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import { testField, testNavigate } from 'tests/utils/helpers'
+import { testField } from 'tests/utils/helpers'
 import * as usersActions from 'store/ducks/users/actions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
@@ -34,14 +34,19 @@ jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
 jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANTED)
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
-const navigation = { navigate: jest.fn(), useRoute: jest.fn() }
+const navigation = { goBack: jest.fn(), useRoute: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
 describe('DatingMatchScreen', () => {
   const openAllSections = (queryByAccessibilityLabel) => {
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Gender'))
+    fireEvent.press(queryByAccessibilityLabel('Toggle Match Height'))
     fireEvent.press(queryByAccessibilityLabel('Toggle Match Location Range'))
   }
+
+  afterEach(() => {
+    navigation.goBack.mockClear()
+  })
 
   describe('Form', () => {
     it('toggle collapsed sections', () => {
@@ -49,6 +54,7 @@ describe('DatingMatchScreen', () => {
 
       expect(queryByAccessibilityLabel('matchAgeRangeMin')).toBeTruthy()
       expect(queryByAccessibilityLabel('matchAgeRangeMax')).toBeTruthy()
+
       fireEvent.press(queryByAccessibilityLabel('Toggle Match Age'))
       expect(queryByAccessibilityLabel('matchAgeRangeMin')).toBeFalsy()
       expect(queryByAccessibilityLabel('matchAgeRangeMax')).toBeFalsy()
@@ -60,6 +66,12 @@ describe('DatingMatchScreen', () => {
       expect(queryByAccessibilityLabel('matchLocationRadius')).toBeFalsy()
       fireEvent.press(queryByAccessibilityLabel('Toggle Match Location Range'))
       expect(queryByAccessibilityLabel('matchLocationRadius')).toBeTruthy()
+
+      expect(queryByAccessibilityLabel('matchHeightRangeMin')).toBeFalsy()
+      expect(queryByAccessibilityLabel('matchHeightRangeMax')).toBeFalsy()
+      fireEvent.press(queryByAccessibilityLabel('Toggle Match Height'))
+      expect(queryByAccessibilityLabel('matchHeightRangeMin')).toBeTruthy()
+      expect(queryByAccessibilityLabel('matchHeightRangeMax')).toBeTruthy()
     })
 
     it('default values', () => {
@@ -67,6 +79,8 @@ describe('DatingMatchScreen', () => {
       const { queryByAccessibilityLabel } = setup()
       openAllSections(queryByAccessibilityLabel)
 
+      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '0\'1"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '9\'9"' })
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
@@ -81,6 +95,8 @@ describe('DatingMatchScreen', () => {
 
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '30' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '7\'6"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '8\'4"' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
     })
@@ -146,20 +162,6 @@ describe('DatingMatchScreen', () => {
   })
 
   describe('Success state', () => {
-    it('redirect next and clear state', async () => {
-      const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
-      const { store } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
-      })
-
-      testNavigate(navigation, 'DatingProfile', { nextAction: true })
-      expect(usersEditProfileIdle).toHaveBeenCalled()
-
-      usersEditProfileIdle.mockRestore()
-    })
-
     it('goBack when nextAction empty', async () => {
       const usersEditProfileIdle = jest.spyOn(usersActions, 'usersEditProfileIdle')
       useRoute.mockReturnValue({ params: {} })
@@ -172,29 +174,10 @@ describe('DatingMatchScreen', () => {
         store.dispatch(usersActions.usersEditProfileSuccess({ data: {} }))
       })
 
-      testNavigate(navigation, 'DatingSettings')
+      expect(navigation.goBack).toHaveBeenCalled()
       expect(usersActions.usersEditProfileIdle).toHaveBeenCalled()
       usersEditProfileIdle.mockRestore()
       useRoute.mockReturnValue({ params: { nextAction: true } })
-    })
-  })
-
-  describe('Error state', () => {
-    it('toggle usersEditProfile error', async () => {
-      const error = 'Error'
-      const { store, queryByText, getByLabelText } = setup()
-
-      await act(async () => {
-        store.dispatch(usersActions.usersEditProfileFailure({ message: { text: error } }))
-      })
-
-      expect(queryByText(error)).toBeTruthy()
-
-      await act(async () => {
-        fireEvent.press(getByLabelText('Close error'))
-      })
-
-      expect(queryByText(error)).toBeFalsy()
     })
   })
 })

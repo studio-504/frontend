@@ -29,7 +29,7 @@ const ProfilePhotoGridService = ({ children }) => {
       const backRoute = path(['params', 'backRoute'], route)
 
       if (backRoute) {
-        navigation.replace(backRoute)
+        navigation.navigate(backRoute)
       } else {
         navigation.goBack()
       }
@@ -69,17 +69,12 @@ const ProfilePhotoGridService = ({ children }) => {
     actionType: VERIFICATION_TYPE.BACK,
   })
 
-  const formErrorMessage = usersChangeAvatar.error.text
-  const handleErrorClose = usersChangeAvatarIdle
-
   return children({
     usersImagePostsGetRequest,
     usersImagePostsGet,
     handlePostPress,
     selectedPost,
     handleOpenVerification,
-    formErrorMessage,
-    handleErrorClose,
   })
 }
 

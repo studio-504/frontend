@@ -42,7 +42,6 @@ const UsernameForm = ({
           name="username"
           component={TextField}
           placeholder={t('Username')}
-          autoFocus
         />
       </View>
       <View style={styling.input}>

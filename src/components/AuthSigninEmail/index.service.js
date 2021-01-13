@@ -27,15 +27,10 @@ const AuthSigninComponentService = ({ children }) => {
 
   const formSubmitLoading = authSigninCognito.status === 'loading' || authFlow.status === 'loading'
   const formSubmitDisabled = authSigninCognito.status === 'loading' || authFlow.status === 'loading'
-  const formErrorMessage = authSigninCognito.error.text
   const formInitialValues = handleFormTransform(authSigninCognito.payload)
 
-  const handleErrorClose = () => dispatch(authActions.authSigninCognitoIdle({}))
-
   return children({
-    formErrorMessage,
     handleFormSubmit,
-    handleErrorClose,
     formSubmitLoading,
     formSubmitDisabled,
     formInitialValues,

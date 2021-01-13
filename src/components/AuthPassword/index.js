@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 import FormComponent from 'components/AuthPassword/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
@@ -17,20 +16,11 @@ const AuthPassword = ({
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
-  formErrorMessage,
-  handleErrorClose,
 }) => {
   const styling = styles
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Secure Your Account')}
@@ -70,12 +60,6 @@ AuthPassword.propTypes = {
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
-  formErrorMessage: PropTypes.string,
-  handleErrorClose: PropTypes.func,
-}
-
-AuthPassword.defaultProps = {
-  formErrorMessage: null,
 }
 
 export default withTranslation()(AuthPassword)

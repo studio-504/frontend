@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   testRunner: 'jest-circus/runner',
-  setupFiles: ['./__tests__/setup.js'],
+  setupFiles: ['./__tests__/setup.js', './node_modules/react-native-gesture-handler/jestSetup.js'],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   modulePaths: ['src/', '__tests__'],
   testMatch: ['**/__tests__/specs/**/*.[jt]s?(x)', '**/?(*.)+(spec).[jt]s?(x)'],

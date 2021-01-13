@@ -7,7 +7,6 @@ import {
 import FormComponent from 'components/AuthSigninEmail/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
@@ -15,9 +14,7 @@ import testIDs from './test-ids'
 
 const AuthSigninEmail = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -27,13 +24,6 @@ const AuthSigninEmail = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Welcome Back!')}
@@ -72,9 +62,7 @@ const styles = StyleSheet.create({
 
 AuthSigninEmail.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

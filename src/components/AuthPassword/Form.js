@@ -42,7 +42,6 @@ const PasswordForm = ({
           name="password" 
           component={TextField} 
           placeholder={t('Password')} 
-          autoFocus 
         />
       </View>
       <View style={styling.input}>

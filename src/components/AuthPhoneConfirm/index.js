@@ -4,15 +4,11 @@ import propOr from 'ramda/src/propOr'
 import { View, StyleSheet } from 'react-native'
 import FormComponent from 'components/AuthPhoneConfirm/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
-
 import { withTranslation } from 'react-i18next'
 
 const AuthPhoneConfirm = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -21,8 +17,6 @@ const AuthPhoneConfirm = ({
 
   return (
     <View style={styling.root}>
-      {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
@@ -62,9 +56,7 @@ const styles = StyleSheet.create({
 
 AuthPhoneConfirm.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

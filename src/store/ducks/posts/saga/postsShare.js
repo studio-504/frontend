@@ -9,6 +9,8 @@ import CameraRoll from '@react-native-community/cameraroll'
 import Share from 'react-native-share'
 import Marker from 'react-native-image-marker'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
+import * as navigationActions from 'navigation/actions'
+import * as NavigationService from 'services/Navigation'
 
 function* handlePostsShareRequest(payload) {
   function* handeImageWatermark(url, hasWatermark, post) {
@@ -96,13 +98,19 @@ function* handlePostsShareRequest(payload) {
     yield Share.open(shareOptions)
   }
 
-  function* handleRepost({ url }) {
-    return yield put(cameraActions.cameraCaptureRequest([{
+  function* handleRepost({ url, preview, post }) {
+    const navigation = yield NavigationService.getNavigation()
+
+    yield put(cameraActions.cameraCaptureRequest([{
       uri: url,
       takenInReal: false,
       originalFormat: url.split('.').pop(),
+      preview,
+      text: path(['text'], post),
     }]))
-  }
+
+    navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
+  } 
 
   function* handleCameraRollSave(photoUri) {
     yield CameraRoll.saveToCameraRoll(photoUri)
@@ -153,7 +161,7 @@ function* handlePostsShareRequest(payload) {
   }
 
   if (payload.type === 'repost') {
-    yield handleRepost({ url: res, title: payload.title, post: payload.post })
+    yield handleRepost({ url: res, preview: payload.photoUrl, post: payload.post })
   }
 }
 

@@ -4,7 +4,6 @@ import { useFocusEffect } from '@react-navigation/native'
 import * as datingActions from 'store/ducks/dating/actions'
 import * as datingSelector from 'store/ducks/dating/selectors'
 import path from 'ramda/src/path'
-import withDatingEnabledValidation from 'components/Dating/Permission'
 
 const DatingService = ({ children }) => {
   const dispatch = useDispatch()
@@ -40,4 +39,4 @@ const DatingService = ({ children }) => {
   })
 }
 
-export default withDatingEnabledValidation(DatingService)
+export default DatingService

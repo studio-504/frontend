@@ -48,7 +48,6 @@ function* handleAuthPrefetchAuthenticated() {
    */
   yield put(subscriptionsActions.subscriptionsMainRequest())
   yield put(subscriptionsActions.subscriptionsPollRequest())
-  yield put(subscriptionsActions.subscriptionsPrefetchRequest())
 
   /**
    * Data which is important to load but not belongs to home screen
@@ -67,10 +66,10 @@ function* handleAuthPrefetchRequest() {
 
   if (authenticationType === 'COGNITO_AUTHENTICATED') {
     yield call(handleAuthPrefetchAuthenticated)
-  }
-
-  if (authenticationType === 'COGNITO_GUEST') {
+  } else if (authenticationType === 'COGNITO_GUEST') {
     yield call(handleAuthPrefetchCommon)
+  } else {
+    yield put(actions.authSignoutRequest())
   }
 }
 
@@ -85,7 +84,7 @@ function* authPrefetchRequest(req) {
     }))
   } catch (error) {
     yield put(actions.authPrefetchFailure({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error.message),
+      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error),
     }))
   }
 }

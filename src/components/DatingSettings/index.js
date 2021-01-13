@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme, Switch, Text } from 'react-native-paper'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import RowsComponent from 'templates/Rows'
 import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
@@ -14,6 +13,7 @@ import NextIcon from 'assets/svg/settings/Next'
 import FiltersIcon from 'assets/svg/dating/Filters'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import DatingIcon from 'assets/svg/settings/Dating'
+import CardIcon from 'assets/svg/dating/Card'
 import { withTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import path from 'ramda/src/path'
@@ -22,12 +22,11 @@ const DatingSettings = ({
   t,
   theme,
   user,
-  formErrorMessage,
-  handleErrorClose,
   disableDating,
   toggleDatingStatusRequest,
   navigateDatingMatch,
   navigateDatingAbout,
+  navigateDatingProfile,
   navigateMembership,
   openUploadAvatarMenu,
 }) => {
@@ -36,13 +35,12 @@ const DatingSettings = ({
 
   return (
     <ScrollView style={styling.root}>
-      {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
       <View style={styling.header}>
         <TouchableOpacity style={styling.avatar} onPress={openUploadAvatarMenu}>
-          <CircleAvatar image={path(['photo', 'url480p'], user)} />
+          <CircleAvatar image={path(['photo', 'url480p'], user)} hasBorder />
         </TouchableOpacity>
         <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">
-          {user.fullName}
+          {user.displayName}
           {age}
         </Text>
         <Text style={styling.bio} numberOfLines={3} ellipsizeMode="tail">
@@ -52,6 +50,11 @@ const DatingSettings = ({
       <View style={styling.inner}>
         <RowsComponent
           items={[
+            {
+              label: t('Preview Profile'),
+              onPress: navigateDatingProfile,
+              icon: <CardIcon fill={theme.colors.text} />,
+            },
             {
               label: t('Match Settings'),
               onPress: navigateDatingMatch,
@@ -108,18 +111,16 @@ DatingSettings.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   user: PropTypes.any,
-  handleErrorClose: PropTypes.func,
-  formErrorMessage: PropTypes.string,
   disableDating: PropTypes.bool,
   toggleDatingStatusRequest: PropTypes.func,
   navigateDatingMatch: PropTypes.func,
   navigateDatingAbout: PropTypes.func,
   navigateMembership: PropTypes.func,
   openUploadAvatarMenu: PropTypes.func,
+  navigateDatingProfile: PropTypes.func,
 }
 
 DatingSettings.defaultProps = {
-  formErrorMessage: null,
   disableDating: false,
 }
 

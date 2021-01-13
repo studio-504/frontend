@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import pathOr from 'ramda/src/pathOr'
 import propOr from 'ramda/src/propOr'
 import path from 'ramda/src/path'
+import * as Validation from 'services/Validation'
 
 const lowerBoundAge = (age) => {
   if (age <= 23 || !age) return 18
@@ -23,8 +24,8 @@ export const getMatchAgeRangeMax = (user) => {
   return pathOr(upperBoundAge(usersAge), ['matchAgeRange', 'max'], user)
 }
 
-export const getMatchHeightRangeMin = path(['matchHeightRange', 'min'])
-export const getMatchHeightRangeMax = path(['matchHeightRange', 'max'])
+export const getMatchHeightRangeMin = pathOr(Validation.MIN_HEIGHT, ['matchHeightRange', 'min'])
+export const getMatchHeightRangeMax = pathOr(Validation.MAX_HEIGHT, ['matchHeightRange', 'max'])
 
 export const getMatchGenders = (user) => {
   const gender = path(['gender'], user)
