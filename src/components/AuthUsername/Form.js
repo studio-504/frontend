@@ -25,8 +25,6 @@ const UsernameForm = ({
   isValid,
   isValidating,
 }) => {
-  const styling = styles
-
   const submitDisabled = (
     disabled ||
     !isValid ||
@@ -34,8 +32,8 @@ const UsernameForm = ({
   )
 
   return (
-    <View style={styling.root}>
-      <View style={styling.input}>
+    <View style={styles.root}>
+      <View style={styles.input}>
         <Field
           {...Validation.getInputTypeProps('username')}
           testID={testIDs.form.username}
@@ -44,7 +42,7 @@ const UsernameForm = ({
           placeholder={t('Username')}
         />
       </View>
-      <View style={styling.input}>
+      <View style={styles.input}>
         <DefaultButton
           testID={testIDs.form.submitBtn}
           label={t('Next')}

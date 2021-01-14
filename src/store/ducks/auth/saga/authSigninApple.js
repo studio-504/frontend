@@ -59,7 +59,7 @@ function* handleAuthAppleRequest() {
   } 
 
   yield call(appleAuthenticateExisting, userPayload)
-  yield put(actions.authFlowRequest({ allowAnonymous: userExists }))
+  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE' }))
 
   yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),

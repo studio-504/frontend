@@ -65,7 +65,7 @@ function* handleAuthSigninGoogleRequest() {
   }
 
   yield call(googleAuthenticateExisting, userPayload)
-  yield put(actions.authFlowRequest({ allowAnonymous: userExists }))
+  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'GOOGLE' }))
 
   yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
@@ -78,10 +78,10 @@ function* handleAuthSigninGoogleRequest() {
  */
 function* authSigninGoogleRequest(req) {
   try {
-    const data = yield handleAuthSigninGoogleRequest(req.payload)
+    yield handleAuthSigninGoogleRequest(req.payload)
+
     yield put(actions.authSigninGoogleSuccess({
       message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_SUCCESS, 'GENERIC'),
-      data,
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
