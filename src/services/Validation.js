@@ -59,7 +59,11 @@ export const remoteUsernameValidation = () => {
   }
 }
 
-export const phoneOrEmail = Yup.string().min(3).max(50).trim().required()
+export const phoneOrEmail = Yup.string()
+  .min(3)
+  .max(50)
+  .trim()
+  .required()
 
 export const username = Yup.string()
   .min(3)
@@ -69,7 +73,13 @@ export const username = Yup.string()
   .required()
   .test('usernameReserve', 'username is reserved', remoteUsernameValidation())
 
-export const email = Yup.string().matches(/^\S*$/, ERRORS.noWhitespace).email().min(3).max(50).trim().required()
+export const email = Yup.string()
+  .matches(/^\S*$/, ERRORS.noWhitespace)
+  .email()
+  .min(3)
+  .max(50)
+  .trim()
+  .required()
 
 export const phone = Yup.string()
   .matches(/^[0-9]*$/gm, ERRORS.onlyNumbers)
@@ -77,7 +87,11 @@ export const phone = Yup.string()
   .max(50)
   .trim()
 
-export const password = Yup.string().min(8).max(50).trim().required()
+export const password = Yup.string()
+  .min(8)
+  .max(50)
+  .trim()
+  .required()
 
 export const confirmationCode = Yup.string()
   .length(6)
@@ -101,13 +115,21 @@ export const dateOfBirthYear = Yup.number()
   .positive(ERRORS.dateOfBirthYear)
   .required(ERRORS.dateOfBirthYear)
 
-export const gender = Yup.string().typeError(ERRORS.gender).required(ERRORS.gender)
+export const gender = Yup.string()
+  .typeError(ERRORS.gender)
+  .required(ERRORS.gender)
 
-export const fullName = Yup.string().typeError(ERRORS.fullName).nullable()
+export const fullName = Yup.string()
+  .typeError(ERRORS.fullName)
+  .nullable()
 
-export const displayName = Yup.string().typeError(ERRORS.displayName).required(ERRORS.displayName)
+export const displayName = Yup.string()
+  .typeError(ERRORS.displayName)
+  .required(ERRORS.displayName)
 
-export const bio = Yup.string().typeError(ERRORS.bio).nullable()
+export const bio = Yup.string()
+  .typeError(ERRORS.bio)
+  .nullable()
 
 export const matchAgeRangeMin = Yup.number()
   .typeError(ERRORS.matchAgeRangeMin)
@@ -124,7 +146,9 @@ export const matchLocationRadius = Yup.number()
   .positive(ERRORS.matchLocationRadius)
   .required(ERRORS.matchLocationRadius)
 
-export const matchGenders = Yup.string().typeError(ERRORS.matchGendersError).required(ERRORS.matchGendersError)
+export const matchGenders = Yup.string()
+  .typeError(ERRORS.matchGendersError)
+  .required(ERRORS.matchGendersError)
 
 export const height = Yup.number()
   .typeError(ERRORS.height)
