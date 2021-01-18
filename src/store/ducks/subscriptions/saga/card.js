@@ -1,4 +1,4 @@
-import { call, put, take, takeEvery } from 'redux-saga/effects'
+import { call, put, take, fork } from 'redux-saga/effects'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as usersQueries from 'store/ducks/users/queries'
@@ -9,39 +9,35 @@ import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
  * Cards subscription channel
  */
 function* cardSubscription() {
-  const { channel, subscriptionState, userId } = yield call(createChannel, {
-    query: usersQueries.onCardNotification,
-    identifier: 'onCardNotification',
-  })
+  while (true) {
+    yield take(constants.SUBSCRIPTIONS_MAIN_REQUEST)
 
-  yield takeEvery(channel, function* ({ eventType, eventData }) {
-    if (eventType === 'connect') {
-      return yield call(subscriptionState.connectHandler, eventData)
-    } else if (eventType === 'pending') {
-      return yield call(subscriptionState.pendingHandler, eventData)
-    } else if (eventType === 'disconnect') {
-      return yield call(subscriptionState.disconnectHandler, eventData)
+    try {
+      const { channel, userId } = yield call(createChannel, {
+        query: usersQueries.onCardNotification,
+      })
+
+      yield fork(function* eventListener() {
+        while (true) {
+          yield take(channel)
+          yield fork(function* () {
+            yield put(usersActions.usersGetCardsRequest({}))
+            yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
+            yield put(usersActions.usersGetProfileSelfRequest())
+            yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
+          })
+        }
+      })
+
+      /**
+       * Close channel subscription on application toggle
+       */
+      yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
+      channel.close()
+    } catch (error) {
+      // ignore
     }
-
-    yield put(usersActions.usersGetCardsRequest({}))
-    yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-    yield put(usersActions.usersGetProfileSelfRequest())
-    yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
-  })
-
-  /**
-   * Close channel subscription on application toggle
-   */
-  yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
-  channel.close()
-}
-
-function* _cardSubscription() {
-  try {
-    yield cardSubscription()
-  } catch (error) {
-    // ignore
   }
 }
 
-export default _cardSubscription
+export default cardSubscription
