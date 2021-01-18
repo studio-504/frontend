@@ -2,11 +2,11 @@ import { graphqlOperation } from '@aws-amplify/api'
 import { getContext, race, take, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as authConstants from 'store/ducks/auth/constants'
-import { CancelRequestOnSignoutError } from 'services/Errors'
+import { CancelRequestOnSignoutError, MESSAGES } from 'services/Errors'
 
 function* cancelRequestOnSignout(request) {
   const AwsAPI = yield getContext('AwsAPI')
-  const errorMessage = 'Cancel request on signout'
+  const errorMessage = MESSAGES.CANCEL_REQUEST_ON_SIGNOUT
 
   try {
     AwsAPI.cancel(request, errorMessage)

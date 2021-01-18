@@ -5,7 +5,7 @@ import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
 import * as Logger from 'services/Logger'
-import { getErrorMessage } from 'services/Errors'
+import { getErrorMessage, MESSAGES } from 'services/Errors'
 
 const BLACKLIST = [
   authConstants.AUTH_DATA_FAILURE,
@@ -22,10 +22,13 @@ const BLACKLIST = [
 
 function* captureErrors(action) {
   try {
+    const message = getErrorMessage(action)
+
     if (BLACKLIST.includes(action.type)) return
+    if (message === MESSAGES.CANCEL_REQUEST_ON_SIGNOUT) return
 
     yield call(showMessage, {
-      message: getErrorMessage(action),
+      message,
       type: 'danger',
       icon: 'warning',
     })

@@ -3,6 +3,7 @@ import { expectSaga } from 'redux-saga-test-plan'
 import { testAsRootSaga } from 'tests/utils/helpers'
 import { showMessage } from 'react-native-flash-message'
 import snackbars from 'store/ducks/snackbars/saga'
+import { MESSAGES } from 'services/Errors'
 import * as Logger from 'services/Logger'
 
 const defaultMessage = { message: 'Oops! Something went wrong', type: 'danger', icon: 'warning' }
@@ -37,6 +38,24 @@ describe('Snackbars saga', () => {
       .call(showMessage, { message, type: 'danger', icon: 'warning' })
       .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
       .silentRun()
+  })
+
+  describe('cancel request on sigout request', () => {
+    const message = MESSAGES.CANCEL_REQUEST_ON_SIGNOUT
+
+    it('native error', async () => {
+      await expectSaga(testAsRootSaga(snackbars))
+        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .dispatch({ type: 'ACTION_FAILURE', payload: { message } })
+        .silentRun()
+    })
+
+    it('error with payload', async () => {
+      await expectSaga(testAsRootSaga(snackbars))
+        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
+        .silentRun()
+    })
   })
 
   describe('blacklist', () => {
