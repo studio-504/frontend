@@ -1,4 +1,4 @@
-import { put, call, takeEvery, getContext } from 'redux-saga/effects'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
@@ -6,12 +6,18 @@ import * as errors from 'store/ducks/signup/errors'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
+import * as NavigationService from 'services/Navigation'
+import path from 'ramda/src/path'
 
 /**
  *
  */
 function* handleSignupUsernameRequest(payload) {
-  return yield queryService.apiRequest(queries.setUsername, { username: payload.username })
+  const data = yield queryService.apiRequest(queries.setUsername, { username: payload.username })
+  const nextRoute = path(['nextRoute'], payload)
+  const meta = { nextRoute }
+
+  return { data, meta }
 }
 
 /**
@@ -20,10 +26,11 @@ function* handleSignupUsernameRequest(payload) {
 function* signupUsernameRequest(req) {
   try {
     logEvent('SIGNUP_CHECK_REQUEST')
-    const data = yield call(handleSignupUsernameRequest, req.payload)
+    const { data, meta } = yield call(handleSignupUsernameRequest, req.payload)
     yield put(actions.signupUsernameSuccess({
       message: errors.getMessagePayload(constants.SIGNUP_USERNAME_SUCCESS, 'GENERIC'),
       payload: req.payload,
+      meta,
       data,
     }))
   } catch (error) {
@@ -34,10 +41,17 @@ function* signupUsernameRequest(req) {
   }
 }
 
-function* signupUsernameSuccess() {
-  const ReactNavigationRef = yield getContext('ReactNavigationRef')
-  navigationActions.navigateAuthPassword(ReactNavigationRef.current)
+function* signupUsernameSuccess(req) {
   logEvent('SIGNUP_USERNAME_SUCCESS')
+
+  const navigation = yield NavigationService.getNavigation()
+  const nextRoute =  path(['payload', 'meta', 'nextRoute'], req)
+
+  if (nextRoute === 'app') {
+    navigationActions.navigateResetToApp(navigation) 
+  } else {
+    navigationActions.navigateAuthPassword(navigation)
+  }
 }
 
 export default () => [
