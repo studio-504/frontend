@@ -4,21 +4,24 @@ import * as albumsActions from 'store/ducks/albums/actions'
 import { useRoute } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
+import pathOr from 'ramda/src/pathOr'
 
 const AlbumsGridService = ({ children }) => {
   const dispatch = useDispatch()
-  const route = useRoute()
-
-  const { userId } = route.params || useSelector(authSelector.authUserSelector)
+  const route = useRoute()  
+  const authUser = useSelector(authSelector.authUserSelector)
+  const userId = pathOr(authUser.userId, ['params', 'userId'], route)
   const albumsGet = useSelector(albumsSelector.albumsGetSelector(userId))
 
   const albumsGetRequest = ({ nextToken }) =>
-    dispatch(albumsActions.albumsGetRequest({ userId, nextToken }))
+    dispatch(albumsActions.albumsGetRequest({ userId, nextToken })) 
 
   const albumsGetMoreRequest = ({ nextToken }) =>
     dispatch(albumsActions.albumsGetMoreRequest({ userId, nextToken }))
 
   useEffect(() => {
+    if(!userId) return 
+    
     dispatch(albumsActions.albumsGetRequest({ userId }))
   }, [userId])
 

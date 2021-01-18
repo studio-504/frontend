@@ -13,7 +13,7 @@ function subscriptionEmitter({ subscription }) {
 
   return eventChannel((emitter) => {
     const api = subscription.subscribe({
-      next: (args) => emitter({ eventData: args }),
+      next: (eventData) => emitter({ eventData }),
       error: () => emitter(END),
     })
 
@@ -49,5 +49,5 @@ export function* createChannel({ query }) {
   const subscription = AwsAPI.graphql(graphqlOperation(query, { userId }))
   const channel = yield call(subscriptionEmitter, { subscription })
 
-  return {channel, userId}
+  return { channel, userId }
 }

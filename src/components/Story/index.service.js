@@ -30,9 +30,6 @@ const StoryService = ({ children }) => {
   const nextUserStoryPool = pathOr([], [userStoryIndex + 1], stories)
   const prevUserStoryPool = pathOr([], [userStoryIndex - 1], stories)
 
-  const postsShareRequest = (payload) =>
-    dispatch(postsActions.postsShareRequest(payload))
-
   const postsOnymouslyLikeRequest = (payload) =>
     dispatch(postsActions.postsOnymouslyLikeRequest(payload))
 
@@ -59,7 +56,7 @@ const StoryService = ({ children }) => {
       storyRef.current.snapToNext()
     } else {
       resetStory()
-      navigationActions.navigateBack(navigation)()
+      navigationActions.navigateBack(navigation)
     }
   }
     
@@ -76,13 +73,13 @@ const StoryService = ({ children }) => {
       storyRef.current.snapToPrev()
     } else {
       resetStory()
-      navigationActions.navigateBack(navigation)()
+      navigationActions.navigateBack(navigation)
     }
   }
 
   const onCloseStory = () => {
     resetStory()
-    navigationActions.navigateBack(navigation)()
+    navigationActions.navigateBack(navigation)
   }
 
   /**
@@ -108,10 +105,8 @@ const StoryService = ({ children }) => {
     onPrevStory,
     onCloseStory,
     onSnapItem,
-    postsShareRequest,
     postsOnymouslyLikeRequest,
     postsDislikeRequest,
-
     textPostRefs,
     createTextPostRef,
     getTextPostRef,

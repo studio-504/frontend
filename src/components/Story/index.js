@@ -29,7 +29,6 @@ const StoryCarousel = ({
   getTextPostRef,
   textPostRefs,
   navigation,
-  postsShareRequest,
   postsOnymouslyLikeRequest,
   postsDislikeRequest,
 }) =>
@@ -45,7 +44,7 @@ const StoryCarousel = ({
       }
 
       if (post.postType === 'IMAGE') {
-        navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId })()
+        navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId })
       }
     }
 
@@ -54,7 +53,7 @@ const StoryCarousel = ({
         postId: post.postId,
         userId: post.postedBy.userId,
         renderUri,
-      })()
+      })
     }
 
     if (!post) {
@@ -73,7 +72,7 @@ const StoryCarousel = ({
           steps={<StepsTemplate steps={user.stories.items.length} currentStep={currentStory} />}
           header={
             <CameraHeaderTemplate
-              content={<HeaderComponent post={post} usersGetProfile={{ data: user }} />}
+              content={<HeaderComponent post={post} />}
               handleClosePress={onCloseStory}
             />
           }
@@ -104,7 +103,6 @@ const StoryCarousel = ({
             <ActionComponent
               user={user}
               post={post}
-              postsShareRequest={postsShareRequest}
               postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
               postsDislikeRequest={postsDislikeRequest}
               handlePostShare={handlePostShare}
@@ -135,7 +133,6 @@ const Story = ({
   createTextPostRef,
   getTextPostRef,
   textPostRefs,
-  postsShareRequest,
   postsOnymouslyLikeRequest,
   postsDislikeRequest,
 }) => {
@@ -163,7 +160,6 @@ const Story = ({
           getTextPostRef,
           textPostRefs,
           navigation,
-          postsShareRequest,
           postsOnymouslyLikeRequest,
           postsDislikeRequest,
         })}
@@ -262,7 +258,6 @@ Story.propTypes = {
   createTextPostRef: PropTypes.any,
   getTextPostRef: PropTypes.any,
   textPostRefs: PropTypes.any,
-  postsShareRequest: PropTypes.any,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
 }

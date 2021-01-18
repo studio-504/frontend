@@ -17,16 +17,19 @@ export const feedPostFragment = `
   fragment postUserFragment on User {
     userId
     username
+    datingStatus
     viewCountsHidden
     commentsDisabled
     likesDisabled
     sharingDisabled
     verificationHidden
     fullName
+    displayName
     themeCode
     bio
     blockedStatus
     blockerStatus
+    subscriptionLevel
 
     photo {
       ...imageFragment
@@ -37,35 +40,45 @@ export const feedPostFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment commentUserFragment on User {
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment taggedUserFragment on User {
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment albumUserFragment on User {
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment likedUserFragment on User {
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
 
     photo {
       ...imageFragment

@@ -1,44 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import has from 'ramda/src/has'
+import propOr from 'ramda/src/propOr'
 import { View, StyleSheet } from 'react-native'
 import FormComponent from 'components/AuthEmailConfirm/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
 
 const AuthEmailConfirm = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
 }) => {
-  const styling = styles
-
   return (
-    <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ? <AuthErrorTemplate text={formErrorMessage} onClose={handleErrorClose} /> : null}
-
-      <View style={styling.component}>
+    <View testID={testIDs.root} style={styles.root}>
+      <View style={styles.component}>
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
           subtitle={
-            has('cognitoUsername', formInitialValues)
+            propOr(false, 'cognitoUsername', formInitialValues)
               ? t('Sent to {{cognitoUsername}}', formInitialValues)
               : t('You’ve been sent a password reset token')
           }
         />
 
-        <View style={styling.content}>
+        <View style={styles.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -52,6 +43,7 @@ const AuthEmailConfirm = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingTop: 50,
   },
   component: {
     paddingHorizontal: 24,
@@ -64,10 +56,7 @@ const styles = StyleSheet.create({
 
 AuthEmailConfirm.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

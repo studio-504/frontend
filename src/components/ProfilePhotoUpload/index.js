@@ -4,31 +4,23 @@ import {
   View,
   StyleSheet,
 } from 'react-native'
-import ActionsComponent from 'components/ProfilePhotoUpload/Actions'
+import DefaultButton from 'components/Formik/Button/DefaultButton'
 import ProgressComponent from 'components/ProfilePhotoUpload/Progress'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTranslation } from 'react-i18next'
 
 const ProfilePhotoUpload = ({
   t,
   formErrorMessage,
-  handleErrorClose,
+  handleClose,
   activeUpload,
 }) => {
   const styling = styles
 
   return (
     <View style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Add Profile Picture')}
@@ -43,12 +35,11 @@ const ProfilePhotoUpload = ({
           {!formErrorMessage ?
             <ProgressComponent
               activeUpload={activeUpload}
-              handleErrorClose={handleErrorClose}
             />
           : null}
 
           {formErrorMessage ?
-            <ActionsComponent />
+            <DefaultButton label={t('Try Again')} onPress={handleClose} />
           : null}
         </View>
       </View>
@@ -72,7 +63,7 @@ const styles = StyleSheet.create({
 ProfilePhotoUpload.propTypes = {
   t: PropTypes.any,
   formErrorMessage: PropTypes.any,
-  handleErrorClose: PropTypes.any,
+  handleClose: PropTypes.any,
   activeUpload: PropTypes.any,
 }
 

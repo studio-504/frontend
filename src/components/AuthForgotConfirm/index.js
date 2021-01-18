@@ -4,10 +4,10 @@ import {
   View,
   StyleSheet,
 } from 'react-native'
+import propOr from 'ramda/src/propOr'
 import FormComponent from 'components/AuthForgotConfirm/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
@@ -16,10 +16,7 @@ import testIDs from './test-ids'
 
 const AuthForgotConfirm = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -29,23 +26,19 @@ const AuthForgotConfirm = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Enter 6-digit code')}
-          subtitle={t('Sent to you')}
+          subtitle={
+            propOr(false, 'username', formInitialValues)
+              ? t('Sent to {{username}}', formInitialValues)
+              : t('You’ve been sent a password reset token')
+          }
         />
 
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -53,8 +46,8 @@ const AuthForgotConfirm = ({
         </View>
       </View>
 
-      <AuthActionTemplate onPress={navigationActions.navigateAuthSigninPhone(navigation)}>
-        {t('Already Have an Account ? Log In')}
+      <AuthActionTemplate onPress={() => navigationActions.navigateAuthSigninPhone(navigation)}>
+        {t('Already Have an Account? Log In')}
       </AuthActionTemplate>
     </View>
   )
@@ -63,6 +56,7 @@ const AuthForgotConfirm = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingTop: 50,
   },
   component: {
     paddingHorizontal: 24,
@@ -75,10 +69,7 @@ const styles = StyleSheet.create({
 
 AuthForgotConfirm.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

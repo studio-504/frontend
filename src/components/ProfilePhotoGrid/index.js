@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   ScrollView,
+  RefreshControl,
 } from 'react-native'
 import path from 'ramda/src/path'
 import GridComponent from 'templates/Grid'
@@ -11,51 +12,58 @@ import GridItemComponent from 'templates/GridItem'
 import CacheComponent from 'components/Cache'
 import CheckedIcon from 'assets/svg/other/Checked'
 import UncheckedIcon from 'assets/svg/other/Unchecked'
-import { useHeader } from 'components/ProfilePhotoGrid/header'
-
-import { withTheme } from 'react-native-paper'
+import DefaultButton from 'components/Formik/Button/DefaultButton'
+import { Subheading, withTheme } from 'react-native-paper'
+import { withTranslation } from 'react-i18next'
 
 const ProfilePhotoGrid = ({
+  t,
   theme,
   usersImagePostsGet,
   handlePostPress,
   selectedPost,
-  usersEditProfileRequest,
+  handleOpenVerification,
+  usersImagePostsGetRequest,
 }) => {
   const styling = styles(theme)
 
-  useHeader({
-    title: 'Update',
-    onPress: usersEditProfileRequest,
-    hidden: !selectedPost.postId,
-  }, [selectedPost.postId])
-
-  return (
-    <View style={styling.root}>
-      <ScrollView>
-        <GridComponent items={path(['data'])(usersImagePostsGet)}>
-          {(post, priorityIndex) => (
-            <GridItemComponent
-              onPress={() => handlePostPress(post)}
-              active={selectedPost.postId === post.postId}
-              activeIcon={<CheckedIcon fill={theme.colors.iconPrimary} />}
-              inactiveIcon={<UncheckedIcon fill={theme.colors.iconPrimary} />}
-            >
-              <CacheComponent
-                thread="default"
-                images={[
-                  [path(['image', 'url64p'])(post), true],
-                  [path(['image', 'url480p'])(post), true],
-                ]}
-                fallback={path(['image', 'url480p'])(post)}
-                priorityIndex={priorityIndex}
-                resizeMode="cover"
-              />
-            </GridItemComponent>
-          )}
-        </GridComponent>
-      </ScrollView>
-    </View>
+  return (  
+    <ScrollView
+      style={styling.root}
+      refreshControl={
+        <RefreshControl
+          tintColor={theme.colors.border}
+          refreshing={usersImagePostsGet.status === 'loading'}
+          onRefresh={usersImagePostsGetRequest}
+        />
+      }
+    >
+      <View style={styling.bookmark}>
+        <Subheading style={styling.subtitle}>{t('Only Verified Posts Can Be Set as a Profile Picture')}</Subheading>
+        <DefaultButton label={t('How to pass verification?')} onPress={handleOpenVerification} mode="outlined" />
+      </View>
+      <GridComponent items={path(['data'])(usersImagePostsGet)}>
+        {(post, priorityIndex) => (
+          <GridItemComponent
+            onPress={() => handlePostPress(post)}
+            active={selectedPost.postId === post.postId}
+            activeIcon={<CheckedIcon fill={theme.colors.iconPrimary} />}
+            inactiveIcon={<UncheckedIcon fill={theme.colors.iconPrimary} />}
+          >
+            <CacheComponent
+              thread="default"
+              images={[
+                [path(['image', 'url64p'])(post), true],
+                [path(['image', 'url480p'])(post), true],
+              ]}
+              fallback={path(['image', 'url480p'])(post)}
+              priorityIndex={priorityIndex}
+              resizeMode="cover"
+            />
+          </GridItemComponent>
+        )}
+      </GridComponent>
+    </ScrollView>
   )
 }
 const styles = theme => StyleSheet.create({
@@ -68,6 +76,16 @@ const styles = theme => StyleSheet.create({
     padding: theme.spacing.base,
     alignItems: 'center',
   },
+  bookmark: {
+    paddingHorizontal: theme.spacing.base,
+    paddingTop: theme.spacing.base,
+    paddingBottom: theme.spacing.base * 2,
+    backgroundColor: theme.colors.backgroundSecondary,
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginBottom: theme.spacing.base,
+  },
 })
 
 ProfilePhotoGrid.defaultProps = {
@@ -75,11 +93,13 @@ ProfilePhotoGrid.defaultProps = {
 }
 
 ProfilePhotoGrid.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
   usersImagePostsGet: PropTypes.any,
   handlePostPress: PropTypes.any,
   selectedPost: PropTypes.any,
-  usersEditProfileRequest: PropTypes.any,
+  handleOpenVerification: PropTypes.func,
+  usersImagePostsGetRequest: PropTypes.func,
 }
 
-export default withTheme(ProfilePhotoGrid)
+export default withTranslation()(withTheme(ProfilePhotoGrid))

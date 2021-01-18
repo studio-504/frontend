@@ -8,17 +8,13 @@ import TextField from 'components/Formik/TextField'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
+import * as Validation from 'services/Validation'
 
 import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
 
 const formSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8)
-    .max(50)
-    .matches(/^\S*$/, 'no whitespace')
-    .trim()
-    .required(),
+  password: Validation.password,
 })
 
 const PasswordForm = ({
@@ -40,7 +36,13 @@ const PasswordForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID={testIDs.form.password} name="password" component={TextField} placeholder={t('Password')} secureTextEntry keyboardType="default" textContentType="password" autoCompleteType="password" autoFocus />
+        <Field 
+          {...Validation.getInputTypeProps('password')}
+          testID={testIDs.form.password} 
+          name="password" 
+          component={TextField} 
+          placeholder={t('Password')} 
+        />
       </View>
       <View style={styling.input}>
         <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
@@ -68,7 +70,6 @@ PasswordForm.propTypes = {
 
 export default withTranslation()(({
   handleFormSubmit,
-  handleFormTransform,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -86,10 +87,6 @@ export default withTranslation()(({
         {...props}
         loading={formSubmitLoading}
         disabled={formSubmitDisabled}
-        handleSubmit={() => {
-          const nextValues = handleFormTransform(formikProps.values)
-          handleFormSubmit(nextValues)
-        }}
       />
     )}
   </Formik>

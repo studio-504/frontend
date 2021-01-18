@@ -8,32 +8,13 @@ import TextField from 'components/Formik/TextField'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
-import Config from 'react-native-config'
 import testIDs from './test-ids'
+import * as Validation from 'services/Validation'
 
 import { withTranslation } from 'react-i18next'
 
-const remoteUsernameValidation = (value) =>
-  new Promise((resolve) => {
-    fetch(`${Config.AWS_API_GATEWAY_ENDPOINT}/username/status?username=${value}`, {
-      method: 'GET',
-      headers: {
-        'X-Api-Key': Config.AWS_API_GATEWAY_KEY,
-      },
-    })
-    .then((resp) => resp.json())
-    .then((resp) => resolve(resp.status === 'AVAILABLE'))
-    .catch(() => resolve(true))
-  })
-
 const formSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3)
-    .max(30)
-    .matches(/^[a-zA-Z0-9_.]*$/, 'username must only contain letters & numbers')
-    .trim()
-    .required()
-    .test('usernameReserve', 'username is reserved', remoteUsernameValidation),
+  username: Validation.username,
 })
 
 const UsernameForm = ({
@@ -55,10 +36,22 @@ const UsernameForm = ({
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field testID={testIDs.form.username} name="username" component={TextField} placeholder={t('Username')} keyboardType="default" textContentType="username" autoCompleteType="username" autoFocus />
+        <Field
+          {...Validation.getInputTypeProps('username')}
+          testID={testIDs.form.username}
+          name="username"
+          component={TextField}
+          placeholder={t('Username')}
+        />
       </View>
       <View style={styling.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={submitDisabled}
+        />
       </View>
     </View>
   )
@@ -83,7 +76,6 @@ UsernameForm.propTypes = {
 
 export default withTranslation()(({
   handleFormSubmit,
-  handleFormTransform,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -101,11 +93,6 @@ export default withTranslation()(({
         {...props}
         loading={formSubmitLoading}
         disabled={formSubmitDisabled}
-        handleSubmit={() => {
-          const nextValues = handleFormTransform(formikProps.values)
-          formikProps.setValues(nextValues)
-          handleFormSubmit(nextValues)
-        }}
       />
     )}
   </Formik>

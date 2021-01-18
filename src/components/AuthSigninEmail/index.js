@@ -7,7 +7,6 @@ import {
 import FormComponent from 'components/AuthSigninEmail/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
@@ -15,10 +14,9 @@ import testIDs from './test-ids'
 
 const AuthSigninEmail = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
-  formSubmitting,
+  formSubmitLoading,
+  formSubmitDisabled,
   formInitialValues,
 }) => {
   const styling = styles
@@ -26,13 +24,6 @@ const AuthSigninEmail = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Welcome Back!')}
@@ -42,13 +33,14 @@ const AuthSigninEmail = ({
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            formSubmitting={formSubmitting}
+            formSubmitLoading={formSubmitLoading}
+            formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
           />
         </View>
       </View>
 
-      <AuthActionTemplate testID={testIDs.resetPasswordBtn} onPress={navigationActions.navigateAuthForgotEmail(navigation)}>
+      <AuthActionTemplate testID={testIDs.resetPasswordBtn} onPress={() => navigationActions.navigateAuthForgotEmail(navigation, { initialRouteName: 'AuthForgotEmail' })}>
         {t('Reset your Password')}
       </AuthActionTemplate>
     </View>
@@ -70,15 +62,10 @@ const styles = StyleSheet.create({
 
 AuthSigninEmail.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleErrorClose: PropTypes.any,
-  formSubmitting: PropTypes.bool,
+  formSubmitLoading: PropTypes.any,
+  formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
-}
-
-AuthSigninEmail.defaultProps = {
-  formSubmitting: false,
 }
 
 export default withTranslation()(AuthSigninEmail)

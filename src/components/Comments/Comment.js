@@ -17,6 +17,7 @@ import * as UserService from 'services/User'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
+import Username from 'components/Post/Username'
 
 const Comment = ({
   theme,
@@ -31,7 +32,7 @@ const Comment = ({
 
   return (
     <View style={styling.root}>
-      <TouchableOpacity style={styling.image} onPress={navigationActions.navigateProfile(navigation, { userId: comment.commentedBy.userId })}>
+      <TouchableOpacity style={styling.image} onPress={() => navigationActions.navigateProfile(navigation, { userId: comment.commentedBy.userId })}>
         <Avatar
           active={UserService.hasActiveStories(path(['commentedBy'])(comment))}
           thumbnailSource={{ uri: path(['commentedBy', 'photo', 'url64p'])(comment) }}
@@ -39,13 +40,9 @@ const Comment = ({
         />
       </TouchableOpacity>
       <TouchableOpacity style={styling.comment} onPress={() => handleUserReply(comment.commentedBy.username)}>
+        <Username user={pathOr(null, ['commentedBy'])(comment)} />
         <Paragraph>
           {[
-            /**
-             * Username of comment owner
-             */
-            <Text key="username" style={styling.author}>{pathOr('', ['commentedBy', 'username'])(comment)} </Text>,
-
             /**
              * Tagged @username occurrences with attached user object
              */
@@ -55,7 +52,7 @@ const Comment = ({
 
               if (tagged) {
                 return (
-                  <Text key={match + i} onPress={navigationActions.navigateProfile(navigation, { userId: tagged.user.userId })} style={styling.textUsername}>@{match}</Text>
+                  <Text key={match + i} onPress={() => navigationActions.navigateProfile(navigation, { userId: tagged.user.userId })} style={styling.textUsername}>@{match}</Text>
                 )
               }
               

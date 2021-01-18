@@ -23,7 +23,7 @@ function* cardSubscription() {
           yield fork(function* () {
             yield put(usersActions.usersGetCardsRequest({}))
             yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-            yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+            yield put(usersActions.usersGetProfileSelfRequest())
             yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
           })
         }

@@ -14,7 +14,7 @@ import UserRowActionComponent from 'templates/UserRowAction'
 import Avatar from 'templates/Avatar'
 import * as navigationActions from 'navigation/actions'
 import * as UserService from 'services/User'
-
+import Username from 'components/Post/Username'
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
@@ -38,7 +38,7 @@ const Result = ({
           <RowsItemComponent>
             <UserRowComponent
               avatar={
-                <TouchableOpacity onPress={navigationActions.navigateProfile(navigation, { userId: user.userId })}>
+                <TouchableOpacity onPress={() => navigationActions.navigateProfile(navigation, { userId: user.userId })}>
                   <Avatar
                     key={path(['photo', 'url64p'])(user)}
                     active={UserService.hasActiveStories(user)}
@@ -49,8 +49,8 @@ const Result = ({
                 </TouchableOpacity>
               }
               content={
-                <TouchableOpacity onPress={navigationActions.navigateProfile(navigation, { userId: user.userId })} style={styling.user}>
-                  <Text style={styling.username}>{path(['username'])(user)}</Text>
+                <TouchableOpacity onPress={() => navigationActions.navigateProfile(navigation, { userId: user.userId })} style={styling.user}>
+                  <Username user={user} />
                   <Text style={styling.fullname}>{path(['fullName'])(user)}</Text>
                 </TouchableOpacity>
               }
@@ -88,10 +88,6 @@ const styles = theme => StyleSheet.create({
   },
   user: {
     paddingHorizontal: 8,
-  },
-  username: {
-  },
-  fullname: {
   },
 })
 

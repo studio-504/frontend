@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -11,7 +11,6 @@ import AlbumComponent from 'components/Post/Album'
 import CommentComponent from 'components/Post/Comment'
 import DescriptionComponent from 'components/Post/Description'
 import HeaderComponent from 'components/Post/Header'
-import VerificationComponent from 'components/Post/Verification'
 
 import ListItemComponent from 'templates/ListItem'
 import CacheComponent from 'components/Cache'
@@ -19,7 +18,6 @@ import TextOnlyComponent from 'templates/TextOnly'
 import ReactionsPreviewTemplate from 'templates/ReactionsPreview'
 import ViewShot from 'react-native-view-shot'
 import * as navigationActions from 'navigation/actions'
-import PrivacyService from 'services/Privacy'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -28,8 +26,6 @@ const PostComponent = ({
   theme,
   user,
   post,
-  postsShareRequest,
-  handleEditPress,
   postsArchiveRequest,
   postsFlagRequest,
   postsDeleteRequest,
@@ -46,6 +42,7 @@ const PostComponent = ({
   textPostRef,
 
   feedRef,
+  changeAvatarRequest,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -53,7 +50,7 @@ const PostComponent = ({
   const albumLength = path(['album', 'posts', 'items', 'length'])(post) || 0
 
   const onCapture = (renderUri) => {
-    navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId, renderUri })()
+    navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId, renderUri })
   }
 
   const handlePostShare = () => {
@@ -62,11 +59,9 @@ const PostComponent = ({
     }
 
     if (post.postType === 'IMAGE') {
-      navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId })()
+      navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId })
     }
   }
-
-  const selfFailedPostVisibility = useMemo(() => PrivacyService.selfPostVerificationVisibility(post, user), [post, user])
 
   return (
     <View style={styling.root}>
@@ -76,16 +71,15 @@ const PostComponent = ({
       <HeaderComponent
         user={user}
         post={post}
-        handleEditPress={handleEditPress}
         postsArchiveRequest={postsArchiveRequest}
         postsFlagRequest={postsFlagRequest}
         postsDeleteRequest={postsDeleteRequest}
-        postsShareRequest={postsShareRequest}
         postsRestoreArchivedRequest={postsRestoreArchivedRequest}
         handlePostShare={handlePostShare}
         createActionSheetRef={createActionSheetRef}
         actionSheetRef={actionSheetRef}
         navigation={navigation}
+        changeAvatarRequest={changeAvatarRequest}
       />
 
       {post.postType === 'TEXT_ONLY' ?
@@ -116,9 +110,7 @@ const PostComponent = ({
             resizeMode="contain"
             hideLabel={false}
           />
-          {selfFailedPostVisibility ?
-            <VerificationComponent />
-          : null}
+       
           <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
           <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
         </ListItemComponent>
@@ -131,7 +123,6 @@ const PostComponent = ({
       <ActionComponent
         user={user}
         post={post}
-        postsShareRequest={postsShareRequest}
         postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
         postsDislikeRequest={postsDislikeRequest}
         handlePostShare={handlePostShare}
@@ -182,8 +173,6 @@ PostComponent.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
   feedRef: PropTypes.any,
-  postsShareRequest: PropTypes.any,
-  handleEditPress: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,
@@ -201,6 +190,7 @@ PostComponent.propTypes = {
   actionSheetRef: PropTypes.any,
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
+  changeAvatarRequest: PropTypes.func,
 }
 
 export default withTheme(PostComponent)

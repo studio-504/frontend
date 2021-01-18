@@ -29,7 +29,7 @@ const Comments = ({
   postsCommentsGet,
   marginBottom,
   postsSingleGet,
-  onViewableItemsChangedRef,
+  onViewableItemsThumbnailsRef,
   viewabilityConfigRef,
   handleUserReply,
   commentsRef,
@@ -39,6 +39,7 @@ const Comments = ({
   formSubmitDisabled,
   formInitialValues,
   inputRefs,
+  formRef,
 }) => {
   const styling = styles(theme)
   const commentRefs = useRefs({ keyPath: ['commentId'] })
@@ -63,7 +64,7 @@ const Comments = ({
         }
         keyExtractor={item => item.commentId}
         data={pathOr([], ['data'])(postsCommentsGet).reverse()}
-        onViewableItemsChanged={onViewableItemsChangedRef.current}
+        onViewableItemsChanged={onViewableItemsThumbnailsRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
         ListHeaderComponent={(
           <React.Fragment>
@@ -94,7 +95,7 @@ const Comments = ({
           }, 500)
         }}
         renderItem={({ item: comment }) => {
-          const tappable = (
+          const isOwner = (
             path(['postedBy', 'userId'])(postsSingleGet.data) === user.userId ||
             path(['commentedBy', 'userId'])(comment) === user.userId
           )
@@ -106,8 +107,7 @@ const Comments = ({
             commentsFlagRequest({ commentId: comment.commentId })
             commentRefs.getRef(comment).close()
           }
-          const rowProps = tappable ? ({
-            handleReportPress,
+          const rowProps = isOwner ? ({
             handleDeletePress,
           }) : ({
             handleReportPress,
@@ -137,6 +137,7 @@ const Comments = ({
           formSubmitDisabled={formSubmitDisabled}
           formInitialValues={formInitialValues}
           inputRefs={inputRefs}
+          formRef={formRef}
         />
       </View>
     </View>
@@ -175,7 +176,7 @@ Comments.propTypes = {
   postsCommentsGet: PropTypes.any,
   marginBottom: PropTypes.any,
   postsSingleGet: PropTypes.any,
-  onViewableItemsChangedRef: PropTypes.any,
+  onViewableItemsThumbnailsRef: PropTypes.any,
   viewabilityConfigRef: PropTypes.any,
   handleUserReply: PropTypes.any,
   commentsRef: PropTypes.any,
@@ -185,6 +186,7 @@ Comments.propTypes = {
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
   inputRefs: PropTypes.any,
+  formRef: PropTypes.any,
 }
 
 export default withTheme(Comments)

@@ -8,7 +8,7 @@ import Modal from 'react-native-modal'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useSelector } from 'react-redux'
-import * as themeSelector from 'store/ducks/theme/selectors'
+import * as authSelector from 'store/ducks/auth/selectors'
 
 import { withTheme, Paragraph } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
@@ -21,25 +21,24 @@ const ThemeModal = ({
   onApplyClick,
   onDiscardClick,
 }) => {
-  const activeTheme = useSelector(themeSelector.userThemeSelector('black.green'))
-
+  const activeTheme = useSelector(authSelector.themeSelector)
   const styling = styles(theme)
   
   return (
     <Modal isVisible={isVisible}>
-      <View style={styling.root}>
+      <View accessibilityLabel="Theme Modal" style={styling.root}>
         <View style={styling.header}>
           <PaperProvider theme={activeTheme}>
             <View style={styling.action}>
               <Paragraph style={styling.text}>{t('This is preview of selected theme')}</Paragraph>
-            </View>
+            </View> 
 
             <View style={styling.action}>
               <View style={styling.actionItem}>
-                <DefaultButton label={t('Apply Theme')} onPress={onApplyClick} />
+                <DefaultButton accessibilityLabel="Apply Theme"  label={t('Apply Theme')} onPress={onApplyClick} />
               </View>
               <View style={styling.actionItem}>
-                <DefaultButton label={t('Discard Theme')} onPress={onDiscardClick} />
+                <DefaultButton accessibilityLabel="Discard Theme" label={t('Discard Theme')} onPress={onDiscardClick} />
               </View>
             </View>
           </PaperProvider>

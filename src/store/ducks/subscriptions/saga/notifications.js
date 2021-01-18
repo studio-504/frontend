@@ -6,24 +6,24 @@ import * as usersQueries from 'store/ducks/users/queries'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as constants from 'store/ducks/subscriptions/constants'
 import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
+import * as postsSelector from 'store/ducks/posts/selectors'
 
 function* handleEvent({ eventData }) {
   const payload = path(['value', 'data', 'onNotification'], eventData)
-  const userId = path(['userId'], payload)
   const type = path(['type'], payload)
 
   /**
    * Fires when one of the user's followeds changes their first story
    */
   if (type === 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED') {
-    return yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+    return yield put(usersActions.usersGetProfileSelfRequest())
   }
 
   /**
    * Fires when a post is added to User.feed
    */
   if (type === 'USER_FEED_CHANGED') {
-    const postsCreate = yield select((state) => state.posts.postsCreate)
+    const postsCreate = yield select(postsSelector.postsCreate)
 
     if (postsCreate.status !== 'loading') {
       yield put(postsActions.postsFeedGetRequest({ limit: 20 }))

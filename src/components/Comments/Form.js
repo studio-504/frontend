@@ -25,7 +25,6 @@ const CommentsForm = ({
 }) => {
   const styling = styles(theme)
 
-
   return (
     <View style={styling.root}>
       <View style={styling.input}>
@@ -72,9 +71,11 @@ export default withTranslation()(withTheme(({
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
+  formRef,
   ...props
 }) => (
   <Formik
+    innerRef={formRef}
     initialValues={formInitialValues}
     validationSchema={formSchema}
     onSubmit={handleFormSubmit}

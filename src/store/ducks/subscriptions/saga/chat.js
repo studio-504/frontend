@@ -14,20 +14,21 @@ function* chatMessageSubscription() {
     yield take(constants.SUBSCRIPTIONS_MAIN_REQUEST)
 
     try {
-      const { channel, userId } = yield call(createChannel, {
+      const { channel } = yield call(createChannel, {
         query: chatQueries.onChatMessageNotification,
       })
 
       yield fork(function* eventListener() {
         while (true) {
           const event = yield take(channel)
+
           yield fork(function* ({ eventData }) {
             const data = path(['value', 'data', 'onChatMessageNotification'])(eventData)
             const chatId = path(['message', 'chat', 'chatId'])(data)
 
             yield put(chatActions.chatGetChatRequest({ chatId }))
             yield put(chatActions.chatGetChatsRequest())
-            yield put(usersActions.usersGetProfileSelfRequest({ userId }))
+            yield put(usersActions.usersGetProfileSelfRequest())
           }, event)
         }
       })

@@ -7,7 +7,6 @@ import {
 import FormComponent from 'components/AuthSigninPhone/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
@@ -16,10 +15,9 @@ import testIDs from './test-ids'
 
 const AuthSigninPhone = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleErrorClose,
-  formSubmitting,
+  formSubmitLoading,
+  formSubmitDisabled,
   formInitialValues,
 }) => {
   const styling = styles
@@ -27,13 +25,6 @@ const AuthSigninPhone = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Welcome Back!')}
@@ -43,13 +34,14 @@ const AuthSigninPhone = ({
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            formSubmitting={formSubmitting}
+            formSubmitLoading={formSubmitLoading}
+            formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
           />
         </View>
       </View>
 
-      <AuthActionTemplate onPress={navigationActions.navigateForgot(navigation)}>
+      <AuthActionTemplate onPress={() => navigationActions.navigateForgot(navigation)}>
         {t('Reset your Password')}
       </AuthActionTemplate>
     </View>
@@ -71,16 +63,10 @@ const styles = StyleSheet.create({
 
 AuthSigninPhone.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
-  handleErrorClose: PropTypes.any,
-  formSubmitting: PropTypes.bool,
+  formSubmitLoading: PropTypes.any,
+  formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,
-}
-
-AuthSigninPhone.defaultProps = {
-  formSubmitting: false,
 }
 
 export default withTranslation()(AuthSigninPhone)

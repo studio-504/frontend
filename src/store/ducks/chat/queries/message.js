@@ -18,7 +18,9 @@ export const chatMessageFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
     photo {
       ...userImageFragment
     }

@@ -18,7 +18,9 @@ export const singleUserFragment = `
     userId
     username
     fullName
+    displayName
     themeCode
+    subscriptionLevel
   }
 
   fragment userStoryFragment on Post {
@@ -47,6 +49,8 @@ export const singleUserFragment = `
   fragment singleUserFragment on User {
     userId
     username
+    userStatus
+    datingStatus
     privacyStatus
     followedStatus
     followerStatus
@@ -60,6 +64,7 @@ export const singleUserFragment = `
     verificationHidden
     postCount
     fullName
+    displayName
     themeCode
     bio
     email
@@ -70,6 +75,7 @@ export const singleUserFragment = `
     blockedStatus
     blockerStatus
     chatsWithUnviewedMessagesCount
+    subscriptionLevel
 
     photo {
       ...userImageFragment

@@ -12,23 +12,25 @@ import UserRowComponent from 'templates/UserRow'
 import ThemeRowActionComponent from 'templates/ThemeRowAction'
 import path from 'ramda/src/path'
 import ThemeAvatar from 'templates/ThemeAvatar'
+import themesJson from 'assets/themes.json'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+
+const DEFAULT_THEME = 'white.green'
 
 const Theme = ({
   t,
   theme,
   user,
-  themeFetch,
-  themePreviewRequest,
-  themePreviewIdle,
+  appThemePreviewRequest,
+  appThemePreviewUpdate,
 }) => {
   const styling = styles(theme)
   
   return (
     <ScrollView style={styling.root}>
-      <RowsComponent items={path(['data'])(themeFetch)}>
+      <RowsComponent items={themesJson}>
         {(theme) => (
           <RowsItemComponent>
             <UserRowComponent
@@ -57,8 +59,8 @@ const Theme = ({
               action={
                 <ThemeRowActionComponent
                   enabled={user.themeCode === theme.key}
-                  onEnablePress={() => themePreviewRequest({ name: theme.key, theme: theme.theme })}
-                  onDisablePress={themePreviewIdle}
+                  onEnablePress={() => appThemePreviewRequest(theme)}
+                  onDisablePress={() => appThemePreviewUpdate(DEFAULT_THEME)}
                 />
               }
             />
@@ -84,9 +86,8 @@ Theme.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
   user: PropTypes.any,
-  themeFetch: PropTypes.any,
-  themePreviewRequest: PropTypes.any,
-  themePreviewIdle: PropTypes.any,
+  appThemePreviewRequest: PropTypes.func,
+  appThemePreviewUpdate: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(Theme))

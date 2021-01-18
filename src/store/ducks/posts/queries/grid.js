@@ -17,16 +17,19 @@ export const gridPostFragment = `
   fragment postUserFragment on User {
     userId
     username
+    datingStatus
     viewCountsHidden
     commentsDisabled
     likesDisabled
     sharingDisabled
     verificationHidden
     fullName
+    displayName
     themeCode
     bio
     blockedStatus
     blockerStatus
+    subscriptionLevel
 
     photo {
       ...imageFragment
@@ -35,6 +38,7 @@ export const gridPostFragment = `
 
   fragment gridPostFragment on Post {
     postId
+    isVerified
     postStatus
     postType
     postedAt

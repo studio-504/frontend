@@ -6,42 +6,28 @@ import {
 } from 'react-native'
 import FormComponent from 'components/AuthUsername/Form'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 
 import { withTranslation } from 'react-i18next'
 import testIDs from './test-ids'
 
 const AuthUsername = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
 }) => {
-  const styling = styles
-
   return (
-    <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
-      <View style={styling.component}>
+    <View testID={testIDs.root} style={styles.root}>
+      <View style={styles.component}>
         <AuthHeaderTemplate
           title={t('Grab Your Username!')}
           subtitle={t('You can always change it later')}
         />
 
-        <View style={styling.content}>
+        <View style={styles.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -55,6 +41,7 @@ const AuthUsername = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingTop: 50,
   },
   component: {
     paddingHorizontal: 24,
@@ -67,10 +54,7 @@ const styles = StyleSheet.create({
 
 AuthUsername.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

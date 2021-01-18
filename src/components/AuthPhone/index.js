@@ -7,7 +7,6 @@ import {
 import FormComponent from 'components/AuthPhone/Form'
 import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-import AuthErrorTemplate from 'templates/Auth/Error'
 import * as navigationActions from 'navigation/actions'
 
 import { useNavigation } from '@react-navigation/native'
@@ -16,10 +15,7 @@ import testIDs from './test-ids'
 
 const AuthPhone = ({
   t,
-  formErrorMessage,
   handleFormSubmit,
-  handleFormTransform,
-  handleErrorClose,
   formSubmitLoading,
   formSubmitDisabled,
   formInitialValues,
@@ -29,13 +25,6 @@ const AuthPhone = ({
 
   return (
     <View testID={testIDs.root} style={styling.root}>
-      {formErrorMessage ?
-        <AuthErrorTemplate
-          text={formErrorMessage}
-          onClose={handleErrorClose}
-        />
-      : null}
-
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Signup with Phone Number')}
@@ -45,7 +34,6 @@ const AuthPhone = ({
         <View style={styling.content}>
           <FormComponent
             handleFormSubmit={handleFormSubmit}
-            handleFormTransform={handleFormTransform}
             formSubmitLoading={formSubmitLoading}
             formSubmitDisabled={formSubmitDisabled}
             formInitialValues={formInitialValues}
@@ -53,7 +41,7 @@ const AuthPhone = ({
         </View>
       </View>
 
-      <AuthActionTemplate onPress={navigationActions.navigateAuthEmail(navigation)}>
+      <AuthActionTemplate onPress={() => navigationActions.navigateAuthEmail(navigation)}>
         {t('Signup with Email Address')}
       </AuthActionTemplate>
     </View>
@@ -75,10 +63,7 @@ const styles = StyleSheet.create({
 
 AuthPhone.propTypes = {
   t: PropTypes.any,
-  formErrorMessage: PropTypes.any,
   handleFormSubmit: PropTypes.any,
-  handleFormTransform: PropTypes.any,
-  handleErrorClose: PropTypes.any,
   formSubmitLoading: PropTypes.any,
   formSubmitDisabled: PropTypes.any,
   formInitialValues: PropTypes.any,

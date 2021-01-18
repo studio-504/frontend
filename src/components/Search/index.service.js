@@ -16,8 +16,8 @@ const SearchService = ({ children }) => {
   const usersUnfollow = useSelector(state => state.users.usersUnfollow)
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
-  const themeFetch = useSelector(state => state.theme.themeFetch)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
+  const trendingFilters = postsGetTrendingPosts.filters
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
@@ -25,12 +25,31 @@ const SearchService = ({ children }) => {
   const feedRef = useRef(null)
   useScrollToTop(feedRef)
 
+  const scrollToTop = () => {
+    try {
+      feedRef.current.scrollToOffset({ animated: true, offset: 0 })
+    } catch(error) {
+      // ignore
+    }
+  }
+
   const usersSearchRequest = ({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
     dispatch(usersActions.usersUnfollowIdle({}))
     dispatch(usersActions.usersSearchRequest({ searchToken: toLower(searchToken || '') }))
   }
 
+  /**
+   * Trending Filters
+   */
+  const postsGetTrendingPostsRequest = () => dispatch(postsActions.postsGetTrendingPostsRequest())
+
+  const handleFilterChange = (filters) => {
+    dispatch(postsActions.postsGetTrendingPostsChangeFilters(filters))
+    postsGetTrendingPostsRequest()
+    scrollToTop()
+  }
+    
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
   
@@ -39,16 +58,12 @@ const SearchService = ({ children }) => {
   
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
-
-  const postsGetTrendingPostsRequest = () =>
-    dispatch(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
   
   const postsGetTrendingPostsMoreRequest = (payload) =>
-    dispatch(postsActions.postsGetTrendingPostsMoreRequest(payload))
+    dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload }))
 
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
-    // dispatch(postsActions.postsGetTrendingPostsRequest({ limit: 30 }))
   }, [])
 
   /**
@@ -64,7 +79,6 @@ const SearchService = ({ children }) => {
   return children({
     feedRef,
     user,
-    themeFetch,
     usersSearch,
     usersSearchRequest,
     usersFollow,
@@ -74,13 +88,15 @@ const SearchService = ({ children }) => {
     usersAcceptFollowerUser,
     usersAcceptFollowerUserRequest,
     usersGetTrendingUsers,
-    postsGetTrendingPostsRequest,
     postsGetTrendingPosts,
     postsGetTrendingPostsMoreRequest,
     formFocus,
     handleFormFocus,
     formChange,
     handleFormChange,
+    handleFilterChange,
+    trendingFilters,
+    postsGetTrendingPostsRequest,
   })
 }
 

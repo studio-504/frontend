@@ -1,30 +1,33 @@
 import React from 'react'
 import { renderWithProviders, fireEvent } from 'tests/utils'
 import ProfilePhoto from 'components/ProfilePhoto'
-import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
-import { confirm } from 'components/Settings/helpers'
+import CircleAvatar from 'templates/CircleAvatar'
+import { confirm } from 'components/Alert'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
-jest.mock('components/ProfilePhotoUpload/Photo', () => jest.fn().mockReturnValue(null))
-jest.mock('components/Settings/helpers', () => ({ confirm: jest.fn() }))
+jest.mock('templates/CircleAvatar', () => jest.fn().mockReturnValue(null))
+jest.mock('components/Alert', () => ({ confirm: jest.fn() }))
 
 const handleLibrarySnap = jest.fn()
-const handleCameraSnap = jest.fn()
+const navigateCamera = jest.fn()
 const handleSkipUpload = jest.fn()
+const openUploadAvatarMenu = jest.fn()
 
 const requiredProps = {
   handleLibrarySnap,
-  handleCameraSnap,
+  navigateCamera,
   handleSkipUpload,
+  openUploadAvatarMenu,
 }
 
-const setup = () => renderWithProviders(<ProfilePhoto {...requiredProps} />)
+const setup = (props) => renderWithProviders(<ProfilePhoto {...requiredProps} {...props} />)
 
-describe('Profile Photo screen', () => {
+describe('Profile Picture screen', () => {
   afterEach(() => {
     handleLibrarySnap.mockClear()
-    handleCameraSnap.mockClear()
+    navigateCamera.mockClear()
     handleSkipUpload.mockClear()
+    openUploadAvatarMenu.mockClear()
     confirm.mockClear()
   })
 
@@ -34,7 +37,7 @@ describe('Profile Photo screen', () => {
     getByText('Add an Unmodified Profile Picture')
     getByText('Our AI detects photoshop & filters')
 
-    expect(PhotoComponent).toHaveBeenCalled()
+    expect(CircleAvatar).toHaveBeenCalled()
   })
 
   it('Skip Photo Upload', () => {
@@ -45,7 +48,7 @@ describe('Profile Photo screen', () => {
   })
 
   it('Take a Photo', () => {
-    const { getByText  } = setup()
+    const { getByText } = setup()
 
     fireEvent.press(getByText('Take a Photo'))
     expect(confirm).toHaveBeenCalled()
@@ -53,11 +56,11 @@ describe('Profile Photo screen', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()
-    expect(handleCameraSnap).toHaveBeenCalled()
+    expect(navigateCamera).toHaveBeenCalled()
   })
 
   it('Choose From Gallery', () => {
@@ -69,10 +72,18 @@ describe('Profile Photo screen', () => {
     const { onConfirm, ...props } = confirm.mock.calls[0][0]
     expect(props).toEqual({
       desc: 'Your photo will be uploaded as post',
-      title: 'Profile Photo Upload',
+      title: 'Profile Picture Upload',
     })
 
     onConfirm()
     expect(handleLibrarySnap).toHaveBeenCalled()
+  })
+
+  it('Change Profile Picture', () => {
+    const { getByText } = setup({ isAvatarEmpty: false })
+
+    fireEvent.press(getByText('Change Profile Picture'))
+
+    expect(openUploadAvatarMenu).toHaveBeenCalled()
   })
 })
