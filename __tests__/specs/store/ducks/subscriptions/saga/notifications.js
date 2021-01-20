@@ -5,15 +5,14 @@ import * as matchers from 'redux-saga-test-plan/matchers'
 import subscriptionNotificationStart from 'store/ducks/subscriptions/saga/notifications'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import { checkInternetConnection } from 'react-native-offline'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
+import { sleep } from 'tests/utils'
 
 const AwsAPI = { graphql: jest.fn() }
 const subscription = { subscribe: jest.fn(), unsubscribe: jest.fn() }
 const unsubscribe = jest.fn()
 const store = { auth: { user: 'user-id' } }
 
-checkInternetConnection.mockReturnValue(true)
 subscription.subscribe.mockReturnValue({ _state: 'ready', unsubscribe })
 AwsAPI.graphql.mockReturnValue(subscription)
 
@@ -30,144 +29,90 @@ describe('subscriptionNotificationStart', () => {
   afterEach(() => {
     AwsAPI.graphql.mockClear()
     subscription.subscribe.mockClear()
-    checkInternetConnection.mockClear()
     unsubscribe.mockClear()
   })
 
-  describe('Connection state', () => {
-    it('connect', () => {
-      return createSaga(store)
-        .put(subscriptionsActions.subscriptionsMainConnect({ data: 'onNotification' }))
-        .silentRun()
-    })
-
-    it('pending', () => {
-      return createSaga(store)
-        .put(subscriptionsActions.subscriptionsMainPending({ data: 'onNotification' }))
-        .silentRun()
-    })
-
-    it('disconnect', () => {
-      subscription.subscribe.mockReturnValueOnce({ _state: 'closed' })
-
-      return createSaga(store)
-        .put(subscriptionsActions.subscriptionsMainDisconnect({ data: 'onNotification' }))
-        .silentRun()
-    })
-  })
-
-  describe('Close channel', () => {
-    it('on idle action', async () => {
-      await createSaga(store)
-        .put(subscriptionsActions.subscriptionsMainDisconnect({ data: 'onNotification' }))
-        .dispatch(subscriptionsActions.subscriptionsMainIdle())
-        .silentRun()
-
-      expect(unsubscribe).toHaveBeenCalled()
-    })
-
-    it('on error event', () => {
-      const promise = createSaga(store)
-        .put(subscriptionsActions.subscriptionsMainDisconnect({ data: 'onNotification' }))
-        .silentRun()
-
-      const { error } = subscription.subscribe.mock.calls[0][0]
-      error()
-
-      expect(unsubscribe).toHaveBeenCalled()
-
-      return promise
-    })
-  })
-
   describe('Backend events', () => {
-    it('USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', () => {
-      const saga = createSaga(store)
-      const userId = 1
-      const event = { type: 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', userId }
-
-      saga.put(usersActions.usersGetProfileSelfRequest())
-
-      const promise = saga.silentRun()
-
+    const userId = 1
+    const applyAction = (event) => {
       const { next } = subscription.subscribe.mock.calls[0][0]
       next({ value: { data: { onNotification: event } } })
+    }
 
-      return promise
+    it('USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', async () => {
+      const promise = createSaga(store)
+        .put(usersActions.usersGetProfileSelfRequest())
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
+
+      await sleep()
+      applyAction({ type: 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', userId })
+
+      await promise
     })
 
-    it('USER_FEED_CHANGED (refresh feed when uploading is not in progress)', () => {
+    it('USER_FEED_CHANGED (refresh feed when uploading is not in progress)', async () => {
       const state = { ...store, posts: { postsCreate: { status: 'idle' } } }
-      const saga = createSaga(state)
-      const userId = 1
-      const event = { type: 'USER_FEED_CHANGED', userId }
+      const promise = createSaga(state)
+        .put(postsActions.postsFeedGetRequest({ limit: 20 }))
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
 
-      saga.put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      await sleep()
+      applyAction({ type: 'USER_FEED_CHANGED', userId })
 
-      const promise = saga.silentRun()
-
-      const { next } = subscription.subscribe.mock.calls[0][0]
-      next({ value: { data: { onNotification: event } } })
-
-      return promise
+      await promise
     })
 
-    it('USER_FEED_CHANGED (don`t refresh feed when uploading is in progress)', () => {
+    it('USER_FEED_CHANGED (don`t refresh feed when uploading is in progress)', async () => {
       const state = { ...store, posts: { postsCreate: { status: 'loading' } } }
-      const saga = createSaga(state)
-      const userId = 1
-      const event = { type: 'USER_FEED_CHANGED', userId }
+      const promise = createSaga(state)
+        .not.put(postsActions.postsFeedGetRequest({ limit: 20 }))
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
 
-      saga.not.put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      await sleep()
+      applyAction({ type: 'USER_FEED_CHANGED', userId })
 
-      const promise = saga.silentRun()
-
-      const { next } = subscription.subscribe.mock.calls[0][0]
-      next({ value: { data: { onNotification: event } } })
-
-      return promise
+      await promise
     })
 
-    it('USER_FOLLOWED_USERS_WITH_STORIES_CHANGED', () => {
-      const saga = createSaga(store)
-      const event = { type: 'USER_FOLLOWED_USERS_WITH_STORIES_CHANGED', postId: 1 }
+    it('USER_FOLLOWED_USERS_WITH_STORIES_CHANGED', async () => {
+      const promise = createSaga(store)
+        .put(usersActions.usersGetFollowedUsersWithStoriesRequest({}))
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
 
-      saga.put(usersActions.usersGetFollowedUsersWithStoriesRequest({}))
+      await sleep()
+      applyAction({ type: 'USER_FOLLOWED_USERS_WITH_STORIES_CHANGED', postId: 1 })
 
-      const promise = saga.silentRun()
-
-      const { next } = subscription.subscribe.mock.calls[0][0]
-      next({ value: { data: { onNotification: event } } })
-
-      return promise
+      await promise
     })
 
-    it('POST_COMPLETED', () => {
-      const saga = createSaga(store)
+    it('POST_COMPLETED', async () => {
       const event = { type: 'POST_COMPLETED', postId: 1 }
+      const promise = createSaga(store)
+        .put(subscriptionsActions.subscriptionsPostCompleted(event))
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
 
-      saga.put(subscriptionsActions.subscriptionsPostCompleted(event))
+      await sleep()
+      applyAction(event)
 
-      const promise = saga.silentRun()
-
-      const { next } = subscription.subscribe.mock.calls[0][0]
-      next({ value: { data: { onNotification: event } } })
-
-      return promise
+      await promise
     })
 
-    it('POST_ERROR', () => {
-      const saga = createSaga(store)
+    it('POST_ERROR', async () => {
       const event = { type: 'POST_ERROR', postId: 1 }
+      const promise = createSaga(store)
+        .put(subscriptionsActions.subscriptionsPostError(event))
+        .dispatch(subscriptionsActions.subscriptionsMainRequest())
+        .silentRun()
 
-      saga.put(subscriptionsActions.subscriptionsPostError(event))
+      await sleep()
+      applyAction(event)
 
-      const promise = saga.silentRun()
-
-      const { next } = subscription.subscribe.mock.calls[0][0]
-      next({ value: { data: { onNotification: event } } })
-
-      return promise
+      await promise
     })
   })
 })

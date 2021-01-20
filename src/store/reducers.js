@@ -11,7 +11,6 @@ import chat from 'store/ducks/chat/reducer'
 import users from 'store/ducks/users/reducer'
 import cache from 'store/ducks/cache/reducer'
 import entities from 'store/ducks/entities/reducer'
-import subscriptions from 'store/ducks/subscriptions/reducer'
 import contacts from 'store/ducks/contacts/reducer'
 import dating from 'store/ducks/dating/reducer'
 import { reducer as network } from 'react-native-offline'
@@ -97,7 +96,6 @@ const appReducer = combineReducers({
   dating,
   cache,
   entities,
-  subscriptions,
 })
 
 const rootReducer = (state, action) => {

@@ -8,7 +8,6 @@ import * as chat from 'store/ducks/chat/reducer'
 import * as users from 'store/ducks/users/reducer'
 import * as cache from 'store/ducks/cache/reducer'
 import * as entities from 'store/ducks/entities/reducer'
-import * as subscriptions from 'store/ducks/subscriptions/reducer'
 import * as contacts from 'store/ducks/contacts/reducer'
 import * as dating from 'store/ducks/dating/reducer'
 import rootReducer from 'store/reducers'
@@ -33,7 +32,6 @@ const initialState = {
   dating: dating.initialState,
   cache: cache.initialState,
   entities: entities.initialState,
-  subscriptions: subscriptions.initialState,
 }
 
 const data = { 1: { id: 1 }, 2: { id: 2 } }
