@@ -1,4 +1,4 @@
-import { put, take, race, takeEvery, select } from 'redux-saga/effects'
+import { put, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as errors from 'store/ducks/auth/errors'
@@ -6,7 +6,6 @@ import pathOr from 'ramda/src/pathOr'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
-import { authUserSelector } from 'store/ducks/auth/selectors'
 
 function hasAuthenticatedCondition({ dataSuccess }) {
   const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
@@ -45,6 +44,7 @@ function* handleAuthFlowRequest(payload = {}) {
     meta: {
       authenticated: hasAuthenticatedCondition({ dataSuccess }),
       authProvider: path(['authProvider'], payload),
+      userExists: path(['userExists'], payload),
     },
     data: {
       authToken: tokenSuccess.payload,
@@ -86,11 +86,10 @@ function* authFlowSuccess(req) {
   yield put(actions.authPrefetchRequest()) 
 
   const navigation = yield NavigationService.getNavigation()
-  const authUser = yield select(authUserSelector)
   const authProvider = path(['payload', 'meta', 'authProvider'], req)
-  const hasUsername = !!path(['username'], authUser)
+  const userExists = path(['payload', 'meta', 'userExists'], req)
 
-  if (['APPLE', 'GOOGLE'].includes(authProvider) && !hasUsername) {
+  if (['APPLE', 'GOOGLE'].includes(authProvider) && !userExists) {
     navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
   } else {
     navigationActions.navigateResetToApp(navigation) 
