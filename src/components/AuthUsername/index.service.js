@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
+import path from 'ramda/src/path'
 import * as signupActions from 'store/ducks/signup/actions'
+import { useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Validation from 'services/Validation'
 
 const AuthUsernameComponentService = ({ children }) => {
   const dispatch = useDispatch()
-
+  const route = useRoute()
   const signupUsername = useSelector(state => state.signup.signupUsername)
 
   const handleFormTransform = (values) => ({
@@ -16,7 +18,10 @@ const AuthUsernameComponentService = ({ children }) => {
     const nextValues = handleFormTransform(values)
     formApi.setValues(nextValues)
 
-    dispatch(signupActions.signupUsernameRequest(nextValues))
+    dispatch(signupActions.signupUsernameRequest({
+      username: path(['username'], nextValues), 
+      nextRoute: path(['params', 'nextRoute'], route),
+    }))
   }
 
   useEffect(() => {

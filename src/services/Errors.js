@@ -1,7 +1,19 @@
 import pathOr from 'ramda/src/pathOr'
 
-const DEFAULT_ERROR_MESSAGE = 'Oops! Something went wrong'
-export const getErrorMessage = pathOr(DEFAULT_ERROR_MESSAGE, ['payload', 'message', 'text'])
+export const MESSAGES = {
+  CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
+  DEFAULT: 'Oops! Something went wrong',
+}
+
+export const getErrorMessage = (action) => {
+  const message = pathOr(MESSAGES.DEFAULT, ['payload', 'message'], action)
+
+  if (typeof message === 'string') {
+    return message
+  } else {
+    return pathOr(MESSAGES.DEFAULT, ['text'], message)
+  }
+}
 
 const CODES = {
   CANCEL_REQUEST_ON_SIGNOUT_ERROR: 'CANCEL_REQUEST_ON_SIGNOUT_ERROR',
