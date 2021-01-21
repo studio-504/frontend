@@ -21,6 +21,7 @@ describe('Auth flow', () => {
     const tokenSuccess = { a: 1 }
     const dataSuccess = { b: 2 }
     const authProvider = 'GOOGLE'
+    const userExists = false
 
     it('success', async () => {
       await setupSaga()
@@ -30,11 +31,11 @@ describe('Auth flow', () => {
           actions.authFlowSuccess({
             message: { code: 'GENERIC', text: 'Auth flow completed', nativeError: '' },
             data: { authToken: tokenSuccess, authData: dataSuccess },
-            meta: { authenticated: false, authProvider: 'GOOGLE' },
+            meta: { authenticated: false, authProvider: 'GOOGLE', userExists },
           }),
         )
 
-        .dispatch(actions.authFlowRequest({ allowAnonymous, authProvider }))
+        .dispatch(actions.authFlowRequest({ allowAnonymous, authProvider, userExists }))
         .dispatch(actions.authTokenSuccess(tokenSuccess))
         .dispatch(actions.authDataSuccess(dataSuccess))
         .silentRun()
@@ -119,13 +120,14 @@ describe('Auth flow', () => {
     })
 
     describe('redirect to app home', () => {
+      const userExists = true
       const user = { userId: '1', username: 'username' }
       const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
 
       it('google flow and has username', async () => {
         await setupSaga()
           .withState(authorizedState)
-          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'GOOGLE' } }))
+          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'GOOGLE', userExists } }))
           .silentRun()
 
         expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -134,7 +136,7 @@ describe('Auth flow', () => {
       it('apple flow and has username', async () => {
         await setupSaga()
           .withState(authorizedState)
-          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'APPLE' } }))
+          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'APPLE', userExists } }))
           .silentRun()
 
         expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -143,7 +145,7 @@ describe('Auth flow', () => {
       it('cognito flow', async () => {
         await setupSaga()
           .withState(authorizedState)
-          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'COGNITO' } }))
+          .dispatch(actions.authFlowSuccess({ meta: { authProvider: 'COGNITO', userExists } }))
           .silentRun()
 
         expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })

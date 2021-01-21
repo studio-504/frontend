@@ -65,7 +65,7 @@ function* handleAuthSigninGoogleRequest() {
   }
 
   yield call(googleAuthenticateExisting, userPayload)
-  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'GOOGLE' }))
+  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'GOOGLE', userExists }))
 
   yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
