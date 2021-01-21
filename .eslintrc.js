@@ -61,6 +61,7 @@ module.exports = {
           'testField',
           'testNavigate',
           'testEntitiesMerge',
+          'setupSaga',
         ],
       },
     ],
