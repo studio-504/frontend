@@ -65,7 +65,6 @@ export const initialState = {
     nextRoute: null,
   },
   authSigninApple: {
-    data: [],
     status: 'idle',
     error: {},
     message: {},
@@ -275,7 +274,6 @@ const authSigninAppleRequest = (state) => update(state, {
 const authSigninAppleSuccess = (state, action) => update(state, {
   authSigninApple: {
     message: { $set: action.payload.message },
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -290,7 +288,6 @@ const authSigninAppleFailure = (state, action) => update(state, {
 
 const authSigninAppleIdle = (state) => update(state, {
   authSigninApple: {
-    data: { $set: initialState.authSigninApple.data },
     status: { $set: 'idle' },
     error: { $set: initialState.authSigninApple.error },
     message: { $set: initialState.authSigninApple.message },
