@@ -1,9 +1,6 @@
-import appleAuth, {
-  AppleAuthRequestOperation,
-  AppleAuthRequestScope,
-  AppleAuthCredentialState,
-} from '@invertase/react-native-apple-authentication'
+import { appleAuth } from '@invertase/react-native-apple-authentication'
 import jwt from 'jwt-decode'
+import pathOr from 'ramda/src/pathOr'
 
 class AppleCredentialsError extends Error {
   constructor(...args) {
@@ -13,14 +10,21 @@ class AppleCredentialsError extends Error {
 }
 
 /**
- * Generate expiry time which is 50mins
+ * Generate expiry time which is 50 mins
  */
 const generateTokenExpiry = () => Math.floor(Date.now() / 1000 + 60 * 1000 * 50)
 
+export const getFullname = payload => {
+  const familyName = pathOr('', ['fullName', 'familyName'], payload)
+  const givenName = pathOr('', ['fullName', 'givenName'], payload)
+
+  return [givenName, familyName].filter(i => Boolean(i)).join(' ')
+}
+
 export const signin = async () => {
   const appleAuthRequestResponse = await appleAuth.performRequest({
-    requestedOperation: AppleAuthRequestOperation.LOGIN,
-    requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
   })
 
   // get current authentication state for user
@@ -28,7 +32,7 @@ export const signin = async () => {
   const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user)
 
   // use credentialState response to ensure the user is authenticated
-  if (credentialState !== AppleAuthCredentialState.AUTHORIZED) {
+  if (credentialState !== appleAuth.State.AUTHORIZED) {
     throw new AppleCredentialsError('Invalid apple signin credentials state')
   }
 
@@ -40,14 +44,15 @@ export const signin = async () => {
     user: {
       id: appleAuthRequestResponse.user,
       email: payload.email,
+      fullName: getFullname(appleAuthRequestResponse),
     },
   }
 }
 
 export const refresh = async () => {
   const appleAuthRequestResponse = await appleAuth.performRequest({
-    requestedOperation: AppleAuthRequestOperation.REFRESH,
-    requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+    requestedOperation: appleAuth.Operation.REFRESH,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
   })
 
   // get current authentication state for user
@@ -55,7 +60,7 @@ export const refresh = async () => {
   const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user)
 
   // use credentialState response to ensure the user is authenticated
-  if (credentialState !== AppleAuthCredentialState.AUTHORIZED) {
+  if (credentialState !== appleAuth.State.AUTHORIZED) {
     throw new AppleCredentialsError('Invalid apple signin credentials state')
   }
 
@@ -73,7 +78,7 @@ export const refresh = async () => {
 
 export const signout = async () => {
   await appleAuth.performRequest({
-    requestedOperation: AppleAuthRequestOperation.LOGOUT,
-    requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+    requestedOperation: appleAuth.Operation.LOGOUT,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
   })
 }

@@ -10,11 +10,11 @@ import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
 
 function* getApplePayload() {
-  const apple = yield federatedAppleSignin()
+  const apple = yield call(federatedAppleSignin)
 
   const userPayload = {
     id: apple.user.id,
-    name: apple.user.name,
+    fullName: apple.user.fullName,
     email: apple.user.email,
     authProvider: 'APPLE',
     token: apple.token,
@@ -36,6 +36,14 @@ function* appleAuthenticateExisting(userPayload) {
   }, userPayload)
 }
 
+function* setFullname(fullName) {
+  try {
+    yield call([queryService, 'apiRequest'], queries.setFullname, { fullName })
+  } catch (error) {
+    // ignore
+  }
+}
+
 /**
  *
  */
@@ -46,7 +54,7 @@ function* createAnonymousUser(userPayload) {
     // ignore
   } finally {
     yield call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
-    yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
+    yield call(setFullname, userPayload.fullName)
   }
 }
 
@@ -59,12 +67,16 @@ function* handleAuthAppleRequest() {
   } 
 
   yield call(appleAuthenticateExisting, userPayload)
-  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE' }))
+  yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))
 
-  yield race({
+  const { flowFailure } = yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
     flowFailure: take(constants.AUTH_FLOW_FAILURE),
   })
+
+  if (flowFailure) {
+    throw new Error('Failed to obtain flow')
+  }
 }
 
 /**
@@ -72,10 +84,9 @@ function* handleAuthAppleRequest() {
  */
 function* authSigninAppleRequest(req) {
   try {
-    const data = yield handleAuthAppleRequest(req.payload)
+    yield handleAuthAppleRequest(req.payload)
     yield put(actions.authSigninAppleSuccess({
       message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_SUCCESS, 'GENERIC'),
-      data,
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
