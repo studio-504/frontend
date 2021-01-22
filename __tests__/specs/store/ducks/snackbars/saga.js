@@ -52,7 +52,11 @@ describe('Snackbars saga', () => {
 
   describe('prevent show a message', () => {
     it('anonymous user', async () => {
+      const user = { userId: '1', username: 'username', userStatus: 'ANONYMOUS' }
+      const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
+
       await expectSaga(testAsRootSaga(snackbars))
+        .withState(authorizedState)
         .not.call(showMessage, defaultMessage)
         .dispatch({ type: 'ACTION_FAILURE' })
         .silentRun()

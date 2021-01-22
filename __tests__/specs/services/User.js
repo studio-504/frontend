@@ -8,4 +8,12 @@ describe('UserService', () => {
     expect(UserService.isUserActive({ userStatus: undefined })).toBeFalsy()
     expect(UserService.isUserActive({ userStatus: 'ACTIVE' })).toBeTruthy()
   })
+
+  it('isUserAnonymous', () => {
+    expect(UserService.isUserAnonymous()).toBeFalsy()
+    expect(UserService.isUserAnonymous(undefined)).toBeFalsy()
+    expect(UserService.isUserAnonymous({})).toBeFalsy()
+    expect(UserService.isUserAnonymous({ userStatus: undefined })).toBeFalsy()
+    expect(UserService.isUserAnonymous({ userStatus: 'ANONYMOUS' })).toBeTruthy()
+  })
 })

@@ -10,3 +10,4 @@ export const hasActiveStories = compose(
 )
 
 export const isUserActive = compose(equals('ACTIVE'), pathOr({}, ['userStatus']))
+export const isUserAnonymous = compose(equals('ANONYMOUS'), pathOr({}, ['userStatus']))
