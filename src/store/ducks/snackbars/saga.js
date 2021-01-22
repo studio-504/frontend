@@ -31,7 +31,7 @@ function* captureErrors(action) {
       message.type === ErrorsService.TYPES.NATIVE,
       message.text === ErrorsService.MESSAGES.CANCEL_REQUEST_ON_SIGNOUT,
       BLACKLIST.includes(action.type),
-      !UserService.isUserActive(authUser),
+      UserService.isUserAnonymous(authUser),
     ]
 
     if (preventShowMessage.includes(true)) return
