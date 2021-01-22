@@ -1,4 +1,5 @@
 import { navigateToPath, pushToPath } from 'navigation/helpers'
+import * as UserService from 'services/User'
 
 const withAuthValidation = (callback) => {
   return (navigation, params = {}, meta = {}) => {
@@ -7,7 +8,7 @@ const withAuthValidation = (callback) => {
         return callback(navigation, params)
       }
 
-      if (meta.user && meta.user.userStatus === 'ACTIVE') {
+      if (UserService.isUserActive(meta.user)) {
         return callback(navigation, params)
       }
 

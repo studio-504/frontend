@@ -1,17 +1,34 @@
-import pathOr from 'ramda/src/pathOr'
+import path from 'ramda/src/path'
 
 export const MESSAGES = {
   CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
   DEFAULT: 'Oops! Something went wrong',
 }
 
+export const TYPES = {
+  NATIVE: 'NATIVE',
+  CUSTOM: 'CUSTOM',
+  DEFAULT: 'DEFAULT',
+}
+
 export const getErrorMessage = (action) => {
-  const message = pathOr(MESSAGES.DEFAULT, ['payload', 'message'], action)
+  const message = path(['payload', 'message'], action)
 
   if (typeof message === 'string') {
-    return message
+    return {
+      type: TYPES.NATIVE,
+      text: message,
+    }
+  } else if (typeof path(['text'], message) === 'string') {
+    return {
+      type: TYPES.CUSTOM,
+      text: message.text,
+    }
   } else {
-    return pathOr(MESSAGES.DEFAULT, ['text'], message)
+    return {
+      type: TYPES.DEFAULT,
+      text: MESSAGES.DEFAULT,
+    }
   }
 }
 
