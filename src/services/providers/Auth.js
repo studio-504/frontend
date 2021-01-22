@@ -6,6 +6,7 @@ import * as postsActions from 'store/ducks/posts/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import useAppState from 'services/AppState'
+import * as UserService from 'services/User'
 
 export const AuthContext = React.createContext({})
 
@@ -19,7 +20,7 @@ export const AuthProvider = ({
   const user = useSelector(authSelector.authUserSelector)
   const [swipeDisabled, setSwipeDisabled] = useState(false)
   
-  const isUserActive = user.userStatus === 'ACTIVE'
+  const isUserActive = UserService.isUserActive(user)
   const swipeEnabled = isUserActive && !swipeDisabled
 
   /**
