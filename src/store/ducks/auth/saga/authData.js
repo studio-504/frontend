@@ -14,6 +14,7 @@ import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 import Config from 'react-native-config'
 import { entitiesMerge } from 'store/ducks/entities/saga'
+import * as UserService from 'services/User'
 
 const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
 
@@ -109,13 +110,14 @@ function* onlineData() {
  */
 function* cachedData() {
   const response = yield getAuthUserPersist()
+  const self = path(['data', 'self'], response)
 
-  if (!path(['data', 'self', 'userId'])(response)) {
+  if (!path(['userId'])(self)) {
     throw new MissingUserAttributeError()
   }
 
   // temporary check to only return active user data
-  if (path(['data', 'self', 'userStatus'])(response) !== 'ACTIVE') {
+  if (!UserService.isUserActive(self)) {
     throw new GuestUserError()
   }
 
