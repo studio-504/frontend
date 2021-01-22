@@ -1,6 +1,6 @@
 {
   "name": "real",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
