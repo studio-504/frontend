@@ -138,7 +138,7 @@ describe('Post Header component', () => {
       expect(RNActionSheet).toHaveBeenCalled()
       const { options, cancelButtonIndex, onPress } = RNActionSheet.mock.calls[0][0]
 
-      expect(options).toEqual(['Set as an avatar', 'Edit', 'Archive', 'Delete', 'Cancel'])
+      expect(options).toEqual(['Set as profile picture', 'Edit', 'Archive', 'Delete', 'Cancel'])
       expect(cancelButtonIndex).toBe(4)
 
       onPress(0)

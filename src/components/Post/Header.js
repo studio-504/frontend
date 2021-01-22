@@ -139,7 +139,7 @@ const Header = ({
           actionSheetRef={createActionSheetRef}
           options={[
             {
-              name: t('Set as an avatar'),
+              name: t('Set as profile picture'),
               onPress: () => changeAvatarRequest({ postId: post.postId }),
               isVisible: isUserPostOwner && isPostVerified && !archived,
             },
