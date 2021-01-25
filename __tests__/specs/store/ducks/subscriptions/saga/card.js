@@ -64,16 +64,34 @@ describe('cardSubscription', () => {
         .put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
         .put(usersActions.usersGetProfileSelfRequest())
         .put(usersActions.usersGetPendingFollowersRequest({ userId }))
-        
+
         .dispatch(subscriptionsActions.subscriptionsMainRequest())
         .silentRun()
 
       await sleep()
 
       const { next } = subscription.subscribe.mock.calls[0][0]
-      next()
+      next({ value: { data: { onCardNotification: { type: 'SOME_ACTION' } } } })
 
       return promise
     })
+  })
+
+  it('should not handle update data on DELETE profile event', async () => {
+    const promise = createSaga(store)
+      .not.put(usersActions.usersGetCardsRequest({}))
+      .not.put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
+      .not.put(usersActions.usersGetProfileSelfRequest())
+      .not.put(usersActions.usersGetPendingFollowersRequest({ userId }))
+
+      .dispatch(subscriptionsActions.subscriptionsMainRequest())
+      .silentRun()
+
+    await sleep()
+
+    const { next } = subscription.subscribe.mock.calls[0][0]
+    next({ value: { data: { onCardNotification: { type: 'DELETED' } } } })
+
+    return promise
   })
 })
