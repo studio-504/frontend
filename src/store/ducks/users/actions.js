@@ -8,6 +8,8 @@ export const usersSearchIdle = createAction(constants.USERS_SEARCH_IDLE)
 export const usersSearchRequest = createAction(constants.USERS_SEARCH_REQUEST)
 export const usersSearchSuccess = createAction(constants.USERS_SEARCH_SUCCESS)
 export const usersSearchFailure = createAction(constants.USERS_SEARCH_FAILURE)
+export const usersSearchShow = createAction(constants.USERS_SEARCH_SHOW)
+export const usersSearchHide = createAction(constants.USERS_SEARCH_HIDE)
 
 /**
  * 

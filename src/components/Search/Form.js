@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -21,23 +21,30 @@ const formSchema = Yup.object().shape({
 const SearchForm = ({
   t,
   handleSubmit,
-  handleFormFocus,
   handleFormChange,
-  formFocus,
+  toggleUsersSearch,
   handleReset,
   values,
+  isVisible,
 }) => {
-  const styling = styles
-
+  const [formFocus, handleFormFocus] = useState(false)
   const formChangeState = path(['searchToken', 'length'])(values)
 
+  useEffect(() => {
+    if (!isVisible) {
+      handleFieldReset()
+    }
+  }, [isVisible])
+
   const handleFieldFocus = () => {
+    toggleUsersSearch(true)
     handleFormFocus(true)
   }
   const handleFieldBlur = () => {
     Keyboard.dismiss()
   }
   const handleFieldReset = () => {
+    toggleUsersSearch(false)
     handleFormFocus(false)
     Keyboard.dismiss()
     handleReset()
@@ -49,8 +56,8 @@ const SearchForm = ({
   }, 500, [formChangeState])
 
   return (
-    <View style={styling.root}>
-      <View style={styling.input}>
+    <View style={styles.root}>
+      <View style={styles.input}>
         <Field
           handleFieldFocus={handleFieldFocus}
           handleFieldBlur={handleFieldBlur}
@@ -62,7 +69,7 @@ const SearchForm = ({
         />
       </View>
       {formFocus ?
-        <TouchableOpacity style={styling.icon} onPress={handleFieldReset}>
+        <TouchableOpacity style={styles.icon} onPress={handleFieldReset}>
           <CloseIcon fill="#fafafa" />
         </TouchableOpacity>
       : null}
@@ -102,6 +109,8 @@ SearchForm.propTypes = {
   formFocus: PropTypes.any,
   handleReset: PropTypes.any,
   values: PropTypes.any,
+  isVisible: PropTypes.bool,
+  toggleUsersSearch: PropTypes.func,
 }
 
 export default withTranslation()(({

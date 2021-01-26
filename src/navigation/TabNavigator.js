@@ -9,6 +9,7 @@ import { AuthContext } from 'services/providers/Auth'
 import * as navigationOptions from 'navigation/options'
 import * as navigationActions from 'navigation/actions'
 import * as postsActions from 'store/ducks/posts/actions'
+import * as usersActions from 'store/ducks/users/actions'
 
 import FeedNavigator from 'navigation/Feed'
 import SearchNavigator from 'navigation/Search'
@@ -37,8 +38,9 @@ const TabNavigator = ({ navigation, route }) => {
       tabBarLabel: 'Home',
     },
   }
-  
+
   const handleSearchPress = (props) => () => { 
+    dispatch(usersActions.usersSearchHide())
     props.onPress()
 
     setTimeout(() => {
