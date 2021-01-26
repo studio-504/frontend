@@ -84,7 +84,7 @@ export const usersGetTrendingUsersSelector = () => createDeepEqualSelector(
 /**
  *
  */
-const usersSearch = () => path(['users', 'usersSearch'])
+export const usersSearch = () => path(['users', 'usersSearch'])
 
 export const usersSearchSelector = () => createDeepEqualSelector(
   [usersSearch(), entitiesSelector.entities],

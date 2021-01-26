@@ -37,13 +37,12 @@ const SearchComponent = ({
   usersGetTrendingUsers,
   postsGetTrendingPosts,
   postsGetTrendingPostsMoreRequest,
-  handleFormFocus,
-  formFocus,
   handleFormChange,
   formChange,
   trendingFilters,
   handleFilterChange,
   postsGetTrendingPostsRequest,
+  toggleUsersSearch,
 }) => {
   const styling = styles(theme)
 
@@ -68,9 +67,9 @@ const SearchComponent = ({
         <FormComponent
           usersSearch={usersSearch}
           usersSearchRequest={usersSearchRequest}
-          handleFormFocus={handleFormFocus}
           handleFormChange={handleFormChange}
-          formFocus={formFocus}
+          toggleUsersSearch={toggleUsersSearch}
+          isVisible={usersSearch.isVisible}
         />
         <View style={styling.filters}>
           <FilterComponent
@@ -81,7 +80,7 @@ const SearchComponent = ({
         </View>
       </HeaderComponent>
 
-      {!formFocus && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
+      {!usersSearch.isVisible && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
 
       <FlatList
         ref={feedRef}
@@ -107,7 +106,7 @@ const SearchComponent = ({
         viewabilityConfig={viewabilityConfigRef.current}
       />
 
-      {formFocus && formChange ? (
+      {usersSearch.isVisible && formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
@@ -130,7 +129,7 @@ const SearchComponent = ({
         </View>
       ) : null}
 
-      {formFocus && !formChange ? (
+      {usersSearch.isVisible && !formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
@@ -203,13 +202,12 @@ SearchComponent.propTypes = {
   usersGetTrendingUsers: PropTypes.any,
   postsGetTrendingPosts: PropTypes.any,
   postsGetTrendingPostsMoreRequest: PropTypes.any,
-  handleFormFocus: PropTypes.any,
-  formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
   trendingFilters: PropTypes.any,
   handleFilterChange: PropTypes.func,
   postsGetTrendingPostsRequest: PropTypes.func,
+  toggleUsersSearch: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(SearchComponent))

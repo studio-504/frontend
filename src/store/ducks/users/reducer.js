@@ -4,6 +4,7 @@ import * as constants from 'store/ducks/users/constants'
 
 export const initialState = {
   usersSearch: {
+    isVisible: false,
     data: [],
     status: 'idle',
     error: {},
@@ -164,6 +165,18 @@ const usersSearchIdle = (state) => update(state, {
     data: { $set: initialState.usersSearch.data },
     error: { $set: initialState.usersSearch.error },
     status: { $set: 'idle' },
+  },
+})
+
+const usersSearchShow = (state) => update(state, {
+  usersSearch: {
+    isVisible: { $set: true },
+  },
+})
+
+const usersSearchHide = (state) => update(state, {
+  usersSearch: {
+    isVisible: { $set: false },
   },
 })
 
@@ -862,6 +875,8 @@ export default handleActions({
   [constants.USERS_SEARCH_SUCCESS]: usersSearchSuccess,
   [constants.USERS_SEARCH_FAILURE]: usersSearchFailure,
   [constants.USERS_SEARCH_IDLE]: usersSearchIdle,
+  [constants.USERS_SEARCH_SHOW]: usersSearchShow,
+  [constants.USERS_SEARCH_HIDE]: usersSearchHide,
 
   [constants.USERS_GET_TRENDING_USERS_REQUEST]: usersGetTrendingUsersRequest,
   [constants.USERS_GET_TRENDING_USERS_SUCCESS]: usersGetTrendingUsersSuccess,

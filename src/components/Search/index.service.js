@@ -69,12 +69,18 @@ const SearchService = ({ children }) => {
   /**
    * Following two states are tracking values of Search/Form -> searchToken input field
    * we are dynamically rendering components on Search/index based on values below
-   * 
-   * formFocus is a state of focus/blur events: [searchToken input]
+   *
    * formChange is a state of value.length: [searchToken input]
    */
-  const [formFocus, handleFormFocus] = useState(false)
   const [formChange, handleFormChange] = useState(false)
+
+  const toggleUsersSearch = (isFormFocused) => {
+    if (isFormFocused) {
+      dispatch(usersActions.usersSearchShow())
+    } else {
+      dispatch(usersActions.usersSearchHide())
+    }
+  }
 
   return children({
     feedRef,
@@ -90,13 +96,12 @@ const SearchService = ({ children }) => {
     usersGetTrendingUsers,
     postsGetTrendingPosts,
     postsGetTrendingPostsMoreRequest,
-    formFocus,
-    handleFormFocus,
     formChange,
     handleFormChange,
     handleFilterChange,
     trendingFilters,
     postsGetTrendingPostsRequest,
+    toggleUsersSearch,
   })
 }
 
