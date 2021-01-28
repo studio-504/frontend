@@ -9,6 +9,7 @@ import PostTypeScreen from 'screens/PostTypeScreen'
 import CommentsScreen from 'screens/CommentsScreen'
 import VerificationScreen from 'screens/VerificationScreen'
 import ProfileUpgradeScreen from 'screens/ProfileUpgradeScreen'
+import PostsFiltersScreen from 'screens/PostsFiltersScreen'
 
 const Stack = createStackNavigator()
 
@@ -26,6 +27,12 @@ const RootNavigator = () => {
         name="Home"
         component={TabNavigator}
         {...stackScreenBlankProps}
+      />
+
+      <Stack.Screen
+        name="PostsFilters"
+        component={PostsFiltersScreen}
+        {...stackScreenModalProps}
       />
 
       <Stack.Screen

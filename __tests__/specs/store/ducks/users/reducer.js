@@ -50,7 +50,7 @@ describe('Users reducer', () => {
 
   describe('usersImagePostsGet', () => {
     const selector = selectors.usersImagePostsGetSelector()
-    
+
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
@@ -183,6 +183,16 @@ describe('Users reducer', () => {
       )
 
       expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
+    })
+  })
+
+  describe('usersSearch', () => {
+    const selector = selectors.usersSearch()
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK' })
+
+      expect(selector(state)).toEqual({ data: [], status: 'idle', error: {}, payload: {} })
     })
   })
 })

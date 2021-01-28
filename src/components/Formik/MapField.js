@@ -14,7 +14,6 @@ import path from 'ramda/src/path'
 import equals from 'ramda/src/equals'
 import useAsync from 'react-use/lib/useAsync'
 import { openSettings } from 'react-native-permissions'
-
 import { Text, Caption, withTheme } from 'react-native-paper'
 
 const MAP_HEIGHT = 240
@@ -22,11 +21,10 @@ const MAP_WIDTH = Layout.window.width - 12 * 2
 const normalizeCoordinates = (coords) => ({
   latitude: coords.latitude,
   longitude: coords.longitude,
-  accuracy: coords.accuracy,
+  accuracy: parseInt(coords.accuracy, 10),
   latitudeDelta: 10,
   longitudeDelta: 10,
 })
-
 
 const MapFieldError = ({
   styling,

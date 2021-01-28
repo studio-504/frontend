@@ -105,6 +105,7 @@ const Profile = ({
 
       <View style={styling.about}>
         <AboutComponent
+          navigation={navigation}
           usersGetProfile={usersGetProfile}
         />
       </View>

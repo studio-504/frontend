@@ -4,6 +4,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as usersQueries from 'store/ducks/users/queries'
 import * as constants from 'store/ducks/subscriptions/constants'
 import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
+import path from 'ramda/src/path'
 
 /**
  * Cards subscription channel
@@ -19,7 +20,12 @@ function* cardSubscription() {
 
       yield fork(function* eventListener() {
         while (true) {
-          yield take(channel)
+          const { eventData } = yield take(channel)
+          const payload = path(['value', 'data', 'onCardNotification'], eventData)
+          const type = path(['type'], payload)
+
+          if (type === 'DELETED') return 
+
           yield fork(function* () {
             yield put(usersActions.usersGetCardsRequest({}))
             yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
