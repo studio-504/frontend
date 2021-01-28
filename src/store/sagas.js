@@ -43,13 +43,10 @@ import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 
 const captureErrors = (action) => {
-  const code = path(['payload', 'message', 'code'])(action)
   const nativeError = path(['payload', 'message', 'nativeError'])(action)
-  const type = path(['type'])(action)
 
   Logger.withScope(scope => {
-    scope.setExtra('action', type)
-    scope.setExtra('code', code)
+    scope.setExtra('action', JSON.stringify(action))
 
     if (nativeError === 'string') {
       Logger.captureMessage(nativeError)
