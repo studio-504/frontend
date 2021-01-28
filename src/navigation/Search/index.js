@@ -14,7 +14,7 @@ const SearchNavigator = () => {
   const { theme } = useContext(ThemeContext)
   const { user } = useContext(AuthContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
-  const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, user })
+  const stackScreenDefaultProps = navigationOptions.stackScreenDefaultProps({ theme, user, headerLeft: navigationOptions.searchHeaderLeft })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
 
   return (

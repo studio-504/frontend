@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -7,9 +7,11 @@ import toLower from 'ramda/src/toLower'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
+import SearchFeedContext from 'components/Search/Context'
 
 const SearchService = ({ children }) => {
   const dispatch = useDispatch()
+  const { feedRef } = useContext(SearchFeedContext)
   const user = useSelector(authSelector.authUserSelector)
   const usersSearch = useSelector(usersSelector.usersSearchSelector())
   const usersFollow = useSelector(state => state.users.usersFollow)
@@ -17,21 +19,11 @@ const SearchService = ({ children }) => {
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
-  const trendingFilters = postsGetTrendingPosts.filters
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
    */
-  const feedRef = useRef(null)
   useScrollToTop(feedRef)
-
-  const scrollToTop = () => {
-    try {
-      feedRef.current.scrollToOffset({ animated: true, offset: 0 })
-    } catch(error) {
-      // ignore
-    }
-  }
 
   const usersSearchRequest = ({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
@@ -42,14 +34,9 @@ const SearchService = ({ children }) => {
   /**
    * Trending Filters
    */
-  const postsGetTrendingPostsRequest = () => dispatch(postsActions.postsGetTrendingPostsRequest())
+  const postsGetTrendingPostsRequest = () => 
+    dispatch(postsActions.postsGetTrendingPostsRequest())
 
-  const handleFilterChange = (filters) => {
-    dispatch(postsActions.postsGetTrendingPostsChangeFilters(filters))
-    postsGetTrendingPostsRequest()
-    scrollToTop()
-  }
-    
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
   
@@ -98,8 +85,6 @@ const SearchService = ({ children }) => {
     postsGetTrendingPostsMoreRequest,
     formChange,
     handleFormChange,
-    handleFilterChange,
-    trendingFilters,
     postsGetTrendingPostsRequest,
     toggleUsersSearch,
   })
