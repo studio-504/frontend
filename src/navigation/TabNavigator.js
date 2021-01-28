@@ -45,7 +45,7 @@ const TabNavigator = ({ navigation, route }) => {
 
     setTimeout(() => {
       dispatch(postsActions.postsGetTrendingPostsRequest())
-    }, 300)
+    }, 350)
   }
   const SearchTabIconComponent = ({ color }) => <SearchIcon fill={color} />
   const SearchTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={handleSearchPress(props)} />

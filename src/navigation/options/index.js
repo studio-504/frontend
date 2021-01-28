@@ -38,6 +38,12 @@ export const datingHeaderLeft = ({ navigation, theme }) => () => (
   </TouchableOpacity>
 )
 
+export const searchHeaderLeft = ({ navigation, theme }) => () => (
+  <TouchableOpacity style={styles.button} onPress={() => navigationActions.navigatePostsFilters(navigation)}>
+    <FiltersIcon fill={path(['colors', 'primaryIcon'], theme)} />
+  </TouchableOpacity>
+)
+
 export const homeHeaderLeft = ({ theme, navigation, user }) => () => (
   <TouchableOpacity style={styles.button} onPress={navigationActions.navigateCamera(navigation, {}, { protected: true, user })}>
     <CameraIcon fill={path(['colors', 'primaryIcon'], theme)} />
@@ -67,7 +73,7 @@ const AuthNavigationComponent = ({ theme }) => ({
   },
 })
 
-const HomeNavigationComponent = ({ navigation, theme, user }) => ({
+const HomeNavigationComponent = ({ navigation, theme, user, headerLeft = homeHeaderLeft }) => ({
   headerStyle: {
     backgroundColor: theme.colors.backgroundPrimary,
     shadowRadius: 0,
@@ -77,7 +83,7 @@ const HomeNavigationComponent = ({ navigation, theme, user }) => ({
     borderBottomWidth: 0,
     shadowColor: 'transparent',
   },
-  headerLeft: homeHeaderLeft({ navigation, theme, user }),
+  headerLeft: headerLeft({ navigation, theme, user }),
   headerTitle: homeHeaderTitle({ theme }),
   headerRight: homeHeaderRight({ navigation, theme, user }),
 })
@@ -162,9 +168,9 @@ export const stackNavigatorCardProps = ({ theme }) => ({
 /**
  * Used for Main Screens with application logo
  */
-export const stackScreenDefaultProps = ({ theme, user }) => ({
+export const stackScreenDefaultProps = ({ theme, user, headerLeft }) => ({
   options: (props) => ({
-    ...HomeNavigationComponent({ ...props, theme, user }),
+    ...HomeNavigationComponent({ ...props, theme, user, headerLeft }),
     gestureResponseDistance: {
       horizontal: Layout.window.width,
       vertical: Layout.window.height,
@@ -303,7 +309,7 @@ export const stackScreenAuthModalProps = ({ theme }) => ({
 })
 
 /**
- * Used for Profile Screens without application logo but text
+ * Used for Profile Screens without application logo but text 
  */
 export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
   options: () => {
