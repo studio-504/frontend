@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -21,34 +21,31 @@ const formSchema = Yup.object().shape({
 const SearchForm = ({
   t,
   handleSubmit,
+  handleFormFocus,
   handleFormChange,
-  toggleUsersSearch,
+  formFocus,
   handleReset,
   values,
-  isVisible,
 }) => {
-  const [formFocus, handleFormFocus] = useState(false)
   const formChangeState = path(['searchToken', 'length'])(values)
 
-  useEffect(() => {
-    if (!isVisible) {
-      handleFieldReset()
-    }
-  }, [isVisible])
-
   const handleFieldFocus = () => {
-    toggleUsersSearch(true)
     handleFormFocus(true)
   }
   const handleFieldBlur = () => {
     Keyboard.dismiss()
   }
   const handleFieldReset = () => {
-    toggleUsersSearch(false)
     handleFormFocus(false)
     Keyboard.dismiss()
     handleReset()
   }
+
+  useEffect(() => {
+    if (formChangeState && !formFocus) {
+      handleFieldReset()
+    }
+  }, [formFocus])
 
   useDebounce(() => {
     if (formChangeState) handleSubmit()
@@ -109,8 +106,6 @@ SearchForm.propTypes = {
   formFocus: PropTypes.any,
   handleReset: PropTypes.any,
   values: PropTypes.any,
-  isVisible: PropTypes.bool,
-  toggleUsersSearch: PropTypes.func,
 }
 
 export default withTranslation()(({

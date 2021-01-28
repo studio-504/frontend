@@ -36,10 +36,11 @@ const SearchComponent = ({
   usersGetTrendingUsers,
   postsGetTrendingPosts,
   postsGetTrendingPostsMoreRequest,
+  handleFormFocus,
+  formFocus,
   handleFormChange,
   formChange,
   postsGetTrendingPostsRequest,
-  toggleUsersSearch,
 }) => {
   const styling = styles(theme)
 
@@ -64,13 +65,13 @@ const SearchComponent = ({
         <FormComponent
           usersSearch={usersSearch}
           usersSearchRequest={usersSearchRequest}
+          handleFormFocus={handleFormFocus}
           handleFormChange={handleFormChange}
-          toggleUsersSearch={toggleUsersSearch}
-          isVisible={usersSearch.isVisible}
+          formFocus={formFocus}
         />
       </HeaderComponent>
 
-      {!usersSearch.isVisible && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
+      {!formFocus && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
 
       <FlatList
         ref={feedRef}
@@ -96,7 +97,7 @@ const SearchComponent = ({
         viewabilityConfig={viewabilityConfigRef.current}
       />
 
-      {usersSearch.isVisible && formChange ? (
+      {formFocus && formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
@@ -119,7 +120,7 @@ const SearchComponent = ({
         </View>
       ) : null}
 
-      {usersSearch.isVisible && !formChange ? (
+      {formFocus && !formChange ? (
         <View style={styling.overlay}>
           <ScrollView
             keyboardShouldPersistTaps="never"
@@ -184,10 +185,11 @@ SearchComponent.propTypes = {
   usersGetTrendingUsers: PropTypes.any,
   postsGetTrendingPosts: PropTypes.any,
   postsGetTrendingPostsMoreRequest: PropTypes.any,
+  handleFormFocus: PropTypes.any,
+  formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
   postsGetTrendingPostsRequest: PropTypes.func,
-  toggleUsersSearch: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(SearchComponent))
