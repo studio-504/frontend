@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { ThemeContext } from 'services/providers/Theme'
 import { AuthContext } from 'services/providers/Auth'
+import SearchFeedContext from 'components/Search/Context'
 import * as navigationOptions from 'navigation/options'
 import * as navigationActions from 'navigation/actions'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -28,6 +29,7 @@ const TabNavigator = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { theme } = useContext(ThemeContext)
   const { user } = useContext(AuthContext)
+  const searchFeedContext = useContext(SearchFeedContext)
   const tabNavigatorProps = navigationOptions.tabNavigatorProps({ theme, route })
 
   const FeedTabIconComponent = ({ color }) => <HomeIcon fill={color} />
@@ -37,13 +39,14 @@ const TabNavigator = ({ navigation, route }) => {
       tabBarLabel: 'Home',
     },
   }
-  
-  const handleSearchPress = (props) => () => { 
+
+  const handleSearchPress = (props) => () => {
+    searchFeedContext.handleFormFocus(false)
     props.onPress()
 
     setTimeout(() => {
       dispatch(postsActions.postsGetTrendingPostsRequest())
-    }, 300)
+    }, 350)
   }
   const SearchTabIconComponent = ({ color }) => <SearchIcon fill={color} />
   const SearchTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={handleSearchPress(props)} />

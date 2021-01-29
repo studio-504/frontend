@@ -1,4 +1,5 @@
 import { navigateToPath, pushToPath } from 'navigation/helpers'
+import * as UserService from 'services/User'
 
 const withAuthValidation = (callback) => {
   return (navigation, params = {}, meta = {}) => {
@@ -7,7 +8,7 @@ const withAuthValidation = (callback) => {
         return callback(navigation, params)
       }
 
-      if (meta.user && meta.user.userStatus === 'ACTIVE') {
+      if (UserService.isUserActive(meta.user)) {
         return callback(navigation, params)
       }
 
@@ -115,13 +116,18 @@ export const navigateVerification = withAuthValidation(navigateToPath('Verificat
 export const navigateComments = withAuthValidation(pushToPath('Comments'))
 
 /**
+ * Search
+ */
+export const navigateSearch = navigateToPath('App.Root.Home.Search')
+export const navigatePostsFilters = navigateToPath('PostsFilters')
+
+/**
  * Other
  */
 export const navigateBack = (navigation) => navigation.goBack()
 export const navigateApp = navigateToPath('App')
 export const navigateResetToApp = (navigation) => navigation.reset({ index: 0, routes: [{ name: 'App' }] })
 export const navigateHome = navigateToPath('App.Root.Home.Feed.Feed')
-export const navigateSearch = navigateToPath('App.Root.Home.Search')
 export const navigateCamera = withAuthValidation(navigateToPath('Camera'))
 export const navigatePayout = withAuthValidation(navigateToPath('Payout'))
 export const navigateReset = (navigation) => navigation.reset({ index: 0, routes: [{ name: 'Auth' }] })

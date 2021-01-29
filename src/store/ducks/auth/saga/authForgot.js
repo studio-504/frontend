@@ -44,7 +44,7 @@ function* authForgotSuccess() {
  */
 function* handleAuthForgotConfirmRequest(payload) {
   const AwsAuth = yield getContext('AwsAuth')
-  return yield AwsAuth.forgotPasswordSubmit(payload.username, payload.code, payload.password)
+  return yield AwsAuth.forgotPasswordSubmit(payload.username, payload.confirmationCode, payload.password)
 }
 
 /**

@@ -11,6 +11,7 @@ import * as navigationActions from 'navigation/actions'
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
+import * as UserService from 'services/User'
 import testIDs from './test-ids'
 
 const ProfileAction = ({
@@ -28,8 +29,8 @@ const ProfileAction = ({
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
-
-  const self = path(['data', 'followedStatus'])(usersGetProfile) === 'SELF'
+  
+  const self = UserService.isUserOwner(usersGetProfile)
 
   return (
     <View style={styling.root}>

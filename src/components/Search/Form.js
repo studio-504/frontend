@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -27,8 +27,6 @@ const SearchForm = ({
   handleReset,
   values,
 }) => {
-  const styling = styles
-
   const formChangeState = path(['searchToken', 'length'])(values)
 
   const handleFieldFocus = () => {
@@ -43,14 +41,20 @@ const SearchForm = ({
     handleReset()
   }
 
+  useEffect(() => {
+    if (formChangeState && !formFocus) {
+      handleFieldReset()
+    }
+  }, [formFocus])
+
   useDebounce(() => {
     if (formChangeState) handleSubmit()
     handleFormChange(formChangeState)
   }, 500, [formChangeState])
 
   return (
-    <View style={styling.root}>
-      <View style={styling.input}>
+    <View style={styles.root}>
+      <View style={styles.input}>
         <Field
           handleFieldFocus={handleFieldFocus}
           handleFieldBlur={handleFieldBlur}
@@ -62,7 +66,7 @@ const SearchForm = ({
         />
       </View>
       {formFocus ?
-        <TouchableOpacity style={styling.icon} onPress={handleFieldReset}>
+        <TouchableOpacity style={styles.icon} onPress={handleFieldReset}>
           <CloseIcon fill="#fafafa" />
         </TouchableOpacity>
       : null}

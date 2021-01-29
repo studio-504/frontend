@@ -9,69 +9,98 @@ import * as Logger from 'services/Logger'
 const defaultMessage = { message: 'Oops! Something went wrong', type: 'danger', icon: 'warning' }
 jest.mock('react-native-flash-message', () => ({ showMessage: jest.fn() }))
 
+const user = { userId: '1', username: 'username', userStatus: 'ACTIVE' }
+const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
+
 describe('Snackbars saga', () => {
   afterEach(() => {
     showMessage.mockClear()
     Logger.captureException.mockClear()
   })
 
-  it('default error message', async () => {
-    await expectSaga(testAsRootSaga(snackbars))
-      .call(showMessage, defaultMessage)
-      .dispatch({ type: 'ACTION_FAILURE' })
-      .silentRun()
-  })
-
-  it('capture exception', async () => {
-    const error = new Error('Error')
-    showMessage.mockRejectedValueOnce(error)
-
-    await expectSaga(testAsRootSaga(snackbars)).dispatch({ type: 'ACTION_FAILURE' }).silentRun()
-
-    expect(Logger.captureException).toHaveBeenCalledWith(error)
-  })
-
-  it('user friendly error message', async () => {
-    const message = 'ErrorMessage'
-
-    await expectSaga(testAsRootSaga(snackbars))
-      .call(showMessage, { message, type: 'danger', icon: 'warning' })
-      .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
-      .silentRun()
-  })
-
-  describe('cancel request on sigout request', () => {
-    const message = MESSAGES.CANCEL_REQUEST_ON_SIGNOUT
-
-    it('native error', async () => {
+  describe('success', () => {
+    it('default error message', async () => {
       await expectSaga(testAsRootSaga(snackbars))
-        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
-        .dispatch({ type: 'ACTION_FAILURE', payload: { message } })
+        .withState(authorizedState)
+        .call(showMessage, defaultMessage)
+        .dispatch({ type: 'ACTION_FAILURE' })
         .silentRun()
     })
 
-    it('error with payload', async () => {
+    it('capture exception', async () => {
+      const error = new Error('Error')
+      showMessage.mockRejectedValueOnce(error)
+
       await expectSaga(testAsRootSaga(snackbars))
-        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .withState(authorizedState)
+        .dispatch({ type: 'ACTION_FAILURE' })
+        .silentRun()
+
+      expect(Logger.captureException).toHaveBeenCalledWith(error)
+    })
+
+    it('user friendly error message', async () => {
+      const message = 'ErrorMessage'
+
+      await expectSaga(testAsRootSaga(snackbars))
+        .withState(authorizedState)
+        .call(showMessage, { message, type: 'danger', icon: 'warning' })
         .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
         .silentRun()
     })
   })
 
-  describe('blacklist', () => {
-    const testBlackListAction = (type) => async () => {
-      await expectSaga(testAsRootSaga(snackbars)).not.call(showMessage, defaultMessage).dispatch({ type }).silentRun()
-    }
+  describe('prevent show a message', () => {
+    it('anonymous user', async () => {
+      const user = { userId: '1', username: 'username', userStatus: 'ANONYMOUS' }
+      const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
 
-    it('AUTH_DATA_FAILURE', testBlackListAction('AUTH_DATA_FAILURE'))
-    it('AUTH_FLOW_FAILURE', testBlackListAction('AUTH_FLOW_FAILURE'))
-    it('AUTH_TOKEN_FAILURE', testBlackListAction('AUTH_TOKEN_FAILURE'))
-    it('AUTH_RESET_FAILURE', testBlackListAction('AUTH_RESET_FAILURE'))
-    it('AUTH_PREFETCH_FAILURE', testBlackListAction('AUTH_PREFETCH_FAILURE'))
-    it('AUTH_CHECK_FAILURE', testBlackListAction('AUTH_CHECK_FAILURE'))
-    it('CACHE_FETCH_FAILURE', testBlackListAction('CACHE_FETCH_FAILURE'))
-    it('POSTS_REPORT_POST_VIEWS_FAILURE', testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE'))
-    it('USERS_SET_APNS_TOKEN_FAILURE', testBlackListAction('USERS_SET_APNS_TOKEN_FAILURE'))
-    it('USERS_REPORT_SCREEN_VIEWS_FAILURE', testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE'))
+      await expectSaga(testAsRootSaga(snackbars))
+        .withState(authorizedState)
+        .not.call(showMessage, defaultMessage)
+        .dispatch({ type: 'ACTION_FAILURE' })
+        .silentRun()
+    })
+
+    it('native error', async () => {
+      const message = 'message'
+
+      await expectSaga(testAsRootSaga(snackbars))
+        .withState(authorizedState)
+        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .dispatch({ type: 'ACTION_FAILURE', payload: { message } })
+        .silentRun()
+    })
+
+    it('cancel request error', async () => {
+      const message = MESSAGES.CANCEL_REQUEST_ON_SIGNOUT
+
+      await expectSaga(testAsRootSaga(snackbars))
+        .withState(authorizedState)
+        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
+        .silentRun()
+    })
+
+    it('blacklist', () => {
+      const testBlackListAction = (type) => async () => {
+        await expectSaga(testAsRootSaga(snackbars))
+          .withState(authorizedState)
+          .not.call(showMessage, defaultMessage)
+          .dispatch({ type })
+          .silentRun()
+      }
+
+      testBlackListAction('AUTH_DATA_FAILURE')
+      testBlackListAction('AUTH_FLOW_FAILURE')
+      testBlackListAction('AUTH_TOKEN_FAILURE')
+      testBlackListAction('AUTH_RESET_FAILURE')
+      testBlackListAction('AUTH_PREFETCH_FAILURE')
+      testBlackListAction('AUTH_CHECK_FAILURE')
+      testBlackListAction('CACHE_FETCH_FAILURE')
+      testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')
+      testBlackListAction('USERS_SET_APNS_TOKEN_FAILURE')
+      testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE')
+    })
   })
 })

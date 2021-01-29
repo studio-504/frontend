@@ -11,7 +11,6 @@ import {
 import HeaderComponent from 'components/Search/Header'
 import FormComponent from 'components/Search/Form'
 import ResultComponent from 'components/Search/Result'
-import FilterComponent from 'components/Search/Filter'
 import PostsGridThumbnailComponent from 'components/PostsGrid/Thumbnail'
 import { Subheading } from 'react-native-paper'
 import path from 'ramda/src/path'
@@ -41,8 +40,6 @@ const SearchComponent = ({
   formFocus,
   handleFormChange,
   formChange,
-  trendingFilters,
-  handleFilterChange,
   postsGetTrendingPostsRequest,
 }) => {
   const styling = styles(theme)
@@ -72,13 +69,6 @@ const SearchComponent = ({
           handleFormChange={handleFormChange}
           formFocus={formFocus}
         />
-        <View style={styling.filters}>
-          <FilterComponent
-            trendingFilters={trendingFilters}
-            handleFilterChange={handleFilterChange}
-            isLoading={isLoading}
-          />
-        </View>
       </HeaderComponent>
 
       {!formFocus && isLoading && isEmpty ? <PostsLoadingComponent /> : null}
@@ -161,14 +151,6 @@ const styles = theme => StyleSheet.create({
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
   },
-  filters: {
-    backgroundColor: theme.colors.backgroundPrimary,
-    paddingTop: 9,
-    paddingBottom: 4,
-    paddingHorizontal: 12,
-    borderBottomColor: theme.colors.backgroundSecondary,
-    borderBottomWidth: 1,
-  },
   subheading: {
     paddingTop: 6,
     paddingHorizontal: 12,
@@ -207,8 +189,6 @@ SearchComponent.propTypes = {
   formFocus: PropTypes.any,
   handleFormChange: PropTypes.any,
   formChange: PropTypes.any,
-  trendingFilters: PropTypes.any,
-  handleFilterChange: PropTypes.func,
   postsGetTrendingPostsRequest: PropTypes.func,
 }
 
