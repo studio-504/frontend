@@ -4,6 +4,18 @@ import Config from 'react-native-config'
 import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
 
+export function isNewerThan(v1, v2) {
+  v1 = v1.split('.')
+  v2 = v2.split('.')
+  for (var i = 0; i < Math.max(v1.length, v2.length); i++) {
+    if (v1[i] == undefined) return false
+    if (v2[i] == undefined) return true
+    if (v1[i] > v2[i]) return true
+    if (v1[i] < v2[i]) return false
+  }
+  return false
+}
+
 async function getVersionFromStore() {
   const bundleId = DeviceInfo.getBundleId()
   const country = NativeModules.RNLocalize.initialConstants.country
@@ -26,7 +38,7 @@ async function needUpdate() {
     const storeVersion = await getVersionFromStore()
     const currentVersion = DeviceInfo.getVersion()
 
-    return storeVersion !== currentVersion
+    return isNewerThan(storeVersion, currentVersion)
   } catch (error) {
     Logger.captureException(error)
     return false
