@@ -25,6 +25,20 @@ describe('Updates service', () => {
     Linking.openURL.mockClear()
   })
 
+  it('isNewerThan', () => {
+    expect(Updates.isNewerThan('1', '1')).toBeFalsy()
+    expect(Updates.isNewerThan('1.0', '1.0')).toBeFalsy()
+    expect(Updates.isNewerThan('1.0.0', '1.0.0')).toBeFalsy()
+    expect(Updates.isNewerThan('1.0.0', '1.0.1')).toBeFalsy()
+    expect(Updates.isNewerThan('1.0.0', '1.1.0')).toBeFalsy()
+    expect(Updates.isNewerThan('1.0.0', '2.0.0')).toBeFalsy()
+
+    expect(Updates.isNewerThan('2', '1.0.0')).toBeTruthy()
+    expect(Updates.isNewerThan('1.0.1', '1.0.0')).toBeTruthy()
+    expect(Updates.isNewerThan('1.1.0', '1.0.0')).toBeTruthy()
+    expect(Updates.isNewerThan('2.0.0', '1.0.0')).toBeTruthy()
+  })
+
   it('show update alert', async () => {
     await Updates.versionCheck()
 
@@ -52,6 +66,17 @@ describe('Updates service', () => {
     })
 
     it('app store and current versions are equal', async () => {
+      queryService.httpRequest.mockResolvedValueOnce({
+        json: () => ({ resultCount: 1, results: [{ version: '1.0.0' }] }),
+      })
+
+      await Updates.versionCheck()
+
+      expect(Alert.alert).not.toHaveBeenCalled()
+    })
+
+    it('current versions is newer than apple store version', async () => {
+      DeviceInfo.getVersion.mockReturnValueOnce('1.0.1')
       queryService.httpRequest.mockResolvedValueOnce({
         json: () => ({ resultCount: 1, results: [{ version: '1.0.0' }] }),
       })
