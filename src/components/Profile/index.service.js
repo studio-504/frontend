@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute, useScrollToTop } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as usersSelector from 'store/ducks/users/selectors'
 import { AuthContext } from 'services/providers/Auth'
@@ -22,6 +22,8 @@ const ProfileService = ({ children }) => {
   const usersUnfollow = useSelector(state => state.users.usersUnfollow)
 
   const profileRef = useRef(null)
+
+  useScrollToTop(profileRef)
 
   useEffect(() => {
     navigation.setOptions({

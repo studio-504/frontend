@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -10,6 +10,7 @@ import SearchFeedContext from 'components/Search/Context'
 import * as navigationOptions from 'navigation/options'
 import * as navigationActions from 'navigation/actions'
 import * as postsActions from 'store/ducks/posts/actions'
+import * as UserService from 'services/User'
 
 import FeedNavigator from 'navigation/Feed'
 import SearchNavigator from 'navigation/Search'
@@ -26,98 +27,95 @@ import testIDs from './test-ids'
 const Tab = createBottomTabNavigator()
 
 const TabNavigator = ({ navigation, route }) => {
-  const dispatch = useDispatch()
   const { theme } = useContext(ThemeContext)
   const { user } = useContext(AuthContext)
-  const searchFeedContext = useContext(SearchFeedContext)
+
   const tabNavigatorProps = navigationOptions.tabNavigatorProps({ theme, route })
 
-  const FeedTabIconComponent = ({ color }) => <HomeIcon fill={color} />
-  const feedTabScreenPropsCard = {
-    options: {
-      tabBarIcon: FeedTabIconComponent,
+  const renderIcon = (Icon) => ({ color }) => <Icon fill={color} />
+
+  const SearchTabButtonComponent = (props) => {
+    const dispatch = useDispatch()
+    const searchFeedContext = useContext(SearchFeedContext)
+
+    const handleSearchPress = (props) => () => {
+      searchFeedContext.handleFormFocus(false)
+      props.onPress()
+
+      setTimeout(() => {
+        dispatch(postsActions.postsGetTrendingPostsRequest())
+      }, 350)
+    }
+
+    return <TouchableOpacity {...props} onPress={handleSearchPress(props)} />
+  }
+
+  const CameraTabButtonComponent = (props) => (
+    <TouchableOpacity
+      {...props}
+      onPress={navigationActions.navigatePostType(navigation, { actionType: 'HOME' }, { protected: true, user })}
+    />
+  )
+
+  const DatingTabButtonComponent = (props) => (
+    <TouchableOpacity
+      {...props}
+      onPress={navigationActions.navigateDating(navigation, {}, { protected: true, user })}
+    />
+  )
+
+  const PostType = () => null
+
+  const OPTIONS = {
+    FEED: {
       tabBarLabel: 'Home',
+      tabBarIcon: renderIcon(HomeIcon),
     },
-  }
-
-  const handleSearchPress = (props) => () => {
-    searchFeedContext.handleFormFocus(false)
-    props.onPress()
-
-    setTimeout(() => {
-      dispatch(postsActions.postsGetTrendingPostsRequest())
-    }, 350)
-  }
-  const SearchTabIconComponent = ({ color }) => <SearchIcon fill={color} />
-  const SearchTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={handleSearchPress(props)} />
-  const searchTabScreenPropsCard = {
-    options: {
-      tabBarIcon: SearchTabIconComponent,
+    SEARCH: {
       tabBarLabel: 'Explore',
+      tabBarIcon: renderIcon(SearchIcon),
       tabBarButton: SearchTabButtonComponent,
     },
-  }
-
-  const CameraTabIconComponent = ({ color }) => <CreateIcon fill={color} />
-  const CameraTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigatePostType(navigation, { actionType: 'HOME' }, { protected: true, user })} />
-  const cameraTabScreenPropsCard = {
-    options: {
-      tabBarIcon: CameraTabIconComponent,
+    POST_TYPE: {
       tabBarLabel: 'Create',
+      tabBarIcon: renderIcon(CreateIcon),
       tabBarButton: CameraTabButtonComponent,
     },
-  }
-
-  const DatingTabIconComponent = ({ color }) => <DatingIcon fill={color} />
-  const DatingTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigateDating(navigation, {}, { protected: true, user })} />
-  const datingTabScreenPropsCard = {
-    options: {
-      tabBarIcon: DatingTabIconComponent,
+    DATING: {
       tabBarLabel: 'Dating',
+      tabBarIcon: renderIcon(DatingIcon),
       tabBarButton: DatingTabButtonComponent,
     },
-  }
-
-  const ProfileTabIconComponent = ({ color }) => <UserIcon fill={color} />
-  const ProfileTabButtonComponent = (props) => <TouchableOpacity {...props} onPress={navigationActions.navigateProfileSelf(navigation, {}, { protected: true, user })} />
-  const profileTabScreenPropsCard = {
-    options: {
-      tabBarIcon: ProfileTabIconComponent,
+    PROFILE: {
       tabBarLabel: 'Profile',
-      tabBarButton: ProfileTabButtonComponent,
+      tabBarIcon: renderIcon(UserIcon),
       tabBarTestID: testIDs.tabNavigator.profile,
     },
   }
 
-  const PostType = () => null
+  /*
+   * We use listen tabPress for save scroll to scrollView top on tabPress 
+   * https://reactnavigation.org/docs/bottom-tab-navigator/#tabpress
+   */
+  const privateRoute = useCallback(
+    ({ navigation }) => ({
+      tabPress: (e) => {
+        if (!UserService.isUserActive(user)) {
+          e.preventDefault()
+          navigationActions.navigateProfileUpgrade(navigation)
+        }
+      },
+    }),
+    [user],
+  )
 
   return (
     <Tab.Navigator {...tabNavigatorProps} initialRouteName="Search">
-      <Tab.Screen
-        name="Feed"
-        component={FeedNavigator}
-        {...feedTabScreenPropsCard}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchNavigator}
-        {...searchTabScreenPropsCard}
-      />
-      <Tab.Screen
-        name="PostType"
-        component={PostType}
-        {...cameraTabScreenPropsCard}
-      />
-      <Tab.Screen
-        name="Dating"
-        component={DatingNavigator}
-        {...datingTabScreenPropsCard}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileNavigator}
-        {...profileTabScreenPropsCard}
-      />
+      <Tab.Screen name="Feed" component={FeedNavigator} options={OPTIONS.FEED} />
+      <Tab.Screen name="Search" component={SearchNavigator} options={OPTIONS.SEARCH} />
+      <Tab.Screen name="PostType" component={PostType} options={OPTIONS.POST_TYPE} />
+      <Tab.Screen name="Dating" component={DatingNavigator} options={OPTIONS.DATING} />
+      <Tab.Screen name="Profile" component={ProfileNavigator} options={OPTIONS.PROFILE} listeners={privateRoute} />
     </Tab.Navigator>
   )
 }
