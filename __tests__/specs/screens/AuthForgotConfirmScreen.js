@@ -4,13 +4,14 @@ import { renderWithStore, fireEvent, act } from 'tests/utils'
 import * as authActions from 'store/ducks/auth/actions'
 import { testField, testNavigate } from 'tests/utils/helpers'
 import * as Validation from 'services/Validation'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const navigation = { navigate: jest.fn() }
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useRoute: jest.fn() }))
 jest.spyOn(authActions, 'authForgotConfirmIdle')
 useNavigation.mockReturnValue(navigation)
+useRoute.mockReturnValue({})
 
 const email = 'valid@mail.com'
 const password = '12345678'
@@ -94,6 +95,16 @@ describe('AuthForgotConfirmScreen', () => {
 
     expect(getByText('Sent to valid@mail.com')).toBeTruthy()
     expect(getByLabelText('username').props.value).toBe(email)
+  })
+
+  it('initial values from params', async () => {
+    useRoute.mockReturnValueOnce({ params: { confirmationCode } })
+
+    const { getByLabelText } = setup()
+
+    testField(getByLabelText('confirmationCode'), {
+      value: confirmationCode,
+    })
   })
 
   it('loading state', async () => {
