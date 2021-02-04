@@ -8,6 +8,20 @@ jobs:
     runs-on: [self-hosted, macOS, X64]
     steps:
     - uses: actions/checkout@v2
+    - name: Install nvm
+      run: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    - name: Install node
+      run: |
+        nvm install node
+
+    - name: Install yarn
+      run: |
+        npm install --global yarn
+        export PATH="$PATH:`yarn global bin`"
+
     - name: Yarn
       run: |
         yarn install --network-timeout 1000000
