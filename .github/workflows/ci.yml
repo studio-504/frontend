@@ -8,10 +8,12 @@ jobs:
     runs-on: [self-hosted, macOS, X64]
     steps:
     - uses: actions/checkout@v2
+
     - name: Install nvm
       run: |
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
     - name: Install node
       run: |
@@ -25,12 +27,15 @@ jobs:
     - name: Yarn
       run: |
         yarn install --network-timeout 1000000
+
     - name: Install react native
       run: |
         sudo npm install -g react-native-cli
+
     - name: Install fastlane
       run: |
         sudo gem install fastlane
+
     - name: Build
       env:
         MATCH_TYPE: ${{ secrets.MATCH_TYPE }}
