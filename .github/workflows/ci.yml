@@ -12,9 +12,8 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v2.1.4
   
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: install --network-timeout 1000000
+    - name: Setup dependencies
+      run: install --network-timeout 1000000
 
     - name: Install react native
       run: |
