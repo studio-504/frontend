@@ -51,3 +51,7 @@ export function getPrimaryClientError(error) {
 
   return firstError
 }
+
+export function httpRequest(url, options) {
+  return fetch(url, options)
+}
