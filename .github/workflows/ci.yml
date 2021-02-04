@@ -5,7 +5,7 @@ defaults:
     working-directory: ios
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: [self-hosted, macOS, X64]
     steps:
     - uses: actions/checkout@v2
     - name: Update Node
