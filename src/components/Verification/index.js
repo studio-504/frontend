@@ -2,10 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
-import InfoIcon from 'assets/svg/verification/Info'
+import SpaceshipIcon from 'assets/svg/verification/Spaceship'
 import CameraIcon from 'assets/svg/verification/Camera'
 import CropIcon from 'assets/svg/verification/Crop'
-import RotateIcon from 'assets/svg/verification/Rotate'
 import ShareIcon from 'assets/svg/verification/Share'
 import PhoneIcon from 'assets/svg/verification/Phone'
 import color from 'color'
@@ -40,48 +39,12 @@ const Verification = ({
       <SafeAreaView style={styling.component}>
         <View style={styling.heading}>
           <View style={styling.info}>
-            <InfoIcon fill={theme.colors.text} />
+            <SpaceshipIcon fill={theme.colors.text} />
           </View>
-          <Text style={styling.headingTitle}>{t('Post Verification Criteria')}</Text>
+          <Text style={styling.headingTitle}>{t('Trending Tips')}</Text>
           <Text style={styling.headingSubtitle}>
-            {t('Add an Unmodified Profile Picture. Our AI detects photoshop and filters')}
+            {t('You’re perfect! Verify future posts to get them trending faster!')}
           </Text>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <CropIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('No Cropping Outside REAL')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('You can crop it')} <Text style={styling.strong}>{t('inside the REAL app')}</Text>
-            </Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <RotateIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('No Rotation Outside REAL')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('You can rotate it')} <Text style={styling.strong}>{t('inside the REAL app')}</Text>
-            </Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <ShareIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Origin Check')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('The Photo must have been')} <Text style={styling.strong}>{t('taken on this phone')}</Text>
-            </Text>
-          </View>
         </View>
 
         <View style={styling.subheading}>
@@ -91,7 +54,35 @@ const Verification = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('In-app Camera')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Photos taken using the camera inside the REAL app will always pass verification')}
+              {t('Photos/Videos taken inside this app are always verified & boosted towards the top of trending')}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <CropIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Cropping/Rotating')}</Text>
+            <Text style={styling.subheadingSubtitle}>
+              {t('Be sure to crop/rotate images within this app to ensure they pass verification.')}
+            </Text>
+            <Text style={styling.subheadingSubtitle}>
+              {t('Our app can’t tell what was changed about a photo, it only knows if it was modified by another app.')}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <ShareIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Copyright Origin Check')}</Text>
+            <Text style={styling.subheadingSubtitle}>
+              {t('The Photo must have been')} <Text style={styling.strong}>{t('taken using this device')}</Text>{' '}
+              {t('to pass verification')}
             </Text>
           </View>
         </View>
@@ -107,11 +98,8 @@ const Verification = ({
         </View>
 
         <View style={styling.description}>
-          <Text style={styling.descriptionText}>
-            {t(
-              'Verified posts will be boosted to the top of the explore page, and be more discoverable. Unverified posts can\'t be used in REAL Dating',
-            )}
-          </Text>
+          <Text style={styling.descriptionText}>{t('You’re perfect the way you are.')}</Text>
+          <Text style={styling.descriptionText}>{t('On REAL, you’re more likely to go viral by being yourself!')}</Text>
         </View>
 
         {actionType === VERIFICATION_TYPE.BACK ? (
@@ -173,7 +161,8 @@ const styles = (theme) =>
     subheading: {
       flexDirection: 'row',
       paddingHorizontal: 24,
-      paddingVertical: 12,
+      paddingTop: 12,
+      paddingBottom: 6,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
     },
@@ -207,21 +196,23 @@ const styles = (theme) =>
     subheadingSubtitle: {
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
+      marginBottom: 6,
     },
     strong: {
       fontWeight: '500',
       color: color(theme.colors.text).fade(0.4).string(),
     },
     description: {
-      paddingHorizontal: 48,
-      paddingVertical: 24,
+      paddingHorizontal: 24,
+      paddingTop: 24,
+      paddingBottom: 10,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
     },
     descriptionText: {
       fontSize: 12,
       fontWeight: '300',
-      paddingBottom: 6,
+      marginBottom: 6,
       textAlign: 'center',
     },
   })
