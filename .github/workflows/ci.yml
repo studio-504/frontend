@@ -13,7 +13,7 @@ jobs:
       uses: actions/setup-node@v2.1.4
   
     - name: Setup dependencies
-      run: install --network-timeout 1000000
+      run: yarn install --network-timeout 1000000
 
     - name: Install react native
       run: |
