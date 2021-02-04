@@ -3,6 +3,7 @@ import path from 'ramda/src/path'
 export const MESSAGES = {
   CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
   DEFAULT: 'Oops! Something went wrong',
+  USER_IS_NOT_ACTIVE: 'User is not ACTIVE',
 }
 
 export const TYPES = {

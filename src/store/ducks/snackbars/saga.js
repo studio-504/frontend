@@ -1,4 +1,4 @@
-import { takeEvery, call, select } from 'redux-saga/effects'
+import { takeEvery, call } from 'redux-saga/effects'
 import { showMessage } from 'react-native-flash-message'
 import * as authConstants from 'store/ducks/auth/constants'
 import * as usersConstants from 'store/ducks/users/constants'
@@ -6,8 +6,6 @@ import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
 import * as Logger from 'services/Logger'
 import * as ErrorsService from 'services/Errors'
-import * as UserService from 'services/User'
-import * as authSelector from 'store/ducks/auth/selectors'
 
 const BLACKLIST = [
   authConstants.AUTH_DATA_FAILURE,
@@ -25,13 +23,12 @@ const BLACKLIST = [
 function* captureErrors(action) {
   try {
     const message = ErrorsService.getErrorMessage(action)
-    const authUser = yield select(authSelector.authUserSelector)
 
     const preventShowMessage = [
       message.type === ErrorsService.TYPES.NATIVE,
       message.text === ErrorsService.MESSAGES.CANCEL_REQUEST_ON_SIGNOUT,
+      message.text === ErrorsService.MESSAGES.USER_IS_NOT_ACTIVE,
       BLACKLIST.includes(action.type),
-      UserService.isUserAnonymous(authUser),
     ]
 
     if (preventShowMessage.includes(true)) return
