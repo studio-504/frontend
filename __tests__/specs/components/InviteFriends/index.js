@@ -40,15 +40,15 @@ describe('Invite Friends Component', () => {
     it('by default', () => {
       const { getByText } = setup()
 
-      getByText('Earn Free REAL Diamond')
-      getByText('Follow or Invite 10 friends & get REAL Diamond FREE for 2 months!')
+      getByText('Get Diamond FREE for life')
+      getByText('Follow or Invite 10 friends & get REAL Diamond FREE for life!')
     })
 
     it('less than 10', () => {
       const { getByText } = setup({ contactsInvite })
 
-      getByText('Earn Free REAL Diamond')
-      getByText('Follow or Invite 8 friends & get REAL Diamond FREE for 2 months!')
+      getByText('Get Diamond FREE for life')
+      getByText('Follow or Invite 8 friends & get REAL Diamond FREE for life!')
     })
 
     it('equal or more than 10', () => {
@@ -81,6 +81,8 @@ describe('Invite Friends Component', () => {
 
     fireEvent.press(queryByText('Check Contacts'))
     expect(contactsGetRequest).toHaveBeenCalled()
+
+    expect(queryByText('We never store your contacts anywhere')).toBeTruthy()
   })
 
   it('error state', () => {
@@ -91,8 +93,11 @@ describe('Invite Friends Component', () => {
 
     expect(queryByText(error)).toBeTruthy()
     expect(queryByText('Check Contacts')).toBeFalsy()
+
     fireEvent.press(queryByText('Open Settings'))
     expect(openSettings).toHaveBeenCalled()
+
+    expect(queryByText('We never store your contacts anywhere')).toBeTruthy()
   })
 
   it('loading state', () => {
@@ -101,6 +106,7 @@ describe('Invite Friends Component', () => {
 
     expect(queryByText('Check Contacts')).toBeDisabled()
     expect(queryByText('Open Settings')).toBeFalsy()
+    expect(queryByText('We never store your contacts anywhere')).toBeTruthy()
   })
 
   it('empty state', () => {
@@ -109,6 +115,7 @@ describe('Invite Friends Component', () => {
 
     expect(queryByText('Open Settings')).toBeFalsy()
     expect(queryByText('Check Contacts"')).toBeFalsy()
+    expect(queryByText('We never store your contacts anywhere')).toBeFalsy()
     expect(queryByText('We couldn\'t find any contacts on your device. Pull down to refresh.')).toBeTruthy()
   })
 
@@ -119,6 +126,7 @@ describe('Invite Friends Component', () => {
 
       expect(queryByText('Open Settings')).toBeFalsy()
       expect(queryByText('Check Contacts"')).toBeFalsy()
+      expect(queryByText('We never store your contacts anywhere')).toBeFalsy()
       expect(queryByText('We couldn\'t find any contacts on your device. Pull down to refresh.')).toBeFalsy()
 
       const $rows = queryAllByTestId(testIDs.row)
