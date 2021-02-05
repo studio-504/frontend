@@ -1,6 +1,7 @@
 import React from 'react'
 import { Alert } from 'react-native'
 import { renderWithProviders, fireEvent, within } from 'tests/utils'
+import { testNavigate } from 'tests/utils/helpers'
 import Avatar from 'templates/Avatar'
 import InviteFriendsComponent from 'components/InviteFriends'
 import testIDs from 'components/InviteFriends/test-ids'
@@ -21,10 +22,12 @@ const items = [
 const contactsInvite = { invited: { 1: true, 3: true } }
 
 const contactsGetRequest = jest.fn()
+const navigation = { navigate: jest.fn() }
 const requiredProps = {
   contactsGetRequest,
   contactsGet: { status: 'idle', error: '', items: [] },
   contactsInvite: { invited: {} },
+  navigation,
 }
 
 const setup = (props) => renderWithProviders(<InviteFriendsComponent {...requiredProps} {...props} />)
@@ -34,9 +37,17 @@ describe('Invite Friends Component', () => {
     contactsGetRequest.mockClear()
     Alert.alert.mockClear()
     Avatar.mockClear()
+    navigation.navigate.mockClear()
   })
 
   describe('header', () => {
+    it('navigate to membership screen', () => {
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('REAL Diamond'))
+      testNavigate(navigation, 'Membership')
+    })
+
     it('by default', () => {
       const { getByText } = setup()
 
