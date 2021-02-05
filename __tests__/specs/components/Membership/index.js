@@ -17,20 +17,23 @@ describe('Membership component', () => {
   it('membership Perks', () => {
     const { getByText } = setup()
 
-    getByText('Profile Trending Boost')
-    getByText('Boost your profile in trending photos')
-
-    getByText('Dating Match Boost')
-    getByText('Send your profile to the top of potential matchess')
+    getByText('Creator Payouts (coming soon)')
+    getByText('We pay you for each view received on posts')
 
     getByText('Profile Themes')
-    getByText('Change the appearance of your profile')
-
-    getByText('Live Chat Support')
-    getByText('We\'re here to help!')
+    getByText('Change the look and feel of your profile')
 
     getByText('Diamond Badge')
     getByText('A shiny badge next to your username')
+
+    getByText('Profile Trending Boost')
+    getByText('Your posts are more likely to become trending')
+
+    getByText('Dating Match Boost')
+    getByText('People are more likely to discover you in dating')
+
+    getByText('Live Chat Support (coming soon)')
+    getByText('Chat with us 24/7, we are at your service')
   })
 
   it('subscribe button', () => {
