@@ -13,6 +13,7 @@ import AlbumCreateScreen from 'screens/AlbumCreateScreen'
 import AlbumEditScreen from 'screens/AlbumEditScreen'
 import PostEditScreen from 'screens/PostEditScreen'
 import PostCreateScreen from 'screens/PostCreateScreen'
+import MembershipScreen from 'screens/MembershipScreen'
 
 export const media = ({
   Stack,
@@ -96,6 +97,12 @@ export const media = ({
         name="PostEdit"
         component={PostEditScreen}
         {...stackScreenPageProps({ options: { title: 'Edit Post' } })}
+      />
+
+      <Stack.Screen
+        name="Membership"
+        component={MembershipScreen}
+        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
       />
     </>
   )

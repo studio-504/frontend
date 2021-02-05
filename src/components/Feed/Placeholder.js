@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import { AuthContext } from 'services/providers/Auth'
+import * as contactsConstants from 'store/ducks/contacts/constants'
 
 const Placeholder = ({ t, theme }) => {
   const styling = styles(theme)
@@ -23,6 +24,17 @@ const Placeholder = ({ t, theme }) => {
       </View>
       <View style={styling.title}>
         <Text style={styling.text}>{t('We couldn\'t find any posts in your feed')}</Text>
+
+        <Text style={styling.subtitle}>
+          {t('Get FREE ')}
+          <Text style={styling.link} onPress={() => navigationActions.navigateMembership(navigation)}>
+            {t('REAL Diamond')}
+          </Text>
+          {t(' for life')}
+        </Text>
+        <Text style={styling.subtitle}>
+          {t(`by inviting ${contactsConstants.CONTACTS_INVITE_LIMIT} friends to REAL`)}
+        </Text>
       </View>
       <View style={styling.actions}>
         <DefaultButton style={styling.actionBtn} label={t('Follow & Invite Friends')} onPress={handlePress} />
@@ -54,6 +66,17 @@ const styles = (theme) =>
       fontSize: 18,
       fontWeight: '500',
       textAlign: 'center',
+      marginBottom: 12,
+    },
+    subtitle: {
+      fontSize: 18,
+      textAlign: 'center',
+      color: theme.colors.placeholder,
+    },
+    link: {
+      fontSize: 18,
+      textDecorationLine: 'underline',
+      color: theme.colors.primary,
     },
     emptyText: {
       fontSize: 14,
