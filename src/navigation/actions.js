@@ -72,7 +72,7 @@ export const navigateProfileEdit = navigateToPath('App.Root.Home.Profile.Profile
 export const navigateInviteFriends = withAuthValidation(navigateToPath('App.Root.Home.Profile.InviteFriends'))
 export const navigateTheme = navigateToPath('App.Root.Home.Profile.Theme')
 export const navigatePrivacy = navigateToPath('App.Root.Home.Profile.Privacy')
-export const navigateMembership = navigateToPath('App.Root.Home.Profile.Membership')
+export const navigateMembership = navigateToPath('Membership')
 export const navigateArchived = navigateToPath('App.Root.Home.Profile.Archived')
 
 /**
