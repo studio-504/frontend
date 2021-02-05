@@ -130,4 +130,5 @@ export const navigateResetToApp = (navigation) => navigation.reset({ index: 0, r
 export const navigateHome = navigateToPath('App.Root.Home.Feed.Feed')
 export const navigateCamera = withAuthValidation(navigateToPath('Camera'))
 export const navigatePayout = withAuthValidation(navigateToPath('Payout'))
+export const navigatePayouts = withAuthValidation(navigateToPath('Payouts'))
 export const navigateReset = (navigation) => navigation.reset({ index: 0, routes: [{ name: 'Auth' }] })
