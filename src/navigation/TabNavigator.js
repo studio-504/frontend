@@ -110,7 +110,7 @@ const TabNavigator = ({ navigation, route }) => {
   )
 
   return (
-    <Tab.Navigator {...tabNavigatorProps} initialRouteName="Search">
+    <Tab.Navigator {...tabNavigatorProps} initialRouteName="Feed">
       <Tab.Screen name="Feed" component={FeedNavigator} options={OPTIONS.FEED} />
       <Tab.Screen name="Search" component={SearchNavigator} options={OPTIONS.SEARCH} />
       <Tab.Screen name="PostType" component={PostType} options={OPTIONS.POST_TYPE} />
