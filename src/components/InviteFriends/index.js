@@ -12,6 +12,7 @@ import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
 import testIDs from 'components/InviteFriends/test-ids'
 import * as navigationActions from 'navigation/actions'
+import * as contactsConstants from 'store/ducks/contacts/constants'
 
 const InviteFriends = ({
   t,
@@ -28,6 +29,7 @@ const InviteFriends = ({
   const isLoading = contactsGet.status === 'loading'
   const isSuccess = contactsGet.status === 'success'
   const isEmpty = contactsGet.items.length === 0
+  const inviteLimit = contactsConstants.CONTACTS_INVITE_LIMIT
 
   const handleInvitePress = (user) => {
     const emails = user.emails.map((value) => ({ value, type: 'email' }))
@@ -130,45 +132,58 @@ const InviteFriends = ({
     ) : null
   }
 
-  function getTitles(invitedCount) {
-    if (invitedCount >= 10) {
-      return {
-        title: t('Connect Your Contacts'),
-        subtitle: t('Find people you know on REAL and choose who to follow or invite'),
-      }
-    } else {
-      return {
-        title: t('Earn Free REAL Diamond'),
-        subtitle: t('Follow or Invite {{leftInvite}} friends & get REAL Diamond FREE for 2 months!', {
-          leftInvite: 10 - invitedCount,
-        }),
-      }
-    }
-  }
-
   const renderHeader = () => {
     const invitedCount = Object.keys(contactsInvite.invited).length
-    const { title, subtitle } = getTitles(invitedCount)
 
     return (
       <View style={styling.heading}>
         <View style={styling.headerIcon}>
           <ContactsIcon fill={theme.colors.text} />
         </View>
-        <Text style={styling.headingTitle}>{title}</Text>
-        <Text style={styling.headingSubtitle}>{subtitle}</Text>
+
+        {invitedCount >= inviteLimit ? (
+          <>
+            <Text style={styling.headingTitle}>{t('Connect Your Contacts')}</Text>
+            <Text style={styling.headingSubtitle}>
+              {t('Find people you know on REAL and choose who to follow or invite')}
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text style={styling.headingTitle}>{t('Get Diamond FREE for life')}</Text>
+            <Text style={styling.headingSubtitle}>
+              <Text style={styling.headingSubtitle}>
+                {t('Follow or Invite {{leftInvite}} friends & ', {
+                  leftInvite: inviteLimit - invitedCount,
+                })}
+              </Text>
+              <Text style={styling.headingSubtitle}>{t('get ')}</Text>
+              <Text style={styling.link} onPress={() => navigationActions.navigateMembership(navigation)}>
+                {t('REAL Diamond')}
+              </Text>
+              {t(' FREE for life!')}
+            </Text>
+          </>
+        )}
+
         <View style={styling.actions}>
           {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
           {contactsGet.status === 'failure' && (
-            <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
+            <>
+              <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
+              <Text style={styling.secondaryText}>{t('We never store your contacts anywhere')}</Text>
+            </>
           )}
           {!['failure', 'success'].includes(contactsGet.status) && isEmpty && (
-            <DefaultButton
-              label={t('Check Contacts')}
-              onPress={contactsGetRequest}
-              loading={isLoading}
-              disabled={isLoading}
-            />
+            <>
+              <DefaultButton
+                label={t('Check Contacts')}
+                onPress={contactsGetRequest}
+                loading={isLoading}
+                disabled={isLoading}
+              />
+              <Text style={styling.secondaryText}>{t('We never store your contacts anywhere')}</Text>
+            </>
           )}
         </View>
       </View>
@@ -241,10 +256,16 @@ const styles = (theme) =>
       textAlign: 'center',
     },
     headingSubtitle: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
       textAlign: 'center',
+    },
+    link: {
+      fontSize: 18,
+      fontWeight: '400',
+      textDecorationLine: 'underline',
+      color: theme.colors.primary,
     },
     errorText: {
       fontSize: 14,
@@ -258,6 +279,13 @@ const styles = (theme) =>
       fontWeight: '300',
       textAlign: 'center',
     },
+    secondaryText: {
+      marginTop: 7,
+      fontSize: 14,
+      fontWeight: '300',
+      textAlign: 'center',
+      color: theme.colors.placeholder,
+    },
     actions: {
       paddingTop: 16,
     },
@@ -268,7 +296,7 @@ const styles = (theme) =>
       paddingHorizontal: 8,
     },
     username: {
-      color: color(theme.colors.text).fade(0.4).string(), 
+      color: color(theme.colors.text).fade(0.4).string(),
       paddingHorizontal: 8,
     },
   })

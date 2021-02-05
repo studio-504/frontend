@@ -100,7 +100,7 @@ describe('DatingSettingsScreen', () => {
 
       fireEvent.press(getByText('Join Diamond'))
 
-      testNavigate(navigation, 'App.Root.Home.Profile.Membership')
+      testNavigate(navigation, 'Membership')
     })
 
     it('Change Profile Picture', () => {
