@@ -27,6 +27,7 @@ const Membership = ({
   handleContactUs,
   retryPurchaseRequest,
   navigatePayouts,
+  navigateTheme,
 }) => {
   const styling = styles(theme)
   const errorMessage = purchasesRequest.error || retryPurchase.error
@@ -109,7 +110,7 @@ const Membership = ({
             <ThemesIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Profile Themes')}</Text>
+            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>{t('Profile Themes')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
           </View>
         </View>
@@ -284,6 +285,7 @@ Membership.propTypes = {
   }),
   navigateInviteFriends: PropTypes.func,
   navigatePayouts: PropTypes.func,
+  navigateTheme: PropTypes.func,
 }
 
 Membership.defaultProps = {

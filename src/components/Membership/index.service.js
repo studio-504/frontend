@@ -22,6 +22,7 @@ const MembershipService = ({ children }) => {
   const handleContactUs = () => Linking.openURL('mailto:support@real.app')
   const navigateInviteFriends = navigationActions.navigateInviteFriends(navigation)
   const navigatePayouts = navigationActions.navigatePayouts(navigation)
+  const navigateTheme = () => navigationActions.navigateTheme(navigation)
 
   return children({
     isSubscribed,
@@ -33,6 +34,7 @@ const MembershipService = ({ children }) => {
     retryPurchaseRequest,
     navigateInviteFriends,
     navigatePayouts,
+    navigateTheme,
   })
 }
 
