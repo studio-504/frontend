@@ -69,13 +69,6 @@ const Membership = ({
         loading={purchasesRequest.status === 'loading'}
         disabled={purchasesRequest.status === 'loading'}
       />
-      <Text style={styling.separateText}>{t('or')}</Text>
-      <DefaultButton
-        labelStyle={styling.labelStyle}
-        label={t('Get Free Diamond For Life')}
-        onPress={navigateInviteFriends}
-        mode="outlined"
-      />
     </>
   )
 
@@ -88,6 +81,7 @@ const Membership = ({
           </View>
           <Text style={styling.headingTitle}>{t('REAL Diamond')}</Text>
           <Text style={styling.headingSubtitle}>{t('Membership Perks')}</Text>
+          {errorMessage ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
         </View>
 
         <View style={styling.subheading}>
@@ -110,7 +104,9 @@ const Membership = ({
             <ThemesIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>{t('Profile Themes')}</Text>
+            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>
+              {t('Profile Themes')}
+            </Text>
             <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
           </View>
         </View>
@@ -156,7 +152,12 @@ const Membership = ({
         </View>
 
         <View style={styling.action}>
-          {errorMessage ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
+          <DefaultButton
+            labelStyle={styling.labelStyle}
+            label={t('Get Free Diamond For Life')}
+            onPress={navigateInviteFriends}
+            mode="outlined"
+          />
         </View>
 
         <AuthTermsTemplate />
@@ -175,7 +176,7 @@ const styles = (theme) =>
       paddingBottom: 12,
     },
     heading: {
-      paddingHorizontal: 48,
+      paddingHorizontal: 24,
       paddingVertical: 24,
     },
     subheading: {
@@ -202,6 +203,7 @@ const styles = (theme) =>
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
       textAlign: 'center',
+      marginBottom: 24,
     },
     subheadingIcon: {
       paddingRight: 24,
