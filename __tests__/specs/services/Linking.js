@@ -173,7 +173,7 @@ describe('deeplinkNavigation redirect routes', () => {
     const rootUrl = `${baseUrl}/user/${userId}/settings/contacts`
     LinkingService.deeplinkNavigation(navigation)(rootUrl)
 
-    testNavigate(navigation, 'App.Root.Home.Profile.InviteFriends', {
+    testNavigate(navigation, 'InviteFriends', {
       _: baseUrl,
       userId,
       action: 'inviteFriends',

@@ -16,9 +16,7 @@ import TranslationScreen from 'screens/TranslationScreen'
 import SettingsScreen from 'screens/SettingsScreen'
 import PayoutScreen from 'screens/PayoutScreen'
 import PayoutsScreen from 'screens/PayoutsScreen'
-import MembershipScreen from 'screens/MembershipScreen'
 import ArchivedScreen from 'screens/ArchivedScreen'
-import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 import DatingSettingsScreen from 'screens/DatingSettingsScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
@@ -87,16 +85,6 @@ const ProfileNavigator = () => {
         name="Payouts"
         component={PayoutsScreen}
         {...stackScreenPageProps({ options: { title: 'Creator Payouts' } })}
-      />
-      <Stack.Screen
-        name="Membership"
-        component={MembershipScreen}
-        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
-      />
-      <Stack.Screen
-        name="InviteFriends"
-        component={InviteFriendsScreen}
-        {...stackScreenPageProps({ options: { title: 'Follow & Invite Friends' } })}
       />
       <Stack.Screen
         name="Archived"

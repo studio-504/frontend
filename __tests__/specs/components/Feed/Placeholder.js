@@ -52,6 +52,6 @@ describe('Feed Placeholder', () => {
     const { getByText } = setup()
 
     fireEvent.press(getByText('Follow & Invite Friends'))
-    testNavigate(navigation, 'App.Root.Home.Profile.InviteFriends')
+    testNavigate(navigation, 'InviteFriends')
   })
 })

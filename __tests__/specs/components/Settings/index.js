@@ -73,7 +73,7 @@ describe('Settings component', () => {
 
     fireEvent.press(getByText('Follow & Invite Friends'))
 
-    testNavigate(navigation, 'App.Root.Home.Profile.InviteFriends')
+    testNavigate(navigation, 'InviteFriends')
   })
 
   it('Change Password', () => {
