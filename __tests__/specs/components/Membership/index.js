@@ -18,7 +18,7 @@ describe('Membership component', () => {
     const { getByText } = setup()
 
     getByText('Creator Payouts (coming soon)')
-    getByText('We pay you for each view received on posts')
+    getByText('We pay you for each view received on posts. Learn more')
 
     getByText('Profile Themes')
     getByText('Change the look and feel of your profile')

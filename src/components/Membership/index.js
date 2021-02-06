@@ -26,6 +26,7 @@ const Membership = ({
   retryPurchase,
   handleContactUs,
   retryPurchaseRequest,
+  navigatePayouts,
 }) => {
   const styling = styles(theme)
   const errorMessage = purchasesRequest.error || retryPurchase.error
@@ -94,7 +95,12 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Creator Payouts (coming soon)')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('We pay you for each view received on posts')}</Text>
+            <Text style={styling.subheadingSubtitle}>
+              {t('We pay you for each view received on posts. ')}
+              <Text style={styling.link} onPress={navigatePayouts}>
+                {t('Learn more')}
+              </Text>
+            </Text>
           </View>
         </View>
 
@@ -212,6 +218,9 @@ const styles = (theme) =>
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
     },
+    link: {
+      color: theme.colors.primary,
+    },
     lastChild: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
@@ -270,6 +279,7 @@ Membership.propTypes = {
     error: PropTypes.string,
   }),
   navigateInviteFriends: PropTypes.func,
+  navigatePayouts: PropTypes.func,
 }
 
 Membership.defaultProps = {
