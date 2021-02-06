@@ -94,13 +94,13 @@ const Membership = ({
             <WalletIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Creator Payouts (coming soon)')}</Text>
-            <Text style={styling.subheadingSubtitle}>
-              {t('We pay you for each view received on posts. ')}
+            <Text style={styling.subheadingTitle}>
               <Text style={styling.link} onPress={navigatePayouts}>
-                {t('Learn more')}
+                {t('Creator Payouts')}
               </Text>
+              {t(' (coming soon)')}
             </Text>
+            <Text style={styling.subheadingSubtitle}>{t('We pay you for each view received on posts')}</Text>
           </View>
         </View>
 
@@ -219,7 +219,11 @@ const styles = (theme) =>
       color: color(theme.colors.text).fade(0.4).string(),
     },
     link: {
-      color: theme.colors.primary,
+      fontSize: 15,
+      paddingBottom: 6,
+      fontWeight: '500',
+      textDecorationLine: 'underline',
+      textDecorationColor: color(theme.colors.text).fade(0.4).string(),
     },
     lastChild: {
       borderBottomColor: theme.colors.border,
