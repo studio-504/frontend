@@ -1,34 +1,36 @@
 export default {
   prefixes: ['real.app://', 'https://real.app/'],
   config: {
-    AuthEmailConfirm: 'confirm/email/:userId/:confirmationCode',
-    AuthForgotConfirm: 'confirm/forgot/:userId/:confirmationCode',
-    Auth: {
-      screens: {
-        AuthUsername: 'signup/:userId',
+    screens: {
+      Auth: {
+        screens: {
+          AuthUsername: 'signup/:userId',
+          AuthEmailConfirm: 'confirm/email/:userId/:confirmationCode',
+          AuthForgotConfirm: 'confirm/forgot/:userId/:confirmationCode',
+        },
       },
-    },
-    Chat: {
-      screens: {
-        ChatDirect: 'chat/:chatId',
-        Chat: 'chat',
+      Chat: {
+        screens: {
+          ChatDirect: 'chat/:chatId',
+          Chat: 'chat',
+        },
       },
-    },
-    Root: {
-      screens: {
-        Home: {
-          screens: {
-            Profile: {
-              screens: {
-                ProfilePhoto: 'user/:userId/settings/photo',
-                InviteFriends: 'user/:userId/settings/contacts',
+      Root: {
+        screens: {
+          Home: {
+            screens: {
+              Profile: {
+                screens: {
+                  ProfilePhoto: 'user/:userId/settings/photo',
+                  InviteFriends: 'user/:userId/settings/contacts',
+                },
               },
             },
           },
+          Comments: 'user/:userId/post/:postId/comments',
+          PostMedia: 'user/:userId/post/:postId',
+          Profile: 'user/:userId',
         },
-        Comments: 'user/:userId/post/:postId/comments',
-        PostMedia: 'user/:userId/post/:postId',
-        Profile: 'user/:userId',
       },
     },
   },

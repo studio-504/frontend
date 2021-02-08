@@ -9,15 +9,16 @@ import DatingIcon from 'assets/svg/membership/Dating'
 import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
+import WalletIcon from 'assets/svg/membership/Wallet'
 import AppleIcon from 'assets/svg/auth/Apple'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import AuthTermsTemplate from 'templates/Auth/Terms'
-
 import { withTranslation } from 'react-i18next'
 
 const Membership = ({
   t,
   theme,
+  navigateInviteFriends,
   requestSubscription,
   manageSubscriptions,
   isSubscribed,
@@ -66,6 +67,13 @@ const Membership = ({
         loading={purchasesRequest.status === 'loading'}
         disabled={purchasesRequest.status === 'loading'}
       />
+      <Text style={styling.separateText}>{t('or')}</Text>
+      <DefaultButton
+        labelStyle={styling.labelStyle}
+        label={t('Get Free Diamond For Life')}
+        onPress={navigateInviteFriends}
+        mode="outlined"
+      />
     </>
   )
 
@@ -82,21 +90,11 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
-            <ProfileIcon fill={theme.colors.text} />
+            <WalletIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Profile Trending Boost')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('Boost your profile in trending photos')}</Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <DatingIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('Send your profile to the top of potential matchess')}</Text>
+            <Text style={styling.subheadingTitle}>{t('Creator Payouts (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('We pay you for each view received on posts')}</Text>
           </View>
         </View>
 
@@ -106,27 +104,47 @@ const Membership = ({
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Themes')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('Change the appearance of your profile')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
           </View>
         </View>
 
         <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <SupportIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Live Chat Support')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('We\'re here to help!')}</Text>
-          </View>
-        </View>
-
-        <View style={[styling.subheading, styling.lastChild]}>
           <View style={styling.subheadingIcon}>
             <DiamondIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Diamond Badge')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('A shiny badge next to your username')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <ProfileIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Trending Boost')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Your posts are more likely to become trending')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <DatingIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('People are more likely to discover you in dating')}</Text>
+          </View>
+        </View>
+
+        <View style={[styling.subheading, styling.lastChild]}>
+          <View style={styling.subheadingIcon}>
+            <SupportIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Live Chat Support (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Chat with us 24/7, we are at your service')}</Text>
           </View>
         </View>
 
@@ -227,6 +245,12 @@ const styles = (theme) =>
     manageSubscriptionsBtn: {
       marginBottom: 20,
     },
+    separateText: {
+      textAlign: 'center',
+      fontSize: 14,
+      paddingVertical: 6,
+      color: color(theme.colors.text).fade(0.4).string(),
+    },
   })
 
 Membership.propTypes = {
@@ -245,6 +269,7 @@ Membership.propTypes = {
     status: PropTypes.string,
     error: PropTypes.string,
   }),
+  navigateInviteFriends: PropTypes.func,
 }
 
 Membership.defaultProps = {

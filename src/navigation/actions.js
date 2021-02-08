@@ -69,10 +69,10 @@ export const navigateProfilePhotoUpload = withAuthValidation(navigateToPath('App
 export const navigateProfilePhoto = navigateToPath('App.Root.Home.Profile.ProfilePhoto')
 export const navigateProfilePhotoGrid = navigateToPath('App.Root.Home.Profile.ProfilePhotoGrid')
 export const navigateProfileEdit = navigateToPath('App.Root.Home.Profile.ProfileEdit')
-export const navigateInviteFriends = withAuthValidation(navigateToPath('App.Root.Home.Profile.InviteFriends'))
+export const navigateInviteFriends = withAuthValidation(navigateToPath('InviteFriends'))
 export const navigateTheme = navigateToPath('App.Root.Home.Profile.Theme')
 export const navigatePrivacy = navigateToPath('App.Root.Home.Profile.Privacy')
-export const navigateMembership = navigateToPath('App.Root.Home.Profile.Membership')
+export const navigateMembership = navigateToPath('Membership')
 export const navigateArchived = navigateToPath('App.Root.Home.Profile.Archived')
 
 /**
@@ -130,4 +130,5 @@ export const navigateResetToApp = (navigation) => navigation.reset({ index: 0, r
 export const navigateHome = navigateToPath('App.Root.Home.Feed.Feed')
 export const navigateCamera = withAuthValidation(navigateToPath('Camera'))
 export const navigatePayout = withAuthValidation(navigateToPath('Payout'))
+export const navigatePayouts = withAuthValidation(navigateToPath('Payouts'))
 export const navigateReset = (navigation) => navigation.reset({ index: 0, routes: [{ name: 'Auth' }] })

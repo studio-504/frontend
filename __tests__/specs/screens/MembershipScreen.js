@@ -11,6 +11,7 @@ jest.spyOn(Linking, 'openURL')
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (fn) => fn() }))
 jest.mock('store/ducks/auth/selectors', () => ({ authUserSelector: jest.fn() }))
 jest.mock('store/ducks/purchases/selectors', () => ({ purchasesRequest: jest.fn(), retryPurchase: jest.fn() }))
+jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 
 const basicUser = { subscriptionLevel: 'BASIC' }
 const premiumUser = { subscriptionLevel: 'DIAMOND' }

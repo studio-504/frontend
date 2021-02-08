@@ -9,9 +9,6 @@ import * as Logger from 'services/Logger'
 const defaultMessage = { message: 'Oops! Something went wrong', type: 'danger', icon: 'warning' }
 jest.mock('react-native-flash-message', () => ({ showMessage: jest.fn() }))
 
-const user = { userId: '1', username: 'username', userStatus: 'ACTIVE' }
-const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
-
 describe('Snackbars saga', () => {
   afterEach(() => {
     showMessage.mockClear()
@@ -21,7 +18,6 @@ describe('Snackbars saga', () => {
   describe('success', () => {
     it('default error message', async () => {
       await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
         .call(showMessage, defaultMessage)
         .dispatch({ type: 'ACTION_FAILURE' })
         .silentRun()
@@ -31,10 +27,7 @@ describe('Snackbars saga', () => {
       const error = new Error('Error')
       showMessage.mockRejectedValueOnce(error)
 
-      await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
-        .dispatch({ type: 'ACTION_FAILURE' })
-        .silentRun()
+      await expectSaga(testAsRootSaga(snackbars)).dispatch({ type: 'ACTION_FAILURE' }).silentRun()
 
       expect(Logger.captureException).toHaveBeenCalledWith(error)
     })
@@ -43,7 +36,6 @@ describe('Snackbars saga', () => {
       const message = 'ErrorMessage'
 
       await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
         .call(showMessage, { message, type: 'danger', icon: 'warning' })
         .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
         .silentRun()
@@ -52,13 +44,11 @@ describe('Snackbars saga', () => {
 
   describe('prevent show a message', () => {
     it('anonymous user', async () => {
-      const user = { userId: '1', username: 'username', userStatus: 'ANONYMOUS' }
-      const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
+      const message = 'User is not ACTIVE'
 
       await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
-        .not.call(showMessage, defaultMessage)
-        .dispatch({ type: 'ACTION_FAILURE' })
+        .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
+        .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
         .silentRun()
     })
 
@@ -66,7 +56,6 @@ describe('Snackbars saga', () => {
       const message = 'message'
 
       await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
         .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
         .dispatch({ type: 'ACTION_FAILURE', payload: { message } })
         .silentRun()
@@ -76,7 +65,6 @@ describe('Snackbars saga', () => {
       const message = MESSAGES.CANCEL_REQUEST_ON_SIGNOUT
 
       await expectSaga(testAsRootSaga(snackbars))
-        .withState(authorizedState)
         .not.call(showMessage, { message, type: 'danger', icon: 'warning' })
         .dispatch({ type: 'ACTION_FAILURE', payload: { message: { text: message } } })
         .silentRun()
@@ -84,11 +72,7 @@ describe('Snackbars saga', () => {
 
     it('blacklist', () => {
       const testBlackListAction = (type) => async () => {
-        await expectSaga(testAsRootSaga(snackbars))
-          .withState(authorizedState)
-          .not.call(showMessage, defaultMessage)
-          .dispatch({ type })
-          .silentRun()
+        await expectSaga(testAsRootSaga(snackbars)).not.call(showMessage, defaultMessage).dispatch({ type }).silentRun()
       }
 
       testBlackListAction('AUTH_DATA_FAILURE')

@@ -24,6 +24,13 @@ describe('Feed Placeholder', () => {
     navigation.navigate.mockClear()
   })
 
+  it('navigate to membership screen', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('REAL Diamond'))
+    testNavigate(navigation, 'Membership')
+  })
+
   it('header', () => {
     const { getByText } = setup()
 
@@ -45,6 +52,6 @@ describe('Feed Placeholder', () => {
     const { getByText } = setup()
 
     fireEvent.press(getByText('Follow & Invite Friends'))
-    testNavigate(navigation, 'App.Root.Home.Profile.InviteFriends')
+    testNavigate(navigation, 'InviteFriends')
   })
 })

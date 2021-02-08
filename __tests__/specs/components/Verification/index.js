@@ -9,31 +9,28 @@ describe('Verification Screen', () => {
   it('should represent a header', () => {
     const { getByText } = setup()
 
-    getByText('Post Verification Criteria')
-    getByText('Add an Unmodified Profile Picture. Our AI detects photoshop and filters')
+    getByText('Trending Tips')
+    getByText('You’re perfect! Verify future posts to get them trending faster!')
   })
 
   it('should represent verification rules', () => {
     const { getByText } = setup()
 
-    getByText('No Cropping Outside REAL')
-    getByText('You can crop it inside the REAL app')
-
-    getByText('No Rotation Outside REAL')
-    getByText('You can rotate it inside the REAL app')
-
-    getByText('Origin Check')
-    getByText('The Photo must have been taken on this phone')
-
     getByText('In-app Camera')
-    getByText('Photos taken using the camera inside the REAL app will always pass verification')
+    getByText('Photos/Videos taken inside this app are always verified & boosted towards the top of trending')
+
+    getByText('Cropping/Rotating')
+    getByText('Be sure to crop/rotate images within this app to ensure they pass verification.')
+    getByText('Our app can’t tell what was changed about a photo, it only knows if it was modified by another app.')
+
+    getByText('Copyright Origin Check')
+    getByText('The Photo must have been taken using this device to pass verification')
 
     getByText('Device must be an iPhone7 or newer')
     getByText('Photo must have been taken using the iOS camera app')
 
-    getByText(
-      'Verified posts will be boosted to the top of the explore page, and be more discoverable. Unverified posts can\'t be used in REAL Dating',
-    )
+    getByText('You’re perfect the way you are.')
+    getByText('On REAL, you’re more likely to go viral by being yourself!')
   })
 
   it('should close popup on backdrop tab', () => {
