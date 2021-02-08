@@ -70,6 +70,7 @@ export const navigateProfilePhoto = navigateToPath('App.Root.Home.Profile.Profil
 export const navigateProfilePhotoGrid = navigateToPath('App.Root.Home.Profile.ProfilePhotoGrid')
 export const navigateProfileEdit = navigateToPath('App.Root.Home.Profile.ProfileEdit')
 export const navigateInviteFriends = withAuthValidation(navigateToPath('InviteFriends'))
+export const navigateInviteFriendsSuccess = navigateToPath('InviteFriendsSuccess')
 export const navigateTheme = navigateToPath('App.Root.Home.Profile.Theme')
 export const navigatePrivacy = navigateToPath('App.Root.Home.Profile.Privacy')
 export const navigateMembership = navigateToPath('Membership')

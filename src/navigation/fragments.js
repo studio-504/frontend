@@ -15,6 +15,7 @@ import PostEditScreen from 'screens/PostEditScreen'
 import PostCreateScreen from 'screens/PostCreateScreen'
 import MembershipScreen from 'screens/MembershipScreen'
 import InviteFriendsScreen from 'screens/InviteFriendsScreen'
+import InviteFriendsSuccessScreen from 'screens/InviteFriendsSuccessScreen'
 
 export const media = ({
   Stack,
@@ -110,6 +111,12 @@ export const media = ({
         name="InviteFriends"
         component={InviteFriendsScreen}
         {...stackScreenPageProps({ options: { title: 'Follow & Invite Friends' } })}
+      />
+
+      <Stack.Screen
+        name="InviteFriendsSuccess"
+        component={InviteFriendsSuccessScreen}
+        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
       />
     </>
   )
