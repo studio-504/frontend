@@ -14,7 +14,7 @@ import * as Validation from 'services/Validation'
 import { withTranslation } from 'react-i18next'
 
 const formSchema = Yup.object().shape({
-  username: Validation.username,
+  username: Validation.uniqUsername,
 })
 
 const UsernameForm = ({
