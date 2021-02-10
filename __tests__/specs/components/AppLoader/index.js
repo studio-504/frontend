@@ -2,10 +2,8 @@
 import React from 'react'
 import AppLoader from 'components/AppLoader'
 import { renderWithProviders } from 'tests/utils'
-import * as Updates from 'services/Updates'
 import { useDispatch } from 'react-redux'
 
-jest.mock('services/Updates', () => ({ versionCheck: jest.fn() }))
 jest.mock('react-redux', () => ({ useDispatch: jest.fn() }))
 
 const dispatch = jest.fn()
@@ -21,7 +19,7 @@ describe('AppLoader', () => {
   it('versionCheck on mount', () => {
     setup()
 
-    expect(Updates.versionCheck).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith({ type: 'UPDATES_CHECK_REQUEST' })
   })
 
   it('start auth flow on mount', () => {
