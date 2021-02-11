@@ -1,10 +1,12 @@
+import { call, takeLatest } from 'redux-saga/effects'
 import { Alert, Linking, NativeModules } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import Config from 'react-native-config'
 import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
+import * as constants from 'store/ducks/updates/constants'
 
-export function isNewerThan(v1, v2) {
+function isNewerThan(v1, v2) {
   v1 = v1.split('.')
   v2 = v2.split('.')
   for (var i = 0; i < Math.max(v1.length, v2.length); i++) {
@@ -32,32 +34,36 @@ async function getVersionFromStore() {
 }
 
 async function needUpdate() {
+  if (Config.ENVIRONMENT !== 'production') return
+
+  const storeVersion = await getVersionFromStore()
+  const currentVersion = DeviceInfo.getVersion()
+
+  return isNewerThan(storeVersion, currentVersion)
+}
+
+function showUpdateAlert() {
+  const title = 'App Update Available'
+  const subtitle = 'Please update REAL to continue'
+  const updateBtn = {
+    text: 'Update Now',
+    onPress: () => Linking.openURL('itms-apps://itunes.apple.com/app/id1485194570'),
+    style: 'cancel',
+  }
+
+  Alert.alert(title, subtitle, [updateBtn], { cancelable: false })
+}
+
+function* updatesCheckRequest() {
   try {
-    if (Config.ENVIRONMENT !== 'production') return
+    const forceUpdate = yield call(needUpdate)
 
-    const storeVersion = await getVersionFromStore()
-    const currentVersion = DeviceInfo.getVersion()
-
-    return isNewerThan(storeVersion, currentVersion)
+    if (forceUpdate) {
+      yield call(showUpdateAlert)
+    }
   } catch (error) {
     Logger.captureException(error)
-    return false
   }
 }
 
-export async function versionCheck() {
-  if (await needUpdate()) {
-    Alert.alert(
-      'App Update Available',
-      'Please update REAL to continue',
-      [
-        {
-          text: 'Update Now',
-          onPress: () => Linking.openURL('itms-apps://itunes.apple.com/app/id1485194570'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false },
-    )
-  }
-}
+export default () => [takeLatest(constants.UPDATES_CHECK_REQUEST, updatesCheckRequest)]

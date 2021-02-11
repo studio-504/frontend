@@ -8,6 +8,7 @@ import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
 import snackbars from 'store/ducks/snackbars/saga'
+import updates from 'store/ducks/updates/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -64,6 +65,7 @@ export default function* rootSaga(persistor) {
     .concat(albums())
     .concat(chat())
 
+    .concat(updates())
     .concat(cache())
     .concat(subscriptions())
     .concat(purchases())
