@@ -53,7 +53,7 @@ const captureErrors = (action) => {
     if (nativeError === 'string') {
       Logger.captureMessage(nativeError)
     } else {
-      Logger.captureException(nativeError)
+      Logger.captureException(path(['payload'])(action))
     }
   })
 }
