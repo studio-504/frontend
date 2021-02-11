@@ -1,5 +1,7 @@
+import { Alert } from 'react-native'
 import { takeEvery, call } from 'redux-saga/effects'
 import { showMessage } from 'react-native-flash-message'
+import Config from 'react-native-config'
 import * as authConstants from 'store/ducks/auth/constants'
 import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
@@ -33,10 +35,17 @@ function* captureErrors(action) {
 
     if (preventShowMessage.includes(true)) return
 
+    function onLongPress() {
+      if (Config.ENVIRONMENT === 'development') {
+        Alert.alert(JSON.stringify(action))
+      }
+    }
+
     yield call(showMessage, {
       message: message.text,
       type: 'danger',
       icon: 'warning',
+      onLongPress,
     })
   } catch (error) {
     Logger.captureException(error)
