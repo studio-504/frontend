@@ -34,7 +34,7 @@ export const authDataSuccess = createAction(constants.AUTH_DATA_SUCCESS)
 export const authDataFailure = createAction(constants.AUTH_DATA_FAILURE)
 
 /**
- * Application Initial data prefetch, should be moved into /ducks/app perhaps ?!
+ * Application Initial data prefetch
  */
 export const authPrefetchIdle = createAction(constants.AUTH_PREFETCH_IDLE)
 export const authPrefetchRequest = createAction(constants.AUTH_PREFETCH_REQUEST)
