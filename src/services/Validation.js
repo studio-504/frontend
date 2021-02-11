@@ -12,7 +12,7 @@ import * as usersQueries from 'store/ducks/users/queries'
 /**
  * Constants
  */
-const ERRORS = {
+export const ERRORS = {
   dateOfBirthMonth: 'Month must be selected',
   dateOfBirthDay: 'Date must be selected',
   dateOfBirthYear: 'Year must be selected',
@@ -29,6 +29,7 @@ const ERRORS = {
   height: 'Height must be selected',
   minHeight: 'Height must be greater than 0',
   maxHeight: 'Height must be less than 10\'',
+  usernameReserve: 'Username is reserved',
 }
 
 export const MIN_HEIGHT = 1
@@ -71,7 +72,9 @@ export const username = Yup.string()
   .matches(/^[a-zA-Z0-9_.]*$/, 'username must only contain letters & numbers')
   .trim()
   .required()
-  .test('usernameReserve', 'username is reserved', remoteUsernameValidation())
+
+export const uniqUsername = username
+  .test('usernameReserve', ERRORS.usernameReserve, remoteUsernameValidation())
 
 export const email = Yup.string()
   .matches(/^\S*$/, ERRORS.noWhitespace)
