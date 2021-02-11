@@ -12,7 +12,7 @@ function* handleAuthPrefetchCommon() {
   /**
    * 1. Feed
    */
-  yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
+  yield put(postsActions.postsFeedGetRequest())
 
   /**
    * 2. Trending
@@ -53,9 +53,10 @@ function* handleAuthPrefetchAuthenticated() {
    * Data which is important to load but not belongs to home screen
    * Sequential approach wasn't used cuz some calls are expensive and not top priority
    */
-  
   yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
   yield put(chatActions.chatGetChatsRequest())
+  yield put(postsActions.postsGetUnreadCommentsRequest())
+  yield put(usersActions.usersGetProfileSelfRequest())
 }
 
 /**

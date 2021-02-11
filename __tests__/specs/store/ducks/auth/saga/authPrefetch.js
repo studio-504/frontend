@@ -12,7 +12,7 @@ describe('Auth prefetch', () => {
         auth: { authToken: { meta: { type: 'COGNITO_GUEST' } } },
       })
 
-      .put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      .put(postsActions.postsFeedGetRequest())
       .put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
       .put(usersActions.usersGetCardsRequest())
 
@@ -26,9 +26,11 @@ describe('Auth prefetch', () => {
         auth: { authToken: { meta: { type: 'COGNITO_AUTHENTICATED' } } },
       })
 
-      .put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      .put(postsActions.postsFeedGetRequest())
       .put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
       .put(usersActions.usersGetCardsRequest())
+      .put(postsActions.postsGetUnreadCommentsRequest())
+      .put(usersActions.usersGetProfileSelfRequest())
 
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()
@@ -40,9 +42,11 @@ describe('Auth prefetch', () => {
         auth: { authToken: { meta: { type: 'COGNITO_UNAUTHENTICATED' } } },
       })
 
-      .not.put(postsActions.postsFeedGetRequest({ limit: 20 }))
+      .not.put(postsActions.postsFeedGetRequest())
       .not.put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
       .not.put(usersActions.usersGetCardsRequest())
+      .not.put(postsActions.postsGetUnreadCommentsRequest())
+      .not.put(usersActions.usersGetProfileSelfRequest())
       .put(authActions.authSignoutRequest())
 
       .dispatch(authActions.authPrefetchRequest())
