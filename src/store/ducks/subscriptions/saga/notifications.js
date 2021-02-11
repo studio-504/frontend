@@ -1,3 +1,4 @@
+import * as Logger from 'services/Logger'
 import { call, put, take, select, fork } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -57,7 +58,7 @@ function* handleEvent({ eventData }) {
 /**
  * New subscription that is used for various real-time updates
  */
-function* subscriptionNotificationStart() {
+function* notificationSubscription() {
   while (true) {
     yield take(constants.SUBSCRIPTIONS_MAIN_REQUEST)
 
@@ -79,9 +80,9 @@ function* subscriptionNotificationStart() {
       yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
       channel.close()
     } catch (error) {
-      // ignore
+      Logger.captureException(error)
     }
   }
 }
 
-export default subscriptionNotificationStart
+export default notificationSubscription
