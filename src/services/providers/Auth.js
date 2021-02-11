@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as updatesActions from 'store/ducks/updates/actions'
-import * as postsActions from 'store/ducks/posts/actions'
-import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
+import * as appActions from 'store/ducks/appState/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as postsSelector from 'store/ducks/posts/selectors'
 import useAppState from 'services/AppState'
 import * as UserService from 'services/User'
 
@@ -20,9 +17,7 @@ export const AuthProvider = ({
 }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUserSelector)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const [swipeDisabled, setSwipeDisabled] = useState(false)
-  
   const isUserActive = UserService.isUserActive(user)
   const swipeEnabled = isUserActive && !swipeDisabled
 
@@ -32,23 +27,10 @@ export const AuthProvider = ({
    */
   useAppState({
     onForeground: () => {
-      dispatch(updatesActions.updatesCheckRequest())
-
-      if (user.userId) {
-        dispatch(subscriptionsActions.subscriptionsMainRequest())
-        dispatch(subscriptionsActions.subscriptionsPollRequest())
-        dispatch(postsActions.postsFeedGetRequest())
-
-        if (postsGetTrendingPosts.status === 'failure') {
-          dispatch(postsActions.postsGetTrendingPostsRequest())
-        }
-      }
+      dispatch(appActions.appStateForeground())
     },
     onBackground: () => {
-      if (user.userId) {
-        dispatch(subscriptionsActions.subscriptionsMainIdle())
-        dispatch(subscriptionsActions.subscriptionsPollIdle())
-      }
+      dispatch(appActions.appStateBackground())
     },
   })
 

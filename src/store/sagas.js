@@ -1,4 +1,5 @@
 import { all, takeEvery } from 'redux-saga/effects'
+import appState from 'store/ducks/appState/saga'
 import camera from 'store/ducks/camera/saga'
 import albums from 'store/ducks/albums/saga'
 import chat from 'store/ducks/chat/saga'
@@ -59,6 +60,7 @@ const captureErrors = (action) => {
 
 export default function* rootSaga(persistor) {
   yield all([]
+    .concat(appState())
     .concat(camera())
     .concat(albums())
     .concat(chat())

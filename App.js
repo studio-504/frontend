@@ -13,7 +13,6 @@ import linking from 'navigation/linking'
 import Router from 'navigation/Router'
 import FlashMessage from 'react-native-flash-message'
 
-
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   installMode: codePush.InstallMode.ON_NEXT_RESUME,

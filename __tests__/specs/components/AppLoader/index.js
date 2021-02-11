@@ -16,15 +16,9 @@ describe('AppLoader', () => {
     dispatch.mockClear()
   })
 
-  it('versionCheck on mount', () => {
+  it('dispath app launched action on mount', () => {
     setup()
 
-    expect(dispatch).toHaveBeenCalledWith({ type: 'UPDATES_CHECK_REQUEST' })
-  })
-
-  it('start auth flow on mount', () => {
-    setup()
-
-    expect(dispatch).toHaveBeenCalledWith({ type: 'AUTH_FLOW_REQUEST', payload: { allowAnonymous: false } })
+    expect(dispatch).toHaveBeenCalledWith({ type: 'APP_STATE_LAUNCHED' })
   })
 })
