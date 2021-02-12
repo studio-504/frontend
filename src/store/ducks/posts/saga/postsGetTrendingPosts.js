@@ -10,20 +10,23 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import * as selectors from 'store/ducks/posts/selectors'
 import { entitiesMerge } from 'store/ducks/entities/saga'
+import { TRENDING_GALLERY } from 'constants/Gallery'
+
+const { fetchLimit } = TRENDING_GALLERY
 
 /**
  *
  */
 export function* handlePostsGetTrendingPostsRequest(payload = {}, extraData = []) {
   const filters = yield select(selectors.postsGetTrendingPostsFilters)
-  const api = yield call(queryService.apiRequest, queries.trendingPosts, { ...payload, ...filters })
+  const api = yield call(queryService.apiRequest, queries.trendingPosts, { limit: fetchLimit, ...payload, ...filters })
   const dataSelector = path(['data', 'trendingPosts', 'items'])
   const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
   
   const data = [...extraData, ...dataSelector(api)]
   const meta = metaSelector(api)
 
-  if (data.length < 60 && meta.nextToken) {
+  if (data.length < fetchLimit && meta.nextToken) {
     return yield call(handlePostsGetTrendingPostsRequest, { ...payload, ...meta }, data)
   }
 

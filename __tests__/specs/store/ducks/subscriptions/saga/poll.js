@@ -8,7 +8,7 @@ jest.useFakeTimers()
 describe('pollSubscription', () => {
   it('update trending page every 30 minutes', async () => {
     const promise = expectSaga(pollSubscription)
-      .put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+      .put(postsActions.postsGetTrendingPostsRequest())
 
       .dispatch(subscriptionsActions.subscriptionsPollRequest())
       .silentRun()
@@ -22,7 +22,7 @@ describe('pollSubscription', () => {
 
   it('close channel on idle action', async () => {
     const promise = expectSaga(pollSubscription)
-      .not.put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+      .not.put(postsActions.postsGetTrendingPostsRequest())
 
       .dispatch(subscriptionsActions.subscriptionsPollRequest())
       .dispatch(subscriptionsActions.subscriptionsPollIdle())

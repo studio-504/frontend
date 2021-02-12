@@ -20,6 +20,14 @@ import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import { TRENDING_GALLERY } from 'constants/Gallery'
+
+const { 
+  numColumns, 
+  maxToRenderPerBatch, 
+  initialNumToRender, 
+  onEndReachedThreshold, 
+} = TRENDING_GALLERY
 
 const SearchComponent = ({
   t,
@@ -48,7 +56,7 @@ const SearchComponent = ({
     resource: postsGetTrendingPosts,
     loadInit: postsGetTrendingPostsRequest, 
     loadMore: postsGetTrendingPostsMoreRequest,
-    extra: { limit: path(['payload', 'limit'])(postsGetTrendingPosts) },
+  
   })
 
   const {
@@ -58,6 +66,10 @@ const SearchComponent = ({
 
   const isEmpty = !path(['data', 'length'])(postsGetTrendingPosts)
   const isLoading = path(['status'])(postsGetTrendingPosts) === 'loading'
+
+  const renderItem = ({ item: post, index: priorityIndex }) => (
+    <PostsGridThumbnailComponent post={post} priorityIndex={priorityIndex} thread="posts/trending" />
+  )
 
   return (
     <View style={styling.root}>
@@ -76,11 +88,11 @@ const SearchComponent = ({
       <FlatList
         ref={feedRef}
         data={postsGetTrendingPosts.data}
-        numColumns={3}
+        numColumns={numColumns}
+        maxToRenderPerBatch={maxToRenderPerBatch}
+        initialNumToRender={initialNumToRender}
         keyExtractor={(item) => item.postId}
-        renderItem={({ item: post, index: priorityIndex }) => (
-          <PostsGridThumbnailComponent post={post} priorityIndex={priorityIndex} thread="posts/trending" />
-        )}
+        renderItem={renderItem}
         refreshControl={
           <RefreshControl
             tintColor={theme.colors.border}
@@ -92,7 +104,7 @@ const SearchComponent = ({
         ListFooterComponent={<ActivityIndicator animating={scroll.loadingmore} color={theme.colors.border} />}
         ListFooterComponentStyle={styling.activity}
         onEndReached={scroll.handleLoadMore}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={onEndReachedThreshold}
         onViewableItemsChanged={onViewableItemsThumbnailsRef.current}
         viewabilityConfig={viewabilityConfigRef.current}
       />

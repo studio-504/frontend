@@ -17,7 +17,7 @@ function* handleAuthPrefetchCommon() {
   /**
    * 2. Trending
    */
-  yield put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+  yield put(postsActions.postsGetTrendingPostsRequest())
 
   /**
    * 3. In-app notification cards

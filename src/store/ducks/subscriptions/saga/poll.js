@@ -19,7 +19,7 @@ function* pollSubscription() {
       yield fork(function* eventListener() {
         while (true) {
           yield take(channel)
-          yield put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+          yield put(postsActions.postsGetTrendingPostsRequest())
         }
       })
 
