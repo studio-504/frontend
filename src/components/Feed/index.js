@@ -16,7 +16,7 @@ import testIDs from './test-ids'
 const Feed = ({
   theme,
   postsFeedGet,
-  postsFeedGetRequest,
+  loadInit,
   postsFeedGetMoreRequest,
 
   handleScrollPrev,
@@ -37,7 +37,7 @@ const Feed = ({
 
   const scroll = ScrollService({
     resource: postsFeedGet,
-    loadInit: postsFeedGetRequest,
+    loadInit,
     loadMore: postsFeedGetMoreRequest,
     multiplier: 3,
   })
@@ -127,7 +127,7 @@ Feed.propTypes = {
   theme: PropTypes.any,
   feedRef: PropTypes.any,
   postsFeedGet: PropTypes.any,
-  postsFeedGetRequest: PropTypes.any,
+  loadInit: PropTypes.any,
   postsFeedGetMoreRequest: PropTypes.any,
   handleScrollPrev: PropTypes.any,
   handleScrollNext: PropTypes.any,

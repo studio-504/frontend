@@ -1,19 +1,36 @@
 import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
+import * as usersActions from 'store/ducks/users/actions'
+import * as chatActions from 'store/ducks/chat/actions'
 import { useScrollToTop } from '@react-navigation/native'
 import pathOr from 'ramda/src/pathOr'
 import * as postsSelector from 'store/ducks/posts/selectors'
+import * as authSelector from 'store/ducks/auth/selectors'
 
 const FeedService = ({ children }) => {
   const dispatch = useDispatch()
   const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
   const postsCreate = useSelector(postsSelector.postsCreate)
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
-  
-  const postsFeedGetRequest = (payload) =>
-    dispatch(postsActions.postsFeedGetRequest(payload))
+  const userId = useSelector(authSelector.authUserIdSelector)
 
+  const updateRelatedData = () => {
+    dispatch(usersActions.usersGetCardsRequest())
+
+    if (userId) {
+      dispatch(postsActions.postsGetUnreadCommentsRequest())
+      dispatch(usersActions.usersGetFollowedUsersWithStoriesRequest())
+      dispatch(usersActions.usersGetPendingFollowersRequest({ userId }))
+      dispatch(chatActions.chatGetChatsRequest())
+    }
+  }
+
+  const loadInit = (payload) => {
+    dispatch(postsActions.postsFeedGetRequest(payload))
+    updateRelatedData()
+  }
+  
   const postsFeedGetMoreRequest = (payload) =>
     dispatch(postsActions.postsFeedGetMoreRequest(payload))
 
@@ -79,7 +96,7 @@ const FeedService = ({ children }) => {
 
   return children({
     postsFeedGet,
-    postsFeedGetRequest,
+    loadInit,
     postsFeedGetMoreRequest,
     postsCreate,
     postsGetTrendingPosts,
