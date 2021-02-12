@@ -1,8 +1,9 @@
-import { put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest, select } from 'redux-saga/effects'
 import * as constants from 'store/ducks/appState/constants'
 import * as authActions from 'store/ducks/auth/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as updatesActions from 'store/ducks/updates/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
 
 function* appStateLaunched() {
   yield put(updatesActions.updatesCheckRequest())
@@ -10,8 +11,13 @@ function* appStateLaunched() {
 }
 
 function* appStateForeground() {
+  const userId = yield select(authSelector.authUserIdSelector)
+
   yield put(updatesActions.updatesCheckRequest())
-  yield put(authActions.authPrefetchRequest())
+
+  if (userId) {
+    yield put(authActions.authPrefetchRequest())
+  }
 }
 
 function* appStateBackground() {
