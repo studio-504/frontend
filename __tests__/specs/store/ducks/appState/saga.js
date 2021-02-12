@@ -25,12 +25,27 @@ describe('App state', () => {
       .silentRun()
   })
 
-  it('on foreground', async () => {
-    await expectSaga(testAsRootSaga(appState))
-      .put(updatesActions.updatesCheckRequest())
-      .put(authActions.authPrefetchRequest())
+  describe('on foreground', () => {
+    it('guest', async () => {
+      await expectSaga(testAsRootSaga(appState))
+        .put(updatesActions.updatesCheckRequest())
+        .not.put(authActions.authPrefetchRequest())
 
-      .dispatch(actions.appStateForeground())
-      .silentRun()
+        .dispatch(actions.appStateForeground())
+        .silentRun()
+    })
+
+    it('authorized', async () => {
+      const user = { userId: '1', username: 'username' }
+      const authorizedState = { auth: { user: user.userId }, entities: { users: { [user.userId]: user } } }
+
+      await expectSaga(testAsRootSaga(appState))
+        .withState(authorizedState)
+        .put(updatesActions.updatesCheckRequest())
+        .put(authActions.authPrefetchRequest())
+
+        .dispatch(actions.appStateForeground())
+        .silentRun()
+    })
   })
 })
