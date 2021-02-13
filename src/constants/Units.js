@@ -54,9 +54,8 @@ export const getMaxAgeOptions = (matchAgeRangeMin) => {
 
 export const DEFAULT_HEIGHT = 60
 
-const zeroToNine = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-export const heightOptions = zeroToNine.reduce((acc, feet) => {
-  zeroToNine.forEach((inches) => {
+export const heightOptions = [...Array(10).keys()].reduce((acc, feet) => {
+  [...Array(12).keys()].forEach((inches) => {
     const label = `${feet}'${inches}"`
     const value = feet * 12 + inches
 
