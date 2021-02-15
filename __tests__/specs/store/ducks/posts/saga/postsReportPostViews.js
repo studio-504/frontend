@@ -9,7 +9,7 @@ import {
 import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as entitiesActions from 'store/ducks/entities/actions'
-import { errorWrapper } from 'store/helpers'
+import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn() }))

@@ -1,6 +1,5 @@
 import { graphqlOperation } from '@aws-amplify/api'
 import { getContext, race, take, call } from 'redux-saga/effects'
-import path from 'ramda/src/path'
 import * as authConstants from 'store/ducks/auth/constants'
 import { CancelRequestOnSignoutError, MESSAGES } from 'services/Errors'
 
@@ -30,26 +29,6 @@ export function* apiRequest(query, payload) {
   } else {
     return response
   }
-}
-
-export function getPrimaryGraphqlError(error) {
-  const firstError = path(['errors', '0'])(error)
-
-  if (!firstError || firstError.name !== 'GraphQLError') {
-    return false
-  }
-
-  return firstError
-}
-
-export function getPrimaryClientError(error) {
-  const firstError = path(['errors', '0'])(error)
-
-  if (!firstError || firstError.errorType !== 'ClientError') {
-    return false
-  }
-
-  return firstError
 }
 
 export function httpRequest(url, options) {

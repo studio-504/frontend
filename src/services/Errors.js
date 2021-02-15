@@ -4,6 +4,7 @@ export const MESSAGES = {
   CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
   DEFAULT: 'Oops! Something went wrong',
   USER_IS_NOT_ACTIVE: 'User is not ACTIVE',
+  NETWORK_ERROR: 'Network Error',
 }
 
 export const TYPES = {
@@ -49,5 +50,33 @@ export class NotSupportedInAppCardError extends Error {
   constructor(...args) {
     super(...args)
     this.code = CODES.NOT_SUPPORTED_IN_APP_CARD_ERROR
+  }
+}
+
+export function getPrimaryClientError(error) {
+  const firstError = path(['errors', '0'])(error)
+
+  if (!firstError || firstError.errorType !== 'ClientError') {
+    return false
+  }
+
+  return firstError
+}
+
+export const errorWrapper = (error) => {
+  /**
+   * basic error object handling
+   */
+  const errorMessage = path(['message'])(error)
+  if (typeof errorMessage === 'string' && errorMessage.length) {
+    return errorMessage
+  }
+
+  /**
+   * graphql api errors
+   */
+  const errorGraphql = path(['errors'])(error)
+  if (Array.isArray(errorGraphql) && errorGraphql.length) {
+    return errorGraphql
   }
 }

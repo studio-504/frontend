@@ -8,6 +8,7 @@ import {
   saveAuthUserPersist,
   getAuthUserPersist,
 } from 'services/Auth'
+import { getPrimaryClientError } from 'services/Errors'
 
 import * as normalizer from 'normalizer/schemas'
 import * as Logger from 'services/Logger'
@@ -155,6 +156,8 @@ function* handleAuthDataRequest(payload = {}) {
 /**
  * Conditional user data fetching with online/offline support
  */
+
+
 function* authDataRequest(req) {
   try {
     const { data, meta } = yield handleAuthDataRequest(req.payload)
@@ -164,7 +167,7 @@ function* authDataRequest(req) {
       meta,
     }))
   } catch (error) {
-    const primaryClientError = queryService.getPrimaryClientError(error)
+    const primaryClientError = yield call(getPrimaryClientError, error)
       
     if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
       yield put(actions.authDataFailure({

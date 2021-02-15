@@ -22,20 +22,25 @@ const BLACKLIST = [
   usersConstants.USERS_REPORT_SCREEN_VIEWS_FAILURE,
 ]
 
+const MESSAGES_BLACKLIST = [
+  ErrorsService.MESSAGES.CANCEL_REQUEST_ON_SIGNOUT,
+  ErrorsService.MESSAGES.USER_IS_NOT_ACTIVE,
+  ErrorsService.MESSAGES.NETWORK_ERROR,
+]
+
 function* captureErrors(action) {
   try {
     const message = ErrorsService.getErrorMessage(action)
 
     const preventShowMessage = [
       message.type === ErrorsService.TYPES.NATIVE,
-      message.text === ErrorsService.MESSAGES.CANCEL_REQUEST_ON_SIGNOUT,
-      message.text === ErrorsService.MESSAGES.USER_IS_NOT_ACTIVE,
       BLACKLIST.includes(action.type),
+      MESSAGES_BLACKLIST.includes(message.text),
     ]
 
     if (preventShowMessage.includes(true)) return
 
-    function onLongPress() {
+    function onPress() {
       if (Config.ENVIRONMENT === 'development') {
         Alert.alert(JSON.stringify(action))
       }
@@ -45,7 +50,7 @@ function* captureErrors(action) {
       message: message.text,
       type: 'danger',
       icon: 'warning',
-      onLongPress,
+      onPress,
     })
   } catch (error) {
     Logger.captureException(error)

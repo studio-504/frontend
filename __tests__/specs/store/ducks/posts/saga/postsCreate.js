@@ -5,7 +5,7 @@ import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as actions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import { errorWrapper } from 'store/helpers'
+import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 import { provideDelay } from 'tests/utils/helpers'
 

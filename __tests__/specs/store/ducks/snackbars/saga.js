@@ -57,13 +57,13 @@ describe('Snackbars saga', () => {
 
   describe('debug mode', () => {
     const action = { type: 'ACTION_FAILURE' }
-    const simulateLongPress = () => showMessage.mock.calls[0][0].onLongPress()
+    const simulatePress = () => showMessage.mock.calls[0][0].onPress()
 
     it('dev env', async () => {
       Config.ENVIRONMENT = 'development'
       await expectSaga(testAsRootSaga(snackbars)).dispatch({ type: 'ACTION_FAILURE' }).silentRun()
 
-      simulateLongPress()
+      simulatePress()
       expect(Config.ENVIRONMENT).toBe('development')
       expect(Alert.alert).toHaveBeenCalledWith(JSON.stringify(action))
       Config.ENVIRONMENT = 'production'
@@ -73,7 +73,7 @@ describe('Snackbars saga', () => {
       expect(Config.ENVIRONMENT).toBe('production')
       await expectSaga(testAsRootSaga(snackbars)).dispatch({ type: 'ACTION_FAILURE' }).silentRun()
 
-      simulateLongPress()
+      simulatePress()
       expect(Alert.alert).not.toHaveBeenCalled()
     })
   })

@@ -5,7 +5,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
 import { testEntitiesMerge } from 'tests/utils/helpers'
-import { errorWrapper } from 'store/helpers'
+import { errorWrapper } from 'services/Errors'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 

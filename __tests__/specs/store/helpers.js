@@ -1,4 +1,4 @@
-import { errorWrapper } from 'store/helpers'
+import { errorWrapper } from 'services/Errors'
 
 describe('Store helpers', () => {
   describe('errorWrapper', () => {

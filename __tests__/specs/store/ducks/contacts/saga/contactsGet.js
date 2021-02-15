@@ -7,7 +7,7 @@ import contacts from 'store/ducks/contacts/saga'
 import  parsePhoneNumber  from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import { errorWrapper } from 'store/helpers'
+import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/contacts/queries'
 
