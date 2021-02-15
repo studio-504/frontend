@@ -8,8 +8,6 @@ import { TRENDING_GALLERY } from 'constants/Gallery'
 
 jest.spyOn(queryService, 'apiRequest')
 
-const errorWrapper = (err) => err.message
- 
 describe('postsGetTrendingPostsSaga', () => {
   const action = actions.postsGetTrendingPostsRequest()
   const data = { data: { trendingPosts: { items: [], nextToken: null } } }
@@ -18,9 +16,6 @@ describe('postsGetTrendingPostsSaga', () => {
   it('successfully fetch trending posts', () => {
     testSaga(postsGetTrendingPostsSaga.postsGetTrendingPostsRequest, action)
       .next()
-      .getContext('errorWrapper')
-
-      .next(errorWrapper)
       .call(postsGetTrendingPostsSaga.handlePostsGetTrendingPostsRequest, action.payload)
 
       .next(data)
@@ -38,9 +33,6 @@ describe('postsGetTrendingPostsSaga', () => {
 
     testSaga(postsGetTrendingPostsSaga.postsGetTrendingPostsRequest, action)
       .next()
-      .getContext('errorWrapper')
-
-      .next(errorWrapper)
       .throw(new Error(message))
       .put(actions.postsGetTrendingPostsFailure({ message, payload: action.payload }))
 

@@ -4,7 +4,9 @@ import * as AwsAPI from '@aws-amplify/api'
 import * as queryService from 'services/Query'
 import { sagaWithError, sleep } from 'tests/utils/helpers'
 import * as authActions from 'store/ducks/auth/actions'
-import { CancelRequestOnSignoutError } from 'services/Errors'
+import * as ErrorsService from 'services/Errors'
+
+const { CancelRequestOnSignoutError } = ErrorsService
 
 jest.mock('@aws-amplify/api', () => ({
   graphqlOperation: jest.fn(),

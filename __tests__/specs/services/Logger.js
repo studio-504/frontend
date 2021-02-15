@@ -1,5 +1,7 @@
 import * as Sentry from '@sentry/react-native'
-import { CancelRequestOnSignoutError } from 'services/Errors'
+import * as ErrorsService from 'services/Errors'
+
+const { CancelRequestOnSignoutError } = ErrorsService
 
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),

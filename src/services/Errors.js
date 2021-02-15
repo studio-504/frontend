@@ -1,4 +1,11 @@
 import path from 'ramda/src/path'
+import propOr from 'ramda/src/propOr'
+import authErrors from 'store/ducks/auth/errors'
+import signupErrors from 'store/ducks/signup/errors'
+import usersErrors from 'store/ducks/users/errors'
+import datingErrors from 'store/ducks/dating/errors'
+
+const messageCodes = Object.assign(authErrors, signupErrors, usersErrors, datingErrors)
 
 export const MESSAGES = {
   CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
@@ -79,4 +86,30 @@ export const errorWrapper = (error) => {
   if (Array.isArray(errorGraphql) && errorGraphql.length) {
     return errorGraphql
   }
+}
+
+export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
+  return {
+    ...messageCodes[key][status],
+    nativeError,
+  }
+}
+
+const getListOf = propOr([])
+
+export const getGraphqlErrorMessage = (key, graphqlError) => {
+  for (let error of getListOf('errors', graphqlError)) {
+    for (let errorCode of getListOf('errorInfo', error)) {
+      if (typeof errorCode === 'string') {
+        const message = getMessagePayload(key, errorCode)
+        const isValidMessage = message.code && message.text
+
+        if (isValidMessage) {
+          return message
+        }
+      }
+    }
+  }
+
+  return getMessagePayload(key, 'GENERIC')
 }

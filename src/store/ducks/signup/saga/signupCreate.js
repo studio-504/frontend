@@ -2,12 +2,12 @@ import { put, call, take, race, takeEvery, getContext } from 'redux-saga/effects
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
-import * as errors from 'store/ducks/signup/errors'
 import * as authActions from 'store/ducks/auth/actions'
 import * as authConstants from 'store/ducks/auth/constants'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
+import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -62,29 +62,29 @@ function* signupCreateRequest(req) {
     
     yield handleSignupCreateRequest(req.payload)
     yield put(actions.signupCreateSuccess({
-      message: errors.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC' ), 
+      message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC' ), 
       usernameType: req.payload.usernameType,
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error),
+        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error),
       }))
     } else if (error.code === 'UsernameExistsException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error),
+        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error),
       }))
     } else if (error.code === 'InvalidPasswordException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error),
+        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error),
       }))
     } else if (error.code === 'InvalidParameterException') {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error),
+        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error),
       }))
     } else {
       yield put(actions.signupCreateFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error),
       }))
     }
   }

@@ -1,9 +1,9 @@
 import { put, getContext, takeLatest } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
+import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -23,11 +23,11 @@ function* authForgotRequest(req) {
   } catch (error) {
     if (error.code === 'UserNotFoundException') {
       yield put(actions.authForgotFailure({
-        message: errors.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'USER_NOT_FOUND', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'USER_NOT_FOUND', error),
       }))
     } else {
       yield put(actions.authForgotFailure({
-        message: errors.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'GENERIC', error),
       }))
     }
   }
@@ -54,21 +54,21 @@ function* authForgotConfirmRequest(req) {
   try {
     const data = yield handleAuthForgotConfirmRequest(req.payload)
     yield put(actions.authForgotConfirmSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_SUCCESS, 'GENERIC'),
+      message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_SUCCESS, 'GENERIC'),
       data,
     }))
   } catch (error) {
     if (error.code === 'InvalidPasswordException') {
       yield put(actions.authForgotConfirmFailure({
-        message: errors.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'INVALID_PASSWORD', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'INVALID_PASSWORD', error),
       }))
     } else if (error.code === 'CodeMismatchException') {
       yield put(actions.authForgotConfirmFailure({
-        message: errors.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
       })) 
     } else {
       yield put(actions.authForgotConfirmFailure({
-        message: errors.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'GENERIC', error),
       }))
     }
   }

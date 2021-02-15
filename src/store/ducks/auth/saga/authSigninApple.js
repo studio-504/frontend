@@ -5,9 +5,9 @@ import {
 } from 'services/AWS'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
+import * as ErrorsService from 'services/Errors'
 
 function* getApplePayload() {
   const apple = yield call(federatedAppleSignin)
@@ -86,16 +86,16 @@ function* authSigninAppleRequest(req) {
   try {
     yield handleAuthAppleRequest(req.payload)
     yield put(actions.authSigninAppleSuccess({
-      message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_SUCCESS, 'GENERIC'),
+      message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_SUCCESS, 'GENERIC'),
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
       yield put(actions.authSigninAppleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'CANCELED', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'CANCELED', error),
       }))
     } else {
       yield put(actions.authSigninAppleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'GENERIC', error),
       }))
     }
   }

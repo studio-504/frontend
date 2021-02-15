@@ -1,11 +1,9 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "testGqlError", "expectSaga"] }] */
 import { expectSaga } from 'redux-saga-test-plan'
-import { getContext } from 'redux-saga/effects'
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
-import { errorWrapper } from 'services/Errors'
 import { testEntitiesMerge } from 'tests/utils/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
@@ -28,8 +26,6 @@ describe('usersSetUserDatingStatusRequest', () => {
     const saga = expectSaga(usersSetUserDatingStatusRequest, action)
 
     await testEntitiesMerge(saga, entities)
-      .provide([[getContext('errorWrapper'), errorWrapper]])
-
       .put(usersActions.usersSetUserDatingStatusSuccess({ data: 1, payload }))
 
       .silentRun()
@@ -50,7 +46,6 @@ describe('usersSetUserDatingStatusRequest', () => {
       queryService.apiRequest.mockRejectedValueOnce(gqlError)
 
       await expectSaga(usersSetUserDatingStatusRequest, action)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
         .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
         .run()
     }
@@ -66,7 +61,6 @@ describe('usersSetUserDatingStatusRequest', () => {
       queryService.apiRequest.mockRejectedValueOnce(error)
 
       await expectSaga(usersSetUserDatingStatusRequest, action)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
         .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
         .run()
     })
@@ -83,7 +77,6 @@ describe('usersSetUserDatingStatusRequest', () => {
       queryService.apiRequest.mockRejectedValueOnce(gqlError)
 
       await expectSaga(usersSetUserDatingStatusRequest, action)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
         .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
         .run()
     })

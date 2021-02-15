@@ -18,6 +18,7 @@ import { v4 as uuid } from 'uuid'
 import RNFS from 'react-native-fs' 
 import * as Logger from 'services/Logger'
 import filePath from 'path'
+import * as ErrorsService from 'services/Errors'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   const getName = (image) => {
@@ -152,13 +153,13 @@ function* handlePostsCreateRequest(payload) {
  */
 function* handleTextOnlyPost(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  const errorWrapper = yield getContext('errorWrapper')
+  
 
   try {
     yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
   } catch (error) {
     yield put(actions.postsCreateFailure({
-      message: errorWrapper(error),
+      message: ErrorsService.errorWrapper(error),
       payload: req.payload,
       meta: { attempt: 0, progress: 0 },
     }))
@@ -178,9 +179,8 @@ function* handlePostsCreateSuccess(post) {
 }
 
 function* handlePostsCreateFailure(error, post) {
-  const errorWrapper = yield getContext('errorWrapper')
   const payload = {
-    message: errorWrapper(error),
+    message: ErrorsService.errorWrapper(error),
     payload: post,
     meta: {},
   }
@@ -235,7 +235,7 @@ export function* checkPostsCreateProcessing(processingPost) {
  *
  */
 function* handleImagePost(req) {
-  const errorWrapper = yield getContext('errorWrapper')
+  
 
   try {
     const data = yield handlePostsCreateRequest(req.payload)
@@ -269,7 +269,7 @@ function* handleImagePost(req) {
     })
   } catch (error) {
     yield put(actions.postsCreateFailure({
-      message: errorWrapper(error),
+      message: ErrorsService.errorWrapper(error),
       payload: req.payload,
       meta: { attempt: 0, progress: 0 },
     }))

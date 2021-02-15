@@ -1,4 +1,3 @@
-/* eslint-disable no-global-assign */
 import React from 'react'
 import AppLoader from 'components/AppLoader'
 import { renderWithProviders } from 'tests/utils'

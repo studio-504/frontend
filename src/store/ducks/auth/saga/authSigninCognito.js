@@ -1,7 +1,7 @@
 import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
+import * as ErrorsService from 'services/Errors'
 
 /**
  * Authenticate using cognito into user pool
@@ -37,23 +37,23 @@ function* authSigninCognitoRequest(req) {
   } catch (error) {
     if (error.code === 'UserNotConfirmedException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED', error),
       }))
     } else if (error.code === 'UserNotFoundException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND', error),
       }))
     } else if (error.code === 'NotAuthorizedException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED', error),
       }))
     } else if (error.code === 'InvalidParameterException') {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER', error),
       }))
     } else {
       yield put(actions.authSigninCognitoFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error),
       }))
     }
   }

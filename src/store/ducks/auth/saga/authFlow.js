@@ -1,11 +1,11 @@
 import { put, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
+import * as ErrorsService from 'services/Errors'
 
 function hasAuthenticatedCondition({ dataSuccess }) {
   const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
@@ -65,13 +65,13 @@ function* authFlowRequest(req) {
   try {
     const { data, meta } = yield handleAuthFlowRequest(req.payload)
     yield put(actions.authFlowSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
+      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
       data,
       meta,
     }))
   } catch (error) {
     yield put(actions.authFlowFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
+      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
       meta: {
         authenticated: false,
       },

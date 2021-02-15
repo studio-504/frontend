@@ -1,5 +1,4 @@
 import { range } from 'ramda'
-import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import {
   groupActionsByType,
@@ -9,7 +8,6 @@ import {
 import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as entitiesActions from 'store/ducks/entities/actions'
-import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn() }))
@@ -26,7 +24,6 @@ describe('Post report post views', () => {
     it('success', () => {
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
         .withState(authorizedState)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
         .not.put(
@@ -44,19 +41,16 @@ describe('Post report post views', () => {
 
     it('not authorized user', () => {
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
-        .provide([[getContext('errorWrapper'), errorWrapper]])
-
         .not.call([queryService, 'apiRequest'], queries.reportPostViews, payload)
-       
+
         .silentRun()
     })
 
     it('optimistic unviewed count update', () => {
       const payload = { postIds: [1, 5], viewType: 'FOCUS' }
-      
+
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
         .withState(authorizedState)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
         .put(
@@ -78,7 +72,6 @@ describe('Post report post views', () => {
 
       return expectSaga(postsReportPostViewsRequest, actions.postsReportPostViewsRequest(payload))
         .withState(authorizedState)
-        .provide([[getContext('errorWrapper'), errorWrapper]])
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
         .put(actions.postsReportPostViewsFailure({ message: error.message, payload }))

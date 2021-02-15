@@ -4,9 +4,9 @@ import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
 import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
-import * as errors from 'store/ducks/users/errors'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
+import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -34,7 +34,7 @@ function* usersSetUserDatingStatusRequest(req) {
   } catch (error) {
     yield put(
       actions.usersSetUserDatingStatusFailure({
-        message: errors.getGraphqlErrorMessage(constants.USERS_SET_USER_DATING_STATUS_FAILURE, error),
+        message: ErrorsService.getGraphqlErrorMessage(constants.USERS_SET_USER_DATING_STATUS_FAILURE, error),
         payload: req.payload,
       }),
     )

@@ -1,13 +1,11 @@
-import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import Contacts from 'react-native-contacts'
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions'
 import contacts from 'store/ducks/contacts/saga'
-import  parsePhoneNumber  from 'libphonenumber-js/min'
+import parsePhoneNumber from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/contacts/queries'
 
@@ -148,10 +146,7 @@ describe('Contacts saga', () => {
   })
 
   it('Permission UNAVAILABLE', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.UNAVAILABLE],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.UNAVAILABLE]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
@@ -165,10 +160,7 @@ describe('Contacts saga', () => {
   })
 
   it('Permission BLOCKED', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.BLOCKED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.BLOCKED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
@@ -185,7 +177,6 @@ describe('Contacts saga', () => {
     const context = [
       [matchers.call.fn(check), RESULTS.DENIED],
       [matchers.call.fn(request), RESULTS.DENIED],
-      [getContext('errorWrapper'), errorWrapper],
     ]
 
     return expectSaga(testAsRootSaga(contacts))
@@ -200,10 +191,7 @@ describe('Contacts saga', () => {
   })
 
   it('failed get contacts', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
@@ -227,10 +215,7 @@ describe('Contacts saga', () => {
       },
     })
 
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
@@ -255,10 +240,7 @@ describe('Contacts saga', () => {
 
     queryService.apiRequest.mockRejectedValueOnce(false)
 
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)

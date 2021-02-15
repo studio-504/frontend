@@ -7,12 +7,13 @@ import head from 'ramda/src/head'
 import propOr from 'ramda/src/propOr'
 import { getLocales } from 'react-native-localize'
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions'
-import { call, getContext, put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import Contacts from 'react-native-contacts'
 import parsePhoneNumber from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import * as queries from 'store/ducks/contacts/queries'
 import * as queryService from 'services/Query'
+import * as ErrorsService from 'services/Errors'
 
 function normalizeContacts(contacts) {
   const makeFullName = (user) => {
@@ -94,14 +95,12 @@ function* checkContactsPermission() {
 }
 
 function* contactsGetRequest() {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(checkContactsPermission)
     const contacts = yield call(findContacts)
     yield put(actions.contactsGetSuccess({ data: contacts }))
   } catch (error) {
-    yield put(actions.contactsGetFailure({ message: errorWrapper(error) }))
+    yield put(actions.contactsGetFailure({ message: ErrorsService.errorWrapper(error) }))
   }
 }
 

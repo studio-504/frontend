@@ -1,11 +1,10 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import { call, getContext } from 'redux-saga/effects'
+import { call } from 'redux-saga/effects'
 import * as sagas from 'store/ducks/posts/saga/postsCreate'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as actions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import { errorWrapper } from 'services/Errors'
 import * as queryService from 'services/Query'
 import { provideDelay } from 'tests/utils/helpers'
 
@@ -61,10 +60,7 @@ describe('Create post saga', () => {
       it('handle POST_ERROR event', async () => {
         const tests = failureCases.map(({ post, failureAction }) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([
-              [getPost, { data: { post } }],
-              [getContext('errorWrapper'), errorWrapper],
-            ])
+            .provide([[getPost, { data: { post } }]])
             .dispatch(subscriptionsActions.subscriptionsPostError(postWithError))
             .put(failureAction)
             .run()
@@ -76,7 +72,7 @@ describe('Create post saga', () => {
       it('handle timeout and check post status manually', async () => {
         const tests = failureCases.map(({ post, failureAction }) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([[getPost, { data: { post } }], [getContext('errorWrapper'), errorWrapper], provideDelay(true)])
+            .provide([[getPost, { data: { post } }], provideDelay(true)])
 
             .put(failureAction)
             .run(false)
@@ -97,7 +93,7 @@ describe('Create post saga', () => {
 
         const tests = posts.map((post) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([[getPost, { data: { post } }], [getContext('errorWrapper'), errorWrapper], provideDelay(true)])
+            .provide([[getPost, { data: { post } }], provideDelay(true)])
 
             .put(failureAction)
             .run(false)
@@ -110,7 +106,6 @@ describe('Create post saga', () => {
     describe('Keep handle socket events when received post is not equal processingPost', () => {
       it('handle POST_COMPLETED event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostCompleted({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()
@@ -118,7 +113,6 @@ describe('Create post saga', () => {
 
       it('handle POST_ERROR event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostError({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()

@@ -1,7 +1,6 @@
-import propOr from 'ramda/src/propOr'
 import * as constants from 'store/ducks/users/constants'
 
-const messageCodes = {
+export default {
   /**
    *
    */
@@ -91,30 +90,4 @@ const messageCodes = {
       text: 'You can only enable dating once per day',
     },
   },
-}
-
-const getListOf = propOr([])
-
-export const getGraphqlErrorMessage = (key, graphqlError) => {
-  for (let error of getListOf('errors', graphqlError)) {
-    for (let errorCode of getListOf('errorInfo', error)) {
-      if (typeof errorCode === 'string') {
-        const message = getMessagePayload(key, errorCode)
-        const isValidMessage = message.code && message.text
-
-        if (isValidMessage) {
-          return message
-        }
-      }
-    }
-  }
-
-  return getMessagePayload(key, 'GENERIC')
-}
-
-export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
-  return {
-    ...messageCodes[key][status],
-    nativeError,
-  }
 }

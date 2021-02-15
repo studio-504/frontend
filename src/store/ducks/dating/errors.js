@@ -1,6 +1,6 @@
 import * as constants from 'store/ducks/dating/constants'
 
-const messageCodes = {
+export default {
   [constants.DATING_MATCHED_USERS_SUCCESS]: {
     GENERIC: {
       code: 'GENERIC',
@@ -26,11 +26,4 @@ const messageCodes = {
       text: 'Failed to fetch matched users',
     },
   },
-}
-
-export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
-  return ({
-    ...messageCodes[key][status],
-    nativeError,
-  })
 }

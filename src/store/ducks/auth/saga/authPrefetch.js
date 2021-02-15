@@ -1,12 +1,12 @@
 import { put, call, select, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as chatActions from 'store/ducks/chat/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as ErrorsService from 'services/Errors'
 
 function* handleAuthPrefetchCommon() {
   /**
@@ -81,11 +81,11 @@ function* authPrefetchRequest(req) {
   try {
     yield handleAuthPrefetchRequest(req.payload)
     yield put(actions.authPrefetchSuccess({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_SUCCESS, 'GENERIC'),
+      message: ErrorsService.getMessagePayload(constants.AUTH_PREFETCH_SUCCESS, 'GENERIC'),
     }))
   } catch (error) {
     yield put(actions.authPrefetchFailure({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error),
+      message: ErrorsService.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error),
     }))
   }
 }

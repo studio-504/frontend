@@ -1,4 +1,4 @@
-import { all, put, fork, take, flush, getContext, actionChannel, delay, call, select } from 'redux-saga/effects'
+import { all, put, fork, take, flush, actionChannel, delay, call, select } from 'redux-saga/effects'
 import { buffers } from 'redux-saga'
 import path from 'ramda/src/path'
 import uniq from 'ramda/src/uniq'
@@ -9,6 +9,7 @@ import * as constants from 'store/ducks/posts/constants'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as queryService from 'services/Query'
+import * as ErrorsService from 'services/Errors'
 
 function* handlePostsReportPostViewsRequest(payload) {
   const data = payload.postIds.reduce((acc, item) => {
@@ -20,7 +21,7 @@ function* handlePostsReportPostViewsRequest(payload) {
 }
 
 export function* postsReportPostViewsRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
+  
 
   try {
     const userId = yield select(authSelector.authUserIdSelector)
@@ -37,7 +38,7 @@ export function* postsReportPostViewsRequest(req) {
 
     yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
-    yield put(actions.postsReportPostViewsFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsReportPostViewsFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
   }
 }
 

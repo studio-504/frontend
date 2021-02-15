@@ -1,8 +1,8 @@
 import * as constants from 'store/ducks/auth/constants'
 
-const messageCodes = {
+export default {
   /**
-   * 
+   *
    */
   [constants.AUTH_CHECK_SUCCESS]: {
     GENERIC: {
@@ -30,7 +30,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: {
     GENERIC: {
@@ -105,7 +105,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_FORGOT_FAILURE]: {
     GENERIC: {
@@ -119,7 +119,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_FORGOT_CONFIRM_SUCCESS]: {
     GENERIC: {
@@ -143,7 +143,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_SIGNIN_ANONYMOUS_SUCCESS]: {
     GENERIC: {
@@ -159,7 +159,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_FLOW_SUCCESS]: {
     GENERIC: {
@@ -175,7 +175,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_DATA_SUCCESS]: {
     GENERIC: {
@@ -195,7 +195,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_TOKEN_SUCCESS]: {
     GENERIC: {
@@ -211,7 +211,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_PREFETCH_SUCCESS]: {
     GENERIC: {
@@ -227,7 +227,7 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
   [constants.AUTH_RESET_SUCCESS]: {
     GENERIC: {
@@ -241,11 +241,4 @@ const messageCodes = {
       text: 'Can\'t reset cognito credentials',
     },
   },
-}
-
-export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
-  return ({
-    ...messageCodes[key][status],
-    nativeError,
-  })
 }

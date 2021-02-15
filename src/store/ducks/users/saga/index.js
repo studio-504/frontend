@@ -1,4 +1,4 @@
-import { put, takeLatest, getContext, call } from 'redux-saga/effects'
+import { put, takeLatest, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import omit from 'ramda/src/omit'
@@ -6,7 +6,6 @@ import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
 import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
-import * as errors from 'store/ducks/users/errors'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
@@ -14,6 +13,7 @@ import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSe
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
+import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -37,14 +37,12 @@ function* usersSearchRequestData(req, api) {
 }
 
 function* usersSearchRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.searchUsers, req.payload)
     const next = yield usersSearchRequestData(req, data)
     yield put(actions.usersSearchSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersSearchFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersSearchFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -69,14 +67,12 @@ function* usersDeleteRequestData(req, api) {
 }
 
 function* usersDeleteRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.deleteUser, req.payload)
     const next = yield usersDeleteRequestData(req, data)
     yield put(actions.usersDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersDeleteFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersDeleteFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -102,14 +98,12 @@ function* usersGetFollowerUsersRequestData(req, api) {
 }
 
 function* usersGetFollowerUsersRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFollowerUsers, req.payload)
     const next = yield usersGetFollowerUsersRequestData(req, data)
     yield put(actions.usersGetFollowerUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowerUsersFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetFollowerUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -135,14 +129,12 @@ function* usersGetFollowedUsersRequestData(req, api) {
 }
 
 function* usersGetFollowedUsersRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFollowedUsers, req.payload)
     const next = yield usersGetFollowedUsersRequestData(req, data)
     yield put(actions.usersGetFollowedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowedUsersFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetFollowedUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -168,14 +160,12 @@ function* usersGetPendingFollowersRequestData(req, api) {
 }
 
 function* usersGetPendingFollowersRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFollowerUsers, { ...req.payload, followStatus: 'REQUESTED' })
     const next = yield usersGetPendingFollowersRequestData(req, data)
     yield put(actions.usersGetPendingFollowersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetPendingFollowersFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetPendingFollowersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -201,14 +191,12 @@ function* usersGetFollowedUsersWithStoriesRequestData(req, api) {
 }
 
 function* usersGetFollowedUsersWithStoriesRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFollowedUsersWithStories, req.payload)
     const next = yield usersGetFollowedUsersWithStoriesRequestData(req, data)
     yield put(actions.usersGetFollowedUsersWithStoriesSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowedUsersWithStoriesFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetFollowedUsersWithStoriesFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -233,14 +221,12 @@ function* usersAcceptFollowerUserRequestData(req, api) {
 }
 
 function* usersAcceptFollowerUserRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.acceptFollowerUser, req.payload)
     const next = yield usersAcceptFollowerUserRequestData(req, data)
     yield put(actions.usersAcceptFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersAcceptFollowerUserFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersAcceptFollowerUserFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -265,14 +251,12 @@ function* usersDeclineFollowerUserRequestData(req, api) {
 }
 
 function* usersDeclineFollowerUserRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.denyFollowerUser, req.payload)
     const next = yield usersDeclineFollowerUserRequestData(req, data)
     yield put(actions.usersDeclineFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersDeclineFollowerUserFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersDeclineFollowerUserFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -297,14 +281,12 @@ function* usersGetProfileRequestData(req, api) {
 }
 
 function* usersGetProfileRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.user, req.payload)
     const next = yield usersGetProfileRequestData(req, data)
     yield put(actions.usersGetProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetProfileFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetProfileFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -339,12 +321,12 @@ function* usersEditProfileRequest(req) {
 
     if (errorMessage && errorMessage.includes('is not verified')) {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED', error),
+        message: ErrorsService.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED', error),
         payload: req.payload,
       }))
     } else {
       yield put(actions.usersEditProfileFailure({
-        message: errors.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error),
+        message: ErrorsService.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error),
         payload: req.payload,
       }))
     }
@@ -363,7 +345,7 @@ function* usersDeleteProfilePhoto() {
     yield put(actions.usersDeleteAvatarSuccess())
   } catch (error) {
     yield put(actions.usersDeleteAvatarFailure({
-      message: errors.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error),
+      message: ErrorsService.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error),
     }))
   }
 }
@@ -380,7 +362,7 @@ function* usersChangeAvatarRequest(req) {
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
     yield put(actions.usersChangeAvatarFailure({ 
-      message: errors.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error), 
+      message: ErrorsService.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error), 
     }))
   }
 }
@@ -406,15 +388,13 @@ function* usersFollowRequestData(req, api) {
 }
 
 function* usersFollowRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.followUser, req.payload)
     const next = yield usersFollowRequestData(req, data)
     yield put(actions.usersFollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersFollowFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersFollowFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -439,15 +419,13 @@ function* usersUnfollowRequestData(req, api) {
 }
 
 function* usersUnfollowRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.unfollowUser, req.payload)
     const next = yield usersUnfollowRequestData(req, data)
     yield put(actions.usersUnfollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersUnfollowFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersUnfollowFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -472,15 +450,13 @@ function* usersBlockRequestData(req, api) {
 }
 
 function* usersBlockRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.blockUser, req.payload)
     const next = yield usersBlockRequestData(req, data)
     yield put(actions.usersBlockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersBlockFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersBlockFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -505,15 +481,13 @@ function* usersUnblockRequestData(req, api) {
 }
 
 function* usersUnblockRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.unblockUser, req.payload)
     const next = yield usersUnblockRequestData(req, data)
     yield put(actions.usersUnblockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersUnblockFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersUnblockFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -539,14 +513,12 @@ function* usersGetTrendingUsersRequestData(req, api) {
 }
 
 function* usersGetTrendingUsersRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.trendingUsers, req.payload)
     const next = yield usersGetTrendingUsersRequestData(req, data)
     yield put(actions.usersGetTrendingUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetTrendingUsersFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetTrendingUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -562,8 +534,6 @@ const isCardSupported = (card) => {
  *
  */
 function* usersGetCardsRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getCards, req.payload)
     const selector = path(['data', 'self', 'cards', 'items'])
@@ -575,7 +545,7 @@ function* usersGetCardsRequest(req) {
       meta: metaSelector(data),
     }))
   } catch (error) {
-    yield put(actions.usersGetCardsFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersGetCardsFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -583,15 +553,13 @@ function* usersGetCardsRequest(req) {
  *
  */
 function* usersDeleteCardRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.deleteCard, req.payload)
     const selector = path(['data', 'deleteCard'])
 
     yield put(actions.usersDeleteCardSuccess({ payload: req.payload, data: selector(data), meta: {} }))
   } catch (error) {
-    yield put(actions.usersDeleteCardFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersDeleteCardFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -599,14 +567,12 @@ function* usersDeleteCardRequest(req) {
  *
  */
 function* usersSetApnsTokenRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.setUserAPNSToken, req.payload)
 
     yield put(actions.usersSetApnsTokenSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
-    yield put(actions.usersSetApnsTokenFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersSetApnsTokenFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 }
 
@@ -614,14 +580,12 @@ function* usersSetApnsTokenRequest(req) {
  *
  */
 function* usersReportScreenViewsRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.reportScreenViews, req.payload)
 
     yield put(actions.usersReportScreenViewsSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
-    yield put(actions.usersReportScreenViewsFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.usersReportScreenViewsFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
   }
 } 
 

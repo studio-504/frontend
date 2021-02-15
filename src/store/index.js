@@ -11,7 +11,6 @@ import * as Logger from 'services/Logger'
 import { STORAGE_PROVIDER } from 'services/Storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
-import { errorWrapper } from 'services/Errors'
 import 'store/updates'
 
 const initializeStore = ({ navigationRef }) => {
@@ -40,7 +39,6 @@ const initializeStore = ({ navigationRef }) => {
       AwsAuth: Auth,
       AwsAPI: API,
       AwsCredentials: Credentials,
-      errorWrapper,
     },
     onError: Logger.captureException,
   })
