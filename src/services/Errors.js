@@ -1,5 +1,4 @@
 import path from 'ramda/src/path'
-import propOr from 'ramda/src/propOr'
 import { createAction } from 'redux-actions'
 import authErrors from 'store/ducks/auth/errors'
 import signupErrors from 'store/ducks/signup/errors'
@@ -61,58 +60,11 @@ export class NotSupportedInAppCardError extends Error {
   }
 }
 
-export function getPrimaryClientError(error) {
-  const firstError = path(['errors', '0'])(error)
-
-  if (!firstError || firstError.errorType !== 'ClientError') {
-    return false
-  }
-
-  return firstError
-}
-
-export const errorWrapper = (error) => {
-  /**
-   * basic error object handling
-   */
-  const errorMessage = path(['message'])(error)
-  if (typeof errorMessage === 'string' && errorMessage.length) {
-    return errorMessage
-  }
-
-  /**
-   * graphql api errors
-   */
-  const errorGraphql = path(['errors'])(error)
-  if (Array.isArray(errorGraphql) && errorGraphql.length) {
-    return errorGraphql
-  }
-}
-
 export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
   return {
     ...messageCodes[key][status],
     nativeError,
   }
-}
-
-const getListOf = propOr([])
-
-export const getGraphqlErrorMessage = (key, graphqlError) => {
-  for (let error of getListOf('errors', graphqlError)) {
-    for (let errorCode of getListOf('errorInfo', error)) {
-      if (typeof errorCode === 'string') {
-        const message = getMessagePayload(key, errorCode)
-        const isValidMessage = message.code && message.text
-
-        if (isValidMessage) {
-          return message
-        }
-      }
-    }
-  }
-
-  return getMessagePayload(key, 'GENERIC')
 }
 
 export const createFailureAction = (type) =>

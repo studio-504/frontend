@@ -188,10 +188,6 @@ export default {
       code: 'GENERIC',
       text: 'Failed to fetch auth data',
     },
-    USER_DOES_NOT_EXIST: {
-      code: 'USER_DOES_NOT_EXIST',
-      text: 'User does not exist',
-    },
   },
 
   /**

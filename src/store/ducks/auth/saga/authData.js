@@ -165,13 +165,7 @@ function* authDataRequest(req) {
       meta,
     }))
   } catch (error) {
-    const primaryClientError = yield call(ErrorsService.getPrimaryClientError, error)
-      
-    if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
-      yield put(actions.authDataFailure(error, { errorCode: 'USER_DOES_NOT_EXIST' }))
-    } else {
       yield put(actions.authDataFailure(error))
-    }
   }
 }
 
