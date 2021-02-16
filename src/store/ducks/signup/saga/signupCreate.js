@@ -7,7 +7,6 @@ import * as authConstants from 'store/ducks/auth/constants'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -61,10 +60,7 @@ function* signupCreateRequest(req) {
     logEvent('SIGNUP_CREATE_REQUEST')
     
     yield handleSignupCreateRequest(req.payload)
-    yield put(actions.signupCreateSuccess({
-      message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_SUCCESS, 'GENERIC' ), 
-      usernameType: req.payload.usernameType,
-    }))
+    yield put(actions.signupCreateSuccess({ usernameType: req.payload.usernameType }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
       yield put(actions.signupCreateFailure(error, { errorCode: 'USER_CONFIRMATION_DELIVERY' }))

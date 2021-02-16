@@ -7,7 +7,6 @@ import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
-import * as ErrorsService from 'services/Errors'
 
 /**
  * Authenticate using google into identity pool
@@ -80,9 +79,7 @@ function* authSigninGoogleRequest(req) {
   try {
     yield handleAuthSigninGoogleRequest(req.payload)
 
-    yield put(actions.authSigninGoogleSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authSigninGoogleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
       yield put(actions.authSigninGoogleFailure(error, { errorCode: 'CANCELED' }))

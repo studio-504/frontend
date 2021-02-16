@@ -29,14 +29,6 @@ const userPayload = {
   expires_at: 'expires_at',
 }
 
-const successPayload = {
-  message: {
-    code: 'GENERIC',
-    text: 'Successfully signed with Apple',
-    nativeError: '',
-  },
-}
-
 const AwsAuth = { federatedSignIn: jest.fn() }
 federatedAppleSignin.mockResolvedValue(applePayload)
 AwsAuth.federatedSignIn.mockResolvedValue(true)
@@ -79,7 +71,7 @@ describe('authSigninApple', () => {
           .call(federatedAppleSignin)
           .call([queryService, 'apiRequest'], queries.createAnonymousUser)
           .put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))
-          .put(actions.authSigninAppleSuccess(successPayload))
+          .put(actions.authSigninAppleSuccess())
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowSuccess())
@@ -100,7 +92,7 @@ describe('authSigninApple', () => {
         })
 
         await setupSaga()
-          .put(actions.authSigninAppleSuccess(successPayload))
+          .put(actions.authSigninAppleSuccess())
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowSuccess())
@@ -164,7 +156,7 @@ describe('authSigninApple', () => {
         .call(validateUserExistance, userPayload)
         .not.call([queryService, 'apiRequest'], queries.createAnonymousUser)
         .put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))
-        .put(actions.authSigninAppleSuccess(successPayload))
+        .put(actions.authSigninAppleSuccess())
 
         .dispatch(actions.authSigninAppleRequest())
         .dispatch(actions.authFlowSuccess())

@@ -4,12 +4,6 @@ export default {
   /**
    *
    */
-  [constants.SIGNUP_CREATE_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully create account',
-    },
-  },
   [constants.SIGNUP_CREATE_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -36,12 +30,6 @@ export default {
   /**
    *
    */
-  [constants.SIGNUP_CONFIRM_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully confirmed account, you can signin now',
-    },
-  },
   [constants.SIGNUP_CONFIRM_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -64,12 +52,6 @@ export default {
   /**
    *
    */
-  [constants.SIGNUP_USERNAME_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Username is available',
-    },
-  },
   [constants.SIGNUP_USERNAME_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -84,12 +66,6 @@ export default {
   /**
    *
    */
-  [constants.SIGNUP_COGNITO_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully signed up',
-    },
-  },
   [constants.SIGNUP_COGNITO_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -100,12 +76,6 @@ export default {
   /**
    *
    */
-  [constants.SIGNUP_PASSWORD_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully set password',
-    },
-  },
   [constants.SIGNUP_PASSWORD_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',

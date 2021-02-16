@@ -1,7 +1,6 @@
 import { call, put, race, take, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as ErrorsService from 'services/Errors'
 import { MissingCognitoTokenError, UnauthorizedTokenError } from 'store/errors'
 
 /**
@@ -110,11 +109,7 @@ function* handleAuthTokenRequest(payload = {}) {
 function* authTokenRequest(req) {
   try {
     const { data, meta } = yield handleAuthTokenRequest(req.payload)
-    yield put(actions.authTokenSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authTokenSuccess({ data, meta }))
   } catch (error) {
     yield put(actions.authTokenFailure(error, { type: 'COGNITO_UNAUTHENTICATED' }))
   }

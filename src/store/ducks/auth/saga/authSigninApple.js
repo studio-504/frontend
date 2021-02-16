@@ -7,7 +7,6 @@ import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
-import * as ErrorsService from 'services/Errors'
 
 function* getApplePayload() {
   const apple = yield call(federatedAppleSignin)
@@ -85,9 +84,7 @@ function* handleAuthAppleRequest() {
 function* authSigninAppleRequest(req) {
   try {
     yield handleAuthAppleRequest(req.payload)
-    yield put(actions.authSigninAppleSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authSigninAppleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
       yield put(actions.authSigninAppleFailure(error, { errorCode: 'CANCELED' }))

@@ -6,7 +6,6 @@ import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
 import { Keyboard } from 'react-native'
-import * as ErrorsService from 'services/Errors'
 import propOr from 'ramda/src/propOr'
 
 /**
@@ -33,11 +32,7 @@ function* signupConfirmRequest(req) {
   try {
     logEvent('SIGNUP_CONFIRM_REQUEST')
     const data = yield handleSignupConfirmRequest(req.payload)
-    yield put(actions.signupConfirmSuccess({
-      message: ErrorsService.getMessagePayload(constants.SIGNUP_CONFIRM_SUCCESS, 'GENERIC'),
-      payload: req.payload,
-      data,
-    }))
+    yield put(actions.signupConfirmSuccess({ payload: req.payload, data }))
   } catch (error) {
     const errorCode = propOr('GENERIC', error.code, {
       'AliasExistsException': 'ALIAS_EXISTS',

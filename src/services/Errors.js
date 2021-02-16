@@ -1,11 +1,5 @@
 import path from 'ramda/src/path'
 import { createAction } from 'redux-actions'
-import authErrors from 'store/ducks/auth/errors'
-import signupErrors from 'store/ducks/signup/errors'
-import usersErrors from 'store/ducks/users/errors'
-import datingErrors from 'store/ducks/dating/errors'
-
-const messageCodes = Object.assign(authErrors, signupErrors, usersErrors, datingErrors)
 
 export const MESSAGES = {
   CANCEL_REQUEST_ON_SIGNOUT: 'Cancel request on signout',
@@ -38,13 +32,6 @@ export const getErrorMessage = (action) => {
       type: TYPES.DEFAULT,
       text: MESSAGES.DEFAULT,
     }
-  }
-}
-
-export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
-  return {
-    ...messageCodes[key][status],
-    nativeError,
   }
 }
 

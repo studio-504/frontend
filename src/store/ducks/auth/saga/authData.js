@@ -7,8 +7,6 @@ import {
   saveAuthUserPersist,
   getAuthUserPersist,
 } from 'services/Auth'
-import * as ErrorsService from 'services/Errors'
-
 import * as normalizer from 'normalizer/schemas'
 import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
@@ -145,13 +143,9 @@ function* handleAuthDataRequest(payload = {}) {
 function* authDataRequest(req) {
   try {
     const { data, meta } = yield handleAuthDataRequest(req.payload)
-    yield put(actions.authDataSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_DATA_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authDataSuccess({ data, meta }))
   } catch (error) {
-      yield put(actions.authDataFailure(error))
+    yield put(actions.authDataFailure(error))
   }
 }
 

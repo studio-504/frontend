@@ -21,13 +21,12 @@ describe('signupConfirm', () => {
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
-      const message = { code: 'GENERIC', text: 'Successfully confirmed account, you can signin now', nativeError: '' }
       const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ message, data: undefined, payload }))
+        .put(actions.signupConfirmSuccess({  data: undefined, payload }))
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -44,13 +43,12 @@ describe('signupConfirm', () => {
 
     it('phone', async () => {
       const usernameType = 'phone'
-      const message = { code: 'GENERIC', text: 'Successfully confirmed account, you can signin now', nativeError: '' }
       const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ message, data: undefined, payload }))
+        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()

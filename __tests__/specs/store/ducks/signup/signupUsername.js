@@ -33,7 +33,6 @@ describe('signupUsername saga', () => {
       await setupSaga()
         .put(
           actions.signupUsernameSuccess({
-            message: { code: 'GENERIC', text: 'Username is available', nativeError: '' },
             payload: { username, nextRoute },
             meta: { nextRoute },
             data,

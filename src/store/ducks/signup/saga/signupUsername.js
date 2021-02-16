@@ -7,7 +7,6 @@ import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
 import * as NavigationService from 'services/Navigation'
 import path from 'ramda/src/path'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -28,7 +27,6 @@ function* signupUsernameRequest(req) {
     logEvent('SIGNUP_CHECK_REQUEST')
     const { data, meta } = yield call(handleSignupUsernameRequest, req.payload)
     yield put(actions.signupUsernameSuccess({
-      message: ErrorsService.getMessagePayload(constants.SIGNUP_USERNAME_SUCCESS, 'GENERIC'),
       payload: req.payload,
       meta,
       data,

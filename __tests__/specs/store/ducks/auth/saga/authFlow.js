@@ -28,7 +28,6 @@ describe('Auth flow', () => {
         .put(actions.authDataRequest({ allowAnonymous }))
         .put(
           actions.authFlowSuccess({
-            message: { code: 'GENERIC', text: 'Auth flow completed', nativeError: '' },
             data: { authToken: tokenSuccess, authData: dataSuccess },
             meta: { authenticated: false, authProvider: 'GOOGLE', userExists },
           }),

@@ -6,7 +6,6 @@ import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as chatActions from 'store/ducks/chat/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as ErrorsService from 'services/Errors'
 
 function* handleAuthPrefetchCommon() {
   /**
@@ -80,9 +79,7 @@ function* handleAuthPrefetchRequest() {
 function* authPrefetchRequest(req) {
   try {
     yield handleAuthPrefetchRequest(req.payload)
-    yield put(actions.authPrefetchSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_PREFETCH_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authPrefetchSuccess())
   } catch (error) {
     yield put(actions.authPrefetchFailure(error))
   }

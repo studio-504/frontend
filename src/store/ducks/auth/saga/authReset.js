@@ -2,7 +2,6 @@ import { call, put, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import Config from 'react-native-config'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -26,9 +25,7 @@ function* handleAuthResetRequest() {
 function* authResetRequest(req) {
   try {
     yield handleAuthResetRequest(req.payload)
-    yield put(actions.authResetSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_RESET_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authResetSuccess())
   } catch (error) {
     yield put(actions.authResetFailure(error))
   }

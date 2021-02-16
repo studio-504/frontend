@@ -4,7 +4,6 @@ import authSigninAnonymous from 'store/ducks/auth/saga/authSigninAnonymous'
 import { testAsRootSaga } from 'tests/utils/helpers'
 
 const success = {
-  message: { code: 'GENERIC', text: 'Successfully created anonymous user', nativeError: '' },
   data: { type: 'AUTH_FLOW_SUCCESS' },
 }
 

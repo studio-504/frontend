@@ -4,7 +4,6 @@ import * as constants from 'store/ducks/auth/constants'
 import { federatedGoogleSignout } from 'services/AWS'
 import { resetAuthUserPersist } from 'services/Auth'
 import * as navigationActions from 'navigation/actions'
-import * as ErrorsService from 'services/Errors'
 
 /**
  * Remove cognito credentials
@@ -36,11 +35,7 @@ function* handleAuthSignoutRequest() {
 function* authSignoutRequest(req) {
   try {
     const { data, meta } = yield handleAuthSignoutRequest(req.payload)
-    yield put(actions.authSignoutSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authSignoutSuccess({ data, meta }))
   } catch (error) {
     yield put(actions.authSignoutFailure(error, { authenticated: false }))
   }

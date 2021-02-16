@@ -22,14 +22,13 @@ describe('signupCreate', () => {
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
-      const message = { code: 'GENERIC', text: 'Successfully create account', nativeError: '' }
 
       await expectSaga(testAsRootSaga(signupCreate))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
         .put(authActions.authTokenRequest({ allowAnonymous: true }))
         .put(authActions.authDataRequest({ allowAnonymous: true }))
-        .put(actions.signupCreateSuccess({ message, usernameType }))
+        .put(actions.signupCreateSuccess({ usernameType }))
 
         .dispatch(actions.signupCreateRequest({ usernameType, email }))
         .dispatch(authActions.authTokenSuccess())
@@ -50,14 +49,13 @@ describe('signupCreate', () => {
       const phone = '1234567'
       const phoneNumber = `${countryCode}${phone}`
       const usernameType = 'phone'
-      const message = { code: 'GENERIC', text: 'Successfully create account', nativeError: '' }
 
       await expectSaga(testAsRootSaga(signupCreate))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
         .put(authActions.authTokenRequest({ allowAnonymous: true }))
         .put(authActions.authDataRequest({ allowAnonymous: true }))
-        .put(actions.signupCreateSuccess({ message, usernameType }))
+        .put(actions.signupCreateSuccess({ usernameType }))
 
         .dispatch(actions.signupCreateRequest({ usernameType, countryCode, phone }))
         .dispatch(authActions.authTokenSuccess())

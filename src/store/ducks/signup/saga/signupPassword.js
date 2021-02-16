@@ -7,7 +7,6 @@ import * as authActions from 'store/ducks/auth/actions'
 import { logEvent } from 'services/Analytics'
 import forge from 'node-forge'
 import Config from 'react-native-config' 
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -28,11 +27,7 @@ function* signupPasswordRequest(req) {
     logEvent('SIGNUP_PASSWORD_REQUEST')
     
     const data = yield call(handleSignupPasswordRequest, req.payload)
-    yield put(actions.signupPasswordSuccess({
-      message: ErrorsService.getMessagePayload(constants.SIGNUP_PASSWORD_SUCCESS, 'GENERIC'),
-      payload: req.payload,
-      data,
-    }))
+    yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
   } catch (error) {
     yield put(actions.signupPasswordFailure(error))
   }

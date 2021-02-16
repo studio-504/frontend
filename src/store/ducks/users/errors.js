@@ -4,12 +4,6 @@ export default {
   /**
    *
    */
-  [constants.USERS_EDIT_PROFILE_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully updated profile',
-    },
-  },
   [constants.USERS_EDIT_PROFILE_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',

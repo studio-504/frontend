@@ -3,7 +3,6 @@ import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -49,10 +48,7 @@ function* handleAuthForgotConfirmRequest(payload) {
 function* authForgotConfirmRequest(req) {
   try {
     const data = yield handleAuthForgotConfirmRequest(req.payload)
-    yield put(actions.authForgotConfirmSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_SUCCESS, 'GENERIC'),
-      data,
-    }))
+    yield put(actions.authForgotConfirmSuccess({ data }))
   } catch (error) {
     if (error.code === 'InvalidPasswordException') {
       yield put(actions.authForgotConfirmFailure(error, { errorCode: 'INVALID_PASSWORD' }))

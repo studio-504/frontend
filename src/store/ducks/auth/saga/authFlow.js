@@ -5,7 +5,6 @@ import pathOr from 'ramda/src/pathOr'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
-import * as ErrorsService from 'services/Errors'
 
 function hasAuthenticatedCondition({ dataSuccess }) {
   const authenticated = pathOr('', ['payload', 'data'])(dataSuccess).includes('us-east-1')
@@ -64,11 +63,7 @@ function* handleAuthFlowRequest(payload = {}) {
 function* authFlowRequest(req) {
   try {
     const { data, meta } = yield handleAuthFlowRequest(req.payload)
-    yield put(actions.authFlowSuccess({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authFlowSuccess({ data, meta }))
   } catch (error) {
     yield put(actions.authFlowFailure(error, { authenticated: false }))
   }

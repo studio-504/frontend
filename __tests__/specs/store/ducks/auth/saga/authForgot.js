@@ -109,12 +109,7 @@ describe('authForgot', () => {
           [getContext('ReactNavigationRef'), navigation],
         ])
 
-        .put(
-          actions.authForgotConfirmSuccess({
-            message: { code: 'GENERIC', text: 'Successfully confirmed new password', nativeError: '' },
-            data: undefined,
-          }),
-        )
+        .put(actions.authForgotConfirmSuccess({ data: undefined }))
 
         .dispatch(actions.authForgotConfirmRequest(payload))
         .silentRun()
