@@ -74,7 +74,7 @@ describe('Post report post views', () => {
         .withState(authorizedState)
 
         .call([queryService, 'apiRequest'], queries.reportPostViews, payload)
-        .put(actions.postsReportPostViewsFailure({ message: error.message, payload }))
+        .put(actions.postsReportPostViewsFailure(error))
 
         .silentRun()
     })

@@ -13,7 +13,6 @@ import parsePhoneNumber from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import * as queries from 'store/ducks/contacts/queries'
 import * as queryService from 'services/Query'
-import * as ErrorsService from 'services/Errors'
 
 function normalizeContacts(contacts) {
   const makeFullName = (user) => {
@@ -100,7 +99,7 @@ function* contactsGetRequest() {
     const contacts = yield call(findContacts)
     yield put(actions.contactsGetSuccess({ data: contacts }))
   } catch (error) {
-    yield put(actions.contactsGetFailure({ message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.contactsGetFailure(error))
   }
 }
 

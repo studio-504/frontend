@@ -6,24 +6,20 @@ export const initialState = {
   signupUsername: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   signupPassword: {
     data: [], 
     status: 'idle',
-    error: {},
     payload: {},
   },
   signupCreate: {
     status: 'idle',
-    error: {},
     payload: {},
   },
   signupConfirm: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
 }
@@ -46,11 +42,9 @@ const signupUsernameSuccess = (state, action) => update(state, {
   },
 })
 
-const signupUsernameFailure = (state, action) => update(state, {
+const signupUsernameFailure = (state) => update(state, {
   signupUsername: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
-    error: { $set: action.payload.message },
   },
 })
 
@@ -58,7 +52,6 @@ const signupUsernameIdle = (state) => update(state, {
   signupUsername: {
     status: { $set: 'idle' },
     payload: { $set: initialState.signupUsername.payload },
-    error: { $set: initialState.signupUsername.error },
   },
 })
 
@@ -80,11 +73,9 @@ const signupPasswordSuccess = (state, action) => update(state, {
   },
 })
 
-const signupPasswordFailure = (state, action) => update(state, {
+const signupPasswordFailure = (state) => update(state, {
   signupPassword: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
-    error: { $set: action.payload.message },
   },
 })
 
@@ -108,10 +99,9 @@ const signupCreateSuccess = (state) => update(state, {
   },
 })
 
-const signupCreateFailure = (state, action) => update(state, {
+const signupCreateFailure = (state) => update(state, {
   signupCreate: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
@@ -137,11 +127,9 @@ const signupConfirmSuccess = (state, action) => update(state, {
   },
 })
 
-const signupConfirmFailure = (state, action) => update(state, {
+const signupConfirmFailure = (state) => update(state, {
   signupConfirm: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
-    error: { $set: action.payload.message },
   },
 })
 
@@ -149,7 +137,6 @@ const signupConfirmIdle = (state) => update(state, {
   signupConfirm: {
     status: { $set: 'idle' },
     payload: { $set: initialState.signupConfirm.payload },
-    error: { $set: initialState.signupConfirm.error },
   },
 })
 

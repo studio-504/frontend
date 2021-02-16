@@ -69,11 +69,10 @@ describe('signupConfirm', () => {
   describe('failure', () => {
     it('Unsupported usernameType', async () => {
       const nativeError = new Error('Unsupported usernameType')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: undefined, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'GENERIC' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -81,13 +80,13 @@ describe('signupConfirm', () => {
 
     it('AliasExistsException', async () => {
       const nativeError = new Error('AliasExistsException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'AliasExistsException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'ALIAS_EXISTS' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -95,13 +94,13 @@ describe('signupConfirm', () => {
 
     it('ExpiredCodeException', async () => {
       const nativeError = new Error('ExpiredCodeException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'ExpiredCodeException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'CODE_EXPIRED' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -109,13 +108,13 @@ describe('signupConfirm', () => {
 
     it('CodeMismatchException', async () => {
       const nativeError = new Error('CodeMismatchException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'CodeMismatchException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'CODE_MISMATCH' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()

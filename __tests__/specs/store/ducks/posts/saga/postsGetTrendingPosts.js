@@ -29,12 +29,12 @@ describe('postsGetTrendingPostsSaga', () => {
   })
 
   it('catch an error', () => {
-    const message = 'Error Message'
+    const error = new Error('Error Message')
 
     testSaga(postsGetTrendingPostsSaga.postsGetTrendingPostsRequest, action)
       .next()
-      .throw(new Error(message))
-      .put(actions.postsGetTrendingPostsFailure({ message, payload: action.payload }))
+      .throw(error)
+      .put(actions.postsGetTrendingPostsFailure(error))
 
       .next()
       .isDone()

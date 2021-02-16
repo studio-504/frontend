@@ -6,129 +6,107 @@ export const initialState = {
   usersSearch: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersDelete: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetFollowedUsersWithStories: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetFollowedUsers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetFollowerUsers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetPendingFollowers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersFollow: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersAcceptFollowerUser: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersUnfollow: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersBlock: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersUnblock: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetProfile: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetProfileSelf: {
     data: {},
     status: 'idle',
-    error: {},
   },
   usersEditProfile: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersImagePostsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetTrendingUsers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersGetCards: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersDeleteCard: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersSetApnsToken: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersDeleteAvatar: {
     status: 'idle',
-    error: {},
   },
   usersSetUserDatingStatus: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   usersChangeAvatar: {
     status: 'idle',
-    error: {},
   },
 
   usersGetFollowerUsersCache: {},
@@ -152,17 +130,15 @@ const usersSearchSuccess = (state, action) => update(state, {
   },
 })
 
-const usersSearchFailure = (state, action) => update(state, {
+const usersSearchFailure = (state) => update(state, {
   usersSearch: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersSearchIdle = (state) => update(state, {
   usersSearch: {
     data: { $set: initialState.usersSearch.data },
-    error: { $set: initialState.usersSearch.error },
     status: { $set: 'idle' },
   },
 })
@@ -184,17 +160,15 @@ const usersDeleteSuccess = (state, action) => update(state, {
   },
 })
 
-const usersDeleteFailure = (state, action) => update(state, {
+const usersDeleteFailure = (state) => update(state, {
   usersDelete: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersDeleteIdle = (state) => update(state, {
   usersDelete: {
     data: { $set: initialState.usersDelete.data },
-    error: { $set: initialState.usersDelete.error },
     status: { $set: 'idle' },
   },
 })
@@ -216,17 +190,15 @@ const usersGetFollowedUsersWithStoriesSuccess = (state, action) => update(state,
   },
 })
 
-const usersGetFollowedUsersWithStoriesFailure = (state, action) => update(state, {
+const usersGetFollowedUsersWithStoriesFailure = (state) => update(state, {
   usersGetFollowedUsersWithStories: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetFollowedUsersWithStoriesIdle = (state) => update(state, {
   usersGetFollowedUsersWithStories: {
     data: { $set: initialState.usersGetFollowedUsersWithStories.data },
-    error: { $set: initialState.usersGetFollowedUsersWithStories.error },
     status: { $set: 'idle' },
   },
 })
@@ -334,17 +306,15 @@ const usersGetPendingFollowersSuccess = (state, action) => update(state, {
   },
 })
 
-const usersGetPendingFollowersFailure = (state, action) => update(state, {
+const usersGetPendingFollowersFailure = (state) => update(state, {
   usersGetPendingFollowers: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetPendingFollowersIdle = (state) => update(state, {
   usersGetPendingFollowers: {
     data: { $set: initialState.usersGetPendingFollowers.data },
-    error: { $set: initialState.usersGetPendingFollowers.error },
     status: { $set: 'idle' },
   },
 })
@@ -366,17 +336,15 @@ const usersFollowSuccess = (state, action) => update(state, {
   },
 })
 
-const usersFollowFailure = (state, action) => update(state, {
+const usersFollowFailure = (state) => update(state, {
   usersFollow: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersFollowIdle = (state) => update(state, {
   usersFollow: {
     data: { $set: initialState.usersFollow.data },
-    error: { $set: initialState.usersFollow.error },
     status: { $set: 'idle' },
   },
 })
@@ -398,17 +366,15 @@ const usersUnfollowSuccess = (state, action) => update(state, {
   },
 })
 
-const usersUnfollowFailure = (state, action) => update(state, {
+const usersUnfollowFailure = (state) => update(state, {
   usersUnfollow: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersUnfollowIdle = (state) => update(state, {
   usersUnfollow: {
     data: { $set: initialState.usersUnfollow.data },
-    error: { $set: initialState.usersUnfollow.error },
     status: { $set: 'idle' },
   },
 })
@@ -430,17 +396,15 @@ const usersAcceptFollowerUserSuccess = (state, action) => update(state, {
   },
 })
 
-const usersAcceptFollowerUserFailure = (state, action) => update(state, {
+const usersAcceptFollowerUserFailure = (state) => update(state, {
   usersAcceptFollowerUser: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersAcceptFollowerUserIdle = (state) => update(state, {
   usersAcceptFollowerUser: {
     data: { $set: initialState.usersAcceptFollowerUser.data },
-    error: { $set: initialState.usersAcceptFollowerUser.error },
     status: { $set: 'idle' },
   },
 })
@@ -462,17 +426,15 @@ const usersBlockSuccess = (state, action) => update(state, {
   },
 })
 
-const usersBlockFailure = (state, action) => update(state, {
+const usersBlockFailure = (state) => update(state, {
   usersBlock: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersBlockIdle = (state) => update(state, {
   usersBlock: {
     data: { $set: initialState.usersBlock.data },
-    error: { $set: initialState.usersBlock.error },
     status: { $set: 'idle' },
   },
 })
@@ -494,17 +456,15 @@ const usersUnblockSuccess = (state, action) => update(state, {
   },
 })
 
-const usersUnblockFailure = (state, action) => update(state, {
+const usersUnblockFailure = (state) => update(state, {
   usersUnblock: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersUnblockIdle = (state) => update(state, {
   usersUnblock: {
     data: { $set: initialState.usersUnblock.data },
-    error: { $set: initialState.usersUnblock.error },
     status: { $set: 'idle' },
   },
 })
@@ -526,17 +486,15 @@ const usersGetProfileSuccess = (state, action) => update(state, {
   },
 })
 
-const usersGetProfileFailure = (state, action) => update(state, {
+const usersGetProfileFailure = (state) => update(state, {
   usersGetProfile: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetProfileIdle = (state) => update(state, {
   usersGetProfile: {
     data: { $set: initialState.usersGetProfile.data },
-    error: { $set: initialState.usersGetProfile.error },
     status: { $set: 'idle' },
   },
 })
@@ -557,17 +515,15 @@ const usersGetProfileSelfSuccess = (state, action) => update(state, {
   },
 })
 
-const usersGetProfileSelfFailure = (state, action) => update(state, {
+const usersGetProfileSelfFailure = (state) => update(state, {
   usersGetProfileSelf: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetProfileSelfIdle = (state) => update(state, {
   usersGetProfileSelf: {
     data: { $set: initialState.usersGetProfileSelf.data },
-    error: { $set: initialState.usersGetProfileSelf.error },
     status: { $set: 'idle' },
   },
 })
@@ -589,17 +545,15 @@ const usersEditProfileSuccess = (state, action) => update(state, {
   },
 })
 
-const usersEditProfileFailure = (state, action) => update(state, {
+const usersEditProfileFailure = (state) => update(state, {
   usersEditProfile: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersEditProfileIdle = (state) => update(state, {
   usersEditProfile: {
     data: { $set: initialState.usersEditProfile.data },
-    error: { $set: initialState.usersEditProfile.error },
     status: { $set: 'idle' },
   },
 })
@@ -621,17 +575,15 @@ const usersImagePostsGetSuccess = (state, action) => update(state, {
   },
 })
 
-const usersImagePostsGetFailure = (state, action) => update(state, {
+const usersImagePostsGetFailure = (state) => update(state, {
   usersImagePostsGet: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersImagePostsGetIdle = (state) => update(state, {
   usersImagePostsGet: {
     data: { $set: initialState.usersImagePostsGet.data },
-    error: { $set: initialState.usersImagePostsGet.error },
     status: { $set: 'idle' },
   },
 })
@@ -653,17 +605,15 @@ const usersGetTrendingUsersSuccess = (state, action) => update(state, {
   },
 })
 
-const usersGetTrendingUsersFailure = (state, action) => update(state, {
+const usersGetTrendingUsersFailure = (state) => update(state, {
   usersGetTrendingUsers: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetTrendingUsersIdle = (state) => update(state, {
   usersGetTrendingUsers: {
     data: { $set: initialState.usersGetTrendingUsers.data },
-    error: { $set: initialState.usersGetTrendingUsers.error },
     status: { $set: 'idle' },
   },
 })
@@ -685,17 +635,15 @@ const usersGetCardsSuccess = (state, action) => update(state, {
   },
 })
 
-const usersGetCardsFailure = (state, action) => update(state, {
+const usersGetCardsFailure = (state) => update(state, {
   usersGetCards: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersGetCardsIdle = (state) => update(state, {
   usersGetCards: {
     data: { $set: initialState.usersGetCards.data },
-    error: { $set: initialState.usersGetCards.error },
     status: { $set: 'idle' },
   },
 })
@@ -723,17 +671,15 @@ const usersDeleteCardSuccess = (state, action) => update(state, {
   },
 })
 
-const usersDeleteCardFailure = (state, action) => update(state, {
+const usersDeleteCardFailure = (state) => update(state, {
   usersDeleteCard: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersDeleteCardIdle = (state) => update(state, {
   usersDeleteCard: {
     data: { $set: initialState.usersGetCards.data },
-    error: { $set: initialState.usersGetCards.error },
     status: { $set: 'idle' },
   },
 })
@@ -753,16 +699,14 @@ const usersDeleteAvatarSuccess = (state) => update(state, {
   },
 })
 
-const usersDeleteAvatarFailure = (state, action) => update(state, {
+const usersDeleteAvatarFailure = (state) => update(state, {
   usersDeleteAvatar: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersDeleteAvatarIdle = (state) => update(state, {
   usersDeleteAvatar: {
-    error: { $set: initialState.usersDeleteAvatar.error },
     status: { $set: 'idle' },
   },
 })
@@ -782,10 +726,9 @@ const usersChangeAvatarSuccess = (state) => update(state, {
   },
 })
 
-const usersChangeAvatarFailure = (state, action) => update(state, {
+const usersChangeAvatarFailure = (state) => update(state, {
   usersChangeAvatar: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
@@ -810,17 +753,15 @@ const usersSetApnsTokenSuccess = (state, action) => update(state, {
   },
 })
 
-const usersSetApnsTokenFailure = (state, action) => update(state, {
+const usersSetApnsTokenFailure = (state) => update(state, {
   usersSetApnsToken: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersSetApnsTokenIdle = (state) => update(state, {
   usersSetApnsToken: {
     data: { $set: initialState.usersSetApnsToken.data },
-    error: { $set: initialState.usersSetApnsToken.error },
     status: { $set: 'idle' },
   },
 })
@@ -842,17 +783,15 @@ const usersSetUserDatingStatusSuccess = (state, action) => update(state, {
   },
 })
 
-const usersSetUserDatingStatusFailure = (state, action) => update(state, {
+const usersSetUserDatingStatusFailure = (state) => update(state, {
   usersSetUserDatingStatus: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const usersSetUserDatingStatusIdle = (state) => update(state, {
   usersSetUserDatingStatus: {
     data: { $set: initialState.usersSetUserDatingStatus.data },
-    error: { $set: initialState.usersSetUserDatingStatus.error },
     status: { $set: 'idle' },
   },
 })

@@ -37,7 +37,7 @@ describe('usersImagePostsGetRequest', () => {
     queryService.apiRequest.mockRejectedValueOnce(error)
 
     await expectSaga(usersImagePostsGetRequest, action)
-      .put(usersActions.usersImagePostsGetFailure({ message: error.message }))
+      .put(usersActions.usersImagePostsGetFailure(error))
 
       .silentRun()
   })

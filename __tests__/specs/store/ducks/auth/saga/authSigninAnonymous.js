@@ -22,12 +22,11 @@ describe('authSigninAnonymous', () => {
   describe('failure', () => {
     it('Failed to obtain flow', async () => {
       const nativeError = new Error('Failed to obtain flow')
-      const message = { code: 'GENERIC', text: 'Failed to create anonymous user', nativeError }
 
       await expectSaga(testAsRootSaga(authSigninAnonymous))
         .put(actions.authFlowRequest({ allowAnonymous: true }))
         .not.put(actions.authSigninAnonymousSuccess(success))
-        .put(actions.authSigninAnonymousFailure({ message }))
+        .put(actions.authSigninAnonymousFailure(nativeError))
 
         .dispatch(actions.authSigninAnonymousRequest())
         .dispatch(actions.authFlowFailure())

@@ -67,25 +67,15 @@ function* signupCreateRequest(req) {
     }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
-      yield put(actions.signupCreateFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_CONFIRMATION_DELIVERY', error),
-      }))
+      yield put(actions.signupCreateFailure(error, { errorCode: 'USER_CONFIRMATION_DELIVERY' }))
     } else if (error.code === 'UsernameExistsException') {
-      yield put(actions.signupCreateFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'USER_EXISTS', error),
-      }))
+      yield put(actions.signupCreateFailure(error, { errorCode: 'USER_EXISTS' }))
     } else if (error.code === 'InvalidPasswordException') {
-      yield put(actions.signupCreateFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PASSWORD', error),
-      }))
+      yield put(actions.signupCreateFailure(error, { errorCode: 'INVALID_PASSWORD' }))
     } else if (error.code === 'InvalidParameterException') {
-      yield put(actions.signupCreateFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'INVALID_PARAMETER', error),
-      }))
+      yield put(actions.signupCreateFailure(error, { errorCode: 'INVALID_PARAMETER' }))
     } else {
-      yield put(actions.signupCreateFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CREATE_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.signupCreateFailure(error))
     }
   }
 }

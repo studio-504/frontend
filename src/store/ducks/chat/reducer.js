@@ -6,43 +6,36 @@ export const initialState = {
   chatGetChats: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatGetChat: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatCreateDirect: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatAddMessage: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatReportView: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatDeleteMessage: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   chatFlagMessage: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
 
@@ -70,10 +63,9 @@ const chatGetChatsSuccess = (state, action) => update(state, {
   },
 })
 
-const chatGetChatsFailure = (state, action) => update(state, {
+const chatGetChatsFailure = (state) => update(state, {
   chatGetChats: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -102,10 +94,9 @@ const chatGetChatSuccess = (state, action) => update(state, {
   },
 })
 
-const chatGetChatFailure = (state, action) => update(state, {
+const chatGetChatFailure = (state) => update(state, {
   chatGetChat: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -134,10 +125,9 @@ const chatCreateDirectSuccess = (state, action) => update(state, {
   },
 })
 
-const chatCreateDirectFailure = (state, action) => update(state, {
+const chatCreateDirectFailure = (state) => update(state, {
   chatCreateDirect: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -166,10 +156,9 @@ const chatAddMessageSuccess = (state, action) => update(state, {
   },
 })
 
-const chatAddMessageFailure = (state, action) => update(state, {
+const chatAddMessageFailure = (state) => update(state, {
   chatAddMessage: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -198,10 +187,9 @@ const chatReportViewSuccess = (state, action) => update(state, {
   },
 })
 
-const chatReportViewFailure = (state, action) => update(state, {
+const chatReportViewFailure = (state) => update(state, {
   chatReportView: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -230,10 +218,9 @@ const chatDeleteMessageSuccess = (state, action) => update(state, {
   },
 })
 
-const chatDeleteMessageFailure = (state, action) => update(state, {
+const chatDeleteMessageFailure = (state) => update(state, {
   chatDeleteMessage: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -263,10 +250,9 @@ const chatFlagMessageSuccess = (state, action) => update(state, {
   },
 })
 
-const chatFlagMessageFailure = (state, action) => update(state, {
+const chatFlagMessageFailure = (state) => update(state, {
   chatFlagMessage: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 

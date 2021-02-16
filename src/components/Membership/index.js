@@ -30,11 +30,10 @@ const Membership = ({
   navigateTheme,
 }) => {
   const styling = styles(theme)
-  const errorMessage = purchasesRequest.error || retryPurchase.error
+  const hasError = [purchasesRequest.status, retryPurchase.status].includes('failure')
 
   const renderRetry = () => (
     <>
-      <Text style={styling.errorText}>{errorMessage}</Text>
       <DefaultButton
         style={styling.tryAgainBtn}
         labelStyle={styling.labelStyle}
@@ -81,7 +80,7 @@ const Membership = ({
           </View>
           <Text style={styling.headingTitle}>{t('REAL Diamond')}</Text>
           <Text style={styling.headingSubtitle}>{t('Membership Perks')}</Text>
-          {errorMessage ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
+          {hasError ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
         </View>
 
         <View style={styling.subheading}>
@@ -243,13 +242,6 @@ const styles = (theme) =>
       paddingBottom: 6,
       textAlign: 'center',
     },
-    errorText: {
-      fontSize: 14,
-      fontWeight: '300',
-      paddingBottom: 6,
-      textAlign: 'center',
-      color: 'red',
-    },
     unsubscribeBtnLabel: {
       color: theme.colors.text,
     },
@@ -277,11 +269,9 @@ Membership.propTypes = {
   retryPurchaseRequest: PropTypes.func,
   purchasesRequest: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
   }),
   retryPurchase: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
   }),
   navigateInviteFriends: PropTypes.func,
   navigatePayouts: PropTypes.func,
@@ -291,7 +281,6 @@ Membership.propTypes = {
 Membership.defaultProps = {
   isSubscribed: false,
   isSubmitting: false,
-  errorMessage: null,
 }
 
 export default withTranslation()(withTheme(Membership))

@@ -7,6 +7,7 @@ import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
 import { Keyboard } from 'react-native'
 import * as ErrorsService from 'services/Errors'
+import propOr from 'ramda/src/propOr'
 
 /**
  *
@@ -38,27 +39,13 @@ function* signupConfirmRequest(req) {
       data,
     }))
   } catch (error) {
-    if (error.code === 'AliasExistsException') {
-      yield put(actions.signupConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'ALIAS_EXISTS', error),
-        payload: req.payload,
-      }))
-    } else if (error.code === 'ExpiredCodeException') {
-      yield put(actions.signupConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_EXPIRED', error),
-        payload: req.payload,
-      }))
-    } else if (error.code === 'CodeMismatchException') {
-      yield put(actions.signupConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
-        payload: req.payload,
-      }))
-    } else {
-      yield put(actions.signupConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'GENERIC', error),
-        payload: req.payload,
-      }))
-    }
+    const errorCode = propOr('GENERIC', error.code, {
+      'AliasExistsException': 'ALIAS_EXISTS',
+      'ExpiredCodeException': 'CODE_EXPIRED',
+      'CodeMismatchException': 'CODE_MISMATCH',
+    })
+
+    yield put(actions.signupConfirmFailure(error, { errorCode }))
   }
 }
 

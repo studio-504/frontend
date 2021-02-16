@@ -22,7 +22,6 @@ extend('$usersResourceCacheSetSuccess', ({ payload, resourceKey, initialState },
     [resourceKey]: {
       data: { $set: pathOr([], ['data'])(payload).map(user => user.userId) },
       status: { $set: 'success' },
-      error: { $set: {} },
       payload: { $set: payload.payload || {} },
       meta: { $set: payload.meta || {} },
     },

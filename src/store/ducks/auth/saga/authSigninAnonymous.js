@@ -32,13 +32,9 @@ function* authSigninAnonymousRequest() {
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninAnonymousFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE, 'CANCELED', error),
-      }))
+      yield put(actions.authSigninAnonymousFailure(error, { errorCode: 'CANCELED' }))
     } else {
-      yield put(actions.authSigninAnonymousFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authSigninAnonymousFailure(error))
     }
   }
 }

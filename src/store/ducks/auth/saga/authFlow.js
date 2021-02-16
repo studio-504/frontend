@@ -13,7 +13,7 @@ function hasAuthenticatedCondition({ dataSuccess }) {
   return (authenticated)
 }
 
-function* handleAuthFlowRequest(payload = {}) { 
+function* handleAuthFlowRequest(payload = {}) {
   /**
    * Fetching cognito credentials/tokens
    */
@@ -70,12 +70,7 @@ function* authFlowRequest(req) {
       meta,
     }))
   } catch (error) {
-    yield put(actions.authFlowFailure({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
-      meta: {
-        authenticated: false,
-      },
-    }))
+    yield put(actions.authFlowFailure(error, { authenticated: false }))
   }
 }
 

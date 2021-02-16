@@ -119,11 +119,7 @@ describe('authSigninApple', () => {
         })
 
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: { code: 'GENERIC', text: 'Failed to sign with Apple', nativeError },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -136,11 +132,7 @@ describe('authSigninApple', () => {
         queryService.apiRequest.mockResolvedValue(true)
 
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: { code: 'GENERIC', text: 'Failed to sign with Apple', nativeError },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -148,15 +140,7 @@ describe('authSigninApple', () => {
 
       it('AUTH_FLOW_FAILURE', async () => {
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError: new Error('Failed to obtain flow'),
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(new Error('Failed to obtain flow')))
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowFailure())
@@ -201,15 +185,7 @@ describe('authSigninApple', () => {
         await expectSaga(testAsRootSaga(authSigninApple))
           .provide([[getContext('AwsAuth'), AwsAuth]])
 
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError,
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -217,15 +193,7 @@ describe('authSigninApple', () => {
 
       it('AUTH_FLOW_FAILURE', async () => {
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError: new Error('Failed to obtain flow'),
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(new Error('Failed to obtain flow')))
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowFailure())

@@ -100,15 +100,13 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
     })
   }, [activePhoto.uri])
 
-  const formErrorMessage = usersEditProfile.error.text
-
   const handleClose = () => {
     clearProfilePhotoUpload()
     navigation.goBack()
   }
 
   return children({
-    formErrorMessage,
+    usersEditProfile,
     activeUpload,
     postsCreateQueue,
     handleClose,

@@ -13,7 +13,6 @@ import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSe
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -42,7 +41,7 @@ function* usersSearchRequest(req) {
     const next = yield usersSearchRequestData(req, data)
     yield put(actions.usersSearchSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersSearchFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersSearchFailure(error, req.payload))
   }
 }
 
@@ -72,7 +71,7 @@ function* usersDeleteRequest(req) {
     const next = yield usersDeleteRequestData(req, data)
     yield put(actions.usersDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersDeleteFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersDeleteFailure(error, req.payload))
   }
 }
 
@@ -103,7 +102,7 @@ function* usersGetFollowerUsersRequest(req) {
     const next = yield usersGetFollowerUsersRequestData(req, data)
     yield put(actions.usersGetFollowerUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowerUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetFollowerUsersFailure(error, req.payload))
   }
 }
 
@@ -134,7 +133,7 @@ function* usersGetFollowedUsersRequest(req) {
     const next = yield usersGetFollowedUsersRequestData(req, data)
     yield put(actions.usersGetFollowedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowedUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetFollowedUsersFailure(error, req.payload))
   }
 }
 
@@ -165,7 +164,7 @@ function* usersGetPendingFollowersRequest(req) {
     const next = yield usersGetPendingFollowersRequestData(req, data)
     yield put(actions.usersGetPendingFollowersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetPendingFollowersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetPendingFollowersFailure(error, req.payload))
   }
 }
 
@@ -196,7 +195,7 @@ function* usersGetFollowedUsersWithStoriesRequest(req) {
     const next = yield usersGetFollowedUsersWithStoriesRequestData(req, data)
     yield put(actions.usersGetFollowedUsersWithStoriesSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetFollowedUsersWithStoriesFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetFollowedUsersWithStoriesFailure(error, req.payload))
   }
 }
 
@@ -226,7 +225,7 @@ function* usersAcceptFollowerUserRequest(req) {
     const next = yield usersAcceptFollowerUserRequestData(req, data)
     yield put(actions.usersAcceptFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersAcceptFollowerUserFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersAcceptFollowerUserFailure(error, req.payload))
   }
 }
 
@@ -256,7 +255,7 @@ function* usersDeclineFollowerUserRequest(req) {
     const next = yield usersDeclineFollowerUserRequestData(req, data)
     yield put(actions.usersDeclineFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersDeclineFollowerUserFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersDeclineFollowerUserFailure(error, req.payload))
   }
 }
 
@@ -286,7 +285,7 @@ function* usersGetProfileRequest(req) {
     const next = yield usersGetProfileRequestData(req, data)
     yield put(actions.usersGetProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetProfileFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetProfileFailure(error, req.payload))
   }
 }
 
@@ -320,15 +319,9 @@ function* usersEditProfileRequest(req) {
     const errorMessage = path(['errors', '0', 'message'])(error)
 
     if (errorMessage && errorMessage.includes('is not verified')) {
-      yield put(actions.usersEditProfileFailure({
-        message: ErrorsService.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'VERIFICATION_FAILED', error),
-        payload: req.payload,
-      }))
+      yield put(actions.usersEditProfileFailure(error, { errorCode: 'VERIFICATION_FAILED' }))
     } else {
-      yield put(actions.usersEditProfileFailure({
-        message: ErrorsService.getMessagePayload(constants.USERS_EDIT_PROFILE_FAILURE, 'GENERIC', error),
-        payload: req.payload,
-      }))
+      yield put(actions.usersEditProfileFailure(error))
     }
   }
 }
@@ -344,9 +337,7 @@ function* usersDeleteProfilePhoto() {
     yield usersEditProfileRequestData(req, data)
     yield put(actions.usersDeleteAvatarSuccess())
   } catch (error) {
-    yield put(actions.usersDeleteAvatarFailure({
-      message: ErrorsService.getMessagePayload(constants.USERS_DELETE_AVATAR_FAILURE, 'GENERIC', error),
-    }))
+    yield put(actions.usersDeleteAvatarFailure(error))
   }
 }
 
@@ -361,9 +352,7 @@ function* usersChangeAvatarRequest(req) {
     yield usersEditProfileRequestData(req, data)
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
-    yield put(actions.usersChangeAvatarFailure({ 
-      message: ErrorsService.getMessagePayload(constants.USERS_CHANGE_AVATAR_FAILURE, 'GENERIC', error), 
-    }))
+    yield put(actions.usersChangeAvatarFailure(error))
   }
 }
 
@@ -394,7 +383,7 @@ function* usersFollowRequest(req) {
     const next = yield usersFollowRequestData(req, data)
     yield put(actions.usersFollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersFollowFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersFollowFailure(error, req.payload))
   }
 }
 
@@ -425,7 +414,7 @@ function* usersUnfollowRequest(req) {
     const next = yield usersUnfollowRequestData(req, data)
     yield put(actions.usersUnfollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersUnfollowFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersUnfollowFailure(error, req.payload))
   }
 }
 
@@ -456,7 +445,7 @@ function* usersBlockRequest(req) {
     const next = yield usersBlockRequestData(req, data)
     yield put(actions.usersBlockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersBlockFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersBlockFailure(error, req.payload))
   }
 }
 
@@ -487,7 +476,7 @@ function* usersUnblockRequest(req) {
     const next = yield usersUnblockRequestData(req, data)
     yield put(actions.usersUnblockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersUnblockFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersUnblockFailure(error, req.payload))
   }
 }
 
@@ -518,7 +507,7 @@ function* usersGetTrendingUsersRequest(req) {
     const next = yield usersGetTrendingUsersRequestData(req, data)
     yield put(actions.usersGetTrendingUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.usersGetTrendingUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetTrendingUsersFailure(error, req.payload))
   }
 }
 
@@ -545,7 +534,7 @@ function* usersGetCardsRequest(req) {
       meta: metaSelector(data),
     }))
   } catch (error) {
-    yield put(actions.usersGetCardsFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetCardsFailure(error, req.payload))
   }
 }
 
@@ -559,7 +548,7 @@ function* usersDeleteCardRequest(req) {
 
     yield put(actions.usersDeleteCardSuccess({ payload: req.payload, data: selector(data), meta: {} }))
   } catch (error) {
-    yield put(actions.usersDeleteCardFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersDeleteCardFailure(error, req.payload))
   }
 }
 
@@ -572,7 +561,7 @@ function* usersSetApnsTokenRequest(req) {
 
     yield put(actions.usersSetApnsTokenSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
-    yield put(actions.usersSetApnsTokenFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersSetApnsTokenFailure(error, req.payload))
   }
 }
 
@@ -585,7 +574,7 @@ function* usersReportScreenViewsRequest(req) {
 
     yield put(actions.usersReportScreenViewsSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
-    yield put(actions.usersReportScreenViewsFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersReportScreenViewsFailure(error, req.payload))
   }
 } 
 

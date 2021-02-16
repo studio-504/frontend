@@ -5,11 +5,9 @@ import * as constants from 'store/ducks/purchases/constants'
 export const initialState = {
   purchasesRequest: {
     status: 'idle',
-    error: '',
   },
   retryPurchase: {
     status: 'idle',
-    error: '',
   },
 }
 
@@ -20,7 +18,6 @@ const purchasesRequest = (state) =>
   update(state, {
     purchasesRequest: {
       status: { $set: 'loading' },
-      error: { $set: initialState.purchasesRequest.error },
     },
     retryPurchase: { $set: initialState.retryPurchase },
   })
@@ -32,11 +29,10 @@ const purchaseSuccess = (state) =>
     },
   })
 
-const purchasesFailure = (state, action) =>
+const purchasesFailure = (state) =>
   update(state, {
     purchasesRequest: {
       status: { $set: 'failure' },
-      error: { $set: action.payload },
     },
   })
 
@@ -48,7 +44,6 @@ const retryPurchaseRequest = (state) =>
     purchasesRequest: { $set: initialState.purchasesRequest },
     retryPurchase: {
       status: { $set: 'loading' },
-      error: { $set: initialState.retryPurchase.error },
     },
   })
 
@@ -59,11 +54,10 @@ const retryPurchaseSuccess = (state) =>
     },
   })
 
-const retryPurchaseFailure = (state, action) =>
+const retryPurchaseFailure = (state) =>
   update(state, {
     retryPurchase: {
       status: { $set: 'failure' },
-      error: { $set: action.payload },
     },
   })
 

@@ -9,7 +9,6 @@ import * as constants from 'store/ducks/posts/constants'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as queryService from 'services/Query'
-import * as ErrorsService from 'services/Errors'
 
 function* handlePostsReportPostViewsRequest(payload) {
   const data = payload.postIds.reduce((acc, item) => {
@@ -38,7 +37,7 @@ export function* postsReportPostViewsRequest(req) {
 
     yield put(actions.postsReportPostViewsSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
-    yield put(actions.postsReportPostViewsFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsReportPostViewsFailure(error))
   }
 }
 

@@ -1,5 +1,6 @@
 import path from 'ramda/src/path'
 import propOr from 'ramda/src/propOr'
+import { createAction } from 'redux-actions'
 import authErrors from 'store/ducks/auth/errors'
 import signupErrors from 'store/ducks/signup/errors'
 import usersErrors from 'store/ducks/users/errors'
@@ -113,3 +114,10 @@ export const getGraphqlErrorMessage = (key, graphqlError) => {
 
   return getMessagePayload(key, 'GENERIC')
 }
+
+export const createFailureAction = (type) =>
+  createAction(
+    type,
+    (payload) => payload,
+    (error, meta) => meta,
+  )

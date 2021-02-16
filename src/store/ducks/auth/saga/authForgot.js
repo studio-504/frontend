@@ -22,13 +22,9 @@ function* authForgotRequest(req) {
     yield put(actions.authForgotSuccess())
   } catch (error) {
     if (error.code === 'UserNotFoundException') {
-      yield put(actions.authForgotFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'USER_NOT_FOUND', error),
-      }))
+      yield put(actions.authForgotFailure(error, { errorCode: 'USER_NOT_FOUND' }))
     } else {
-      yield put(actions.authForgotFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authForgotFailure(error))
     }
   }
 }
@@ -59,17 +55,11 @@ function* authForgotConfirmRequest(req) {
     }))
   } catch (error) {
     if (error.code === 'InvalidPasswordException') {
-      yield put(actions.authForgotConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'INVALID_PASSWORD', error),
-      }))
+      yield put(actions.authForgotConfirmFailure(error, { errorCode: 'INVALID_PASSWORD' }))
     } else if (error.code === 'CodeMismatchException') {
-      yield put(actions.authForgotConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
-      })) 
+      yield put(actions.authForgotConfirmFailure(error, { errorCode: 'CODE_MISMATCH' }))
     } else {
-      yield put(actions.authForgotConfirmFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_FORGOT_CONFIRM_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authForgotConfirmFailure(error))
     }
   }
 }

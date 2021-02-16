@@ -15,15 +15,12 @@ const post = { postId: processingPost.postId, postStatus: 'COMPLETED', postedBy:
 const postWithError = { postId: processingPost.postId, postStatus: 'ERROR', postedBy: { userId } }
 
 const failureCases = ['ERROR', 'ARCHIVED', 'DELETING'].map((postStatus) => {
+  const error = new Error('Post shouldn`t have ERROR, ARCHIVED or DELETING status')
   const post = { ...postWithError, postStatus }
 
   return {
     post,
-    failureAction: actions.postsCreateFailure({
-      message: 'Post shouldn`t have ERROR, ARCHIVED or DELETING status',
-      payload: post,
-      meta: {},
-    }),
+    failureAction: actions.postsCreateFailure(error, post),
   }
 })
 
@@ -85,11 +82,8 @@ describe('Create post saga', () => {
     describe('Retry check post status 3 times', () => {
       it('throw an error after 3 times retry', async () => {
         const posts = ['PENDING', 'PROCESSING'].map((postStatus) => ({ ...post, postStatus }))
-        const failureAction = actions.postsCreateFailure({
-          message: 'Post has not been processed',
-          payload: processingPost,
-          meta: {},
-        })
+        const error = new Error('Post has not been processed')
+        const failureAction = actions.postsCreateFailure(error, processingPost)
 
         const tests = posts.map((post) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)

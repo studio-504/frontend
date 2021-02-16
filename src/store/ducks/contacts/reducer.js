@@ -5,13 +5,11 @@ import * as constants from 'store/ducks/contacts/constants'
 export const initialState = {
   contactsGet: {
     status: 'idle',
-    error: '',
     items: [],
   },
   contactsInvite: {
     invited: {},
     requested: {},
-    error: '',
   },
 }
 
@@ -22,7 +20,6 @@ const contactsGetRequest = (state) =>
   update(state, {
     contactsGet: {
       status: { $set: 'loading' },
-      error: { $set: initialState.contactsGet.error },
     },
   })
 
@@ -34,11 +31,10 @@ const contactsGetSuccess = (state, action) =>
     },
   })
 
-const contactsGetFailure = (state, action) =>
+const contactsGetFailure = (state) =>
   update(state, {
     contactsGet: {
       status: { $set: 'failure' },
-      error: { $set: action.payload.message },
       items: { $set: initialState.contactsGet.items },
     },
   })
@@ -50,7 +46,6 @@ const contactsInviteRequest = (state, action) =>
   update(state, {
     contactsInvite: {
       requested: { $merge: { [action.payload.contactId]: true } },
-      error: { $set: initialState.contactsInvite.error },
     },
   })
 
@@ -65,8 +60,7 @@ const contactsInviteSuccess = (state, action) =>
 const contactsInviteFailure = (state, action) =>
   update(state, {
     contactsInvite: {
-      requested: { $unset: [action.payload.contactId] },
-      error: { $set: action.payload.message },
+      requested: { $unset: [action.meta.contactId] },
     },
   })
 
@@ -74,7 +68,6 @@ const contactsInviteIdle = (state) =>
   update(state, {
     contactsInvite: {
       requested: { $set: initialState.contactsInvite.requested },
-      error: { $set: initialState.contactsInvite.error },
     },
   })
 
@@ -94,4 +87,4 @@ export default handleActions(
     [constants.CONTACTS_FOLLOW_FAILURE]: contactsInviteFailure,
   },
   initialState,
-)
+) 

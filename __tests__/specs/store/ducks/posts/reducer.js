@@ -17,7 +17,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsGetTrendingPosts(state)).toEqual({
         data: [],
-        error: {},
         meta: {},
         payload: {},
         status: 'idle',
@@ -30,7 +29,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsGetTrendingPosts(state)).toEqual({
         data,
-        error: {},
         meta,
         payload: {},
         status: 'success',
@@ -46,7 +44,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsGetTrendingPosts(state)).toEqual({
         data,
-        error: {},
         meta: {},
         payload: undefined,
         status: 'loading',
@@ -73,7 +70,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsSingleGet(state)).toEqual({
         data: {},
-        error: {},
         meta: {},
         payload: {},
         status: 'idle',
@@ -85,7 +81,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsSingleGet(state)).toEqual({
         data,
-        error: {},
         meta: {},
         payload: {},
         status: 'success',
@@ -100,7 +95,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsSingleGet(state)).toEqual({
         data,
-        error: {},
         meta: {},
         payload: undefined,
         status: 'loading',
@@ -113,7 +107,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsSingleGet(state)).toEqual({
         data: {},
-        error: {},
         meta: {},
         payload: {},
         status: 'failure',
@@ -125,7 +118,6 @@ describe('Posts reducer', () => {
 
       expect(selectPostsSingleGet(state)).toEqual({
         data: {},
-        error: {},
         meta: {},
         payload: {},
         status: 'idle',

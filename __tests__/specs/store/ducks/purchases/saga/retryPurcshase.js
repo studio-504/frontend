@@ -96,7 +96,7 @@ describe('Finish pending purchases saga', () => {
 
         .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
         .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
-        .put(actions.retryPurchaseFailure(error.message))
+        .put(actions.retryPurchaseFailure(error))
         .call([Logger, 'captureException'], error)
 
         .dispatch(action)

@@ -13,7 +13,6 @@ describe('Signup reducer', () => {
 
       expect(selectors.signupCreate(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -30,7 +29,6 @@ describe('Signup reducer', () => {
 
       expect(selectors.signupCreate(state)).toEqual({
         status: 'loading',
-        error: {},
         payload: { a: 4, b: 5, c: 3 },
       })
     })
@@ -40,18 +38,16 @@ describe('Signup reducer', () => {
 
       expect(selectors.signupCreate(state)).toEqual({
         status: 'success',
-        error: {},
         payload: {},
       })
     })
 
     it('failure', () => {
-      const message = 'Error Message'
-      const state = reducer(undefined, actions.signupCreateFailure({ message }))
+      const error = new Error('Error Message')
+      const state = reducer(undefined, actions.signupCreateFailure(error))
 
       expect(selectors.signupCreate(state)).toEqual({
         status: 'failure',
-        error: message,
         payload: {},
       })
     })
@@ -68,7 +64,6 @@ describe('Signup reducer', () => {
 
       expect(selectors.signupCreate(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -84,7 +79,6 @@ describe('Signup reducer', () => {
       expect(selectors.signupPassword(state)).toEqual({
         data: [],
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -95,7 +89,6 @@ describe('Signup reducer', () => {
       expect(selectors.signupPassword(state)).toEqual({
         data: [],
         status: 'loading',
-        error: {},
         payload,
       })
     })
@@ -106,20 +99,18 @@ describe('Signup reducer', () => {
       expect(selectors.signupPassword(state)).toEqual({
         data,
         status: 'success',
-        error: {},
         payload,
       })
     })
 
     it('failure', () => {
-      const message = 'Error Message'
-      const state = reducer(undefined, actions.signupPasswordFailure({ message, payload }))
+      const error = new Error('Error Message')
+      const state = reducer(undefined, actions.signupPasswordFailure(error))
 
       expect(selectors.signupPassword(state)).toEqual({
         data: [],
         status: 'failure',
-        error: message,
-        payload,
+        payload: {},
       })
     })
 
@@ -136,7 +127,6 @@ describe('Signup reducer', () => {
       expect(selectors.signupPassword(state)).toEqual({
         data: [],
         status: 'idle',
-        error: {},
         payload: {},
       })
     })

@@ -1,4 +1,4 @@
-import { all, takeEvery } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects'
 import appState from 'store/ducks/appState/saga'
 import camera from 'store/ducks/camera/saga'
 import albums from 'store/ducks/albums/saga'
@@ -9,6 +9,7 @@ import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
+import captureErrors from 'store/ducks/captureErrors/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -41,25 +42,9 @@ import postsShare from 'store/ducks/posts/saga/postsShare'
 import postsReportPostViews from 'store/ducks/posts/saga/postsReportPostViews'
 import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
-import * as Logger from 'services/Logger'
-import path from 'ramda/src/path'
-
-const captureErrors = (action) => {
-  const nativeError = path(['payload', 'message', 'nativeError'])(action)
-
-  Logger.withScope(scope => {
-    scope.setExtra('action', JSON.stringify(action))
-
-    if (nativeError === 'string') {
-      Logger.captureMessage(nativeError)
-    } else {
-      Logger.captureException(path(['payload'])(action))
-    }
-  })
-}
-
 export default function* rootSaga(persistor) {
   yield all([]
+    .concat(captureErrors())
     .concat(appState())
     .concat(camera())
     .concat(albums())
@@ -101,9 +86,6 @@ export default function* rootSaga(persistor) {
     .concat(datingMatchApprove())
     .concat(datingMatchReject())
 
-    .concat(snackbars())
-    .concat([
-      takeEvery(action => /FAILURE$/.test(action.type), captureErrors),
-    ]),
+    .concat(snackbars()),
   )
 }

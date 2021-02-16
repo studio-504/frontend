@@ -74,7 +74,7 @@ describe('Purchases saga', () => {
 
       .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
-      .put(actions.purchaseFailure('Purchase Request Timeout'))
+      .put(actions.purchaseFailure(new Error('Purchase Request Timeout')))
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
@@ -93,7 +93,7 @@ describe('Purchases saga', () => {
     const promise = expectSaga(testAsRootSaga(purchases))
       .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
-      .put(actions.purchaseFailure(error.message))
+      .put(actions.purchaseFailure(error))
       .call([Logger, 'captureException'], error)
 
       .dispatch(actions.purchaseRequest(premium))
@@ -139,7 +139,7 @@ describe('Purchases saga', () => {
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
-      .put(actions.purchaseFailure(error.message))
+      .put(actions.purchaseFailure(error))
       .call([Logger, 'captureException'], error)
 
       .dispatch(actions.purchaseRequest(premium))

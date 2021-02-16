@@ -5,46 +5,41 @@ import * as selectors from 'store/ducks/users/selectors'
 import { applyActions } from 'tests/utils/helpers'
 
 const reducer = combineReducers({ users })
+const error = new Error('Error')
 
 describe('Users reducer', () => {
   describe('usersChangeAvatar', () => {
-    const error = 'error'
-
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle', error: {} })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle' })
     })
 
     it('loading', () => {
       const state = reducer(undefined, actions.usersChangeAvatarRequest())
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'loading', error: {} })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'loading' })
     })
 
     it('success', () => {
       const state = reducer(undefined, actions.usersChangeAvatarSuccess())
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'success', error: {} })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'success' })
     })
 
     it('failure', () => {
-      const state = reducer(undefined, actions.usersChangeAvatarFailure({ message: { text: error } }))
+      const state = reducer(undefined, actions.usersChangeAvatarFailure(error))
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'failure', error: { text: error } })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'failure' })
     })
 
     it('idle', () => {
       const state = applyActions(
-        [
-          actions.usersChangeAvatarSuccess(),
-          actions.usersChangeAvatarFailure({ message: { text: error } }),
-          actions.usersChangeAvatarIdle(),
-        ],
+        [actions.usersChangeAvatarSuccess(), actions.usersChangeAvatarFailure(error), actions.usersChangeAvatarIdle()],
         reducer,
       )
 
-      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle', error: {} })
+      expect(selectors.usersChangeAvatar(state)).toEqual({ status: 'idle' })
     })
   })
 
@@ -57,7 +52,6 @@ describe('Users reducer', () => {
       expect(selector(state)).toEqual({
         data: [],
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -69,7 +63,6 @@ describe('Users reducer', () => {
       expect(selector(state)).toEqual({
         data: [],
         status: 'loading',
-        error: {},
         payload,
       })
     })
@@ -81,19 +74,16 @@ describe('Users reducer', () => {
       expect(selector(state)).toEqual({
         data,
         status: 'success',
-        error: {},
         payload: {},
       })
     })
 
     it('failure', () => {
-      const error = { message: 'Error' }
       const state = reducer(undefined, actions.usersImagePostsGetFailure(error))
 
       expect(selector(state)).toEqual({
         data: [],
         status: 'failure',
-        error: error.message,
         payload: {},
       })
     })
@@ -106,7 +96,7 @@ describe('Users reducer', () => {
       expect(selectors.usersSetUserDatingStatus(state)).toEqual({
         data: [],
         status: 'idle',
-        error: {},
+
         payload: {},
       })
     })
@@ -118,7 +108,7 @@ describe('Users reducer', () => {
       expect(selectors.usersSetUserDatingStatus(state)).toEqual({
         data: [],
         status: 'loading',
-        error: {},
+
         payload,
       })
     })
@@ -130,19 +120,16 @@ describe('Users reducer', () => {
       expect(selectors.usersSetUserDatingStatus(state)).toEqual({
         data,
         status: 'success',
-        error: {},
         payload: {},
       })
     })
 
     it('failure', () => {
-      const error = { message: 'Error' }
       const state = reducer(undefined, actions.usersSetUserDatingStatusFailure(error))
 
       expect(selectors.usersSetUserDatingStatus(state)).toEqual({
         data: [],
         status: 'failure',
-        error: error.message,
         payload: {},
       })
     })
@@ -154,26 +141,25 @@ describe('Users reducer', () => {
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle' })
     })
 
     it('loading', () => {
       const state = reducer(undefined, actions.usersGetProfileSelfRequest())
 
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'loading', error: {} })
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'loading' })
     })
 
     it('success', () => {
       const state = reducer(undefined, actions.usersGetProfileSelfSuccess({ data }))
 
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data, status: 'success', error: {} })
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data, status: 'success' })
     })
 
     it('failure', () => {
-      const message = 'Error'
-      const state = reducer(undefined, actions.usersGetProfileSelfFailure({ message }))
+      const state = reducer(undefined, actions.usersGetProfileSelfFailure(error))
 
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'failure', error: message })
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'failure' })
     })
 
     it('idle', () => {
@@ -182,7 +168,7 @@ describe('Users reducer', () => {
         reducer,
       )
 
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle', error: {} })
+      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle' })
     })
   })
 
@@ -192,7 +178,7 @@ describe('Users reducer', () => {
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })
 
-      expect(selector(state)).toEqual({ data: [], status: 'idle', error: {}, payload: {} })
+      expect(selector(state)).toEqual({ data: [], status: 'idle', payload: {} })
     })
   })
 })

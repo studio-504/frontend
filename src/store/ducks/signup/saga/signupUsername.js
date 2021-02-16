@@ -34,10 +34,7 @@ function* signupUsernameRequest(req) {
       data,
     }))
   } catch (error) {
-    yield put(actions.signupUsernameFailure({
-      message: ErrorsService.getMessagePayload(constants.SIGNUP_USERNAME_FAILURE, 'GENERIC', error),
-      payload: req.payload,
-    }))
+    yield put(actions.signupUsernameFailure(error))
   }
 }
 

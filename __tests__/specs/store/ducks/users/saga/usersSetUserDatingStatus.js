@@ -33,104 +33,12 @@ describe('usersSetUserDatingStatusRequest', () => {
     expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUserDatingStatus, payload)
   })
 
-  describe('show specific error message', () => {
-    const testGqlError = async ({ code, text }) => {
-      const message = {
-        code,
-        text,
-        nativeError: '',
-      }
+  it('failure', async () => {
+    const error = new Error('Error')
+    queryService.apiRequest.mockRejectedValueOnce(error)
 
-      const gqlError = { errors: [{ errorInfo: [{ a: 1 }, 'sdfsd', code, 'dsf'] }] }
-
-      queryService.apiRequest.mockRejectedValueOnce(gqlError)
-
-      await expectSaga(usersSetUserDatingStatusRequest, action)
-        .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
-        .run()
-    }
-
-    it('native error', async () => {
-      const error = new Error('Error')
-      const message = {
-        code: 'GENERIC',
-        text: 'Unable to enable dating',
-        nativeError: '',
-      }
-
-      queryService.apiRequest.mockRejectedValueOnce(error)
-
-      await expectSaga(usersSetUserDatingStatusRequest, action)
-        .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
-        .run()
-    })
-
-    it('GENERIC by default', async () => {
-      const message = {
-        code: 'GENERIC',
-        text: 'Unable to enable dating',
-        nativeError: '',
-      }
-
-      const gqlError = { errors: [{ errorInfo: [] }] }
-
-      queryService.apiRequest.mockRejectedValueOnce(gqlError)
-
-      await expectSaga(usersSetUserDatingStatusRequest, action)
-        .put(usersActions.usersSetUserDatingStatusFailure({ message, payload }))
-        .run()
-    })
-
-    it('MISSING_DISPLAY_NAME', async () => {
-      await testGqlError({ code: 'MISSING_DISPLAY_NAME', text: 'Display name is missing' })
-    })
-
-    it('MISSING_PHOTO_POST_ID', async () => {
-      await testGqlError({ code: 'MISSING_PHOTO_POST_ID', text: 'Please upload a profile photo' })
-    })
-
-    it('MISSING_AGE', async () => {
-      await testGqlError({ code: 'MISSING_AGE', text: 'Age is missing' })
-    })
-
-    it('MISSING_GENDER', async () => {
-      await testGqlError({ code: 'MISSING_GENDER', text: 'Gender is missing' })
-    })
-
-    it('MISSING_LOCATION', async () => {
-      await testGqlError({ code: 'MISSING_LOCATION', text: 'Location is missing' })
-    })
-
-    it('MISSING_HEIGHT', async () => {
-      await testGqlError({ code: 'MISSING_HEIGHT', text: 'Height is missing' })
-    })
-
-    it('MISSING_MATCH_AGE_RANGE', async () => {
-      await testGqlError({ code: 'MISSING_MATCH_AGE_RANGE', text: 'Match age is missing' })
-    })
-
-    it('MISSING_MATCH_GENDERS', async () => {
-      await testGqlError({ code: 'MISSING_MATCH_GENDERS', text: 'Match gender is missing' })
-    })
-
-    it('MISSING_MATCH_HEIGHT_RANGE', async () => {
-      await testGqlError({ code: 'MISSING_MATCH_HEIGHT_RANGE', text: 'Match height is missing' })
-    })
-
-    it('MISSING_MATCH_LOCATION_RADIUS', async () => {
-      await testGqlError({ code: 'MISSING_MATCH_LOCATION_RADIUS', text: 'Match location radius is missing' })
-    })
-
-    it('WRONG_AGE_MIN', async () => {
-      await testGqlError({ code: 'WRONG_AGE_MIN', text: 'Invalid min age' })
-    })
-
-    it('WRONG_AGE_MAX', async () => {
-      await testGqlError({ code: 'WRONG_AGE_MAX', text: 'Invalid max age' })
-    })
-
-    it('WRONG_THREE_HOUR_PERIOD', async () => {
-      await testGqlError({ code: 'WRONG_THREE_HOUR_PERIOD', text: 'You can only enable dating once per day' })
-    })
+    await expectSaga(usersSetUserDatingStatusRequest, action)
+      .put(usersActions.usersSetUserDatingStatusFailure(error))
+      .run()
   })
 })

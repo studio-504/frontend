@@ -11,7 +11,6 @@ import Marker from 'react-native-image-marker'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
-import * as ErrorsService from 'services/Errors'
 
 function* handlePostsShareRequest(payload) {
   function* handeImageWatermark(url, hasWatermark, post) {
@@ -175,7 +174,7 @@ function* postsShareRequest(req) {
     yield handlePostsShareRequest(req.payload)
     yield put(actions.postsShareSuccess({ data: {}, meta: {} }))
   } catch (error) {
-    yield put(actions.postsShareFailure({ message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsShareFailure(error))
   }
 }
 

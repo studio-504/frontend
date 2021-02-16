@@ -42,12 +42,7 @@ function* authSignoutRequest(req) {
       meta,
     }))
   } catch (error) {
-    yield put(actions.authSignoutFailure({
-      message: ErrorsService.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
-      meta: {
-        authenticated: false,
-      },
-    }))
+    yield put(actions.authSignoutFailure(error, { authenticated: false }))
   }
 }
 

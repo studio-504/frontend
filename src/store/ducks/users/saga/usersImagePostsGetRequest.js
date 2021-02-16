@@ -5,7 +5,6 @@ import * as queries from 'store/ducks/users/queries'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -26,7 +25,7 @@ function* usersImagePostsGetRequest(req) {
     const data = yield usersImagePostsGetRequestData(response)
     yield put(actions.usersImagePostsGetSuccess({ data }))
   } catch (error) {
-    yield put(actions.usersImagePostsGetFailure({ message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersImagePostsGetFailure(error))
   }
 }
 

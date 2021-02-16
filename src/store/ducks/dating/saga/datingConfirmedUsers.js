@@ -8,7 +8,6 @@ import * as constants from 'store/ducks/dating/constants'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -37,7 +36,7 @@ function* datingConfirmedUsersRequest(req) {
     const next = yield datingConfirmedUsersRequestData(req, data)
     yield put(actions.datingConfirmedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.datingConfirmedUsersFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.datingConfirmedUsersFailure(error, req.payload))
   }
 }
 

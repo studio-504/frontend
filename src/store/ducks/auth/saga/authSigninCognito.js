@@ -1,7 +1,7 @@
 import { put, call, take, race, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as ErrorsService from 'services/Errors'
+import propOr from 'ramda/src/propOr'
 
 /**
  * Authenticate using cognito into user pool
@@ -35,27 +35,14 @@ function* authSigninCognitoRequest(req) {
     yield handleAuthSigninRequest(req.payload)
     yield put(actions.authSigninCognitoSuccess())
   } catch (error) {
-    if (error.code === 'UserNotConfirmedException') {
-      yield put(actions.authSigninCognitoFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_CONFIRMED', error),
-      }))
-    } else if (error.code === 'UserNotFoundException') {
-      yield put(actions.authSigninCognitoFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_FOUND', error),
-      }))
-    } else if (error.code === 'NotAuthorizedException') {
-      yield put(actions.authSigninCognitoFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'USER_NOT_AUTHORIZED', error),
-      }))
-    } else if (error.code === 'InvalidParameterException') {
-      yield put(actions.authSigninCognitoFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'INVALID_PARAMETER', error),
-      }))
-    } else {
-      yield put(actions.authSigninCognitoFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_COGNITO_FAILURE, 'GENERIC', error),
-      }))
-    }
+    const errorCode = propOr('GENERIC', error.code, {
+      'UserNotConfirmedException': 'USER_NOT_CONFIRMED',
+      'UserNotFoundException': 'USER_NOT_FOUND',
+      'NotAuthorizedException': 'USER_NOT_AUTHORIZED',
+      'InvalidParameterException': 'INVALID_PARAMETER',
+    })
+
+    yield put(actions.authSigninCognitoFailure(error, { errorCode }))
   }
 }
 

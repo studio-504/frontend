@@ -6,37 +6,31 @@ export const initialState = {
   albumsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   albumsSingleGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   albumsPostsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   albumsCreate: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   albumsEdit: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   albumsDelete: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
 
@@ -104,10 +98,9 @@ const albumsCreateSuccess = (state, action) => update(state, {
   },
 })
 
-const albumsCreateFailure = (state, action) => update(state, {
+const albumsCreateFailure = (state) => update(state, {
   albumsCreate: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -135,10 +128,9 @@ const albumsSingleGetSuccess = (state, action) => update(state, {
   },
 })
 
-const albumsSingleGetFailure = (state, action) => update(state, {
+const albumsSingleGetFailure = (state) => update(state, {
   albumsSingleGet: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -229,10 +221,9 @@ const albumsEditSuccess = (state, action) => update(state, {
   },
 })
 
-const albumsEditFailure = (state, action) => update(state, {
+const albumsEditFailure = (state) => update(state, {
   albumsEdit: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -260,10 +251,9 @@ const albumsDeleteSuccess = (state, action) => update(state, {
   },
 })
 
-const albumsDeleteFailure = (state, action) => update(state, {
+const albumsDeleteFailure = (state) => update(state, {
   albumsDelete: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 

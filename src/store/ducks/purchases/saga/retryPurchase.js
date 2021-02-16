@@ -41,7 +41,7 @@ function* retryPurchase(req) {
     yield put(usersActions.usersGetProfileSelfRequest())
   } catch (error) {
     yield call([RNIap, 'clearTransactionIOS'])
-    yield put(actions.retryPurchaseFailure(error.message))
+    yield put(actions.retryPurchaseFailure(error))
     yield call([Logger, 'captureException'], error)
   }
 }

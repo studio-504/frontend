@@ -5,6 +5,7 @@ import * as selectors from 'store/ducks/auth/selectors'
 import { applyActions } from 'tests/utils/helpers'
 
 const reducer = combineReducers({ auth })
+const error = new Error('Error Message')
 
 describe('Auth reducer', () => {
   describe('authSigninCognito', () => {
@@ -13,7 +14,6 @@ describe('Auth reducer', () => {
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -30,23 +30,18 @@ describe('Auth reducer', () => {
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'loading',
-        error: {},
         payload: { a: 4, b: 5, c: 3 },
       })
     })
 
     it('clear an error on request', () => {
       const state = applyActions(
-        [
-          actions.authSigninCognitoFailure({ message: 'Error' }),
-          actions.authSigninCognitoRequest({ c: 3 }),
-        ],
+        [actions.authSigninCognitoFailure(error), actions.authSigninCognitoRequest({ c: 3 })],
         reducer,
       )
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'loading',
-        error: {},
         payload: { c: 3 },
       })
     })
@@ -56,18 +51,16 @@ describe('Auth reducer', () => {
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'success',
-        error: {},
         payload: {},
       })
     })
 
     it('failure', () => {
-      const message = 'Error Message'
-      const state = reducer(undefined, actions.authSigninCognitoFailure({ message }))
+      const error = new Error('Error Message')
+      const state = reducer(undefined, actions.authSigninCognitoFailure(error))
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'failure',
-        error: message,
         payload: {},
       })
     })
@@ -76,7 +69,7 @@ describe('Auth reducer', () => {
       const state = applyActions(
         [
           actions.authSigninCognitoSuccess({ message: 'Message' }),
-          actions.authSigninCognitoFailure({ message: 'Error' }),
+          actions.authSigninCognitoFailure(error),
           actions.authSigninCognitoIdle(),
         ],
         reducer,
@@ -84,7 +77,6 @@ describe('Auth reducer', () => {
 
       expect(selectors.authSigninCognito(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -96,7 +88,6 @@ describe('Auth reducer', () => {
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })
@@ -113,7 +104,6 @@ describe('Auth reducer', () => {
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'loading',
-        error: {},
         payload: { a: 4, b: 5, c: 3 },
       })
     })
@@ -123,35 +113,28 @@ describe('Auth reducer', () => {
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'success',
-        error: {},
         payload: {},
       })
     })
 
     it('failure', () => {
-      const message = 'Error Message'
-      const state = reducer(undefined, actions.authForgotFailure({ message }))
+      const error = new Error('Error Message')
+      const state = reducer(undefined, actions.authForgotFailure(error))
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'failure',
-        error: message,
         payload: {},
       })
     })
 
     it('idle', () => {
       const state = applyActions(
-        [
-          actions.authForgotSuccess({ message: 'Message' }),
-          actions.authForgotFailure({ message: 'Error' }),
-          actions.authForgotIdle(),
-        ],
+        [actions.authForgotSuccess({ message: 'Message' }), actions.authForgotFailure(error), actions.authForgotIdle()],
         reducer,
       )
 
       expect(selectors.authForgot(state)).toEqual({
         status: 'idle',
-        error: {},
         payload: {},
       })
     })

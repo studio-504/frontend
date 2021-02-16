@@ -78,7 +78,7 @@ function* purchase(req) {
     yield put(actions.purchaseSuccess())
     yield put(usersActions.usersGetProfileSelfRequest())
   } catch (error) {
-    yield put(actions.purchaseFailure(error.message))
+    yield put(actions.purchaseFailure(error))
     yield call([Logger, 'captureException'], error)
   }
 }

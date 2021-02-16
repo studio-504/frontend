@@ -5,7 +5,6 @@ import * as queries from 'store/ducks/users/queries'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -28,7 +27,7 @@ function* usersGetProfileSelfRequest() {
     const next = yield usersGetProfileSelfRequestData(data)
     yield put(actions.usersGetProfileSelfSuccess({ data: next.data })) 
   } catch (error) {
-    yield put(actions.usersGetProfileSelfFailure({ message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.usersGetProfileSelfFailure(error))
   }
 }
 

@@ -20,7 +20,6 @@ extend('$postsResourceCacheSetSuccess', ({ payload, resourceKey, initialState },
     [resourceKey]: {
       data: { $set: payload.data },
       status: { $set: 'success' },
-      error: { $set: {} },
       payload: { $set: payload.payload || {} },
       meta: { $set: payload.meta || {} },
     },
@@ -40,7 +39,6 @@ extend('$postsResourceCachePushSuccess', ({ payload, resourceKey, initialState }
     [resourceKey]: {
       data: { $push: payload.data },
       status: { $set: 'success' },
-      error: { $set: {} },
       payload: { $set: payload.payload || {} },
       meta: { $set: payload.meta || {} },
     },

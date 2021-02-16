@@ -156,8 +156,6 @@ function* handleAuthDataRequest(payload = {}) {
 /**
  * Conditional user data fetching with online/offline support
  */
-
-
 function* authDataRequest(req) {
   try {
     const { data, meta } = yield handleAuthDataRequest(req.payload)
@@ -170,13 +168,9 @@ function* authDataRequest(req) {
     const primaryClientError = yield call(ErrorsService.getPrimaryClientError, error)
       
     if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
-      yield put(actions.authDataFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_DATA_FAILURE, 'USER_DOES_NOT_EXIST', error),
-      }))
+      yield put(actions.authDataFailure(error, { errorCode: 'USER_DOES_NOT_EXIST' }))
     } else {
-      yield put(actions.authDataFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_DATA_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authDataFailure(error))
     }
   }
 }

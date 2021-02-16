@@ -9,7 +9,6 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as ErrorsService from 'services/Errors'
 
 /**
  *
@@ -38,7 +37,7 @@ function* postsGetRequest(req) {
     const next = yield postsGetRequestData(req, data)
     yield put(actions.postsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsGetFailure(error, req.payload))
   }
 }
 
@@ -48,7 +47,7 @@ function* postsGetMoreRequest(req) {
     const next = yield postsGetRequestData(req, data)
     yield put(actions.postsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetMoreFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsGetMoreFailure(error, req.payload))
   }
 }
 
@@ -79,7 +78,7 @@ function* postsGetUnreadCommentsRequest(req) {
     const next = yield postsGetUnreadCommentsRequestData(req, data)
     yield put(actions.postsGetUnreadCommentsSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetUnreadCommentsFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsGetUnreadCommentsFailure(error, req.payload))
   }
 }
 
@@ -112,7 +111,7 @@ function* postsViewsGetRequest(req) {
     const next = yield postsViewsGetRequestData(req, data)
     yield put(actions.postsViewsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsViewsGetFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsViewsGetFailure(error, req.payload))
   }
 }
 
@@ -122,7 +121,7 @@ function* postsViewsGetMoreRequest(req) {
     const next = yield postsViewsGetRequestData(req, data)
     yield put(actions.postsViewsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsViewsGetMoreFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsViewsGetMoreFailure(error, req.payload))
   }
 }
 
@@ -153,7 +152,7 @@ function* postsLikesGetRequest(req) {
     const next = yield postsLikesGetRequestData(req, data)
     yield put(actions.postsLikesGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsLikesGetFailure({ payload: req.payload, message: ErrorsService.errorWrapper(error) }))
+    yield put(actions.postsLikesGetFailure(error, req.payload))
   }
 }
 
@@ -184,7 +183,7 @@ function* postsFeedGetRequest(req) {
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFeedGetFailure(error, req.payload))
   }
 }
 
@@ -194,7 +193,7 @@ function* postsFeedGetMoreRequest(req) {
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetMoreFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFeedGetMoreFailure(error, req.payload))
   }
 }
 
@@ -225,7 +224,7 @@ function* postsGetArchivedRequest(req) {
     const next = yield postsGetArchivedRequestData(req, data)
     yield put(actions.postsGetArchivedSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetArchivedFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetArchivedFailure(error, req.payload))
   }
 }
 
@@ -261,7 +260,7 @@ function* postsEditRequest(req) {
     const next = yield postsEditRequestData(req, data)
     yield put(actions.postsEditSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsEditFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsEditFailure(error, req.payload))
   }
 }
 
@@ -292,7 +291,7 @@ function* postsDeleteRequest(req) {
 
     yield put(actions.postsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsDeleteFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsDeleteFailure(error, req.payload))
   }
 }
 
@@ -322,7 +321,7 @@ function* postsArchiveRequest(req) {
     const next = yield postsArchiveRequestData(req, data)
     yield put(actions.postsArchiveSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsArchiveFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsArchiveFailure(error, req.payload))
   }
 }
 
@@ -352,7 +351,7 @@ function* postsRestoreArchivedRequest(req) {
     const next = yield postsRestoreArchivedRequestData(req, data)
     yield put(actions.postsRestoreArchivedSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsRestoreArchivedFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsRestoreArchivedFailure(error, req.payload))
   }
 }
 
@@ -382,7 +381,7 @@ function* postsFlagRequest(req) {
     const next = yield postsFlagRequestData(req, data)
     yield put(actions.postsFlagSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFlagFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFlagFailure(error, req.payload))
   }
 }
 
@@ -412,7 +411,7 @@ function* postsSingleGetRequest(req) {
     const next = yield postsSingleGetRequestData(req, data)
     yield put(actions.postsSingleGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsSingleGetFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsSingleGetFailure(error, req.payload))
   }
 }
 
@@ -443,7 +442,7 @@ function* postsOnymouslyLikeRequest(req) {
     const next = yield postsOnymouslyLikeRequestData(req, data)
     yield put(actions.postsOnymouslyLikeSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsOnymouslyLikeFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsOnymouslyLikeFailure(error, req.payload))
   }
 }
 
@@ -474,7 +473,7 @@ function* postsDislikeRequest(req) {
     const next = yield postsDislikeRequestData(req, data)
     yield put(actions.postsDislikeSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsDislikeFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsDislikeFailure(error, req.payload))
   }
 }
 
@@ -505,7 +504,7 @@ function* postsCommentsGetRequest(req) {
     const next = yield postsCommentsGetRequestData(req, data)
     yield put(actions.postsCommentsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsCommentsGetFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsCommentsGetFailure(error, req.payload))
   }
 }
 
@@ -536,7 +535,7 @@ function* commentsAddRequest(req) {
     const next = yield commentsAddRequestData(req, data)
     yield put(actions.commentsAddSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.commentsAddFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsAddFailure(error, req.payload))
   }
 }
 
@@ -567,7 +566,7 @@ function* commentsDeleteRequest(req) {
 
     yield put(actions.commentsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.commentsDeleteFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsDeleteFailure(error, req.payload))
   }
 }
 
@@ -579,7 +578,7 @@ function* commentsFlagRequest(req) {
 
     yield put(actions.commentsFlagSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
-    yield put(actions.commentsFlagFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsFlagFailure(error, req.payload))
   }
 }
 

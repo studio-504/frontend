@@ -40,7 +40,6 @@ extend('$resourceCacheSetSuccess', ({ payload, resourceKey, initialState }, orig
     [resourceKey]: {
       data: { $set: payload.data },
       status: { $set: 'success' },
-      error: { $set: {} },
       payload: { $set: payload.payload || {} },
       meta: { $set: payload.meta || {} },
     },
@@ -50,7 +49,7 @@ extend('$resourceCacheSetSuccess', ({ payload, resourceKey, initialState }, orig
 /**
  *
  */
-extend('$resourceCacheSetFailure', ({ payload, resourceKey, initialState }, original) => {
+extend('$resourceCacheSetFailure', ({ resourceKey, initialState }, original) => {
   const filtered = getFilteredState(original)
   const nextState = (path([resourceKey])(filtered)) ?
     filtered :
@@ -59,7 +58,6 @@ extend('$resourceCacheSetFailure', ({ payload, resourceKey, initialState }, orig
   return update(nextState, {
     [resourceKey]: {
       status: { $set: 'failure' },
-      payload: { $set: payload.payload || {} },
     },
   })
 })
@@ -104,7 +102,6 @@ extend('$resourceCacheAlterRequest', ({ payload, resourceKey, initialState }, or
     [resourceKey]: {
       data: { $set: payload.payload.data },
       status: { $set: 'loading' },
-      error: { $set: {} },
       payload: { $set: payload.payload || {} },
       meta: { $set: payload.meta || {} },
     },

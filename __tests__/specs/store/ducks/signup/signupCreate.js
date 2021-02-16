@@ -18,7 +18,7 @@ describe('signupCreate', () => {
     queryService.apiRequest.mockClear()
     logEvent.mockClear()
   })
-  
+
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
@@ -77,11 +77,10 @@ describe('signupCreate', () => {
   describe('failure', () => {
     it('Unsupported usernameType', async () => {
       const nativeError = new Error('Unsupported usernameType')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError))
 
         .dispatch(actions.signupCreateRequest({ usernameType: undefined, email }))
         .dispatch(authActions.authTokenSuccess())
@@ -92,11 +91,10 @@ describe('signupCreate', () => {
 
     it('Failed to obtain token', async () => {
       const nativeError = new Error('Failed to obtain token')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError))
 
         .dispatch(actions.signupCreateRequest({ usernameType: undefined, email }))
         .dispatch(authActions.authTokenFailure())
@@ -106,11 +104,10 @@ describe('signupCreate', () => {
 
     it('Failed to fetch data', async () => {
       const nativeError = new Error('Failed to fetch data')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError))
 
         .dispatch(actions.signupCreateRequest({ usernameType: undefined, email }))
         .dispatch(authActions.authTokenSuccess())
@@ -121,12 +118,11 @@ describe('signupCreate', () => {
 
     it('USER_CONFIRMATION_DELIVERY', async () => {
       const nativeError = new Error('USER_CONFIRMATION_DELIVERY')
-      const message = { code: 'USER_CONFIRMATION_DELIVERY', text: 'Failed to deliver confirmation code', nativeError }
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError, { errorCode: 'USER_CONFIRMATION_DELIVERY' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -137,12 +133,12 @@ describe('signupCreate', () => {
 
     it('UsernameExistsException', async () => {
       const nativeError = new Error('UsernameExistsException')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
+      nativeError.code = 'UsernameExistsException'
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError, { errorCode: 'USER_EXISTS' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -153,12 +149,12 @@ describe('signupCreate', () => {
 
     it('InvalidPasswordException', async () => {
       const nativeError = new Error('InvalidPasswordException')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
+      nativeError.code = 'InvalidPasswordException'
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError, { errorCode: 'INVALID_PASSWORD' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -169,12 +165,12 @@ describe('signupCreate', () => {
 
     it('InvalidParameterException', async () => {
       const nativeError = new Error('InvalidParameterException')
-      const message = { code: 'GENERIC', text: 'Failed to create account', nativeError }
+      nativeError.code = 'InvalidParameterException'
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure({ message }))
+        .put(actions.signupCreateFailure(nativeError, { errorCode: 'INVALID_PARAMETER' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())

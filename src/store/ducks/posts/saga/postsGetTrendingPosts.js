@@ -11,7 +11,6 @@ import * as normalizer from 'normalizer/schemas'
 import * as selectors from 'store/ducks/posts/selectors'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 import { TRENDING_GALLERY } from 'constants/Gallery'
-import * as ErrorsService from 'services/Errors'
 
 const { fetchLimit } = TRENDING_GALLERY
 
@@ -58,7 +57,7 @@ export function* postsGetTrendingPostsRequest(req) {
     const next = yield call(postsGetTrendingPostsRequestData, req, data)
     yield put(actions.postsGetTrendingPostsSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetTrendingPostsFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetTrendingPostsFailure(error))
   }
 }
 
@@ -68,7 +67,7 @@ export function* postsGetTrendingPostsMoreRequest(req) {
     const next = yield postsGetTrendingPostsRequestData(req, data)
     yield put(actions.postsGetTrendingPostsMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetTrendingPostsMoreFailure({ message: ErrorsService.errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetTrendingPostsMoreFailure(error, req.payload))
   }
 }
 

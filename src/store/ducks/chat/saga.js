@@ -36,7 +36,7 @@ function* chatGetChatsRequest(req) {
     const next = yield chatGetChatsRequestData(req, data)
     yield put(actions.chatGetChatsSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.chatGetChatsFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatGetChatsFailure(error, req.payload))
   }
 }
 
@@ -66,7 +66,7 @@ function* chatGetChatRequest(req) {
     const next = yield chatGetChatRequestData(req, data)
     yield put(actions.chatGetChatSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.chatGetChatFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatGetChatFailure(error, req.payload ))
   }
 }
 
@@ -96,7 +96,7 @@ function* chatCreateDirectRequest(req) {
     const next = yield chatCreateDirectRequestData(req, data)
     yield put(actions.chatCreateDirectSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.chatCreateDirectFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatCreateDirectFailure(error, req.payload ))
   }
 }
 
@@ -110,7 +110,7 @@ function* chatAddMessageRequest(req) {
 
     yield put(actions.chatAddMessageSuccess({ data: dataSelector(data), payload: req.payload, meta: data }))
   } catch (error) {
-    yield put(actions.chatAddMessageFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatAddMessageFailure(error, req.payload ))
   }
 }
 
@@ -124,7 +124,7 @@ function* chatReportViewRequest(req) {
 
     yield put(actions.chatReportViewSuccess({ data: dataSelector(data), payload: req.payload, meta: data }))
   } catch (error) {
-    yield put(actions.chatReportViewFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatReportViewFailure(error, req.payload ))
   }
 }
 
@@ -138,7 +138,7 @@ function* chatFlagMessageRequest(req) {
 
     yield put(actions.chatFlagMessageSuccess({ data: dataSelector(data), payload: req.payload, meta: data }))
   } catch (error) {
-    yield put(actions.chatFlagMessageFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatFlagMessageFailure(error, req.payload ))
   }
 }
 
@@ -152,7 +152,7 @@ function* chatDeleteMessageRequest(req) {
 
     yield put(actions.chatDeleteMessageSuccess({ data: dataSelector(data), payload: req.payload, meta: data }))
   } catch (error) {
-    yield put(actions.chatDeleteMessageFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.chatDeleteMessageFailure(error, req.payload ))
   }
 }
 

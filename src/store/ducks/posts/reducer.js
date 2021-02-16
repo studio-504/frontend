@@ -6,91 +6,78 @@ export const initialState = {
   postsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsGetUnreadComments: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsViewsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsLikesGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsGetArchived: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsEdit: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsDelete: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsArchive: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsRestoreArchived: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsFlag: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsSingleGet: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsFeedGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsCreate: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {
       images: [],
     },
@@ -99,14 +86,12 @@ export const initialState = {
   postsOnymouslyLike: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsDislike: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
@@ -118,14 +103,12 @@ export const initialState = {
   postsReportPostViews: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   postsGetTrendingPosts: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
     filters: {},
@@ -133,28 +116,24 @@ export const initialState = {
   postsCommentsGet: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   commentsAdd: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   commentsDelete: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
   commentsFlag: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
     meta: {},
   },
@@ -263,10 +242,9 @@ const postsGetUnreadCommentsSuccess = (state, action) => update(state, {
   },
 })
 
-const postsGetUnreadCommentsFailure = (state, action) => update(state, {
+const postsGetUnreadCommentsFailure = (state) => update(state, {
   postsGetUnreadComments: {
     status: { $set: 'failure' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -711,7 +689,7 @@ const postsCreateFailure = (state, action) => update(state, {
   postsCreateQueue: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.postId,
+      resourceKey: action.meta.postId,
       initialState: initialState.postsCreate,
     },
   },

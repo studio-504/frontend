@@ -36,7 +36,7 @@ describe('usersGetProfileSelfRequest', () => {
     queryService.apiRequest.mockRejectedValueOnce(error)
 
     await expectSaga(usersGetProfileSelfRequest, action)
-      .put(usersActions.usersGetProfileSelfFailure({ message: error.message }))
+      .put(usersActions.usersGetProfileSelfFailure(error))
 
       .silentRun()
   })

@@ -167,7 +167,6 @@ const InviteFriends = ({
         )}
 
         <View style={styling.actions}>
-          {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
           {contactsGet.status === 'failure' && (
             <>
               <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
@@ -215,7 +214,6 @@ InviteFriends.propTypes = {
   contactsFollowRequest: PropTypes.func,
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
     items: PropTypes.arrayOf(
       PropTypes.shape({
         contactId: PropTypes.string,
@@ -266,13 +264,6 @@ const styles = (theme) =>
       fontWeight: '400',
       textDecorationLine: 'underline',
       color: theme.colors.primary,
-    },
-    errorText: {
-      fontSize: 14,
-      fontWeight: '300',
-      paddingBottom: 6,
-      textAlign: 'center',
-      color: 'red',
     },
     emptyText: {
       fontSize: 14,

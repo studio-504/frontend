@@ -90,13 +90,9 @@ function* authSigninAppleRequest(req) {
     }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninAppleFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'CANCELED', error),
-      }))
+      yield put(actions.authSigninAppleFailure(error, { errorCode: 'CANCELED' }))
     } else {
-      yield put(actions.authSigninAppleFailure({
-        message: ErrorsService.getMessagePayload(constants.AUTH_SIGNIN_APPLE_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authSigninAppleFailure(error))
     }
   }
 }
