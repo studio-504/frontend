@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react-native'
 import Config from 'react-native-config'
 import pick from 'ramda/src/pick'
 import codePush from 'react-native-code-push' 
-import { CancelRequestOnSignoutError } from 'services/Errors'
+import { CancelRequestOnSignoutError } from 'store/errors'
  
 /**
  * By including and configuring Sentry, the SDK will automatically attach global handlers

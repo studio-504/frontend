@@ -1,7 +1,8 @@
 import { graphqlOperation } from '@aws-amplify/api'
 import { getContext, race, take, call } from 'redux-saga/effects'
 import * as authConstants from 'store/ducks/auth/constants'
-import { CancelRequestOnSignoutError, MESSAGES } from 'services/Errors'
+import { MESSAGES } from 'services/Errors'
+import { CancelRequestOnSignoutError } from 'store/errors'
 
 function* cancelRequestOnSignout(request) {
   const AwsAPI = yield getContext('AwsAPI')

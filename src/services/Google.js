@@ -1,13 +1,7 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin'
 import Config from 'react-native-config'
 import * as Logger from 'services/Logger'
-
-class TokenExpiredError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'TOKEN_EXPIRED'
-  }
-}
+import { TokenExpiredError } from 'store/errors'
 
 GoogleSignin.configure({
   offlineAccess: true,

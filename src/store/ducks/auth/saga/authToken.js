@@ -2,20 +2,7 @@ import { call, put, race, take, getContext, takeEvery } from 'redux-saga/effects
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as ErrorsService from 'services/Errors'
-
-class MissingCognitoTokenError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'MISSING_COGNITO_TOKEN_ERROR'
-  }
-}
-
-class UnauthorizedTokenError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'UNAUTHORIZED_TOKEN_ERROR'
-  }
-}
+import { MissingCognitoTokenError, UnauthorizedTokenError } from 'store/errors'
 
 /**
  * Fetch identity pool token

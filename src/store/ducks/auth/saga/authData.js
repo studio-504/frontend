@@ -15,23 +15,9 @@ import path from 'ramda/src/path'
 import Config from 'react-native-config'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 import * as UserService from 'services/User'
-
+import { MissingUserAttributeError, GuestUserError } from 'store/errors'
 
 const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
-
-class MissingUserAttributeError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'MISSING_USER_ATTRIBUTEE_ERROR'
-  }
-}
-
-class GuestUserError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'GUEST_USER_ERROR'
-  }
-}
 
 export function* handleAnonymousSignin(anonymousUser) {
   const AwsAuth = yield getContext('AwsAuth')
