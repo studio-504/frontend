@@ -33,7 +33,7 @@ export const ERRORS = {
 }
 
 export const MIN_HEIGHT = 1
-export const MAX_HEIGHT = 117
+export const MAX_HEIGHT = 84
 
 /**
  * Validators
