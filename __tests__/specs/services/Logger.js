@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/react-native'
-import { CancelRequestOnSignoutError } from 'store/errors'
 
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),
@@ -21,17 +20,10 @@ describe('Logger', () => {
 
   describe('captureMessage', () => {
     it('success', () => {
-      const error = new Error('Native Error')
+      const error = 'Native Error'
       Logger.captureMessage(error)
 
       expect(Sentry.captureMessage).toHaveBeenCalledWith(error)
-    })
-
-    it('failure when error instanceof CancelRequestOnSignoutError', () => {
-      const error = new CancelRequestOnSignoutError('CancelRequestOnSignoutError')
-      Logger.captureMessage(error)
-
-      expect(Sentry.captureMessage).not.toHaveBeenCalled()
     })
   })
 
@@ -41,13 +33,6 @@ describe('Logger', () => {
       Logger.captureException(error)
 
       expect(Sentry.captureException).toHaveBeenCalledWith(error)
-    })
-
-    it('failure when error instanceof CancelRequestOnSignoutError', () => {
-      const error = new CancelRequestOnSignoutError('CancelRequestOnSignoutError')
-      Logger.captureException(error)
-
-      expect(Sentry.captureException).not.toHaveBeenCalled()
     })
   })
 

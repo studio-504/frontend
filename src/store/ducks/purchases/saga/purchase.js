@@ -6,7 +6,6 @@ import * as actions from 'store/ducks/purchases/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
-import * as Logger from 'services/Logger'
 
 /**
  *
@@ -79,7 +78,6 @@ function* purchase(req) {
     yield put(usersActions.usersGetProfileSelfRequest())
   } catch (error) {
     yield put(actions.purchaseFailure(error))
-    yield call([Logger, 'captureException'], error)
   }
 }
 

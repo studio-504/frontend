@@ -4,7 +4,6 @@ import { put, call, delay, race, all } from 'redux-saga/effects'
 import * as actions from 'store/ducks/purchases/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import { purchaseComplete, purchaseRequest } from 'store/ducks/purchases/saga/purchase'
-import * as Logger from 'services/Logger'
 
 /**
  *
@@ -42,7 +41,6 @@ function* retryPurchase(req) {
   } catch (error) {
     yield call([RNIap, 'clearTransactionIOS'])
     yield put(actions.retryPurchaseFailure(error))
-    yield call([Logger, 'captureException'], error)
   }
 }
 

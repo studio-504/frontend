@@ -24,9 +24,7 @@ Sentry.init({
  */
 export const captureException = (error) => {
   try {
-    if (!(error instanceof CancelRequestOnSignoutError)) {
-      Sentry.captureException(error)
-    }
+    Sentry.captureException(error)
   } catch (error) {
     // ignore
   }
@@ -35,11 +33,9 @@ export const captureException = (error) => {
 /**
  * Used for strings
  */
-export const captureMessage = (error) => {
+export const captureMessage = (message) => {
   try {
-    if (!(error instanceof CancelRequestOnSignoutError)) {
-      Sentry.captureMessage(error)
-    }
+    Sentry.captureMessage(message)
   } catch (error) {
     // ignore
   }
@@ -66,10 +62,16 @@ export const withScope = Sentry.withScope
 
 export function captureFailureAction(action) {
   try {
+    const error = action.payload
+
+    if (error instanceof CancelRequestOnSignoutError) {
+      return false
+    }
+
     withScope((scope) => {
       scope.setExtra('action', action.type)
       scope.setExtra('meta', JSON.stringify(action.meta))
-      captureException(action.payload)
+      captureException(error)
     })
   } catch (error) {
     captureException(error)
