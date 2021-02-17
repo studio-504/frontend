@@ -21,7 +21,7 @@ function* authForgotRequest(req) {
     yield put(actions.authForgotSuccess())
   } catch (error) {
     if (error.code === 'UserNotFoundException') {
-      yield put(actions.authForgotFailure(error, { errorCode: 'USER_NOT_FOUND' }))
+      yield put(actions.authForgotFailure(error, { messageCode: 'USER_NOT_FOUND' }))
     } else {
       yield put(actions.authForgotFailure(error))
     }
@@ -51,9 +51,9 @@ function* authForgotConfirmRequest(req) {
     yield put(actions.authForgotConfirmSuccess({ data }))
   } catch (error) {
     if (error.code === 'InvalidPasswordException') {
-      yield put(actions.authForgotConfirmFailure(error, { errorCode: 'INVALID_PASSWORD' }))
+      yield put(actions.authForgotConfirmFailure(error, { messageCode: 'INVALID_PASSWORD' }))
     } else if (error.code === 'CodeMismatchException') {
-      yield put(actions.authForgotConfirmFailure(error, { errorCode: 'CODE_MISMATCH' }))
+      yield put(actions.authForgotConfirmFailure(error, { messageCode: 'CODE_MISMATCH' }))
     } else {
       yield put(actions.authForgotConfirmFailure(error))
     }

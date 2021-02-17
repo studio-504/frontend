@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { createFailureAction } from 'services/Errors'
+import { createFailureAction } from 'store/errors'
 import * as constants from 'store/ducks/albums/constants'
 
 /**

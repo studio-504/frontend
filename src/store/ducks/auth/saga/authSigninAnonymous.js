@@ -28,7 +28,7 @@ function* authSigninAnonymousRequest() {
     yield put(actions.authSigninAnonymousSuccess({ data }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninAnonymousFailure(error, { errorCode: 'CANCELED' }))
+      yield put(actions.authSigninAnonymousFailure(error, { messageCode: 'CANCELED' }))
     } else {
       yield put(actions.authSigninAnonymousFailure(error))
     }

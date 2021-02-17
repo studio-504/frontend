@@ -120,7 +120,7 @@ describe('signupCreate', () => {
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure(nativeError, { errorCode: 'USER_CONFIRMATION_DELIVERY' }))
+        .put(actions.signupCreateFailure(nativeError, { messageCode: 'USER_CONFIRMATION_DELIVERY' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -136,7 +136,7 @@ describe('signupCreate', () => {
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure(nativeError, { errorCode: 'USER_EXISTS' }))
+        .put(actions.signupCreateFailure(nativeError, { messageCode: 'USER_EXISTS' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -152,7 +152,7 @@ describe('signupCreate', () => {
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure(nativeError, { errorCode: 'INVALID_PASSWORD' }))
+        .put(actions.signupCreateFailure(nativeError, { messageCode: 'INVALID_PASSWORD' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())
@@ -168,7 +168,7 @@ describe('signupCreate', () => {
 
       await expectSaga(testAsRootSaga(signupCreate))
         .not.put.like(actions.signupCreateSuccess())
-        .put(actions.signupCreateFailure(nativeError, { errorCode: 'INVALID_PARAMETER' }))
+        .put(actions.signupCreateFailure(nativeError, { messageCode: 'INVALID_PARAMETER' }))
 
         .dispatch(actions.signupCreateRequest({ usernameType: 'email', email }))
         .dispatch(authActions.authTokenSuccess())

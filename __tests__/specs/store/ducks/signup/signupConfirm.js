@@ -70,7 +70,7 @@ describe('signupConfirm', () => {
       const payload = { usernameType: undefined, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'GENERIC' }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'GENERIC' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -84,7 +84,7 @@ describe('signupConfirm', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'ALIAS_EXISTS' }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'ALIAS_EXISTS' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -98,7 +98,7 @@ describe('signupConfirm', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'CODE_EXPIRED' }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'CODE_EXPIRED' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -112,7 +112,7 @@ describe('signupConfirm', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure(nativeError, { errorCode: 'CODE_MISMATCH' }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'CODE_MISMATCH' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()

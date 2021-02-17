@@ -35,14 +35,14 @@ function* authSigninCognitoRequest(req) {
     yield handleAuthSigninRequest(req.payload)
     yield put(actions.authSigninCognitoSuccess())
   } catch (error) {
-    const errorCode = propOr('GENERIC', error.code, {
+    const messageCode = propOr('GENERIC', error.code, {
       'UserNotConfirmedException': 'USER_NOT_CONFIRMED',
       'UserNotFoundException': 'USER_NOT_FOUND',
       'NotAuthorizedException': 'USER_NOT_AUTHORIZED',
       'InvalidParameterException': 'INVALID_PARAMETER',
     })
 
-    yield put(actions.authSigninCognitoFailure(error, { errorCode }))
+    yield put(actions.authSigninCognitoFailure(error, { messageCode }))
   }
 }
 

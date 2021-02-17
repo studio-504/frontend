@@ -63,13 +63,13 @@ function* signupCreateRequest(req) {
     yield put(actions.signupCreateSuccess({ usernameType: req.payload.usernameType }))
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
-      yield put(actions.signupCreateFailure(error, { errorCode: 'USER_CONFIRMATION_DELIVERY' }))
+      yield put(actions.signupCreateFailure(error, { messageCode: 'USER_CONFIRMATION_DELIVERY' }))
     } else if (error.code === 'UsernameExistsException') {
-      yield put(actions.signupCreateFailure(error, { errorCode: 'USER_EXISTS' }))
+      yield put(actions.signupCreateFailure(error, { messageCode: 'USER_EXISTS' }))
     } else if (error.code === 'InvalidPasswordException') {
-      yield put(actions.signupCreateFailure(error, { errorCode: 'INVALID_PASSWORD' }))
+      yield put(actions.signupCreateFailure(error, { messageCode: 'INVALID_PASSWORD' }))
     } else if (error.code === 'InvalidParameterException') {
-      yield put(actions.signupCreateFailure(error, { errorCode: 'INVALID_PARAMETER' }))
+      yield put(actions.signupCreateFailure(error, { messageCode: 'INVALID_PARAMETER' }))
     } else {
       yield put(actions.signupCreateFailure(error))
     }

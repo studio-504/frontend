@@ -9,7 +9,6 @@ import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
-import captureErrors from 'store/ducks/captureErrors/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -44,7 +43,7 @@ import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
 export default function* rootSaga(persistor) {
   yield all([]
-    .concat(captureErrors())
+    .concat(snackbars())
     .concat(appState())
     .concat(camera())
     .concat(albums())
@@ -84,8 +83,6 @@ export default function* rootSaga(persistor) {
     .concat(datingMatchedUsers())
     .concat(datingConfirmedUsers())
     .concat(datingMatchApprove())
-    .concat(datingMatchReject())
-
-    .concat(snackbars()),
+    .concat(datingMatchReject()),
   )
 }

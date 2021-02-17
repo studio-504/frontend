@@ -319,7 +319,7 @@ function* usersEditProfileRequest(req) {
     const errorMessage = path(['errors', '0', 'message'])(error)
 
     if (errorMessage && errorMessage.includes('is not verified')) {
-      yield put(actions.usersEditProfileFailure(error, { errorCode: 'VERIFICATION_FAILED' }))
+      yield put(actions.usersEditProfileFailure(error, { messageCode: 'VERIFICATION_FAILED' }))
     } else {
       yield put(actions.usersEditProfileFailure(error))
     }

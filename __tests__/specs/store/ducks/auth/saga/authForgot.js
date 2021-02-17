@@ -72,7 +72,7 @@ describe('authForgot', () => {
           [getContext('ReactNavigationRef'), navigation],
         ])
 
-        .put(actions.authForgotFailure(error, { errorCode: 'USER_NOT_FOUND' }))
+        .put(actions.authForgotFailure(error, { messageCode: 'USER_NOT_FOUND' }))
 
         .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
@@ -138,7 +138,7 @@ describe('authForgot', () => {
             [getContext('ReactNavigationRef'), navigation],
           ])
 
-          .put(actions.authForgotConfirmFailure(error, { errorCode: 'INVALID_PASSWORD' }))
+          .put(actions.authForgotConfirmFailure(error, { messageCode: 'INVALID_PASSWORD' }))
 
           .dispatch(actions.authForgotConfirmRequest(payload))
           .silentRun()
@@ -156,7 +156,7 @@ describe('authForgot', () => {
             [getContext('ReactNavigationRef'), navigation],
           ])
 
-          .put(actions.authForgotConfirmFailure(error, { errorCode: 'CODE_MISMATCH' }))
+          .put(actions.authForgotConfirmFailure(error, { messageCode: 'CODE_MISMATCH' }))
 
           .dispatch(actions.authForgotConfirmRequest(payload))
           .silentRun()

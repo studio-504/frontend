@@ -34,13 +34,13 @@ function* signupConfirmRequest(req) {
     const data = yield handleSignupConfirmRequest(req.payload)
     yield put(actions.signupConfirmSuccess({ payload: req.payload, data }))
   } catch (error) {
-    const errorCode = propOr('GENERIC', error.code, {
+    const messageCode = propOr('GENERIC', error.code, {
       'AliasExistsException': 'ALIAS_EXISTS',
       'ExpiredCodeException': 'CODE_EXPIRED',
       'CodeMismatchException': 'CODE_MISMATCH',
     })
 
-    yield put(actions.signupConfirmFailure(error, { errorCode }))
+    yield put(actions.signupConfirmFailure(error, { messageCode }))
   }
 }
 

@@ -51,9 +51,7 @@ describe('Query service', () => {
   it('cancel request on signout', async () => {
     AwsAPI.graphql.mockReturnValueOnce(sleep())
 
-    const saga = sagaWithError(queryService.apiRequest, query, payload).assertThrow(
-      new CancelRequestOnSignoutError('Cancel request on signout'),
-    )
+    const saga = sagaWithError(queryService.apiRequest, query, payload).assertThrow(new CancelRequestOnSignoutError())
 
     await expectSaga(saga)
       .provide([[getContext('AwsAPI'), AwsAPI]])

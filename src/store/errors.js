@@ -1,3 +1,12 @@
+import { createAction } from 'redux-actions'
+
+export const createFailureAction = (type) =>
+  createAction(
+    type,
+    (payload) => payload,
+    (error, meta) => meta,
+  )
+
 export class AppleCredentialsError extends Error {
   constructor(...args) {
     super(...args)
@@ -51,5 +60,19 @@ export class UnauthorizedTokenError extends Error {
   constructor(...args) {
     super(...args)
     this.code = 'UNAUTHORIZED_TOKEN_ERROR'
+  }
+}
+
+export class UserInNotActiveError extends Error {
+  constructor(...args) {
+    super(...args)
+    this.code = 'USER_IS_NOT_ACTIVE'
+  }
+}
+
+export class NetworkError extends Error {
+  constructor(...args) {
+    super(...args)
+    this.code = 'NETWORK_ERROR'
   }
 }

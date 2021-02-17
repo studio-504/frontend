@@ -82,7 +82,7 @@ function* authSigninGoogleRequest(req) {
     yield put(actions.authSigninGoogleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninGoogleFailure(error, { errorCode: 'CANCELED' }))
+      yield put(actions.authSigninGoogleFailure(error, { messageCode: 'CANCELED' }))
     } else {
       yield put(actions.authSigninGoogleFailure(error))
     }

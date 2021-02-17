@@ -87,7 +87,7 @@ function* authSigninAppleRequest(req) {
     yield put(actions.authSigninAppleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninAppleFailure(error, { errorCode: 'CANCELED' }))
+      yield put(actions.authSigninAppleFailure(error, { messageCode: 'CANCELED' }))
     } else {
       yield put(actions.authSigninAppleFailure(error))
     }

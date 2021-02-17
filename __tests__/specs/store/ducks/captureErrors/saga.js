@@ -1,4 +1,4 @@
-import { createFailureAction } from 'services/Errors'
+import { createFailureAction } from 'store/errors'
 
 describe('Capture Errors', () => {
   it('failure action', () => {
