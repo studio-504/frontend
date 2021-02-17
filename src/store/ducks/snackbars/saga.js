@@ -12,7 +12,7 @@ import signupMessages from 'store/ducks/signup/messages'
 import usersMessages from 'store/ducks/users/messages'
 import datingMessages from 'store/ducks/dating/messages'
 import * as Logger from 'services/Logger'
-import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError } from 'store/errors'
+import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError, stringifyFailureAction } from 'store/errors'
 
 const DEFAULT_CODE = 'GENERIC'
 const DEFAULT_MESSAGE = 'Oops! Something went wrong'
@@ -56,7 +56,7 @@ function filterError(action) {
 function* showError(action) {
   function handleErrorPress() {
     if (Config.ENVIRONMENT === 'development') {
-      Alert.alert(JSON.stringify(action))
+      Alert.alert(stringifyFailureAction(action))
     }
   }
 
@@ -75,6 +75,8 @@ function* captureErrors(action) {
     if (!skipError) {
       yield call(showError, action)
     }
+
+    Logger.captureFailureAction(action)
   } catch (error) {
     Logger.captureException(error)
   }

@@ -1,7 +1,7 @@
 import { graphqlOperation } from '@aws-amplify/api'
 import { getContext, race, take, call } from 'redux-saga/effects'
 import * as authConstants from 'store/ducks/auth/constants'
-import { CancelRequestOnSignoutError, NetworkError } from 'store/errors'
+import { CancelRequestOnSignoutError, handleError } from 'store/errors'
 
 function* cancelRequestOnSignout(request) {
   const AwsAPI = yield getContext('AwsAPI')
@@ -31,11 +31,7 @@ export function* apiRequest(query, payload) {
       return response
     }
   } catch (error) {
-    if (error.message === 'Network Error') {
-      throw new NetworkError()
-    }
-
-    throw error
+    yield call(handleError, error)
   }
 }
 

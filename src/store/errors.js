@@ -1,4 +1,9 @@
+import omit from 'ramda/src/omit'
+import pathOr from 'ramda/src/pathOr'
+import path from 'ramda/src/path'
 import { createAction } from 'redux-actions'
+
+const getFirstError = pathOr('Default Error', ['errors', 0, 'message'])
 
 export const createFailureAction = (type) =>
   createAction(
@@ -6,6 +11,27 @@ export const createFailureAction = (type) =>
     (payload) => payload,
     (error, meta) => meta,
   )
+
+export const stringifyFailureAction = (action) => {
+  function replaceErrors(key, value) {
+    if (value instanceof Error) {
+      var error = {}
+
+      Object.getOwnPropertyNames(value).forEach(function (key) {
+        error[key] = value[key]
+      })
+
+      return error
+    }
+
+    return value
+  }
+
+  const payload = omit(['payload'], action)
+  const error = action.payload
+
+  return `${JSON.stringify(payload)} ${JSON.stringify(error, replaceErrors)}`
+}
 
 export class AppleCredentialsError extends Error {
   constructor(...args) {
@@ -75,4 +101,30 @@ export class NetworkError extends Error {
     super(...args)
     this.code = 'NETWORK_ERROR'
   }
+}
+
+export class GraphQLError extends Error {
+  constructor(args) {
+    super(getFirstError(args))
+    this.errors = args.errors || []
+    this.code = 'GRAPHQL_ERROR'
+  }
+}
+
+export const handleError = (error) => {
+  /*
+   * Network Error
+   */
+  if ([error.message, getFirstError(error)].includes('Network Error')) {
+    throw new NetworkError()
+  }
+
+  /*
+   * GraphQL Error
+   */
+  if (Array.isArray(path(['errors'])(error))) {
+    throw new GraphQLError(error)
+  }
+
+  throw error
 }

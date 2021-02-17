@@ -42,7 +42,6 @@ export const initialState = {
   authSigninAnonymous: {
     data: [],
     status: 'idle',
-    message: {},
     payload: {},
     nextRoute: null,
   },
@@ -51,22 +50,17 @@ export const initialState = {
     payload: {},
   },
   authSigninGoogle: {
-    data: [],
     status: 'idle',
-    message: {},
-    payload: {},
     nextRoute: null,
   },
   authSigninApple: {
     status: 'idle',
-    message: {},
     payload: {},
     nextRoute: null,
   },
   authSignout: {
     data: [],
     status: 'idle',
-    message: {},
     payload: {},
     nextRoute: null,
   },
@@ -81,7 +75,6 @@ export const initialState = {
   authForgotConfirm: {
     data: [],
     status: 'idle',
-    message: {},
     payload: {},
     nextRoute: null,
   },
@@ -218,26 +211,21 @@ const authSigninGoogleRequest = (state) => update(state, {
   },
 })
 
-const authSigninGoogleSuccess = (state, action) => update(state, {
+const authSigninGoogleSuccess = (state) => update(state, {
   authSigninGoogle: {
-    message: { $set: action.payload.message },
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authSigninGoogleFailure = (state, action) => update(state, {
+const authSigninGoogleFailure = (state) => update(state, {
   authSigninGoogle: {
-    message: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
 
 const authSigninGoogleIdle = (state) => update(state, {
   authSigninGoogle: {
-    data: { $set: initialState.authSigninGoogle.data },
     status: { $set: 'idle' },
-    message: { $set: initialState.authSigninGoogle.message },
   },
 })
 
@@ -250,16 +238,14 @@ const authSigninAppleRequest = (state) => update(state, {
   },
 })
 
-const authSigninAppleSuccess = (state, action) => update(state, {
+const authSigninAppleSuccess = (state) => update(state, {
   authSigninApple: {
-    message: { $set: action.payload.message },
     status: { $set: 'success' },
   },
 })
 
-const authSigninAppleFailure = (state, action) => update(state, {
+const authSigninAppleFailure = (state) => update(state, {
   authSigninApple: {
-    message: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
@@ -267,7 +253,6 @@ const authSigninAppleFailure = (state, action) => update(state, {
 const authSigninAppleIdle = (state) => update(state, {
   authSigninApple: {
     status: { $set: 'idle' },
-    message: { $set: initialState.authSigninApple.message },
   },
 })
 
@@ -282,15 +267,13 @@ const authSigninAnonymousRequest = (state) => update(state, {
 
 const authSigninAnonymousSuccess = (state, action) => update(state, {
   authSigninAnonymous: {
-    message: { $set: action.payload.message },
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authSigninAnonymousFailure = (state, action) => update(state, {
+const authSigninAnonymousFailure = (state) => update(state, {
   authSigninAnonymous: {
-    message: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
@@ -299,7 +282,6 @@ const authSigninAnonymousIdle = (state) => update(state, {
   authSigninAnonymous: {
     data: { $set: initialState.authSigninAnonymous.data },
     status: { $set: 'idle' },
-    message: { $set: initialState.authSigninAnonymous.message },
   },
 })
 
@@ -318,9 +300,8 @@ const authSignoutSuccess = () => update(initialState, {
   authData: { $set: initialState.authData },
 })
 
-const authSignoutFailure = (state, action) => update(state, {
+const authSignoutFailure = (state) => update(state, {
   authSignout: {
-    message: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
@@ -329,7 +310,6 @@ const authSignoutIdle = (state) => update(state, {
   authSignout: {
     data: { $set: initialState.authSignout.data },
     status: { $set: 'idle' },
-    message: { $set: initialState.authSignout.message },
   },
 })
 
@@ -373,15 +353,13 @@ const authForgotConfirmRequest = (state) => update(state, {
 
 const authForgotConfirmSuccess = (state, action) => update(state, {
   authForgotConfirm: {
-    message: { $set: action.payload.message },
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authForgotConfirmFailure = (state, action) => update(state, {
+const authForgotConfirmFailure = (state) => update(state, {
   authForgotConfirm: {
-    message: { $set: action.payload.message },
     status: { $set: 'failure' },
   },
 })
@@ -390,7 +368,6 @@ const authForgotConfirmIdle = (state) => update(state, {
   authForgotConfirm: {
     data: { $set: initialState.authForgotConfirm.data },
     status: { $set: 'idle' },
-    message: { $set: initialState.authForgotConfirm.message },
   },
 })
 

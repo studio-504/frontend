@@ -8,7 +8,7 @@ import Config from 'react-native-config'
 import snackbars from 'store/ducks/snackbars/saga'
 import * as authActions from 'store/ducks/auth/actions'
 import * as Logger from 'services/Logger'
-import { CancelRequestOnSignoutError, UserInNotActiveError } from 'store/errors'
+import { CancelRequestOnSignoutError, UserInNotActiveError, stringifyFailureAction } from 'store/errors'
 
 jest.spyOn(Alert, 'alert')
 jest.mock('react-native-flash-message', () => ({ showMessage: jest.fn() }))
@@ -75,7 +75,7 @@ describe('Snackbars saga', () => {
 
       simulatePress()
       expect(Config.ENVIRONMENT).toBe('development')
-      expect(Alert.alert).toHaveBeenCalledWith(JSON.stringify(action))
+      expect(Alert.alert).toHaveBeenCalledWith(stringifyFailureAction(action))
       Config.ENVIRONMENT = 'production'
     })
 
