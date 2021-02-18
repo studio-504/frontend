@@ -103,7 +103,7 @@ const authFlowFailure = (state, action) => update(state, {
     data: { $set: initialState.authFlow.data },
     status: { $set: 'failure' },
     payload: {},
-    meta: { $set: action.payload.meta },
+    meta: { $set: action.meta },
   },
 })
 
@@ -137,7 +137,7 @@ const authDataFailure = (state, action) => update(state, {
     data: { $set: initialState.authData.data },
     status: { $set: 'failure' },
     payload: {},
-    meta: { $set: action.payload.meta },
+    meta: { $set: action.meta },
   },
 })
 
@@ -168,7 +168,7 @@ const authTokenFailure = (state, action) => update(state, {
     data: { $set: initialState.authToken.data },
     status: { $set: 'failure' },
     payload: {},
-    meta: { $set: action.payload.meta },
+    meta: { $set: action.meta },
   },
 })
 
