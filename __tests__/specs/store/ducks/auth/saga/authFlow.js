@@ -28,7 +28,6 @@ describe('Auth flow', () => {
         .put(actions.authDataRequest({ allowAnonymous }))
         .put(
           actions.authFlowSuccess({
-            message: { code: 'GENERIC', text: 'Auth flow completed', nativeError: '' },
             data: { authToken: tokenSuccess, authData: dataSuccess },
             meta: { authenticated: false, authProvider: 'GOOGLE', userExists },
           }),
@@ -43,21 +42,11 @@ describe('Auth flow', () => {
     describe('failure', () => {
       it('tokenFailure', async () => {
         const tokenFailure = { c: 1 }
+        const error = new Error('Failed to obtain token')
 
         await setupSaga()
           .put(actions.authTokenRequest({ allowAnonymous }))
-          .put(
-            actions.authFlowFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to complete auth flow',
-                nativeError: new Error('Failed to obtain token'),
-              },
-              meta: {
-                authenticated: false,
-              },
-            }),
-          )
+          .put(actions.authFlowFailure(error, { authenticated: false }))
 
           .dispatch(actions.authFlowRequest({ allowAnonymous, authProvider }))
           .dispatch(actions.authTokenFailure(tokenFailure))
@@ -70,18 +59,7 @@ describe('Auth flow', () => {
         await setupSaga()
           .put(actions.authTokenRequest({ allowAnonymous }))
           .put(actions.authDataRequest({ allowAnonymous }))
-          .put(
-            actions.authFlowFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to complete auth flow',
-                nativeError: new Error('Failed to fetch data'),
-              },
-              meta: {
-                authenticated: false,
-              },
-            }),
-          )
+          .put(actions.authFlowFailure(new Error('Failed to fetch data'), { authenticated: false }))
 
           .dispatch(actions.authFlowRequest({ allowAnonymous, authProvider }))
           .dispatch(actions.authTokenSuccess(tokenSuccess))

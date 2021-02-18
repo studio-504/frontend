@@ -5,7 +5,6 @@ import {
 } from 'services/AWS'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
 
@@ -80,18 +79,12 @@ function* authSigninGoogleRequest(req) {
   try {
     yield handleAuthSigninGoogleRequest(req.payload)
 
-    yield put(actions.authSigninGoogleSuccess({
-      message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authSigninGoogleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'CANCELED', error),
-      }))
+      yield put(actions.authSigninGoogleFailure(error, { messageCode: 'CANCELED' }))
     } else {
-      yield put(actions.authSigninGoogleFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_GOOGLE_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authSigninGoogleFailure(error))
     }
   }
 }

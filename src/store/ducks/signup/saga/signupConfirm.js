@@ -2,11 +2,11 @@ import { put, getContext, call, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
-import * as errors from 'store/ducks/signup/errors'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
 import { Keyboard } from 'react-native'
+import propOr from 'ramda/src/propOr'
 
 /**
  *
@@ -32,33 +32,15 @@ function* signupConfirmRequest(req) {
   try {
     logEvent('SIGNUP_CONFIRM_REQUEST')
     const data = yield handleSignupConfirmRequest(req.payload)
-    yield put(actions.signupConfirmSuccess({
-      message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_SUCCESS, 'GENERIC'),
-      payload: req.payload,
-      data,
-    }))
+    yield put(actions.signupConfirmSuccess({ payload: req.payload, data }))
   } catch (error) {
-    if (error.code === 'AliasExistsException') {
-      yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'ALIAS_EXISTS', error),
-        payload: req.payload,
-      }))
-    } else if (error.code === 'ExpiredCodeException') {
-      yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_EXPIRED', error),
-        payload: req.payload,
-      }))
-    } else if (error.code === 'CodeMismatchException') {
-      yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'CODE_MISMATCH', error),
-        payload: req.payload,
-      }))
-    } else {
-      yield put(actions.signupConfirmFailure({
-        message: errors.getMessagePayload(constants.SIGNUP_CONFIRM_FAILURE, 'GENERIC', error),
-        payload: req.payload,
-      }))
-    }
+    const messageCode = propOr('GENERIC', error.code, {
+      'AliasExistsException': 'ALIAS_EXISTS',
+      'ExpiredCodeException': 'CODE_EXPIRED',
+      'CodeMismatchException': 'CODE_MISMATCH',
+    })
+
+    yield put(actions.signupConfirmFailure(error, { messageCode }))
   }
 }
 

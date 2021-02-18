@@ -2,7 +2,7 @@ import UrlPattern from 'url-pattern'
 import { Linking } from 'react-native'
 import * as navigationActions from 'navigation/actions'
 import * as Logger from 'services/Logger'
-import { NotSupportedInAppCardError } from 'services/Errors'
+import { NotSupportedInAppCardError } from 'store/errors'
 
 const options = { segmentValueCharset: ':a-zA-Z0-9_-' }
 

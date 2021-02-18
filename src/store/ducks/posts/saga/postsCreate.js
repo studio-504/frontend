@@ -152,16 +152,11 @@ function* handlePostsCreateRequest(payload) {
  */
 function* handleTextOnlyPost(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  const errorWrapper = yield getContext('errorWrapper')
-
+  
   try {
     yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
   } catch (error) {
-    yield put(actions.postsCreateFailure({
-      message: errorWrapper(error),
-      payload: req.payload,
-      meta: { attempt: 0, progress: 0 },
-    }))
+    yield put(actions.postsCreateFailure(error, req.payload))
   }
 }
 
@@ -178,14 +173,7 @@ function* handlePostsCreateSuccess(post) {
 }
 
 function* handlePostsCreateFailure(error, post) {
-  const errorWrapper = yield getContext('errorWrapper')
-  const payload = {
-    message: errorWrapper(error),
-    payload: post,
-    meta: {},
-  }
-
-  yield put(actions.postsCreateFailure(payload))
+  yield put(actions.postsCreateFailure(error, post))
 }
 
 /**
@@ -235,8 +223,6 @@ export function* checkPostsCreateProcessing(processingPost) {
  *
  */
 function* handleImagePost(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield handlePostsCreateRequest(req.payload)
 
@@ -264,15 +250,12 @@ function* handleImagePost(req) {
       }
 
       if (upload.status === 'failure') {
-        yield put(actions.postsCreateFailure({ data: {}, payload: req.payload, meta: meta(0) }))
+        const error = new Error('Posts Create Failure')
+        yield put(actions.postsCreateFailure(error, req.payload))
       }
     })
   } catch (error) {
-    yield put(actions.postsCreateFailure({
-      message: errorWrapper(error),
-      payload: req.payload,
-      meta: { attempt: 0, progress: 0 },
-    }))
+    yield put(actions.postsCreateFailure(error, req.payload))
   } 
 }
 

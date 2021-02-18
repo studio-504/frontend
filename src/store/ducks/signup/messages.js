@@ -1,15 +1,9 @@
 import * as constants from 'store/ducks/signup/constants'
 
-const messageCodes = {
+export default {
   /**
-   * 
+   *
    */
-  [constants.SIGNUP_CREATE_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully create account',
-    },
-  },
   [constants.SIGNUP_CREATE_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -34,14 +28,8 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
-  [constants.SIGNUP_CONFIRM_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully confirmed account, you can signin now',
-    },
-  },
   [constants.SIGNUP_CONFIRM_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -62,14 +50,8 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
-  [constants.SIGNUP_USERNAME_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Username is available',
-    },
-  },
   [constants.SIGNUP_USERNAME_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -82,14 +64,8 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
-  [constants.SIGNUP_COGNITO_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully signed up',
-    },
-  },
   [constants.SIGNUP_COGNITO_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
@@ -98,25 +74,12 @@ const messageCodes = {
   },
 
   /**
-   * 
+   *
    */
-  [constants.SIGNUP_PASSWORD_SUCCESS]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Successfully set password',
-    },
-  },
   [constants.SIGNUP_PASSWORD_FAILURE]: {
     GENERIC: {
       code: 'GENERIC',
       text: 'Failed to set password',
     },
   },
-}
-
-export const getMessagePayload = (key, status = 'GENERIC', nativeError = '') => {
-  return ({
-    ...messageCodes[key][status],
-    nativeError,
-  })
 }

@@ -2,8 +2,7 @@ import React from 'react'
 import MembershipComponent from 'components/Membership'
 import { renderWithProviders, fireEvent } from 'tests/utils'
 
-const error = 'Error'
-const requiredProps = { purchasesRequest: { error: '' }, retryPurchase: { error: '' } }
+const requiredProps = { purchasesRequest: { status: 'idle' }, retryPurchase: { status: 'idle' } }
 const setup = (props) => renderWithProviders(<MembershipComponent {...requiredProps} {...props} />)
 
 describe('Membership component', () => {
@@ -67,12 +66,10 @@ describe('Membership component', () => {
     expect(manageSubscriptions).toHaveBeenCalled()
   })
 
-  it('purchasesRequest error', () => {
+  it('purchasesRequest failure', () => {
     const retryPurchaseRequest = jest.fn()
-    const { getByText, queryByText } = setup({ retryPurchaseRequest, purchasesRequest: { error } })
+    const { getByText, queryByText } = setup({ retryPurchaseRequest, purchasesRequest: { status: 'failure' } })
     const $button = getByText('Retry Subscription')
-
-    getByText(error)
 
     expect(queryByText('Unsubscribe')).toBeFalsy()
     expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
@@ -81,25 +78,15 @@ describe('Membership component', () => {
     expect(retryPurchaseRequest).toHaveBeenCalled()
   })
 
-  it('retryPurchase error', () => {
+  it('retryPurchase failure', () => {
     const retryPurchaseRequest = jest.fn()
-    const { getByText, queryByText } = setup({ retryPurchaseRequest, retryPurchase: { error } })
+    const { getByText, queryByText } = setup({ retryPurchaseRequest, retryPurchase: { status: 'failure' } })
     const $button = getByText('Retry Subscription')
-
-    getByText(error)
 
     expect(queryByText('Unsubscribe')).toBeFalsy()
     expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
 
     fireEvent.press($button)
     expect(retryPurchaseRequest).toHaveBeenCalled()
-  })
-
-  it('retryPurchase submitting state', () => {
-    const retryPurchaseRequest = jest.fn()
-    const { getByText } = setup({ retryPurchaseRequest, retryPurchase: { status: 'loading', error } })
-    const $button = getByText('Retry Subscription')
-
-    expect($button).toBeDisabled()
   })
 })

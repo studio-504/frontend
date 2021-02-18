@@ -1,16 +1,14 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import { getContext } from 'redux-saga/effects'
 import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
 import { testEntitiesMerge } from 'tests/utils/helpers'
-import { errorWrapper } from 'store/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
 const action = usersActions.usersGetProfileSelfRequest()
- 
+
 describe('usersGetProfileSelfRequest', () => {
   afterEach(() => {
     queryService.apiRequest.mockClear()
@@ -24,7 +22,6 @@ describe('usersGetProfileSelfRequest', () => {
     queryService.apiRequest.mockResolvedValueOnce(response)
 
     const saga = expectSaga(usersGetProfileSelfRequest, action)
-      .provide([[getContext('errorWrapper'), errorWrapper]])
 
     await testEntitiesMerge(saga, entities)
       .put(usersActions.usersGetProfileSelfSuccess({ data: 1 }))
@@ -39,9 +36,7 @@ describe('usersGetProfileSelfRequest', () => {
     queryService.apiRequest.mockRejectedValueOnce(error)
 
     await expectSaga(usersGetProfileSelfRequest, action)
-      .provide([[getContext('errorWrapper'), errorWrapper]])
-
-      .put(usersActions.usersGetProfileSelfFailure({ message: error.message }))
+      .put(usersActions.usersGetProfileSelfFailure(error))
 
       .silentRun()
   })

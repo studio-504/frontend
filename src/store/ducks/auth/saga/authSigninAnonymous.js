@@ -1,7 +1,6 @@
 import { take, race, put, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 
 /** 
  * Fetching cognito credentials/tokens
@@ -26,19 +25,12 @@ function* handleAuthSigninAnonymousRequest() {
 function* authSigninAnonymousRequest() {
   try {
     const data = yield handleAuthSigninAnonymousRequest()
-    yield put(actions.authSigninAnonymousSuccess({
-      message: errors.getMessagePayload(constants.AUTH_SIGNIN_ANONYMOUS_SUCCESS, 'GENERIC'),
-      data,
-    }))
+    yield put(actions.authSigninAnonymousSuccess({ data }))
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
-      yield put(actions.authSigninAnonymousFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE, 'CANCELED', error),
-      }))
+      yield put(actions.authSigninAnonymousFailure(error, { messageCode: 'CANCELED' }))
     } else {
-      yield put(actions.authSigninAnonymousFailure({
-        message: errors.getMessagePayload(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE, 'GENERIC', error),
-      }))
+      yield put(actions.authSigninAnonymousFailure(error))
     }
   }
 }

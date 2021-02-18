@@ -6,25 +6,21 @@ export const initialState = {
   datingMatchedUsers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   datingConfirmedUsers: {
     data: [],
     status: 'idle',
-    error: {},
     payload: {},
   },
   datingMatchApprove: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
   datingMatchReject: {
     data: {},
     status: 'idle',
-    error: {},
     payload: {},
   },
 }
@@ -46,17 +42,15 @@ const datingMatchedUsersSuccess = (state, action) => update(state, {
   },
 })
 
-const datingMatchedUsersFailure = (state, action) => update(state, {
+const datingMatchedUsersFailure = (state) => update(state, {
   datingMatchedUsers: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const datingMatchedUsersIdle = (state) => update(state, {
   datingMatchedUsers: {
     data: { $set: initialState.datingMatchedUsers.data },
-    error: { $set: initialState.datingMatchedUsers.error },
     status: { $set: 'idle' },
   },
 })
@@ -78,17 +72,15 @@ const datingConfirmedUsersSuccess = (state, action) => update(state, {
   },
 })
 
-const datingConfirmedUsersFailure = (state, action) => update(state, {
+const datingConfirmedUsersFailure = (state) => update(state, {
   datingConfirmedUsers: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const datingConfirmedUsersIdle = (state) => update(state, {
   datingConfirmedUsers: {
     data: { $set: initialState.datingConfirmedUsers.data },
-    error: { $set: initialState.datingConfirmedUsers.error },
     status: { $set: 'idle' },
   },
 })
@@ -110,17 +102,15 @@ const datingMatchApproveSuccess = (state, action) => update(state, {
   },
 })
 
-const datingMatchApproveFailure = (state, action) => update(state, {
+const datingMatchApproveFailure = (state) => update(state, {
   datingMatchApprove: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const datingMatchApproveIdle = (state) => update(state, {
   datingMatchApprove: {
     data: { $set: initialState.datingMatchApprove.data },
-    error: { $set: initialState.datingMatchApprove.error },
     status: { $set: 'idle' },
   },
 })
@@ -142,17 +132,15 @@ const datingMatchRejectSuccess = (state, action) => update(state, {
   },
 })
 
-const datingMatchRejectFailure = (state, action) => update(state, {
+const datingMatchRejectFailure = (state) => update(state, {
   datingMatchReject: {
     status: { $set: 'failure' },
-    error: { $set: action.payload.message },
   },
 })
 
 const datingMatchRejectIdle = (state) => update(state, {
   datingMatchReject: {
     data: { $set: initialState.datingMatchReject.data },
-    error: { $set: initialState.datingMatchReject.error },
     status: { $set: 'idle' },
   },
 })

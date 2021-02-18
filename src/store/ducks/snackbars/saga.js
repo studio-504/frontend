@@ -2,12 +2,17 @@ import { Alert } from 'react-native'
 import { takeEvery, call } from 'redux-saga/effects'
 import { showMessage } from 'react-native-flash-message'
 import Config from 'react-native-config'
+import pathOr from 'ramda/src/pathOr'
 import * as authConstants from 'store/ducks/auth/constants'
 import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
 import * as Logger from 'services/Logger'
-import * as ErrorsService from 'services/Errors'
+import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError, stringifyFailureAction } from 'store/errors'
+import messages from 'store/messages'
+
+const DEFAULT_CODE = 'GENERIC'
+const DEFAULT_MESSAGE = 'Oops! Something went wrong'
 
 const BLACKLIST = [
   authConstants.AUTH_DATA_FAILURE,
@@ -15,38 +20,59 @@ const BLACKLIST = [
   authConstants.AUTH_TOKEN_FAILURE,
   authConstants.AUTH_RESET_FAILURE,
   authConstants.AUTH_PREFETCH_FAILURE,
-  authConstants.AUTH_CHECK_FAILURE,
   cacheConstants.CACHE_FETCH_FAILURE,
   postsConstants.POSTS_REPORT_POST_VIEWS_FAILURE,
   usersConstants.USERS_SET_APNS_TOKEN_FAILURE,
   usersConstants.USERS_REPORT_SCREEN_VIEWS_FAILURE,
 ]
 
+const getMessageCode = pathOr(DEFAULT_CODE, ['meta', 'messageCode'])
+const getDisplayMessage = (action) => pathOr(DEFAULT_MESSAGE, [action.type, getMessageCode(action), 'text'], messages)
+
+function filterError(action) {
+  if (!action.error) {
+    return true
+  }
+
+  if (action.payload instanceof CancelRequestOnSignoutError) {
+    return true
+  }
+
+  if (action.payload instanceof UserInNotActiveError) {
+    return true
+  }
+
+  if (action.payload instanceof NetworkError) {
+    return true
+  }
+
+  return BLACKLIST.includes(action.type)
+}
+
+function* showError(action) {
+  function handleErrorPress() {
+    if (Config.ENVIRONMENT === 'development') {
+      Alert.alert(stringifyFailureAction(action))
+    }
+  }
+
+  yield call(showMessage, {
+    type: 'danger',
+    icon: 'warning',
+    message: getDisplayMessage(action),
+    onPress: handleErrorPress,
+  })
+}
+
 function* captureErrors(action) {
   try {
-    const message = ErrorsService.getErrorMessage(action)
+    const skipError = yield call(filterError, action)
 
-    const preventShowMessage = [
-      message.type === ErrorsService.TYPES.NATIVE,
-      message.text === ErrorsService.MESSAGES.CANCEL_REQUEST_ON_SIGNOUT,
-      message.text === ErrorsService.MESSAGES.USER_IS_NOT_ACTIVE,
-      BLACKLIST.includes(action.type),
-    ]
-
-    if (preventShowMessage.includes(true)) return
-
-    function onLongPress() {
-      if (Config.ENVIRONMENT === 'development') {
-        Alert.alert(JSON.stringify(action))
-      }
+    if (!skipError) {
+      yield call(showError, action)
     }
 
-    yield call(showMessage, {
-      message: message.text,
-      type: 'danger',
-      icon: 'warning',
-      onLongPress,
-    })
+    Logger.captureFailureAction(action)
   } catch (error) {
     Logger.captureException(error)
   }

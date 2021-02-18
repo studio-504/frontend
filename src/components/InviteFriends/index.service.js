@@ -26,11 +26,11 @@ const InviteFriendsService = ({ children }) => {
   }
 
   useEffect(() => {
-    if (!contactsInvite.error) return
+    if (!contactsInvite.status === 'failure') return
 
     Alert.alert(
       'Invite failed',
-      contactsInvite.error,
+      null,
       [
         {
           text: 'OK',
@@ -39,7 +39,7 @@ const InviteFriendsService = ({ children }) => {
       ],
       { cancelable: false },
     )
-  }, [contactsInvite.error])
+  }, [contactsInvite.status])
 
   useEffect(checkPermissionUpdates, [])
   useAppState({ onForeground: checkPermissionUpdates })

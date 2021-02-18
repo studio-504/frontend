@@ -2,7 +2,6 @@ import { put, call, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
-import * as errors from 'store/ducks/signup/errors'
 import * as queryService from 'services/Query'
 import * as authActions from 'store/ducks/auth/actions'
 import { logEvent } from 'services/Analytics'
@@ -28,16 +27,9 @@ function* signupPasswordRequest(req) {
     logEvent('SIGNUP_PASSWORD_REQUEST')
     
     const data = yield call(handleSignupPasswordRequest, req.payload)
-    yield put(actions.signupPasswordSuccess({
-      message: errors.getMessagePayload(constants.SIGNUP_PASSWORD_SUCCESS, 'GENERIC'),
-      payload: req.payload,
-      data,
-    }))
+    yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
   } catch (error) {
-    yield put(actions.signupPasswordFailure({
-      message: errors.getMessagePayload(constants.SIGNUP_PASSWORD_FAILURE, 'GENERIC', error),
-      payload: req.payload,
-    }))
+    yield put(actions.signupPasswordFailure(error))
   }
 }
 

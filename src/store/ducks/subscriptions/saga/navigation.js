@@ -40,7 +40,7 @@ function* navigationSubscription() {
       }
     }
   } catch (error) {
-    yield call([Logger, 'captureException'], error)
+    Logger.captureException(error)
     channel.close()
   }
 }

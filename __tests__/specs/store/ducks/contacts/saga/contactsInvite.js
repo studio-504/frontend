@@ -49,18 +49,15 @@ describe('Contacts Invite saga', () => {
   })
 
   it('not supported type', () => {
+    const error = new Error('Invite supports only email and phone type')
+
     return expectSaga(testAsRootSaga(contacts))
       .withState(emptyInvitedState)
 
       .not.call([Linking, 'openURL'], `mailto:${emailContact.value}?subject=${subject}&body=${body}`)
       .not.call([Linking, 'openURL'], `sms:${phoneContact.value}&body=${body}`)
       .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus)
-      .put(
-        actions.contactsInviteFailure({
-          message: 'Invite supports only email and phone type',
-          contactId: user.contactId,
-        }),
-      )
+      .put(actions.contactsInviteFailure(error, { contactId: user.contactId }))
 
       .dispatch(actions.contactsInviteRequest({ user, contact: { type: undefined, value: '' } }))
       .silentRun()

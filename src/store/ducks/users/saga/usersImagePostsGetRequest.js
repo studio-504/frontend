@@ -1,4 +1,4 @@
-import { put, getContext, call } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
@@ -20,14 +20,12 @@ function* usersImagePostsGetRequestData(response) {
 }
 
 function* usersImagePostsGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const response = yield call([queryService, 'apiRequest'], queries.getImagePosts, req.payload)
     const data = yield usersImagePostsGetRequestData(response)
     yield put(actions.usersImagePostsGetSuccess({ data }))
   } catch (error) {
-    yield put(actions.usersImagePostsGetFailure({ message: errorWrapper(error) }))
+    yield put(actions.usersImagePostsGetFailure(error))
   }
 }
 

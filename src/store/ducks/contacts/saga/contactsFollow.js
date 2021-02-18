@@ -23,7 +23,7 @@ function* contactsFollowRequest(req) {
 
     yield put(actions.contactsFollowSuccess({ contactId }))
   } catch (error) {
-    yield put(actions.contactsFollowFailure({ error, contactId }))
+    yield put(actions.contactsFollowFailure(error, { contactId }))
   }
 }
 

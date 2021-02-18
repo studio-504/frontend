@@ -1,13 +1,8 @@
 import { appleAuth } from '@invertase/react-native-apple-authentication'
 import jwt from 'jwt-decode'
 import pathOr from 'ramda/src/pathOr'
+import { AppleCredentialsError } from 'store/errors'
 
-class AppleCredentialsError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'APPLE_CREDENTIALS_ERROR'
-  }
-}
 
 /**
  * Generate expiry time which is 50 mins

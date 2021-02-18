@@ -9,7 +9,6 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as constants from 'store/ducks/purchases/constants'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
-import * as Logger from 'services/Logger'
 
 jest.mock('services/Query', () => ({
   apiRequest: jest.fn(),
@@ -58,8 +57,6 @@ describe('Purchases saga', () => {
     updatedListener.remove.mockClear()
     errorListener.remove.mockClear()
 
-    Logger.captureException.mockClear()
-
     RNIap.initConnection.mockClear()
     RNIap.purchaseUpdatedListener.mockClear()
     RNIap.purchaseErrorListener.mockClear()
@@ -74,15 +71,13 @@ describe('Purchases saga', () => {
 
       .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
-      .put(actions.purchaseFailure('Purchase Request Timeout'))
+      .put(actions.purchaseFailure(new Error('Purchase Request Timeout')))
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
 
     setTimeout(() => {
       expectClosedChannel()
-      expect(Logger.captureException).toHaveBeenCalled()
-      expect(Logger.captureException.mock.calls[0][0].message).toBe('Purchase Request Timeout')
     }, 0)
 
     return promise
@@ -93,8 +88,7 @@ describe('Purchases saga', () => {
     const promise = expectSaga(testAsRootSaga(purchases))
       .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
-      .put(actions.purchaseFailure(error.message))
-      .call([Logger, 'captureException'], error)
+      .put(actions.purchaseFailure(error))
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
@@ -139,8 +133,7 @@ describe('Purchases saga', () => {
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
-      .put(actions.purchaseFailure(error.message))
-      .call([Logger, 'captureException'], error)
+      .put(actions.purchaseFailure(error))
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()
