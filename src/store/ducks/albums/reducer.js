@@ -65,7 +65,7 @@ const albumsGetFailure = (state, action) => update(state, {
   albumsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.userId,
+      resourceKey: action.meta.userId,
       initialState: initialState.albumsGet,
     },
   },
@@ -168,7 +168,7 @@ const albumsPostsGetFailure = (state, action) => update(state, {
   albumsPostsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.albumId,
+      resourceKey: action.meta.albumId,
       initialState: initialState.albumsPostsGet,
     },
   },

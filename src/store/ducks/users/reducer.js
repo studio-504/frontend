@@ -230,7 +230,7 @@ const usersGetFollowedUsersFailure = (state, action) => update(state, {
   usersGetFollowedUsersCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.userId,
+      resourceKey: action.meta.userId,
       initialState: initialState.usersGetFollowedUsers,
     },
   },
@@ -273,7 +273,7 @@ const usersGetFollowerUsersFailure = (state, action) => update(state, {
   usersGetFollowerUsersCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.userId,
+      resourceKey: action.meta.userId,
       initialState: initialState.usersGetFollowerUsers,
     },
   },

@@ -187,7 +187,7 @@ const postsGetFailure = (state, action) => update(state, {
   postsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.userId,
+      resourceKey: action.meta.userId,
       initialState: initialState.postsGet,
     },
   },
@@ -283,7 +283,7 @@ const postsViewsGetFailure = (state, action) => update(state, {
   postsViewsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.postId,
+      resourceKey: action.meta.postId,
       initialState: initialState.postsViewsGet,
     },
   },
@@ -347,7 +347,7 @@ const postsLikesGetFailure = (state, action) => update(state, {
   postsLikesGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.postId,
+      resourceKey: action.meta.postId,
       initialState: initialState.postsViewsGet,
     },
   },
@@ -926,7 +926,7 @@ const postsCommentsGetFailure = (state, action) => update(state, {
   postsCommentsGetCache: {
     $resourceCacheSetFailure: {
       ...action,
-      resourceKey: action.payload.payload.postId,
+      resourceKey: action.meta.postId,
       initialState: initialState.postsCommentsGet,
     },
   },
