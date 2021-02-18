@@ -1,37 +1,11 @@
 import omit from 'ramda/src/omit'
 import pathOr from 'ramda/src/pathOr'
+import propOr from 'ramda/src/propOr'
 import path from 'ramda/src/path'
 import { createAction } from 'redux-actions'
+import messages from 'store/messages'
 
 const getFirstError = pathOr('Default Error', ['errors', 0, 'message'])
-
-export const createFailureAction = (type) =>
-  createAction(
-    type,
-    (payload) => payload,
-    (error, meta) => meta,
-  )
-
-export const stringifyFailureAction = (action) => {
-  function replaceErrors(key, value) {
-    if (value instanceof Error) {
-      var error = {}
-
-      Object.getOwnPropertyNames(value).forEach(function (key) {
-        error[key] = value[key]
-      })
-
-      return error
-    }
-
-    return value
-  }
-
-  const payload = omit(['payload'], action)
-  const error = action.payload
-
-  return `${JSON.stringify(payload)} ${JSON.stringify(error, replaceErrors)}`
-}
 
 export class AppleCredentialsError extends Error {
   constructor(...args) {
@@ -109,6 +83,55 @@ export class GraphQLError extends Error {
     this.errors = args.errors || []
     this.code = 'GRAPHQL_ERROR'
   }
+}
+
+export const getMessageCodeFromGraphQlError = (graphqlError, key, messages) => {
+  const getListOf = propOr([])
+  const supportedCodes = Object.keys(messages[key] || {})
+
+  for (let error of getListOf('errors', graphqlError)) {
+    for (let messageCode of getListOf('errorInfo', error)) {
+      if (typeof messageCode === 'string' && supportedCodes.includes(messageCode)) {
+        return messageCode
+      }
+    }
+  }
+
+  return 'GENERIC'
+}
+
+export const createFailureAction = (type) =>
+  createAction(
+    type,
+    (payload) => payload,
+    (error, meta = {}) => {
+      if (error instanceof GraphQLError) {
+        return { ...meta, messageCode: getMessageCodeFromGraphQlError(error, type, messages) }
+      } else {
+        return meta
+      }
+    },
+  )
+
+export const stringifyFailureAction = (action) => {
+  function replaceErrors(key, value) {
+    if (value instanceof Error) {
+      var error = {}
+
+      Object.getOwnPropertyNames(value).forEach(function (key) {
+        error[key] = value[key]
+      })
+
+      return error
+    }
+
+    return value
+  }
+
+  const payload = omit(['payload'], action)
+  const error = action.payload
+
+  return `${JSON.stringify(payload)} ${JSON.stringify(error, replaceErrors)}`
 }
 
 export const handleError = (error) => {

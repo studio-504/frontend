@@ -26,7 +26,7 @@ describe('signupConfirm', () => {
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({  data: undefined, payload }))
+        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()

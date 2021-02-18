@@ -7,16 +7,12 @@ import * as authConstants from 'store/ducks/auth/constants'
 import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
-import authMessages from 'store/ducks/auth/messages'
-import signupMessages from 'store/ducks/signup/messages'
-import usersMessages from 'store/ducks/users/messages'
-import datingMessages from 'store/ducks/dating/messages'
 import * as Logger from 'services/Logger'
 import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError, stringifyFailureAction } from 'store/errors'
+import messages from 'store/messages'
 
 const DEFAULT_CODE = 'GENERIC'
 const DEFAULT_MESSAGE = 'Oops! Something went wrong'
-const MESSAGES = Object.assign(authMessages, signupMessages, usersMessages, datingMessages)
 
 const BLACKLIST = [
   authConstants.AUTH_DATA_FAILURE,
@@ -31,7 +27,7 @@ const BLACKLIST = [
 ]
 
 const getMessageCode = pathOr(DEFAULT_CODE, ['meta', 'messageCode'])
-const getDisplayMessage = (action) => pathOr(DEFAULT_MESSAGE, [action.type, getMessageCode(action), 'text'], MESSAGES)
+const getDisplayMessage = (action) => pathOr(DEFAULT_MESSAGE, [action.type, getMessageCode(action), 'text'], messages)
 
 function filterError(action) {
   if (!action.error) {
