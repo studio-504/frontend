@@ -48,4 +48,6 @@ export const requestPayload = (type = 'gallery') => (state, snappedPhoto, croppe
   originalMetadata: JSON.stringify(snappedPhoto.exif),
   takenInReal: type === 'camera',
   photoSize: state.photoSize,
+  creationDate: snappedPhoto.creationDate,
+  modificationDate: snappedPhoto.modificationDate,
 })
