@@ -12,6 +12,8 @@ function* handleCameraCaptureRequest(payload) {
     imageFormat: photo.imageFormat,
     crop: photo.crop,
     text: photo.text || '',
+    creationDate: photo.creationDate,
+    modificationDate: photo.modificationDate,
   }))
   return response
 }

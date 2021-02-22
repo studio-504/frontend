@@ -104,6 +104,8 @@ export const addPhotoPost = `
     $crop: CropInput,
     $verificationHidden: Boolean,
     $setAsUserPhoto: Boolean,
+    $creationDate: String,
+    $modificationDate: String,
   ) {
     addPost (
       postId: $postId,
@@ -122,6 +124,8 @@ export const addPhotoPost = `
         originalFormat: $originalFormat,
         originalMetadata: $originalMetadata,
         crop: $crop,
+        creationDate: $creationDate,
+        modificationDate: $modificationDate,
       }
     ) {
       ...postFragment
