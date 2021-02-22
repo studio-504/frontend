@@ -23,6 +23,7 @@ const InviteFriends = ({
   openSettings,
   contactsInviteRequest,
   contactsFollowRequest,
+  contactsCheckBonusRequest,
   contactsInvite,
 }) => {
   const styling = styles(theme)
@@ -51,8 +52,13 @@ const InviteFriends = ({
     }
   }
 
+  const handleRefresh = () => {
+    contactsGetRequest()
+    contactsCheckBonusRequest()
+  }
+  
   const refreshControl = (
-    <RefreshControl tintColor={theme.colors.border} onRefresh={contactsGetRequest} refreshing={isLoading} />
+    <RefreshControl tintColor={theme.colors.border} onRefresh={handleRefresh} refreshing={isLoading} />
   )
 
   const renderInviteContact = ({ item }) => {
@@ -212,6 +218,7 @@ InviteFriends.propTypes = {
   openSettings: PropTypes.func,
   contactsInviteRequest: PropTypes.func,
   contactsFollowRequest: PropTypes.func,
+  contactsCheckBonusRequest: PropTypes.func,
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
     items: PropTypes.arrayOf(

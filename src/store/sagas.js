@@ -7,6 +7,7 @@ import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
+import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBonusRequest'
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
 
@@ -54,6 +55,7 @@ export default function* rootSaga(persistor) {
     .concat(subscriptions())
     .concat(purchases())
     .concat(contacts())
+    .concat(contactsGrantBonusRequest())
 
     .concat(users())
 

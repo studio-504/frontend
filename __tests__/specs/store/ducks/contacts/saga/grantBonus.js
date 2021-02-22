@@ -1,25 +1,19 @@
 import { Linking } from 'react-native'
 import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
-import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
-import contacts from 'store/ducks/contacts/saga'
-import * as authSelectors from 'store/ducks/auth/selectors'
+import { testAsRootSaga, testNavigate, makeAuthorizedState } from 'tests/utils/helpers'
 import * as usersActions from 'store/ducks/users/actions'
 import * as actions from 'store/ducks/contacts/actions'
 import * as queries from 'store/ducks/contacts/queries'
 import * as queryService from 'services/Query'
+import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBonusRequest'
 
 jest.spyOn(Linking, 'openURL')
 Linking.openURL.mockResolvedValue(true)
 
 jest.mock('react-native-contacts', () => ({ getAll: jest.fn() }))
-
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
-jest.mock('store/ducks/auth/selectors', () => ({ authUserSelector: jest.fn() }))
 
-authSelectors.authUserSelector.mockReturnValue({ username: 'username' })
-
-const user = { contactId: 1 }
 const tenInvited = {
   1: true,
   2: true,
@@ -32,11 +26,17 @@ const tenInvited = {
   9: true,
   10: true,
 }
+const user = { userId: '1', subscriptionLevel: 'BASIC' }
+const diamondUser = { userId: '1', subscriptionLevel: 'DIAMOND' }
 
 const navigation = { navigate: jest.fn() }
 
 const setupSaga = () =>
-  expectSaga(testAsRootSaga(contacts)).provide([[getContext('ReactNavigationRef'), { current: navigation }]])
+  expectSaga(testAsRootSaga(contactsGrantBonusRequest)).provide([
+    [getContext('ReactNavigationRef'), { current: navigation }],
+  ])
+
+const state = { contacts: { contactsInvite: { invited: tenInvited } } }
 
 describe('Contacts Grand bonus saga', () => {
   afterEach(() => {
@@ -46,12 +46,12 @@ describe('Contacts Grand bonus saga', () => {
   describe('success', () => {
     it('grand bonus on contactsInviteSuccess', async () => {
       await setupSaga()
-        .withState({ contacts: { contactsInvite: { invited: tenInvited } } })
+        .withState(makeAuthorizedState(user, state))
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus)
+        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
         .put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.contactsInviteSuccess(user))
+        .dispatch(actions.contactsInviteSuccess())
         .silentRun()
 
       testNavigate(navigation, 'InviteFriendsSuccess')
@@ -59,12 +59,25 @@ describe('Contacts Grand bonus saga', () => {
 
     it('grand bonus on contactsFollowSuccess', async () => {
       await setupSaga()
-        .withState({ contacts: { contactsInvite: { invited: tenInvited } } })
+        .withState(makeAuthorizedState(user, state))
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus)
+        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
         .put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.contactsFollowSuccess(user))
+        .dispatch(actions.contactsFollowSuccess())
+        .silentRun()
+
+      testNavigate(navigation, 'InviteFriendsSuccess')
+    })
+
+    it('grand bonus on contactsCheckBonusRequest', async () => {
+      await setupSaga()
+        .withState(makeAuthorizedState(user, state))
+
+        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+        .put(usersActions.usersGetProfileSelfRequest())
+
+        .dispatch(actions.contactsCheckBonusRequest())
         .silentRun()
 
       testNavigate(navigation, 'InviteFriendsSuccess')
@@ -76,12 +89,12 @@ describe('Contacts Grand bonus saga', () => {
       queryService.apiRequest.mockRejectedValueOnce(false)
 
       await setupSaga()
-        .withState({ contacts: { contactsInvite: { invited: tenInvited } } })
+        .withState(makeAuthorizedState(user, state))
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus)
+        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
         .not.put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.contactsInviteSuccess(user))
+        .dispatch(actions.contactsInviteSuccess())
         .silentRun()
 
       expect(navigation.navigate).not.toHaveBeenCalled()
@@ -89,12 +102,38 @@ describe('Contacts Grand bonus saga', () => {
 
     it('not enough invited', async () => {
       await setupSaga()
-        .withState({ contacts: { contactsInvite: { invited: { 1: true } } } })
+        .withState(makeAuthorizedState(user, { contacts: { contactsInvite: { invited: { 1: true } } } }))
 
-        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus)
+        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
         .not.put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.contactsInviteSuccess(user))
+        .dispatch(actions.contactsInviteSuccess())
+        .silentRun()
+
+      expect(navigation.navigate).not.toHaveBeenCalled()
+    })
+
+    it('not authorized user', async () => {
+      await setupSaga()
+        .withState(state)
+
+        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+        .not.put(usersActions.usersGetProfileSelfRequest())
+
+        .dispatch(actions.contactsCheckBonusRequest())
+        .silentRun()
+
+      expect(navigation.navigate).not.toHaveBeenCalled()
+    })
+
+    it('diamond user', async () => {
+      await setupSaga()
+        .withState(makeAuthorizedState(diamondUser, state))
+
+        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+        .not.put(usersActions.usersGetProfileSelfRequest())
+
+        .dispatch(actions.contactsCheckBonusRequest())
         .silentRun()
 
       expect(navigation.navigate).not.toHaveBeenCalled()

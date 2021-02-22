@@ -30,8 +30,8 @@ export const findContacts = `
 `
 
 export const grantUserSubscriptionBonus = `
-  mutation grantUserSubscriptionBonus {
-    grantUserSubscriptionBonus {
+  mutation grantUserSubscriptionBonus($grantCode: SubscriptionGrantCode) {
+    grantUserSubscriptionBonus(grantCode: $grantCode) {
       ...singleUserFragment
     }
   }
