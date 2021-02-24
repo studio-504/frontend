@@ -1,0 +1,19 @@
+import * as usersSingle from 'store/ducks/users/queries/single'
+
+export const setAnonymousThemeCode = `
+  mutation setAnonymousThemeCode($themeCode: String!) {
+    setAnonymousThemeCode(themeCode: $themeCode) {
+      ...singleUserFragment
+    }
+  }
+  ${usersSingle.singleUserFragment}
+`
+
+export const setThemeCode = `
+  mutation setThemeCode($themeCode: String!) {
+    setUserDetails(themeCode: $themeCode) {
+      ...singleUserFragment
+    }
+  }
+  ${usersSingle.singleUserFragment}
+`

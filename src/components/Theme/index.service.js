@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as themesActions from 'store/ducks/themes/actions'
 
 const ThemeService = ({ children }) => {
   const dispatch = useDispatch()
@@ -12,8 +12,8 @@ const ThemeService = ({ children }) => {
   const appThemePreviewIdle = () => setAppThemePreview(null)
 
   const appThemePreviewUpdate = (themeCode) => {
-    dispatch(usersActions.usersEditProfileRequest({ themeCode }))
-    appThemePreviewIdle()
+    dispatch(themesActions.themesEditRequest({ themeCode }))
+    appThemePreviewIdle() 
   }
 
   return children({

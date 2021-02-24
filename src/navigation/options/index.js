@@ -262,7 +262,7 @@ export const stackScreenModalProps = ({
 export const stackScreenModalStaticProps = ({
   options: () => ({
     cardStyle: {
-      backgroundColor: '#000000',
+      backgroundColor: '#ffffff',
     },
     gestureEnabled: false,
     headerShown: false,
@@ -273,7 +273,7 @@ export const stackScreenModalStaticProps = ({
 export const stackScreenStaleStaticProps = ({
   options: () => ({
     cardStyle: {
-      backgroundColor: '#000000',
+      backgroundColor: '#ffffff',
     },
     gestureEnabled: false,
     headerShown: false,

@@ -10,6 +10,7 @@ import contacts from 'store/ducks/contacts/saga'
 import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBonusRequest'
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
+import themes from 'store/ducks/themes/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -49,6 +50,7 @@ export default function* rootSaga(persistor) {
     .concat(camera())
     .concat(albums())
     .concat(chat())
+    .concat(themes())
 
     .concat(updates())
     .concat(cache())
