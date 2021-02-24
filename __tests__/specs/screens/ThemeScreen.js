@@ -3,7 +3,7 @@ import ThemeScreen from 'screens/ThemeScreen'
 import { renderWithStore, act, fireEvent } from 'tests/utils'
 import { useNavigation } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as usersActions from 'store/ducks/users/actions'
+import * as themesActions from 'store/ducks/themes/actions'
 import themesJson from 'assets/themes.json'
 
 const user = {
@@ -55,13 +55,13 @@ describe('ThemeScreen', () => {
   })
 
   it('enable theme', async () => {
-    jest.spyOn(usersActions, 'usersEditProfileRequest')
+    jest.spyOn(themesActions, 'themesEditRequest')
     const theme = themesJson[0]
     const { queryAllByAccessibilityLabel } = setup()
     await act(async () => fireEvent.press(queryAllByAccessibilityLabel('Enable Theme')[0]))
     await act(async () => fireEvent.press(queryAllByAccessibilityLabel('Apply Theme')[0]))
 
-    expect(usersActions.usersEditProfileRequest).toHaveBeenCalledWith({ themeCode: theme.key })
-    usersActions.usersEditProfileRequest.mockRestore()
+    expect(themesActions.themesEditRequest).toHaveBeenCalledWith({ themeCode: theme.key })
+    themesActions.themesEditRequest.mockRestore()
   })
 })

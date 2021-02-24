@@ -3,5 +3,13 @@ import signupMessages from 'store/ducks/signup/messages'
 import usersMessages from 'store/ducks/users/messages'
 import datingMessages from 'store/ducks/dating/messages'
 import contactsMessages from 'store/ducks/contacts/messages'
+import themesMessages from 'store/ducks/themes/messages'
 
-export default Object.assign(authMessages, signupMessages, usersMessages, datingMessages, contactsMessages)
+export default Object.assign(
+  authMessages,
+  signupMessages,
+  usersMessages,
+  datingMessages,
+  contactsMessages,
+  themesMessages,
+)
