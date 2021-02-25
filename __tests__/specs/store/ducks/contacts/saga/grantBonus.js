@@ -43,100 +43,123 @@ describe('Contacts Grand bonus saga', () => {
     navigation.navigate.mockClear()
   })
 
-  describe('success', () => {
-    it('grand bonus on contactsInviteSuccess', async () => {
-      await setupSaga()
-        .withState(makeAuthorizedState(user, state))
+  describe('contactsGrantBonusRequest', () => {
+    describe('success', () => {
+      it('grand bonus on contactsInviteSuccess', async () => {
+        await setupSaga()
+          .withState(makeAuthorizedState(user, state))
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .put(usersActions.usersGetProfileSelfRequest())
+          .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .put(usersActions.usersGetProfileSelfRequest())
 
-        .dispatch(actions.contactsInviteSuccess())
-        .silentRun()
+          .dispatch(actions.contactsInviteSuccess())
+          .silentRun()
+      })
 
-      testNavigate(navigation, 'InviteFriendsSuccess')
+      it('grand bonus on contactsFollowSuccess', async () => {
+        await setupSaga()
+          .withState(makeAuthorizedState(user, state))
+
+          .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .put(usersActions.usersGetProfileSelfRequest())
+
+          .dispatch(actions.contactsFollowSuccess())
+          .silentRun()
+      })
+
+      it('grand bonus on contactsCheckBonusRequest', async () => {
+        await setupSaga()
+          .withState(makeAuthorizedState(user, state))
+
+          .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .put(usersActions.usersGetProfileSelfRequest())
+
+          .dispatch(actions.contactsCheckBonusRequest())
+          .silentRun()
+      })
     })
 
-    it('grand bonus on contactsFollowSuccess', async () => {
-      await setupSaga()
-        .withState(makeAuthorizedState(user, state))
+    describe('failure', () => {
+      it('request error', async () => {
+        queryService.apiRequest.mockRejectedValueOnce(false)
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .put(usersActions.usersGetProfileSelfRequest())
+        await setupSaga()
+          .withState(makeAuthorizedState(user, state))
 
-        .dispatch(actions.contactsFollowSuccess())
-        .silentRun()
+          .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .not.put(usersActions.usersGetProfileSelfRequest())
 
-      testNavigate(navigation, 'InviteFriendsSuccess')
-    })
+          .dispatch(actions.contactsInviteSuccess())
+          .silentRun()
 
-    it('grand bonus on contactsCheckBonusRequest', async () => {
-      await setupSaga()
-        .withState(makeAuthorizedState(user, state))
+        expect(navigation.navigate).not.toHaveBeenCalled()
+      })
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .put(usersActions.usersGetProfileSelfRequest())
+      it('not enough invited', async () => {
+        await setupSaga()
+          .withState(makeAuthorizedState(user, { contacts: { contactsInvite: { invited: { 1: true } } } }))
 
-        .dispatch(actions.contactsCheckBonusRequest())
-        .silentRun()
+          .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .not.put(usersActions.usersGetProfileSelfRequest())
 
-      testNavigate(navigation, 'InviteFriendsSuccess')
+          .dispatch(actions.contactsInviteSuccess())
+          .silentRun()
+
+        expect(navigation.navigate).not.toHaveBeenCalled()
+      })
+
+      it('not authorized user', async () => {
+        await setupSaga()
+          .withState(state)
+
+          .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .not.put(usersActions.usersGetProfileSelfRequest())
+
+          .dispatch(actions.contactsCheckBonusRequest())
+          .silentRun()
+
+        expect(navigation.navigate).not.toHaveBeenCalled()
+      })
+
+      it('diamond user', async () => {
+        await setupSaga()
+          .withState(makeAuthorizedState(diamondUser, state))
+
+          .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
+          .not.put(usersActions.usersGetProfileSelfRequest())
+
+          .dispatch(actions.contactsCheckBonusRequest())
+          .silentRun()
+
+        expect(navigation.navigate).not.toHaveBeenCalled()
+      })
     })
   })
 
-  describe('failure', () => {
-    it('request error', async () => {
-      queryService.apiRequest.mockRejectedValueOnce(false)
+  describe('handleGrantBonusCard', () => {
+    const diamondCard = { cardId: 1, action: 'https:/real.app/diamond' }
+    const chatCard = { cardId: 2, action: 'https:/real.app/chat' }
 
+    it('no bonus card in a list', async () => {
       await setupSaga()
-        .withState(makeAuthorizedState(user, state))
+        .not.put(usersActions.usersGetCardsOptimistic({ cardId: diamondCard.cardId }))
+        .not.put(usersActions.usersDeleteCardRequest({ cardId: diamondCard.cardId }))
 
-        .call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .not.put(usersActions.usersGetProfileSelfRequest())
-
-        .dispatch(actions.contactsInviteSuccess())
+        .dispatch(usersActions.usersGetCardsSuccess({ data: [chatCard] }))
         .silentRun()
 
       expect(navigation.navigate).not.toHaveBeenCalled()
     })
 
-    it('not enough invited', async () => {
+    it('navigate to congratulations screen', async () => {
       await setupSaga()
-        .withState(makeAuthorizedState(user, { contacts: { contactsInvite: { invited: { 1: true } } } }))
+        .put(usersActions.usersGetCardsOptimistic({ cardId: diamondCard.cardId }))
+        .put(usersActions.usersDeleteCardRequest({ cardId: diamondCard.cardId }))
 
-        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .not.put(usersActions.usersGetProfileSelfRequest())
-
-        .dispatch(actions.contactsInviteSuccess())
+        .dispatch(usersActions.usersGetCardsSuccess({ data: [diamondCard, chatCard] }))
         .silentRun()
 
-      expect(navigation.navigate).not.toHaveBeenCalled()
-    })
-
-    it('not authorized user', async () => {
-      await setupSaga()
-        .withState(state)
-
-        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .not.put(usersActions.usersGetProfileSelfRequest())
-
-        .dispatch(actions.contactsCheckBonusRequest())
-        .silentRun()
-
-      expect(navigation.navigate).not.toHaveBeenCalled()
-    })
-
-    it('diamond user', async () => {
-      await setupSaga()
-        .withState(makeAuthorizedState(diamondUser, state))
-
-        .not.call(queryService.apiRequest, queries.grantUserSubscriptionBonus, { grantCode: 'FREE_FOR_LIFE' })
-        .not.put(usersActions.usersGetProfileSelfRequest())
-
-        .dispatch(actions.contactsCheckBonusRequest())
-        .silentRun()
-
-      expect(navigation.navigate).not.toHaveBeenCalled()
+      testNavigate(navigation, 'InviteFriendsSuccess')
     })
   })
 })
