@@ -10,6 +10,7 @@ import * as cache from 'store/ducks/cache/reducer'
 import * as entities from 'store/ducks/entities/reducer'
 import * as contacts from 'store/ducks/contacts/reducer'
 import * as dating from 'store/ducks/dating/reducer'
+import * as promocodes from 'store/ducks/promocodes/reducer'
 import rootReducer from 'store/reducers'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as authActions from 'store/ducks/auth/actions'
@@ -32,6 +33,7 @@ const initialState = {
   dating: dating.initialState,
   cache: cache.initialState,
   entities: entities.initialState,
+  promocodes: promocodes.initialState,
 }
 
 const data = { 1: { id: 1 }, 2: { id: 2 } }
