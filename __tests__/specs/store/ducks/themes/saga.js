@@ -69,27 +69,9 @@ describe('Themes saga', () => {
   describe('themesEditRequest', () => {
     const themeCode = 'themeCode'
 
-    it('anonymous user', async () => {
-      const user = { userId: '1', userStatus: 'ANONYMOUS' }
-
+    it('success', async () => {
       await expectSaga(testAsRootSaga(themes))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
-        .withState(makeAuthorizedState(user))
-
-        .call(queryService.apiRequest, queries.setAnonymousThemeCode, { themeCode })
-        .put(usersActions.usersGetProfileSelfRequest())
-        .put(actions.themesEditSuccess())
-
-        .dispatch(actions.themesEditRequest({ themeCode }))
-        .silentRun()
-    })
-
-    it('authorized user', async () => {
-      const user = { userId: '1', userStatus: 'ACTIVE' }
-
-      await expectSaga(testAsRootSaga(themes))
-        .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
-        .withState(makeAuthorizedState(user))
 
         .call(queryService.apiRequest, queries.setThemeCode, { themeCode })
         .put(usersActions.usersGetProfileSelfRequest())
@@ -100,14 +82,12 @@ describe('Themes saga', () => {
     })
 
     it('failure', async () => {
-      const user = { userId: '1', userStatus: 'ACTIVE' }
       const error = new Error('Error')
 
       queryService.apiRequest.mockRejectedValueOnce(error)
 
       await expectSaga(testAsRootSaga(themes))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
-        .withState(makeAuthorizedState(user))
 
         .call(queryService.apiRequest, queries.setThemeCode, { themeCode })
         .put(actions.themesEditFailure(error))

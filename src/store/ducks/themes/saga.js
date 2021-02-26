@@ -8,7 +8,6 @@ import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
 import * as authSelector from 'store/ducks/auth/selectors'
-import * as UserService from 'services/User'
 
 function* themesCheckDefaultRequest() {
   try {
@@ -28,10 +27,7 @@ function* themesCheckDefaultRequest() {
 
 function* themesEditRequest(req) {
   try {
-    const authUser = yield select(authSelector.authUserSelector)
-    const query = UserService.isUserActive(authUser) ? queries.setThemeCode : queries.setAnonymousThemeCode
-
-    yield call(queryService.apiRequest, query, { themeCode: req.payload.themeCode })
+    yield call(queryService.apiRequest, queries.setThemeCode, { themeCode: req.payload.themeCode })
     yield put(usersActions.usersGetProfileSelfRequest())
     yield put(actions.themesEditSuccess())
   } catch (error) {
