@@ -7,7 +7,7 @@ import {
 
 const Loading = () => (
   <View style={styles.root}>
-    <ActivityIndicator size="small" color="#ffffff" />
+    <ActivityIndicator size="small" color="#000000" />
   </View>
 )
 

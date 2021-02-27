@@ -71,6 +71,7 @@ describe('Contacts reducer', () => {
       const state = reducer(undefined, { type: 'MOCK_ACTION' })
 
       expect(selectors.contactsInvite(state)).toEqual({
+        status: 'idle',
         invited: {},
         requested: {},
       })
@@ -87,6 +88,7 @@ describe('Contacts reducer', () => {
       )
 
       expect(selectors.contactsInvite(state)).toEqual({
+        status: 'success',
         invited: { 1: true, 2: true, 3: true },
         requested: {},
       })
@@ -103,8 +105,19 @@ describe('Contacts reducer', () => {
       )
 
       expect(selectors.contactsInvite(state)).toEqual({
+        status: 'loading',
         invited: {},
         requested: { 1: true, 2: true, 3: true },
+      })
+    })
+
+    it('failure', () => {
+      const state = applyActions([actions.contactsInviteFailure()], reducer)
+
+      expect(selectors.contactsInvite(state)).toEqual({
+        status: 'failure',
+        invited: {},
+        requested: {},
       })
     })
 
@@ -122,21 +135,10 @@ describe('Contacts reducer', () => {
       )
 
       expect(selectors.contactsInvite(state)).toEqual({
+        status: 'success',
         invited: { 2: true },
         requested: { 3: true },
       })
-    })
-  })
-
-  it('clear error on idle action', () => {
-    const state = applyActions(
-      [actions.contactsInviteFailure(error, { contactId: 1 }), actions.contactsInviteIdle()],
-      reducer,
-    )
-
-    expect(selectors.contactsInvite(state)).toEqual({
-      invited: {},
-      requested: {},
     })
   })
 })

@@ -129,6 +129,7 @@ describe('Snackbars saga', () => {
       testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')
       testBlackListAction('USERS_SET_APNS_TOKEN_FAILURE')
       testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE')
+      testBlackListAction('THEMES_CHECK_DEFAULT_FAILURE')
     })
   })
 })

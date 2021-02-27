@@ -15,6 +15,7 @@ const ACTIONS = {
   COMMENTS: 'comments',
   VIEWS: 'views',
   LIKES: 'likes',
+  DIAMOND: 'diamond',
 }
 
 const PATTERNS = {
@@ -23,6 +24,7 @@ const PATTERNS = {
   [ACTIONS.INVITE_FRIENDS]: new UrlPattern('*/user/:userId/settings/contacts(/)', options),
   [ACTIONS.SIGNUP]: new UrlPattern('*/signup/:userId(/)', options),
   [ACTIONS.CHATS]: new UrlPattern('*/chat(/)', options),
+  [ACTIONS.DIAMOND]: new UrlPattern('*/diamond(/)', options),
 }
 
 export const deeplinkPath = (action) => {
@@ -37,6 +39,16 @@ export const deeplinkPath = (action) => {
 
   throw new NotSupportedInAppCardError('The in-app card is not supported')
 }
+
+export const isCardSupported = (card) => {
+  try {
+    return deeplinkPath(card.action)
+  } catch (error) {
+    return false
+  }
+}
+
+export const isDiamondCard = (card) => deeplinkPath(card.action).action === ACTIONS.DIAMOND
 
 export const deeplinkNavigation = (navigation) => (action) => {
   try {
@@ -65,7 +77,10 @@ export const deeplinkNavigation = (navigation) => (action) => {
         navigationActions.navigateInviteFriends(navigation, params)()
         break
       case ACTIONS.SIGNUP:
-        navigationActions.navigateSignup(navigation, params) 
+        navigationActions.navigateSignup(navigation, params)
+        break
+      case ACTIONS.DIAMOND:
+        navigationActions.navigateInviteFriendsSuccess(navigation)
         break
       default:
         break

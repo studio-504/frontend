@@ -7,8 +7,11 @@ import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
+import promocodes from 'store/ducks/promocodes/saga'
+import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBonusRequest'
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
+import themes from 'store/ducks/themes/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -48,14 +51,17 @@ export default function* rootSaga(persistor) {
     .concat(camera())
     .concat(albums())
     .concat(chat())
+    .concat(themes())
 
     .concat(updates())
     .concat(cache())
     .concat(subscriptions())
     .concat(purchases())
     .concat(contacts())
+    .concat(contactsGrantBonusRequest())
 
     .concat(users())
+    .concat(promocodes())
 
     .concat(authForgot())
     .concat(authSigninCognito(persistor))

@@ -76,6 +76,14 @@ describe('Settings component', () => {
     testNavigate(navigation, 'InviteFriends')
   })
 
+  it('Enter Promo Code', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('Enter Promo Code'))
+
+    testNavigate(navigation, 'Promocodes')
+  })
+
   it('Change Password', () => {
     const authForgotRequest = jest.fn()
     const { getByText } = setup({ authForgotRequest })

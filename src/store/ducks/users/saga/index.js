@@ -511,14 +511,6 @@ function* usersGetTrendingUsersRequest(req) {
   }
 }
 
-const isCardSupported = (card) => {
-  try {
-    return LinkingService.deeplinkPath(card.action)
-  } catch (error) {
-    return false
-  }
-}
-
 /**
  *
  */
@@ -530,7 +522,7 @@ function* usersGetCardsRequest(req) {
 
     yield put(actions.usersGetCardsSuccess({ 
       payload: req.payload, 
-      data: selector(data).filter(isCardSupported), 
+      data: selector(data).filter(LinkingService.isCardSupported), 
       meta: metaSelector(data),
     }))
   } catch (error) {

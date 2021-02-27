@@ -8,6 +8,7 @@ export const initialState = {
     items: [],
   },
   contactsInvite: {
+    status: 'idle',
     invited: {},
     requested: {},
   },
@@ -45,6 +46,7 @@ const contactsGetFailure = (state) =>
 const contactsInviteRequest = (state, action) =>
   update(state, {
     contactsInvite: {
+      status: { $set: 'loading' },
       requested: { $merge: { [action.payload.contactId]: true } },
     },
   })
@@ -52,6 +54,7 @@ const contactsInviteRequest = (state, action) =>
 const contactsInviteSuccess = (state, action) =>
   update(state, {
     contactsInvite: {
+      status: { $set: 'success' },
       invited: { $merge: { [action.payload.contactId]: true } },
       requested: { $unset: [action.payload.contactId] },
     },
@@ -60,14 +63,8 @@ const contactsInviteSuccess = (state, action) =>
 const contactsInviteFailure = (state, action) =>
   update(state, {
     contactsInvite: {
+      status: { $set: 'failure' },
       requested: { $unset: [action.meta.contactId] },
-    },
-  })
-
-const contactsInviteIdle = (state) =>
-  update(state, {
-    contactsInvite: {
-      requested: { $set: initialState.contactsInvite.requested },
     },
   })
 
@@ -80,7 +77,6 @@ export default handleActions(
     [constants.CONTACTS_INVITE_REQUEST]: contactsInviteRequest,
     [constants.CONTACTS_INVITE_SUCCESS]: contactsInviteSuccess,
     [constants.CONTACTS_INVITE_FAILURE]: contactsInviteFailure,
-    [constants.CONTACTS_INVITE_IDLE]: contactsInviteIdle,
 
     [constants.CONTACTS_FOLLOW_REQUEST]: contactsInviteRequest,
     [constants.CONTACTS_FOLLOW_SUCCESS]: contactsInviteSuccess,

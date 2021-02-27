@@ -24,7 +24,7 @@ const InviteFriendsSuccess = ({ t, theme }) => {
           <View style={styling.info}>
             <DiamondHeaderIcon fill={theme.colors.text} />
           </View>
-          <Text style={styling.headingTitle}>{t('Congratulation!')}</Text>
+          <Text style={styling.headingTitle}>{t('Congratulations!')}</Text>
           <Text style={styling.headingSubtitle}>{t('You\'ve got free REAL Diamond')}</Text>
         </View>
 
