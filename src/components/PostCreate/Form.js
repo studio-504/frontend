@@ -218,8 +218,6 @@ const FormWrapper = ({
       imageFormat: path(['imageFormat'])(cameraCapture),
       originalFormat: path(['originalFormat'])(cameraCapture),
       originalMetadata: path(['originalMetadata'])(cameraCapture),
-      creationDate: path(['creationDate'])(cameraCapture),
-      modificationDate: path(['modificationDate'])(cameraCapture),
       crop: path(['crop'])(cameraCapture),
     }}
     validationSchema={formSchema}
