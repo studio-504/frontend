@@ -75,7 +75,15 @@ const Feed = ({
   const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />
   const renderFooter = () => isEmpty ? null : scroll.loadingmore ? renderActivityIndicator() : renderBookmark()
   const renderLoader = () => scroll.refreshing ? renderActivityIndicator() : null
-  const renderEmpty = () => isEmpty ? <Placeholder /> : renderLoader()
+  const renderEmpty = () =>
+    isEmpty ? (
+      <View>
+        <Placeholder />
+        {renderBookmark()}
+      </View>
+    ) : (
+      renderLoader()
+    )
 
   return (
     <View testID={testIDs.root} style={styling.root}>
@@ -83,7 +91,6 @@ const Feed = ({
         ref={feedRef}
         keyExtractor={(item) => item.postId}
         data={data}
-        contentContainerStyle={isEmpty ? styling.emptyContainer : null}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={15}
         scrollEventThrottle={500}
@@ -113,9 +120,6 @@ const styles = (theme) =>
     },
     loading: {
       paddingVertical: 16,
-    },
-    emptyContainer: {
-      flex: 1,
     },
   })
 
