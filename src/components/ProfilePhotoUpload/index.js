@@ -17,7 +17,7 @@ const ProfilePhotoUpload = ({ t, handleClose, activeUpload, usersEditProfile }) 
       <View style={styling.component}>
         <AuthHeaderTemplate
           title={t('Add Profile Picture')}
-          subtitle={t('Add an Unmodified Profile Picture. Our AI detects photoshop and filters')}
+          subtitle={t('Add an Unmodified Profile Picture. \n The only thing you have to change, \nis nothing at all!')}
         />
 
         <View style={styling.content}>

@@ -11,7 +11,7 @@ export default {
     },
     VERIFICATION_FAILED: {
       code: 'VERIFICATION_FAILED',
-      text: 'Verification failed. Please add an unmodified profile picture. Our AI detects photoshop and filters',
+      text: 'Please add an unmodified profile picture',
     },
   },
   [constants.USERS_DELETE_AVATAR_FAILURE]: {

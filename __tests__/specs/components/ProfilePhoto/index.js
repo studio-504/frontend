@@ -35,7 +35,7 @@ describe('Profile Picture screen', () => {
     const { getByText } = setup()
 
     getByText('Add an Unmodified Profile Picture')
-    getByText('Our AI detects photoshop & filters')
+    getByText('The only thing you have to change, is nothing at all!')
 
     expect(CircleAvatar).toHaveBeenCalled()
   })
