@@ -75,7 +75,7 @@ const Header = ({ t, post }) => {
             onPress={navigationActions.navigateVerification(navigation, { actionType: 'BACK' })}
             style={styling.verification}
           >
-            <Caption style={styling.verificationStatus}>{t('unverified')}</Caption>
+            <Caption style={styling.verificationStatus}>{t('unauthenticated')}</Caption>
           </TouchableOpacity>
         ) : null}
       </View>
