@@ -54,7 +54,7 @@ const Verification = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('In-app Camera')}</Text>
             <Text style={styling.subheadingSubtitle}>
-              {t('Photos/Videos taken inside this app are always verified & boosted towards the top of trending')}
+              {t('Photos/Videos taken inside this app are always authenticated & boosted towards the top of trending')}
             </Text>
           </View>
         </View>

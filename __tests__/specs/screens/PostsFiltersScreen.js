@@ -49,8 +49,8 @@ describe('PostsFiltersScreen', () => {
   }
 
   it('toggle Verified/Unverified', () => {
-    testFilter({ name: 'Verified', filters: { isVerified: true, viewedStatus: undefined } })
-    testFilter({ name: 'Unverified', filters: { isVerified: false, viewedStatus: undefined } })
+    testFilter({ name: 'Authenticated', filters: { isVerified: true, viewedStatus: undefined } })
+    testFilter({ name: 'Unauthenticated', filters: { isVerified: false, viewedStatus: undefined } })
   })
 
   it('toggle Viewed/Unviewed', () => {
@@ -61,7 +61,7 @@ describe('PostsFiltersScreen', () => {
   it('clear all', () => {
     const { getByText } = setup()
 
-    fireEvent.press(getByText('Verified'))
+    fireEvent.press(getByText('Authenticated'))
     fireEvent.press(getByText('Viewed'))
     fireEvent.press(getByText('Clear All'))
     expect(navigation.popToTop).not.toHaveBeenCalled()
