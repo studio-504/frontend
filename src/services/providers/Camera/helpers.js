@@ -43,7 +43,7 @@ const originalMetadata = snappedPhoto => ({
   ...snappedPhoto.exif,
   creationDate: snappedPhoto.creationDate,
   modificationDate: snappedPhoto.modificationDate,
-  hasModification: snappedPhoto.hasModification,
+  adjustmentData: snappedPhoto.adjustmentData,
 })
 
 export const requestPayload = (type = 'gallery') => (state, snappedPhoto, croppedPhoto) => ({
