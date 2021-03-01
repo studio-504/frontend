@@ -86,7 +86,7 @@ const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, ro
           />
           <View style={styling.bottomSpacing} />
           <Caption style={styling.bottomSpacing}>
-            {t('Prove your post is verified by sharing a link to your REAL profile in it\'s description')}
+            {t('Prove your post is authenticated by sharing a link to your REAL profile in it\'s description')}
           </Caption>
           <View style={styling.bottomSpacing} />
         </View>
@@ -105,7 +105,7 @@ const PostShare = ({ t, theme, postsSingleGet, postsShare, postsShareRequest, ro
           />
           <View style={styling.bottomSpacing} />
           <Caption style={styling.bottomSpacing}>
-            {t('Prove your post is verified by sharing a link to your REAL profile in it\'s description')}
+            {t('Prove your post is authenticated by sharing a link to your REAL profile in it\'s description')}
           </Caption>
         </View>
       </ScrollView>

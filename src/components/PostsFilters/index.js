@@ -48,8 +48,8 @@ const PostsFilters = ({ t, theme, handleClose, handleFilterChange, initialValues
             onChange={setVerified}
             options={[
               { label: t('All'), value: OPTIONS.ALL },
-              { label: t('Verified'), value: OPTIONS.VERIFIED },
-              { label: t('Unverified'), value: OPTIONS.NOT_VERIFIED },
+              { label: t('Authenticated'), value: OPTIONS.VERIFIED },
+              { label: t('Unauthenticated'), value: OPTIONS.NOT_VERIFIED },
             ]}
           />
           <ToggleButton

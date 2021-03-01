@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 7946f78..f03f3a0 100644
+index 7946f78..0581f6d 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 @@ -215,7 +215,7 @@ - (void)imagePickerController:(UIImagePickerController *)picker didFinishPicking
@@ -158,7 +158,7 @@ index 7946f78..f03f3a0 100644
  
      if (image == nil) {
          [viewController dismissViewControllerAnimated:YES completion:[self waitAnimationEnd:^{
-@@ -738,13 +761,14 @@ - (void) processSingleImagePick:(UIImage*)image withExif:(NSDictionary*) exif wi
+@@ -738,6 +761,7 @@ - (void) processSingleImagePick:(UIImage*)image withExif:(NSDictionary*) exif wi
      } else {
          ImageResult *imageResult = [self.compression compressImage:[image fixOrientation]  withOptions:self.options];
          NSString *filePath = [self persistFile:imageResult.data];
@@ -166,14 +166,6 @@ index 7946f78..f03f3a0 100644
          if (filePath == nil) {
              [viewController dismissViewControllerAnimated:YES completion:[self waitAnimationEnd:^{
                  self.reject(ERROR_CANNOT_SAVE_IMAGE_KEY, ERROR_CANNOT_SAVE_IMAGE_MSG, nil);
-             }]];
-             return;
-         }
--
-+// TODO
-         // Wait for viewController to dismiss before resolving, or we lose the ability to display
-         // Alert.alert in the .then() handler.
-         [viewController dismissViewControllerAnimated:YES completion:[self waitAnimationEnd:^{
 @@ -757,11 +781,13 @@ - (void) processSingleImagePick:(UIImage*)image withExif:(NSDictionary*) exif wi
                                               withHeight:imageResult.height
                                                 withMime:imageResult.mime

@@ -39,7 +39,7 @@ const ProfilePhotoGrid = ({
       }
     >
       <View style={styling.bookmark}>
-        <Subheading style={styling.subtitle}>{t('Only Verified Posts Can Be Set as a Profile Picture')}</Subheading>
+        <Subheading style={styling.subtitle}>{t('Only Authenticated Posts Can Be Set as a Profile Picture')}</Subheading>
         <DefaultButton label={t('Trending Tips')} onPress={handleOpenVerification} mode="outlined" />
       </View>
       <GridComponent items={path(['data'])(usersImagePostsGet)}>
