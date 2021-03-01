@@ -17,7 +17,7 @@ describe('Verification Screen', () => {
     const { getByText } = setup()
 
     getByText('In-app Camera')
-    getByText('Photos/Videos taken inside this app are always verified & boosted towards the top of trending')
+    getByText('Photos/Videos taken inside this app are always authenticated & boosted towards the top of trending')
 
     getByText('Cropping/Rotating')
     getByText('Be sure to crop/rotate images within this app to ensure they pass verification.')

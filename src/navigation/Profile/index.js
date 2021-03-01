@@ -16,6 +16,7 @@ import TranslationScreen from 'screens/TranslationScreen'
 import SettingsScreen from 'screens/SettingsScreen'
 import PayoutScreen from 'screens/PayoutScreen'
 import PayoutsScreen from 'screens/PayoutsScreen'
+import PromocodesScreen from 'screens/PromocodeScreen'
 import ArchivedScreen from 'screens/ArchivedScreen'
 import DatingSettingsScreen from 'screens/DatingSettingsScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
@@ -85,6 +86,11 @@ const ProfileNavigator = () => {
         name="Payouts"
         component={PayoutsScreen}
         {...stackScreenPageProps({ options: { title: 'Creator Payouts' } })}
+      />
+      <Stack.Screen
+        name="Promocodes"
+        component={PromocodesScreen}
+        {...stackScreenPageProps({ options: { title: 'Promocodes' } })}
       />
       <Stack.Screen
         name="Archived"

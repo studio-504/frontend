@@ -17,6 +17,7 @@ import DiamondIcon from 'assets/svg/settings/Diamond'
 import ContactsIcon from 'assets/svg/settings/Contacts'
 import PasswordIcon from 'assets/svg/settings/Password'
 import DatingIcon from 'assets/svg/settings/Dating'
+import CouponIcon from 'assets/svg/settings/Coupon'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
 import ProfileDeleteComponent from 'components/Settings/ProfileDelete'
@@ -81,6 +82,11 @@ const Settings = ({
             label: t('Dating'),
             onPress: () => navigationActions.navigateDatingSettings(navigation)(),
             icon: <DatingIcon fill={theme.colors.text} />,
+          },
+          {
+            label: t('Enter Promo Code'),
+            onPress: () => navigationActions.navigatePromocodes(navigation)(),
+            icon: <CouponIcon fill={theme.colors.text} />,
           },
           {
             label: t('Follow & Invite Friends'),

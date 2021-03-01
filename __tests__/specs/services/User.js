@@ -24,4 +24,12 @@ describe('UserService', () => {
     expect(UserService.isUserAnonymous({ userStatus: undefined })).toBeFalsy()
     expect(UserService.isUserAnonymous({ userStatus: 'ANONYMOUS' })).toBeTruthy()
   })
+
+  it('isUserSubscribed', () => {
+    expect(UserService.isUserSubscribed()).toBeFalsy()
+    expect(UserService.isUserSubscribed(undefined)).toBeFalsy()
+    expect(UserService.isUserSubscribed({})).toBeFalsy()
+    expect(UserService.isUserSubscribed({ subscriptionLevel: undefined })).toBeFalsy()
+    expect(UserService.isUserSubscribed({ subscriptionLevel: 'DIAMOND' })).toBeTruthy()
+  })
 })

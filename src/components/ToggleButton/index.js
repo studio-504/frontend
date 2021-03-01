@@ -20,7 +20,9 @@ const ToggleButton = ({ theme, value, onChange, options }) => {
             onPress={() => onChange(item.value)}
             disabled={selected}
           >
-            <Text style={[styling.label, selected ? styling.selected : null]}>{item.label}</Text>
+            <Text style={[styling.label, selected ? styling.selected : null]} numberOfLines={1} ellipsizeMode="tail">
+              {item.label}
+            </Text>
           </TouchableOpacity>
         )
       })}
@@ -48,6 +50,7 @@ const styles = (theme, count) =>
       overflow: 'hidden',
       textAlign: 'center',
       paddingVertical: 8,
+      paddingHorizontal: 8,
     },
     selected: {
       backgroundColor: theme.colors.primary,

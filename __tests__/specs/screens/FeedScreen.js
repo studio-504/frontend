@@ -53,7 +53,7 @@ describe('FeedScreen', () => {
     })
 
     expect(queryByAccessibilityLabel('Empty State')).toBeTruthy()
-    expect(queryByAccessibilityLabel('Explore Page Banner')).toBeFalsy()
+    expect(queryByAccessibilityLabel('Explore Page Banner')).toBeTruthy()
     expect(queryByAccessibilityLabel('Loader')).toBeFalsy()
     expect(PostComponent).not.toHaveBeenCalled()
   })

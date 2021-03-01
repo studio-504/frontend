@@ -21,7 +21,7 @@ const About = ({
 }) => {
   const styling = styles(theme)
   const age = user.dateOfBirth ? dayjs().diff(user.dateOfBirth, 'year') : null
-  const title = [user.displayName, age].filter(i => i).join(', ')
+  const title = [user.displayName, age].filter(i => i).join(' ')
 
   return (
     <Animated.View style={styling.root}>
