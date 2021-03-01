@@ -47,10 +47,9 @@ const Placeholder = ({ t, theme }) => {
 const styles = (theme) =>
   StyleSheet.create({
     root: {
-      flex: 1,
-      justifyContent: 'center',
       paddingHorizontal: theme.spacing.base * 2,
-      marginBottom: 100,
+      paddingTop: 50,
+      paddingBottom: 60,
     },
     headerIcon: {
       alignItems: 'center',
