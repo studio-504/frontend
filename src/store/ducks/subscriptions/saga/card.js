@@ -1,3 +1,4 @@
+import * as Logger from 'services/Logger'
 import { call, put, take, fork } from 'redux-saga/effects'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
@@ -41,7 +42,7 @@ function* cardSubscription() {
       yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
       channel.close()
     } catch (error) {
-      // ignore
+      Logger.captureException(error)
     }
   }
 }

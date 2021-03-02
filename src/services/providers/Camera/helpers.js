@@ -39,13 +39,20 @@ export const cropperOptions = (state, snappedPhoto) => ({
 /**
  * graphql request object
  */
+const originalMetadata = snappedPhoto => ({
+  ...snappedPhoto.exif,
+  creationDate: snappedPhoto.creationDate,
+  modificationDate: snappedPhoto.modificationDate,
+  adjustmentData: snappedPhoto.adjustmentData,
+})
+
 export const requestPayload = (type = 'gallery') => (state, snappedPhoto, croppedPhoto) => ({
   uri: (snappedPhoto.uri || snappedPhoto.path).replace('file://', ''),
   preview: (croppedPhoto.path || croppedPhoto.path).replace('file://', ''),
   originalFormat: snappedPhoto.extension || 'jpg',
   imageFormat: snappedPhoto.format || 'JPEG',
   crop: formatCropCoordinates(croppedPhoto.cropRect),
-  originalMetadata: JSON.stringify(snappedPhoto.exif),
+  originalMetadata: JSON.stringify(originalMetadata(snappedPhoto)),
   takenInReal: type === 'camera',
   photoSize: state.photoSize,
 })

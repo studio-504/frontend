@@ -1,4 +1,4 @@
-import { call, put, takeLatest, getContext, select } from 'redux-saga/effects'
+import { call, put, takeLatest, select } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import omit from 'ramda/src/omit'
@@ -10,20 +10,23 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import * as selectors from 'store/ducks/posts/selectors'
 import { entitiesMerge } from 'store/ducks/entities/saga'
+import { TRENDING_GALLERY } from 'constants/Gallery'
+
+const { fetchLimit } = TRENDING_GALLERY
 
 /**
  *
  */
 export function* handlePostsGetTrendingPostsRequest(payload = {}, extraData = []) {
   const filters = yield select(selectors.postsGetTrendingPostsFilters)
-  const api = yield call(queryService.apiRequest, queries.trendingPosts, { ...payload, ...filters })
+  const api = yield call(queryService.apiRequest, queries.trendingPosts, { limit: fetchLimit, ...payload, ...filters })
   const dataSelector = path(['data', 'trendingPosts', 'items'])
   const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
   
   const data = [...extraData, ...dataSelector(api)]
   const meta = metaSelector(api)
 
-  if (data.length < 60 && meta.nextToken) {
+  if (data.length < fetchLimit && meta.nextToken) {
     return yield call(handlePostsGetTrendingPostsRequest, { ...payload, ...meta }, data)
   }
 
@@ -49,26 +52,22 @@ export function* postsGetTrendingPostsRequestData(req, api) {
 }
 
 export function* postsGetTrendingPostsRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield call(handlePostsGetTrendingPostsRequest, req.payload)
     const next = yield call(postsGetTrendingPostsRequestData, req, data)
     yield put(actions.postsGetTrendingPostsSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetTrendingPostsFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetTrendingPostsFailure(error))
   }
 }
 
 export function* postsGetTrendingPostsMoreRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield handlePostsGetTrendingPostsRequest(req.payload)
     const next = yield postsGetTrendingPostsRequestData(req, data)
     yield put(actions.postsGetTrendingPostsMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetTrendingPostsMoreFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetTrendingPostsMoreFailure(error, req.payload))
   }
 }
 

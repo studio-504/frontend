@@ -29,14 +29,6 @@ const userPayload = {
   expires_at: 'expires_at',
 }
 
-const successPayload = {
-  message: {
-    code: 'GENERIC',
-    text: 'Successfully signed with Apple',
-    nativeError: '',
-  },
-}
-
 const AwsAuth = { federatedSignIn: jest.fn() }
 federatedAppleSignin.mockResolvedValue(applePayload)
 AwsAuth.federatedSignIn.mockResolvedValue(true)
@@ -79,7 +71,7 @@ describe('authSigninApple', () => {
           .call(federatedAppleSignin)
           .call([queryService, 'apiRequest'], queries.createAnonymousUser)
           .put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))
-          .put(actions.authSigninAppleSuccess(successPayload))
+          .put(actions.authSigninAppleSuccess())
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowSuccess())
@@ -100,7 +92,7 @@ describe('authSigninApple', () => {
         })
 
         await setupSaga()
-          .put(actions.authSigninAppleSuccess(successPayload))
+          .put(actions.authSigninAppleSuccess())
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowSuccess())
@@ -119,11 +111,7 @@ describe('authSigninApple', () => {
         })
 
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: { code: 'GENERIC', text: 'Failed to sign with Apple', nativeError },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -136,11 +124,7 @@ describe('authSigninApple', () => {
         queryService.apiRequest.mockResolvedValue(true)
 
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: { code: 'GENERIC', text: 'Failed to sign with Apple', nativeError },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -148,15 +132,7 @@ describe('authSigninApple', () => {
 
       it('AUTH_FLOW_FAILURE', async () => {
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError: new Error('Failed to obtain flow'),
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(new Error('Failed to obtain flow')))
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowFailure())
@@ -180,7 +156,7 @@ describe('authSigninApple', () => {
         .call(validateUserExistance, userPayload)
         .not.call([queryService, 'apiRequest'], queries.createAnonymousUser)
         .put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))
-        .put(actions.authSigninAppleSuccess(successPayload))
+        .put(actions.authSigninAppleSuccess())
 
         .dispatch(actions.authSigninAppleRequest())
         .dispatch(actions.authFlowSuccess())
@@ -201,15 +177,7 @@ describe('authSigninApple', () => {
         await expectSaga(testAsRootSaga(authSigninApple))
           .provide([[getContext('AwsAuth'), AwsAuth]])
 
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError,
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(nativeError))
 
           .dispatch(actions.authSigninAppleRequest())
           .silentRun()
@@ -217,15 +185,7 @@ describe('authSigninApple', () => {
 
       it('AUTH_FLOW_FAILURE', async () => {
         await setupSaga()
-          .put(
-            actions.authSigninAppleFailure({
-              message: {
-                code: 'GENERIC',
-                text: 'Failed to sign with Apple',
-                nativeError: new Error('Failed to obtain flow'),
-              },
-            }),
-          )
+          .put(actions.authSigninAppleFailure(new Error('Failed to obtain flow')))
 
           .dispatch(actions.authSigninAppleRequest())
           .dispatch(actions.authFlowFailure())

@@ -1,4 +1,4 @@
-import { put, getContext } from 'redux-saga/effects'
+import { put } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
@@ -22,14 +22,12 @@ function* usersGetProfileSelfRequestData(api) {
 }
 
 function* usersGetProfileSelfRequest() {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.self)
     const next = yield usersGetProfileSelfRequestData(data)
     yield put(actions.usersGetProfileSelfSuccess({ data: next.data })) 
   } catch (error) {
-    yield put(actions.usersGetProfileSelfFailure({ message: errorWrapper(error) }))
+    yield put(actions.usersGetProfileSelfFailure(error))
   }
 }
 

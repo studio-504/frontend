@@ -5,13 +5,12 @@ import * as constants from 'store/ducks/contacts/constants'
 export const initialState = {
   contactsGet: {
     status: 'idle',
-    error: '',
     items: [],
   },
   contactsInvite: {
+    status: 'idle',
     invited: {},
     requested: {},
-    error: '',
   },
 }
 
@@ -22,7 +21,6 @@ const contactsGetRequest = (state) =>
   update(state, {
     contactsGet: {
       status: { $set: 'loading' },
-      error: { $set: initialState.contactsGet.error },
     },
   })
 
@@ -34,11 +32,10 @@ const contactsGetSuccess = (state, action) =>
     },
   })
 
-const contactsGetFailure = (state, action) =>
+const contactsGetFailure = (state) =>
   update(state, {
     contactsGet: {
       status: { $set: 'failure' },
-      error: { $set: action.payload.message },
       items: { $set: initialState.contactsGet.items },
     },
   })
@@ -49,14 +46,15 @@ const contactsGetFailure = (state, action) =>
 const contactsInviteRequest = (state, action) =>
   update(state, {
     contactsInvite: {
+      status: { $set: 'loading' },
       requested: { $merge: { [action.payload.contactId]: true } },
-      error: { $set: initialState.contactsInvite.error },
     },
   })
 
 const contactsInviteSuccess = (state, action) =>
   update(state, {
     contactsInvite: {
+      status: { $set: 'success' },
       invited: { $merge: { [action.payload.contactId]: true } },
       requested: { $unset: [action.payload.contactId] },
     },
@@ -65,16 +63,8 @@ const contactsInviteSuccess = (state, action) =>
 const contactsInviteFailure = (state, action) =>
   update(state, {
     contactsInvite: {
-      requested: { $unset: [action.payload.contactId] },
-      error: { $set: action.payload.message },
-    },
-  })
-
-const contactsInviteIdle = (state) =>
-  update(state, {
-    contactsInvite: {
-      requested: { $set: initialState.contactsInvite.requested },
-      error: { $set: initialState.contactsInvite.error },
+      status: { $set: 'failure' },
+      requested: { $unset: [action.meta.contactId] },
     },
   })
 
@@ -87,11 +77,10 @@ export default handleActions(
     [constants.CONTACTS_INVITE_REQUEST]: contactsInviteRequest,
     [constants.CONTACTS_INVITE_SUCCESS]: contactsInviteSuccess,
     [constants.CONTACTS_INVITE_FAILURE]: contactsInviteFailure,
-    [constants.CONTACTS_INVITE_IDLE]: contactsInviteIdle,
 
     [constants.CONTACTS_FOLLOW_REQUEST]: contactsInviteRequest,
     [constants.CONTACTS_FOLLOW_SUCCESS]: contactsInviteSuccess,
     [constants.CONTACTS_FOLLOW_FAILURE]: contactsInviteFailure,
   },
   initialState,
-)
+) 

@@ -2,7 +2,7 @@
 import { expectSaga } from 'redux-saga-test-plan'
 import { getContext } from 'redux-saga/effects'
 import * as matchers from 'redux-saga-test-plan/matchers'
-import subscriptionNotificationStart from 'store/ducks/subscriptions/saga/notifications'
+import notificationSubscription from 'store/ducks/subscriptions/saga/notifications'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
@@ -17,7 +17,7 @@ subscription.subscribe.mockReturnValue({ _state: 'ready', unsubscribe })
 AwsAPI.graphql.mockReturnValue(subscription)
 
 const createSaga = (state) => {
-  return expectSaga(subscriptionNotificationStart)
+  return expectSaga(notificationSubscription)
     .provide([
       [getContext('AwsAPI'), AwsAPI],
       [matchers.call.fn(AwsAPI.graphql), subscription],
@@ -25,7 +25,7 @@ const createSaga = (state) => {
     .withState(state)
 }
 
-describe('subscriptionNotificationStart', () => {
+describe('notificationSubscription', () => {
   afterEach(() => {
     AwsAPI.graphql.mockClear()
     subscription.subscribe.mockClear()

@@ -1,4 +1,5 @@
-import { all, takeEvery } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects'
+import appState from 'store/ducks/appState/saga'
 import camera from 'store/ducks/camera/saga'
 import albums from 'store/ducks/albums/saga'
 import chat from 'store/ducks/chat/saga'
@@ -6,7 +7,11 @@ import cache from 'store/ducks/cache/saga'
 import subscriptions from 'store/ducks/subscriptions/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
+import promocodes from 'store/ducks/promocodes/saga'
+import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBonusRequest'
 import snackbars from 'store/ducks/snackbars/saga'
+import updates from 'store/ducks/updates/saga'
+import themes from 'store/ducks/themes/saga'
 
 import users from 'store/ducks/users/saga'
 
@@ -39,35 +44,24 @@ import postsShare from 'store/ducks/posts/saga/postsShare'
 import postsReportPostViews from 'store/ducks/posts/saga/postsReportPostViews'
 import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
-import * as Logger from 'services/Logger'
-import path from 'ramda/src/path'
-
-const captureErrors = (action) => {
-  const nativeError = path(['payload', 'message', 'nativeError'])(action)
-
-  Logger.withScope(scope => {
-    scope.setExtra('action', JSON.stringify(action))
-
-    if (nativeError === 'string') {
-      Logger.captureMessage(nativeError)
-    } else {
-      Logger.captureException(nativeError)
-    }
-  })
-}
-
 export default function* rootSaga(persistor) {
   yield all([]
+    .concat(snackbars())
+    .concat(appState())
     .concat(camera())
     .concat(albums())
     .concat(chat())
+    .concat(themes())
 
+    .concat(updates())
     .concat(cache())
     .concat(subscriptions())
     .concat(purchases())
     .concat(contacts())
+    .concat(contactsGrantBonusRequest())
 
     .concat(users())
+    .concat(promocodes())
 
     .concat(authForgot())
     .concat(authSigninCognito(persistor))
@@ -95,11 +89,6 @@ export default function* rootSaga(persistor) {
     .concat(datingMatchedUsers())
     .concat(datingConfirmedUsers())
     .concat(datingMatchApprove())
-    .concat(datingMatchReject())
-
-    .concat(snackbars())
-    .concat([
-      takeEvery(action => /FAILURE$/.test(action.type), captureErrors),
-    ]),
+    .concat(datingMatchReject()),
   )
 }

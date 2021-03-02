@@ -1,21 +1,7 @@
 import { call, put, race, take, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
-
-class MissingCognitoTokenError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'MISSING_COGNITO_TOKEN_ERROR'
-  }
-}
-
-class UnauthorizedTokenError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'UNAUTHORIZED_TOKEN_ERROR'
-  }
-}
+import { MissingCognitoTokenError, UnauthorizedTokenError } from 'store/errors'
 
 /**
  * Fetch identity pool token
@@ -123,17 +109,9 @@ function* handleAuthTokenRequest(payload = {}) {
 function* authTokenRequest(req) {
   try {
     const { data, meta } = yield handleAuthTokenRequest(req.payload)
-    yield put(actions.authTokenSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authTokenSuccess({ data, meta }))
   } catch (error) {
-    yield put(actions.authTokenFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
-      data: {},
-      meta: { type: 'COGNITO_UNAUTHENTICATED' },
-    }))
+    yield put(actions.authTokenFailure(error, { type: 'COGNITO_UNAUTHENTICATED' }))
   }
 }
 

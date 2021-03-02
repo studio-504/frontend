@@ -4,22 +4,18 @@ import * as actions from 'store/ducks/posts/actions'
 import { testSaga } from 'redux-saga-test-plan'
 import * as queryService from 'services/Query'
 import * as selectors from 'store/ducks/posts/selectors'
+import { TRENDING_GALLERY } from 'constants/Gallery'
 
 jest.spyOn(queryService, 'apiRequest')
 
-const errorWrapper = (err) => err.message
- 
 describe('postsGetTrendingPostsSaga', () => {
-  const action = actions.postsGetTrendingPostsRequest({ limit: 100 })
+  const action = actions.postsGetTrendingPostsRequest()
   const data = { data: { trendingPosts: { items: [], nextToken: null } } }
   const next = { data: data.data.trendingPosts.items, payload: action.payload, meta: {} }
 
   it('successfully fetch trending posts', () => {
     testSaga(postsGetTrendingPostsSaga.postsGetTrendingPostsRequest, action)
       .next()
-      .getContext('errorWrapper')
-
-      .next(errorWrapper)
       .call(postsGetTrendingPostsSaga.handlePostsGetTrendingPostsRequest, action.payload)
 
       .next(data)
@@ -33,15 +29,12 @@ describe('postsGetTrendingPostsSaga', () => {
   })
 
   it('catch an error', () => {
-    const message = 'Error Message'
+    const error = new Error('Error Message')
 
     testSaga(postsGetTrendingPostsSaga.postsGetTrendingPostsRequest, action)
       .next()
-      .getContext('errorWrapper')
-
-      .next(errorWrapper)
-      .throw(new Error(message))
-      .put(actions.postsGetTrendingPostsFailure({ message, payload: action.payload }))
+      .throw(error)
+      .put(actions.postsGetTrendingPostsFailure(error))
 
       .next()
       .isDone()
@@ -49,7 +42,7 @@ describe('postsGetTrendingPostsSaga', () => {
 })
 
 describe('handlePostsGetTrendingPostsRequest saga', () => {
-  const filters = { isVerified: true, viewedStatus: 'VIEWED' }
+  const filters = { limit: TRENDING_GALLERY.fetchLimit, isVerified: true, viewedStatus: 'VIEWED' }
 
   afterEach(() => {
     queryService.apiRequest.mockClear()

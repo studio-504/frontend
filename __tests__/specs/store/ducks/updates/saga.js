@@ -1,9 +1,12 @@
 import { Alert, Linking, NativeModules } from 'react-native'
+import { expectSaga } from 'redux-saga-test-plan'
 import DeviceInfo from 'react-native-device-info'
 import Config from 'react-native-config'
-import * as Updates from 'services/Updates'
 import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
+import { testAsRootSaga } from 'tests/utils/helpers'
+import updates from 'store/ducks/updates/saga'
+import * as updatesActions from 'store/ducks/updates/actions'
 
 jest.mock('services/Query', () => ({ httpRequest: jest.fn() }))
 jest.mock('react-native-device-info', () => ({ getBundleId: jest.fn(), getVersion: jest.fn() }))
@@ -19,28 +22,16 @@ queryService.httpRequest.mockResolvedValue({
   json: () => ({ resultCount: 1, results: [{ version: '1.0.1' }] }),
 })
 
-describe('Updates service', () => {
+const setupSaga = () => expectSaga(testAsRootSaga(updates)).dispatch(updatesActions.updatesCheckRequest()).silentRun()
+
+describe('Updates saga', () => {
   afterEach(() => {
     Alert.alert.mockClear()
     Linking.openURL.mockClear()
   })
 
-  it('isNewerThan', () => {
-    expect(Updates.isNewerThan('1', '1')).toBeFalsy()
-    expect(Updates.isNewerThan('1.0', '1.0')).toBeFalsy()
-    expect(Updates.isNewerThan('1.0.0', '1.0.0')).toBeFalsy()
-    expect(Updates.isNewerThan('1.0.0', '1.0.1')).toBeFalsy()
-    expect(Updates.isNewerThan('1.0.0', '1.1.0')).toBeFalsy()
-    expect(Updates.isNewerThan('1.0.0', '2.0.0')).toBeFalsy()
-
-    expect(Updates.isNewerThan('2', '1.0.0')).toBeTruthy()
-    expect(Updates.isNewerThan('1.0.1', '1.0.0')).toBeTruthy()
-    expect(Updates.isNewerThan('1.1.0', '1.0.0')).toBeTruthy()
-    expect(Updates.isNewerThan('2.0.0', '1.0.0')).toBeTruthy()
-  })
-
   it('show update alert', async () => {
-    await Updates.versionCheck()
+    await setupSaga()
 
     expect(Alert.alert).toHaveBeenCalled()
     const [title, desc, actions] = Alert.alert.mock.calls[0]
@@ -59,7 +50,7 @@ describe('Updates service', () => {
   describe('should not show alert when', () => {
     it('env development', async () => {
       Config.ENVIRONMENT = 'development'
-      await Updates.versionCheck()
+      await setupSaga()
 
       expect(Alert.alert).not.toHaveBeenCalled()
       Config.ENVIRONMENT = 'production'
@@ -70,7 +61,7 @@ describe('Updates service', () => {
         json: () => ({ resultCount: 1, results: [{ version: '1.0.0' }] }),
       })
 
-      await Updates.versionCheck()
+      await setupSaga()
 
       expect(Alert.alert).not.toHaveBeenCalled()
     })
@@ -81,7 +72,7 @@ describe('Updates service', () => {
         json: () => ({ resultCount: 1, results: [{ version: '1.0.0' }] }),
       })
 
-      await Updates.versionCheck()
+      await setupSaga()
 
       expect(Alert.alert).not.toHaveBeenCalled()
     })
@@ -89,7 +80,7 @@ describe('Updates service', () => {
     it('fetch app info failure', async () => {
       const error = new Error('Itunes store error')
       queryService.httpRequest.mockRejectedValueOnce(error)
-      await Updates.versionCheck()
+      await setupSaga()
 
       expect(Alert.alert).not.toHaveBeenCalled()
       expect(Logger.captureException).toHaveBeenCalledWith(error)

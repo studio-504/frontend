@@ -61,12 +61,10 @@ describe('authForgot', () => {
 
   describe('failure', () => {
     it('UserNotFoundException', async () => {
-      AwsAuth.forgotPassword.mockRejectedValueOnce({ code: 'UserNotFoundException' })
-      const message = {
-        code: 'USER_NOT_FOUND',
-        text: 'User does not exist',
-        nativeError: { code: 'UserNotFoundException' },
-      }
+      const error = new Error('User does not exist')
+      error.code = 'UserNotFoundException'
+
+      AwsAuth.forgotPassword.mockRejectedValueOnce(error)
 
       await expectSaga(testAsRootSaga(authForgot))
         .provide([
@@ -74,16 +72,15 @@ describe('authForgot', () => {
           [getContext('ReactNavigationRef'), navigation],
         ])
 
-        .put(actions.authForgotFailure({ message }))
+        .put(actions.authForgotFailure(error, { messageCode: 'USER_NOT_FOUND' }))
 
         .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
     })
 
     it('Generic', async () => {
-      const nativeError = new Error('Error')
-      AwsAuth.forgotPassword.mockRejectedValueOnce(nativeError)
-      const message = { code: 'GENERIC', text: 'Failed to reset the password', nativeError }
+      const error = new Error('Error')
+      AwsAuth.forgotPassword.mockRejectedValueOnce(error)
 
       await expectSaga(testAsRootSaga(authForgot))
         .provide([
@@ -91,7 +88,7 @@ describe('authForgot', () => {
           [getContext('ReactNavigationRef'), navigation],
         ])
 
-        .put(actions.authForgotFailure({ message }))
+        .put(actions.authForgotFailure(error))
 
         .dispatch(actions.authForgotRequest({ username: email, email }))
         .silentRun()
@@ -112,12 +109,7 @@ describe('authForgot', () => {
           [getContext('ReactNavigationRef'), navigation],
         ])
 
-        .put(
-          actions.authForgotConfirmSuccess({
-            message: { code: 'GENERIC', text: 'Successfully confirmed new password', nativeError: '' },
-            data: undefined,
-          }),
-        )
+        .put(actions.authForgotConfirmSuccess({ data: undefined }))
 
         .dispatch(actions.authForgotConfirmRequest(payload))
         .silentRun()
@@ -134,12 +126,11 @@ describe('authForgot', () => {
 
     describe('failure', () => {
       it('InvalidPasswordException', async () => {
-        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce({ code: 'InvalidPasswordException' })
-        const message = {
-          code: 'INVALID_PASSWORD',
-          text: 'Password did not conform with policy: Password must have uppercase-alpha-numeric-special characters',
-          nativeError: { code: 'InvalidPasswordException' },
-        }
+        const error = new Error(
+          'Password did not conform with policy: Password must have uppercase-alpha-numeric-special characters',
+        )
+        error.code = 'InvalidPasswordException'
+        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce(error)
 
         await expectSaga(testAsRootSaga(authForgot))
           .provide([
@@ -147,19 +138,17 @@ describe('authForgot', () => {
             [getContext('ReactNavigationRef'), navigation],
           ])
 
-          .put(actions.authForgotConfirmFailure({ message }))
+          .put(actions.authForgotConfirmFailure(error, { messageCode: 'INVALID_PASSWORD' }))
 
           .dispatch(actions.authForgotConfirmRequest(payload))
           .silentRun()
       })
 
       it('CodeMismatchException', async () => {
-        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce({ code: 'CodeMismatchException' })
-        const message = {
-          code: 'CODE_MISMATCH',
-          text: 'Invalid verification code provided',
-          nativeError: { code: 'CodeMismatchException' },
-        }
+        const error = new Error('Invalid verification code provided')
+        error.code = 'CodeMismatchException'
+
+        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce(error)
 
         await expectSaga(testAsRootSaga(authForgot))
           .provide([
@@ -167,20 +156,15 @@ describe('authForgot', () => {
             [getContext('ReactNavigationRef'), navigation],
           ])
 
-          .put(actions.authForgotConfirmFailure({ message }))
+          .put(actions.authForgotConfirmFailure(error, { messageCode: 'CODE_MISMATCH' }))
 
           .dispatch(actions.authForgotConfirmRequest(payload))
           .silentRun()
       })
 
       it('Generic', async () => {
-        const nativeError = new Error('Error')
-        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce(nativeError)
-        const message = {
-          code: 'GENERIC',
-          text: 'Failed to confirm new password',
-          nativeError,
-        }
+        const error = new Error('Error')
+        AwsAuth.forgotPasswordSubmit.mockRejectedValueOnce(error)
 
         await expectSaga(testAsRootSaga(authForgot))
           .provide([
@@ -188,7 +172,7 @@ describe('authForgot', () => {
             [getContext('ReactNavigationRef'), navigation],
           ])
 
-          .put(actions.authForgotConfirmFailure({ message }))
+          .put(actions.authForgotConfirmFailure(error))
 
           .dispatch(actions.authForgotConfirmRequest(payload))
           .silentRun()

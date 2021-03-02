@@ -26,13 +26,14 @@ const Membership = ({
   retryPurchase,
   handleContactUs,
   retryPurchaseRequest,
+  navigatePayouts,
+  navigateTheme,
 }) => {
   const styling = styles(theme)
-  const errorMessage = purchasesRequest.error || retryPurchase.error
+  const hasError = [purchasesRequest.status, retryPurchase.status].includes('failure')
 
   const renderRetry = () => (
     <>
-      <Text style={styling.errorText}>{errorMessage}</Text>
       <DefaultButton
         style={styling.tryAgainBtn}
         labelStyle={styling.labelStyle}
@@ -67,13 +68,6 @@ const Membership = ({
         loading={purchasesRequest.status === 'loading'}
         disabled={purchasesRequest.status === 'loading'}
       />
-      <Text style={styling.separateText}>{t('or')}</Text>
-      <DefaultButton
-        labelStyle={styling.labelStyle}
-        label={t('Get Free Diamond For Life')}
-        onPress={navigateInviteFriends}
-        mode="outlined"
-      />
     </>
   )
 
@@ -86,6 +80,7 @@ const Membership = ({
           </View>
           <Text style={styling.headingTitle}>{t('REAL Diamond')}</Text>
           <Text style={styling.headingSubtitle}>{t('Membership Perks')}</Text>
+          {hasError ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
         </View>
 
         <View style={styling.subheading}>
@@ -93,7 +88,12 @@ const Membership = ({
             <WalletIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Creator Payouts (coming soon)')}</Text>
+            <Text style={styling.subheadingTitle}>
+              <Text style={styling.link} onPress={navigatePayouts}>
+                {t('Creator Payouts')}
+              </Text>
+              {t(' (coming soon)')}
+            </Text>
             <Text style={styling.subheadingSubtitle}>{t('We pay you for each view received on posts')}</Text>
           </View>
         </View>
@@ -103,7 +103,7 @@ const Membership = ({
             <ThemesIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Profile Themes')}</Text>
+            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>{t('Profile Themes')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
           </View>
         </View>
@@ -149,7 +149,12 @@ const Membership = ({
         </View>
 
         <View style={styling.action}>
-          {errorMessage ? renderRetry() : isSubscribed ? renderUnsubscribe() : renderSubscribe()}
+          <DefaultButton
+            labelStyle={styling.labelStyle}
+            label={t('Get Free Diamond For Life')}
+            onPress={navigateInviteFriends}
+            mode="outlined"
+          />
         </View>
 
         <AuthTermsTemplate />
@@ -168,7 +173,7 @@ const styles = (theme) =>
       paddingBottom: 12,
     },
     heading: {
-      paddingHorizontal: 48,
+      paddingHorizontal: 24,
       paddingVertical: 24,
     },
     subheading: {
@@ -195,6 +200,7 @@ const styles = (theme) =>
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
       textAlign: 'center',
+      marginBottom: 24,
     },
     subheadingIcon: {
       paddingRight: 24,
@@ -212,6 +218,13 @@ const styles = (theme) =>
       fontWeight: '400',
       color: color(theme.colors.text).fade(0.4).string(),
     },
+    link: {
+      fontSize: 15,
+      paddingBottom: 6,
+      fontWeight: '500',
+      textDecorationLine: 'underline',
+      textDecorationColor: color(theme.colors.text).fade(0.4).string(),
+    },
     lastChild: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
@@ -228,13 +241,6 @@ const styles = (theme) =>
       fontWeight: '300',
       paddingBottom: 6,
       textAlign: 'center',
-    },
-    errorText: {
-      fontSize: 14,
-      fontWeight: '300',
-      paddingBottom: 6,
-      textAlign: 'center',
-      color: 'red',
     },
     unsubscribeBtnLabel: {
       color: theme.colors.text,
@@ -263,19 +269,18 @@ Membership.propTypes = {
   retryPurchaseRequest: PropTypes.func,
   purchasesRequest: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
   }),
   retryPurchase: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
   }),
   navigateInviteFriends: PropTypes.func,
+  navigatePayouts: PropTypes.func,
+  navigateTheme: PropTypes.func,
 }
 
 Membership.defaultProps = {
   isSubscribed: false,
   isSubmitting: false,
-  errorMessage: null,
 }
 
 export default withTranslation()(withTheme(Membership))

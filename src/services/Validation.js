@@ -12,7 +12,7 @@ import * as usersQueries from 'store/ducks/users/queries'
 /**
  * Constants
  */
-const ERRORS = {
+export const ERRORS = {
   dateOfBirthMonth: 'Month must be selected',
   dateOfBirthDay: 'Date must be selected',
   dateOfBirthYear: 'Year must be selected',
@@ -29,10 +29,11 @@ const ERRORS = {
   height: 'Height must be selected',
   minHeight: 'Height must be greater than 0',
   maxHeight: 'Height must be less than 10\'',
+  usernameReserve: 'Username is reserved',
 }
 
 export const MIN_HEIGHT = 1
-export const MAX_HEIGHT = 117
+export const MAX_HEIGHT = 84
 
 /**
  * Validators
@@ -71,7 +72,9 @@ export const username = Yup.string()
   .matches(/^[a-zA-Z0-9_.]*$/, 'username must only contain letters & numbers')
   .trim()
   .required()
-  .test('usernameReserve', 'username is reserved', remoteUsernameValidation())
+
+export const uniqUsername = username
+  .test('usernameReserve', ERRORS.usernameReserve, remoteUsernameValidation())
 
 export const email = Yup.string()
   .matches(/^\S*$/, ERRORS.noWhitespace)
@@ -156,6 +159,11 @@ export const height = Yup.number()
   .max(MAX_HEIGHT, ERRORS.maxHeight)
   .required(ERRORS.height)
 
+export const promocode = Yup.string()
+  .lowercase()
+  .trim()
+  .required()
+
 /**
  * Selectors
  */
@@ -166,6 +174,7 @@ export const getEmail = compose(trim, toLower, pathOr('', ['email']))
 export const getUsername = compose(trim, toLower, pathOr('', ['username']))
 export const getPassword = compose(trim, pathOr('', ['password']))
 export const getConfirmationCode = compose(onlyNumbers, trim, toLower, pathOr('', ['confirmationCode']))
+export const getPromocode = compose(trim, toLower, pathOr('', ['code']))
 
 /**
  * Input Props
@@ -186,6 +195,12 @@ export const getInputTypeProps = (type) => {
         textContentType: 'oneTimeCode',
         autoCompleteType: 'off',
         maxLength: 6,
+      }
+    case 'promocode':
+      return {
+        accessibilityLabel: 'promocode',
+        keyboardType: 'default',
+        textContentType: 'oneTimeCode',
       }
     case 'password':
       return {

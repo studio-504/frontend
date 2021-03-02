@@ -1,36 +1,21 @@
 import { call, put, takeLatest, spawn, getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as queries from 'store/ducks/auth/queries'
 import * as queryService from 'services/Query'
 import {
   saveAuthUserPersist,
   getAuthUserPersist,
 } from 'services/Auth'
-
 import * as normalizer from 'normalizer/schemas'
 import * as Logger from 'services/Logger'
 import path from 'ramda/src/path'
 import Config from 'react-native-config'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 import * as UserService from 'services/User'
+import { MissingUserAttributeError, GuestUserError } from 'store/errors'
 
 const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
-
-class MissingUserAttributeError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'MISSING_USER_ATTRIBUTEE_ERROR'
-  }
-}
-
-class GuestUserError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.code = 'GUEST_USER_ERROR'
-  }
-}
 
 export function* handleAnonymousSignin(anonymousUser) {
   const AwsAuth = yield getContext('AwsAuth')
@@ -158,23 +143,9 @@ function* handleAuthDataRequest(payload = {}) {
 function* authDataRequest(req) {
   try {
     const { data, meta } = yield handleAuthDataRequest(req.payload)
-    yield put(actions.authDataSuccess({
-      message: errors.getMessagePayload(constants.AUTH_DATA_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authDataSuccess({ data, meta }))
   } catch (error) {
-    const primaryClientError = queryService.getPrimaryClientError(error)
-      
-    if (primaryClientError && primaryClientError.message.includes('User does not exist')) {
-      yield put(actions.authDataFailure({
-        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'USER_DOES_NOT_EXIST', error),
-      }))
-    } else {
-      yield put(actions.authDataFailure({
-        message: errors.getMessagePayload(constants.AUTH_DATA_FAILURE, 'GENERIC', error),
-      }))
-    }
+    yield put(actions.authDataFailure(error))
   }
 }
 

@@ -25,7 +25,7 @@ const contactsGetRequest = jest.fn()
 const navigation = { navigate: jest.fn() }
 const requiredProps = {
   contactsGetRequest,
-  contactsGet: { status: 'idle', error: '', items: [] },
+  contactsGet: { status: 'idle', items: [] },
   contactsInvite: { invited: {} },
   navigation,
 }
@@ -97,12 +97,10 @@ describe('Invite Friends Component', () => {
   })
 
   it('error state', () => {
-    const error = 'Error'
-    const contactsGet = { status: 'failure', error, items: [] }
+    const contactsGet = { status: 'failure', items: [] }
     const openSettings = jest.fn()
     const { queryByText } = setup({ contactsGet, openSettings })
 
-    expect(queryByText(error)).toBeTruthy()
     expect(queryByText('Check Contacts')).toBeFalsy()
 
     fireEvent.press(queryByText('Open Settings'))
@@ -112,7 +110,7 @@ describe('Invite Friends Component', () => {
   })
 
   it('loading state', () => {
-    const contactsGet = { status: 'loading', error: '', items: [] }
+    const contactsGet = { status: 'loading', items: [] }
     const { queryByText } = setup({ contactsGet })
 
     expect(queryByText('Check Contacts')).toBeDisabled()
@@ -121,7 +119,7 @@ describe('Invite Friends Component', () => {
   })
 
   it('empty state', () => {
-    const contactsGet = { status: 'success', error: '', items: [] }
+    const contactsGet = { status: 'success', items: [] }
     const { queryByText } = setup({ contactsGet })
 
     expect(queryByText('Open Settings')).toBeFalsy()
@@ -132,7 +130,7 @@ describe('Invite Friends Component', () => {
 
   describe('success state', () => {
     it('render rows', () => {
-      const contactsGet = { status: 'success', error: '', items }
+      const contactsGet = { status: 'success', items }
       const { queryByText, queryAllByTestId } = setup({ contactsGet })
 
       expect(queryByText('Open Settings')).toBeFalsy()
@@ -158,7 +156,7 @@ describe('Invite Friends Component', () => {
     describe('Invite a contact', () => {
       it('invite callback', () => {
         const contactsInviteRequest = jest.fn()
-        const contactsGet = { status: 'success', error: '', items }
+        const contactsGet = { status: 'success', items }
         const { queryAllByTestId } = setup({ contactsGet, contactsInviteRequest })
         const $rows = queryAllByTestId(testIDs.row)
 
@@ -207,7 +205,7 @@ describe('Invite Friends Component', () => {
           emails: ['test@email.com'],
           phones: [],
         }
-        const contactsGet = { status: 'success', error: '', items: [user] }
+        const contactsGet = { status: 'success', items: [user] }
         const { getByText } = setup({ contactsGet, contactsInviteRequest })
 
         contactsInviteRequest.mockClear()
@@ -224,7 +222,7 @@ describe('Invite Friends Component', () => {
       })
 
       it('invited items', () => {
-        const contactsGet = { status: 'success', error: '', items }
+        const contactsGet = { status: 'success', items }
         const { queryAllByTestId } = setup({ contactsGet, contactsInvite })
         const $rows = queryAllByTestId(testIDs.row)
 
@@ -239,7 +237,6 @@ describe('Invite Friends Component', () => {
       it('render rows', () => {
         const contactsGet = {
           status: 'success',
-          error: '',
           items: [
             {
               contactId: '1',

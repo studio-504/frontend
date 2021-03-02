@@ -1,7 +1,6 @@
 import { put, call, select, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
@@ -12,12 +11,12 @@ function* handleAuthPrefetchCommon() {
   /**
    * 1. Feed
    */
-  yield put(postsActions.postsFeedGetRequest({ limit: 20 }))
+  yield put(postsActions.postsFeedGetRequest())
 
   /**
    * 2. Trending
    */
-  yield put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
+  yield put(postsActions.postsGetTrendingPostsRequest())
 
   /**
    * 3. In-app notification cards
@@ -53,9 +52,10 @@ function* handleAuthPrefetchAuthenticated() {
    * Data which is important to load but not belongs to home screen
    * Sequential approach wasn't used cuz some calls are expensive and not top priority
    */
-  
   yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
   yield put(chatActions.chatGetChatsRequest())
+  yield put(postsActions.postsGetUnreadCommentsRequest())
+  yield put(usersActions.usersGetProfileSelfRequest())
 }
 
 /**
@@ -79,13 +79,9 @@ function* handleAuthPrefetchRequest() {
 function* authPrefetchRequest(req) {
   try {
     yield handleAuthPrefetchRequest(req.payload)
-    yield put(actions.authPrefetchSuccess({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_SUCCESS, 'GENERIC'),
-    }))
+    yield put(actions.authPrefetchSuccess())
   } catch (error) {
-    yield put(actions.authPrefetchFailure({
-      message: errors.getMessagePayload(constants.AUTH_PREFETCH_FAILURE, 'GENERIC', error),
-    }))
+    yield put(actions.authPrefetchFailure(error))
   }
 }
 

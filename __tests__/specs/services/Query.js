@@ -4,7 +4,7 @@ import * as AwsAPI from '@aws-amplify/api'
 import * as queryService from 'services/Query'
 import { sagaWithError, sleep } from 'tests/utils/helpers'
 import * as authActions from 'store/ducks/auth/actions'
-import { CancelRequestOnSignoutError } from 'services/Errors'
+import { CancelRequestOnSignoutError } from 'store/errors'
 
 jest.mock('@aws-amplify/api', () => ({
   graphqlOperation: jest.fn(),
@@ -51,9 +51,7 @@ describe('Query service', () => {
   it('cancel request on signout', async () => {
     AwsAPI.graphql.mockReturnValueOnce(sleep())
 
-    const saga = sagaWithError(queryService.apiRequest, query, payload).assertThrow(
-      new CancelRequestOnSignoutError('Cancel request on signout'),
-    )
+    const saga = sagaWithError(queryService.apiRequest, query, payload).assertThrow(new CancelRequestOnSignoutError())
 
     await expectSaga(saga)
       .provide([[getContext('AwsAPI'), AwsAPI]])

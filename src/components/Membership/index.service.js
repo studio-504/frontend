@@ -6,6 +6,7 @@ import * as purchasesActions from 'store/ducks/purchases/actions'
 import * as purchasesConstants from 'store/ducks/purchases/constants'
 import * as purchasesSelectors from 'store/ducks/purchases/selectors'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as UserService from 'services/User'
 
 const MembershipService = ({ children }) => {
   const dispatch = useDispatch()
@@ -15,12 +16,14 @@ const MembershipService = ({ children }) => {
   const retryPurchase = useSelector(purchasesSelectors.retryPurchase)
 
   const subscription = { productId: purchasesConstants.PRIMARY_SUBSCRIPTION }
-  const isSubscribed = user.subscriptionLevel === purchasesConstants.SUBSCRIPTION_LEVEL.DIAMOND
+  const isSubscribed = UserService.isUserSubscribed(user)
   const requestSubscription = () => dispatch(purchasesActions.purchaseRequest(subscription))
   const retryPurchaseRequest = () => dispatch(purchasesActions.retryPurchaseRequest(subscription))
   const manageSubscriptions = () => Linking.openURL('https://apps.apple.com/account/subscriptions')
   const handleContactUs = () => Linking.openURL('mailto:support@real.app')
   const navigateInviteFriends = navigationActions.navigateInviteFriends(navigation)
+  const navigatePayouts = navigationActions.navigatePayouts(navigation)
+  const navigateTheme = () => navigationActions.navigateTheme(navigation)
 
   return children({
     isSubscribed,
@@ -31,6 +34,8 @@ const MembershipService = ({ children }) => {
     handleContactUs,
     retryPurchaseRequest,
     navigateInviteFriends,
+    navigatePayouts,
+    navigateTheme,
   })
 }
 

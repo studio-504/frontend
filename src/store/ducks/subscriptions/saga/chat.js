@@ -1,3 +1,4 @@
+import * as Logger from 'services/Logger'
 import { call, put, take, fork } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as usersActions from 'store/ducks/users/actions'
@@ -39,7 +40,7 @@ function* chatMessageSubscription() {
       yield take(constants.SUBSCRIPTIONS_MAIN_IDLE)
       channel.close()
     } catch (error) {
-      // ignore
+      Logger.captureException(error)
     }
   }
 }

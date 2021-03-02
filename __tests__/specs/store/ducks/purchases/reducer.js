@@ -13,7 +13,6 @@ describe('Purchases reducer', () => {
       const state = reducer(undefined, { type: 'MOCK_ACTION' })
   
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: '',
         status: 'idle',
       })
     })
@@ -22,7 +21,6 @@ describe('Purchases reducer', () => {
       const state = reducer(undefined, actions.purchaseRequest())
   
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: '',
         status: 'loading',
       })
     })
@@ -31,28 +29,25 @@ describe('Purchases reducer', () => {
       const state = reducer(undefined, actions.purchaseSuccess())
   
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: '',
         status: 'success',
       })
     })
   
     it('error state', () => {
-      const state = reducer(undefined, actions.purchaseFailure(error.message))
+      const state = reducer(undefined, actions.purchaseFailure(error))
   
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: 'Error',
         status: 'failure',
       })
     })
   
     it('clear error on request', () => {
       const state = applyActions([
-        actions.purchaseFailure(error.message),
+        actions.purchaseFailure(error),
         actions.purchaseRequest(),
       ], reducer) 
   
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: '',
         status: 'loading',
       })
     })
@@ -63,7 +58,6 @@ describe('Purchases reducer', () => {
       const state = reducer(undefined, { type: 'MOCK_ACTION' })
   
       expect(selectors.retryPurchase(state)).toEqual({
-        error: '',
         status: 'idle',
       })
     })
@@ -72,34 +66,30 @@ describe('Purchases reducer', () => {
       const state = reducer(undefined, actions.retryPurchaseRequest())
   
       expect(selectors.retryPurchase(state)).toEqual({
-        error: '',
         status: 'loading',
       })
     })
   
     it('error state', () => {
-      const state = reducer(undefined, actions.retryPurchaseFailure(error.message))
+      const state = reducer(undefined, actions.retryPurchaseFailure(error))
   
       expect(selectors.retryPurchase(state)).toEqual({
-        error: 'Error',
         status: 'failure',
       })
     })
   
     it('clear error on request', () => {
       const state = applyActions([
-        actions.purchaseFailure(error.message),
-        actions.retryPurchaseFailure(error.message),
+        actions.purchaseFailure(error),
+        actions.retryPurchaseFailure(error),
         actions.retryPurchaseRequest(),
       ], reducer) 
   
       expect(selectors.retryPurchase(state)).toEqual({
-        error: '',
         status: 'loading',
       })
 
       expect(selectors.purchasesRequest(state)).toEqual({
-        error: '',
         status: 'idle',
       })
     })

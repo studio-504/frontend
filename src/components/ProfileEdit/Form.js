@@ -16,7 +16,16 @@ const formSchema = Yup.object().shape({
   username: Validation.username,
 })
 
-const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {
+async function validateUsername(username) {
+  try {
+    const validator = Validation.remoteUsernameValidation()
+    return (await validator(username)) ? undefined : Validation.ERRORS.usernameReserve
+  } catch (error) {
+    return error.message
+  }
+}
+
+const ProfileEditForm = ({ t, handleSubmit, loading, values, initialValues }) => {
   return (
     <View style={styles.root}>
       <View style={styles.input}>
@@ -37,6 +46,11 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values }) => {
           name="username"
           component={TextField}
           placeholder={t('Username')}
+          validate={async (username) => {
+            if (initialValues.username !== username) {
+              return await validateUsername(username)
+            }
+          }}
         />
       </View>
       <View style={styles.input}>
@@ -73,6 +87,7 @@ ProfileEditForm.propTypes = {
   values: PropTypes.any,
   t: PropTypes.any,
   loading: PropTypes.any,
+  initialValues: PropTypes.any,
 }
 
 export default withTranslation()(({ usersEditProfile, usersEditProfileRequest, user, ...props }) => (

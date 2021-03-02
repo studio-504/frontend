@@ -1,13 +1,11 @@
-import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import Contacts from 'react-native-contacts'
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions'
 import contacts from 'store/ducks/contacts/saga'
-import  parsePhoneNumber  from 'libphonenumber-js/min'
+import parsePhoneNumber from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import { errorWrapper } from 'store/helpers'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/contacts/queries'
 
@@ -148,34 +146,28 @@ describe('Contacts saga', () => {
   })
 
   it('Permission UNAVAILABLE', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.UNAVAILABLE],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.UNAVAILABLE]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
 
       .call(check, PERMISSIONS.IOS.CONTACTS)
       .not.call(request, PERMISSIONS.IOS.CONTACTS)
-      .put(actions.contactsGetFailure({ message: 'Contacts permission is UNAVAILABLE' }))
+      .put(actions.contactsGetFailure(new Error('Contacts permission is UNAVAILABLE')))
 
       .dispatch(actions.contactsGetRequest())
       .silentRun()
   })
 
   it('Permission BLOCKED', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.BLOCKED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.BLOCKED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
 
       .call(check, PERMISSIONS.IOS.CONTACTS)
       .not.call(request, PERMISSIONS.IOS.CONTACTS)
-      .put(actions.contactsGetFailure({ message: 'Contacts permission is BLOCKED' }))
+      .put(actions.contactsGetFailure(new Error('Contacts permission is BLOCKED')))
 
       .dispatch(actions.contactsGetRequest())
       .silentRun()
@@ -185,7 +177,6 @@ describe('Contacts saga', () => {
     const context = [
       [matchers.call.fn(check), RESULTS.DENIED],
       [matchers.call.fn(request), RESULTS.DENIED],
-      [getContext('errorWrapper'), errorWrapper],
     ]
 
     return expectSaga(testAsRootSaga(contacts))
@@ -193,23 +184,20 @@ describe('Contacts saga', () => {
 
       .call(check, PERMISSIONS.IOS.CONTACTS)
       .call(request, PERMISSIONS.IOS.CONTACTS)
-      .put(actions.contactsGetFailure({ message: 'Contacts permission is DENIED' }))
+      .put(actions.contactsGetFailure(new Error('Contacts permission is DENIED')))
 
       .dispatch(actions.contactsGetRequest())
       .silentRun()
   })
 
   it('failed get contacts', () => {
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
 
       .call(check, PERMISSIONS.IOS.CONTACTS)
-      .put(actions.contactsGetFailure({ message: 'Get All Error' }))
+      .put(actions.contactsGetFailure(new Error('Get All Error')))
 
       .dispatch(actions.contactsGetRequest())
       .silentRun()
@@ -227,10 +215,7 @@ describe('Contacts saga', () => {
       },
     })
 
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)
@@ -255,10 +240,7 @@ describe('Contacts saga', () => {
 
     queryService.apiRequest.mockRejectedValueOnce(false)
 
-    const context = [
-      [matchers.call.fn(check), RESULTS.GRANTED],
-      [getContext('errorWrapper'), errorWrapper],
-    ]
+    const context = [[matchers.call.fn(check), RESULTS.GRANTED]]
 
     return expectSaga(testAsRootSaga(contacts))
       .provide(context)

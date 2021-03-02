@@ -36,7 +36,7 @@ function* albumsGetRequest(req) {
     const next = yield albumsGetRequestData(req, data)
     yield put(actions.albumsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsGetFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.albumsGetFailure(error, req.payload))
   }
 }
 
@@ -66,7 +66,7 @@ function* albumsSingleGetRequest(req) {
     const next = yield albumsSingleGetRequestData(req, data)
     yield put(actions.albumsSingleGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsSingleGetFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.albumsSingleGetFailure(error))
   }
 }
 
@@ -97,7 +97,7 @@ function* albumsPostsGetRequest(req) {
     const next = yield albumsPostsGetRequestData(req, data)
     yield put(actions.albumsPostsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsPostsGetFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.albumsPostsGetFailure(error, req.payload))
   }
 }
 
@@ -107,7 +107,7 @@ function* albumsPostsGetMoreRequest(req) {
     const next = yield albumsPostsGetRequestData(req, data)
     yield put(actions.albumsPostsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsPostsGetMoreFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.albumsPostsGetMoreFailure(error))
   }
 }
 
@@ -137,7 +137,7 @@ function* albumsCreateRequest(req) {
     const next = yield albumsCreateRequestData(req, data)
     yield put(actions.albumsCreateSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsCreateFailure({ message: error.message, payload: req.payload }))
+    yield put(actions.albumsCreateFailure(error))
   }
 }
 
@@ -167,7 +167,7 @@ function* albumsEditRequest(req) {
     const next = yield albumsEditRequestData(req, data)
     yield put(actions.albumsEditSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsEditFailure({ message: error.message }))
+    yield put(actions.albumsEditFailure(error))
   }
 }
 
@@ -197,7 +197,7 @@ function* albumsDeleteRequest(req) {
     const next = yield albumsDeleteRequestData(req, data)
     yield put(actions.albumsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.albumsDeleteFailure({ message: error.message }))
+    yield put(actions.albumsDeleteFailure(error))
   }
 }
 

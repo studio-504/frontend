@@ -1,11 +1,10 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import { call, getContext } from 'redux-saga/effects'
+import { call } from 'redux-saga/effects'
 import * as sagas from 'store/ducks/posts/saga/postsCreate'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as actions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import { errorWrapper } from 'store/helpers'
 import * as queryService from 'services/Query'
 import { provideDelay } from 'tests/utils/helpers'
 
@@ -16,15 +15,12 @@ const post = { postId: processingPost.postId, postStatus: 'COMPLETED', postedBy:
 const postWithError = { postId: processingPost.postId, postStatus: 'ERROR', postedBy: { userId } }
 
 const failureCases = ['ERROR', 'ARCHIVED', 'DELETING'].map((postStatus) => {
+  const error = new Error('Post shouldn`t have ERROR, ARCHIVED or DELETING status')
   const post = { ...postWithError, postStatus }
 
   return {
     post,
-    failureAction: actions.postsCreateFailure({
-      message: 'Post shouldn`t have ERROR, ARCHIVED or DELETING status',
-      payload: post,
-      meta: {},
-    }),
+    failureAction: actions.postsCreateFailure(error, post),
   }
 })
 
@@ -61,10 +57,7 @@ describe('Create post saga', () => {
       it('handle POST_ERROR event', async () => {
         const tests = failureCases.map(({ post, failureAction }) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([
-              [getPost, { data: { post } }],
-              [getContext('errorWrapper'), errorWrapper],
-            ])
+            .provide([[getPost, { data: { post } }]])
             .dispatch(subscriptionsActions.subscriptionsPostError(postWithError))
             .put(failureAction)
             .run()
@@ -76,7 +69,7 @@ describe('Create post saga', () => {
       it('handle timeout and check post status manually', async () => {
         const tests = failureCases.map(({ post, failureAction }) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([[getPost, { data: { post } }], [getContext('errorWrapper'), errorWrapper], provideDelay(true)])
+            .provide([[getPost, { data: { post } }], provideDelay(true)])
 
             .put(failureAction)
             .run(false)
@@ -89,15 +82,12 @@ describe('Create post saga', () => {
     describe('Retry check post status 3 times', () => {
       it('throw an error after 3 times retry', async () => {
         const posts = ['PENDING', 'PROCESSING'].map((postStatus) => ({ ...post, postStatus }))
-        const failureAction = actions.postsCreateFailure({
-          message: 'Post has not been processed',
-          payload: processingPost,
-          meta: {},
-        })
+        const error = new Error('Post has not been processed')
+        const failureAction = actions.postsCreateFailure(error, processingPost)
 
         const tests = posts.map((post) => {
           return expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-            .provide([[getPost, { data: { post } }], [getContext('errorWrapper'), errorWrapper], provideDelay(true)])
+            .provide([[getPost, { data: { post } }], provideDelay(true)])
 
             .put(failureAction)
             .run(false)
@@ -110,7 +100,6 @@ describe('Create post saga', () => {
     describe('Keep handle socket events when received post is not equal processingPost', () => {
       it('handle POST_COMPLETED event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostCompleted({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()
@@ -118,7 +107,6 @@ describe('Create post saga', () => {
 
       it('handle POST_ERROR event', async () => {
         await expectSaga(sagas.checkPostsCreateProcessing, processingPost)
-          .provide([[getContext('errorWrapper'), errorWrapper]])
           .dispatch(subscriptionsActions.subscriptionsPostError({ postId: 2 }))
           .spawn(sagas.checkPostsCreateProcessing, processingPost)
           .silentRun()

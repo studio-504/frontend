@@ -53,8 +53,8 @@ describe('Validation service', () => {
       expect(await Validation.height.isValid(-1)).toBeFalsy()
       expect(await Validation.height.isValid(0)).toBeFalsy()
       expect(await Validation.height.isValid(1)).toBeTruthy()
-      expect(await Validation.height.isValid(117)).toBeTruthy()
-      expect(await Validation.height.isValid(118)).toBeFalsy()
+      expect(await Validation.height.isValid(84)).toBeTruthy()
+      expect(await Validation.height.isValid(85)).toBeFalsy()
     })
 
     it('email', async () => {

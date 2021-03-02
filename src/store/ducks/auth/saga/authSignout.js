@@ -1,7 +1,6 @@
 import { put, call, race, take, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import { federatedGoogleSignout } from 'services/AWS'
 import { resetAuthUserPersist } from 'services/Auth'
 import * as navigationActions from 'navigation/actions'
@@ -36,18 +35,9 @@ function* handleAuthSignoutRequest() {
 function* authSignoutRequest(req) {
   try {
     const { data, meta } = yield handleAuthSignoutRequest(req.payload)
-    yield put(actions.authSignoutSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authSignoutSuccess({ data, meta }))
   } catch (error) {
-    yield put(actions.authSignoutFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
-      meta: {
-        authenticated: false,
-      },
-    }))
+    yield put(actions.authSignoutFailure(error, { authenticated: false }))
   }
 }
 

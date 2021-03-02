@@ -22,7 +22,7 @@ describe('Contacts Follow saga', () => {
 
     return expectSaga(contactsFollowRequest, actions.contactsInviteRequest(payload))
       .put(usersActions.usersFollowRequest({ userId }))
-      .put(actions.contactsFollowFailure({ error, contactId }))
+      .put(actions.contactsFollowFailure(error, { contactId }))
 
       .dispatch(usersActions.usersFollowFailure(error))
       .silentRun()

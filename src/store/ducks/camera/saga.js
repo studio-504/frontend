@@ -21,7 +21,7 @@ function* cameraCaptureRequest(req) {
     const data = yield handleCameraCaptureRequest(req.payload)
     yield put(actions.cameraCaptureSuccess({ data }))
   } catch (error) {
-    yield put(actions.cameraCaptureFailure({ message: error.message }))
+    yield put(actions.cameraCaptureFailure(error))
   }
 }
 

@@ -12,7 +12,7 @@ const user = {
   gender: 'FEMALE',
   displayName: 'displayName',
   dateOfBirth: '1990-04-21',
-  height: 108,
+  height: 72,
   bio: 'bio',
 }
 
@@ -100,7 +100,7 @@ describe('DatingAboutScreen', () => {
       testField(getByAccessibilityLabel('gender'), { value: 'Female' })
       testField(getByAccessibilityLabel('displayName'), { value: user.displayName })
       testField(getByAccessibilityLabel('bio'), { value: 'bio' })
-      testField(getByAccessibilityLabel('height'), { value: '9\'0"' })
+      testField(getByAccessibilityLabel('height'), { value: '6\'0"' })
     })
 
     it('submit form', async () => {
@@ -112,7 +112,7 @@ describe('DatingAboutScreen', () => {
       })
 
       expect(usersEditProfileRequest).toHaveBeenCalledWith({
-        height: 108,
+        height: 72,
         bio: 'bio',
         dateOfBirth: '1990-04-21',
         displayName: 'displayName',

@@ -13,8 +13,8 @@ const user = {
     max: 40,
   },
   matchHeightRange: {
-    min: 90,
-    max: 100,
+    min: 60,
+    max: 84,
   },
   matchLocationRadius: 15,
   matchGenders: ['MALE'],
@@ -80,7 +80,7 @@ describe('DatingMatchScreen', () => {
       openAllSections(queryByAccessibilityLabel)
 
       testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '0\'1"' })
-      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '9\'9"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '7\'0"' })
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '18' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '23' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
@@ -95,8 +95,8 @@ describe('DatingMatchScreen', () => {
 
       testField(queryByAccessibilityLabel('matchAgeRangeMin'), { value: '30' })
       testField(queryByAccessibilityLabel('matchAgeRangeMax'), { value: '40' })
-      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '7\'6"' })
-      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '8\'4"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMin'), { value: '5\'0"' })
+      testField(queryByAccessibilityLabel('matchHeightRangeMax'), { value: '7\'0"' })
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '15 mi' })
     })
@@ -138,8 +138,8 @@ describe('DatingMatchScreen', () => {
           min: 30,
         },
         matchHeightRange: {
-          max: 100,
-          min: 90,
+          max: 84,
+          min: 60,
         },
       })
 

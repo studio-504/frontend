@@ -50,7 +50,7 @@ describe('ProfilePhotoGridScreen', () => {
   it('Verification posts message', () => {
     const { getByText } = setup()
 
-    expect(getByText('Only Verified Posts Can Be Set as a Profile Picture')).toBeTruthy()
+    expect(getByText('Only Authenticated Posts Can Be Set as a Profile Picture')).toBeTruthy()
 
     fireEvent.press(getByText('Trending Tips'))
     expect(navigation.navigate).toHaveBeenCalledWith('Verification', { actionType: 'BACK' })

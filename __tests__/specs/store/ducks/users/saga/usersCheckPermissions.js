@@ -4,6 +4,7 @@ import { sagaWithError } from 'tests/utils/helpers'
 import * as authSelector from 'store/ducks/auth/selectors'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import { testNavigate } from 'tests/utils/helpers'
+import { UserInNotActiveError } from 'store/errors'
 
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue({ userStatus: 'ACTIVE' })
 const navigation = { current: { navigate: jest.fn() } }
@@ -20,7 +21,7 @@ describe('usersCheckPermissions', () => {
 
   it('throw an error for anonymous user', async () => {
     authSelector.authUserSelector.mockReturnValueOnce({ userStatus: 'ANONYMOUS' })
-    const saga = sagaWithError(usersCheckPermissions).assertThrow(new Error('User is not ACTIVE'))
+    const saga = sagaWithError(usersCheckPermissions).assertThrow(new UserInNotActiveError())
 
     await expectSaga(saga).provide([provideNavigation]).run()
     testNavigate(navigation.current, 'App.Root.ProfileUpgrade')

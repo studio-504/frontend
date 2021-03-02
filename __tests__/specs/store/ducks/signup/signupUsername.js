@@ -33,7 +33,6 @@ describe('signupUsername saga', () => {
       await setupSaga()
         .put(
           actions.signupUsernameSuccess({
-            message: { code: 'GENERIC', text: 'Username is available', nativeError: '' },
             payload: { username, nextRoute },
             meta: { nextRoute },
             data,
@@ -51,12 +50,7 @@ describe('signupUsername saga', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await setupSaga()
-        .put(
-          actions.signupUsernameFailure({
-            message: { code: 'GENERIC', text: 'Failed to reserve username', nativeError },
-            payload: { username: 'username', nextRoute: 'nextRoute' },
-          }),
-        )
+        .put(actions.signupUsernameFailure(nativeError))
         .dispatch(actions.signupUsernameRequest({ username, nextRoute }))
         .silentRun()
 

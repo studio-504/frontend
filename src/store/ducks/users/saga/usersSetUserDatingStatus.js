@@ -2,9 +2,7 @@ import { put } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
-import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
-import * as errors from 'store/ducks/users/errors'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
@@ -32,12 +30,7 @@ function* usersSetUserDatingStatusRequest(req) {
     const next = yield usersSetUserDatingStatusRequestData(req, data)
     yield put(actions.usersSetUserDatingStatusSuccess({ data: next.data, payload: next.payload }))
   } catch (error) {
-    yield put(
-      actions.usersSetUserDatingStatusFailure({
-        message: errors.getGraphqlErrorMessage(constants.USERS_SET_USER_DATING_STATUS_FAILURE, error),
-        payload: req.payload,
-      }),
-    )
+    yield put(actions.usersSetUserDatingStatusFailure(error))
   }
 }
 

@@ -1,4 +1,5 @@
-import { call, put, take, takeEvery } from 'redux-saga/effects'
+import * as Logger from 'services/Logger'
+import { call, put, take, fork } from 'redux-saga/effects'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as constants from 'store/ducks/subscriptions/constants'
 import { intervalEmitter } from 'store/ducks/subscriptions/saga/helpers'
@@ -6,28 +7,31 @@ import { intervalEmitter } from 'store/ducks/subscriptions/saga/helpers'
 /**
  *
  */
-function* subscriptionPollStart() {
-  const channel = yield call(intervalEmitter, {
-    frequency: 30 * 60000,
-  })
+function* pollSubscription() {
+  while (true) {
+    yield take(constants.SUBSCRIPTIONS_POLL_REQUEST)
 
-  yield takeEvery(channel, function* () {
-    yield put(postsActions.postsGetTrendingPostsRequest({ limit: 100 }))
-  })
+    try {
+      const channel = yield call(intervalEmitter, {
+        frequency: 30 * 60000,
+      })
 
-  /**
-   * Close channel subscription on application toggle
-   */
-  yield take(constants.SUBSCRIPTIONS_POLL_IDLE)
-  channel.close()
+      yield fork(function* eventListener() {
+        while (true) {
+          yield take(channel)
+          yield put(postsActions.postsGetTrendingPostsRequest())
+        }
+      })
+
+      /**
+       * Close channel subscription on application toggle
+       */
+      yield take(constants.SUBSCRIPTIONS_POLL_IDLE)
+      channel.close()
+    } catch (error) {
+      Logger.captureException(error)
+    }
+  } 
 }
 
-function* _subscriptionPollStart() {
-  try {
-    yield subscriptionPollStart()
-  } catch (error) {
-    // ignore
-  }
-}
-
-export default _subscriptionPollStart
+export default pollSubscription

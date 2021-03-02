@@ -9,7 +9,7 @@ describe('ProfilePhotoGrid', () => {
     const handleOpenVerification = jest.fn()
     const { getByText } = setup({ handleOpenVerification })
 
-    expect(getByText('Only Verified Posts Can Be Set as a Profile Picture')).toBeTruthy()
+    expect(getByText('Only Authenticated Posts Can Be Set as a Profile Picture')).toBeTruthy()
 
     fireEvent.press(getByText('Trending Tips'))
     expect(handleOpenVerification).toHaveBeenCalled()

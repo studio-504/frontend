@@ -1,4 +1,4 @@
-import { put, takeLatest, getContext, call } from 'redux-saga/effects'
+import { put, takeLatest, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import omit from 'ramda/src/omit'
@@ -32,26 +32,22 @@ function* postsGetRequestData(req, api) {
 }
 
 function* postsGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getPosts, { ...req.payload, postStatus: 'COMPLETED' })
     const next = yield postsGetRequestData(req, data)
     yield put(actions.postsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsGetFailure(error, req.payload))
   }
 }
 
 function* postsGetMoreRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getPosts, { ...req.payload, postStatus: 'COMPLETED' })
     const next = yield postsGetRequestData(req, data)
     yield put(actions.postsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetMoreFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsGetMoreFailure(error, req.payload))
   }
 }
 
@@ -77,14 +73,12 @@ function* postsGetUnreadCommentsRequestData(req, api) {
 }
 
 function* postsGetUnreadCommentsRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getPostsUnreadComments, req.payload)
     const next = yield postsGetUnreadCommentsRequestData(req, data)
     yield put(actions.postsGetUnreadCommentsSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetUnreadCommentsFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsGetUnreadCommentsFailure(error, req.payload))
   }
 }
 
@@ -110,26 +104,24 @@ function* postsViewsGetRequestData(req, api) {
 }
 
 function* postsViewsGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
+  
 
   try {
     const data = yield queryService.apiRequest(queries.viewedBy, req.payload)
     const next = yield postsViewsGetRequestData(req, data)
     yield put(actions.postsViewsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsViewsGetFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsViewsGetFailure(error, req.payload))
   }
 }
 
 function* postsViewsGetMoreRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.viewedBy, req.payload)
     const next = yield postsViewsGetRequestData(req, data)
     yield put(actions.postsViewsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsViewsGetMoreFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsViewsGetMoreFailure(error, req.payload))
   }
 }
 
@@ -155,14 +147,12 @@ function* postsLikesGetRequestData(req, api) {
 }
 
 function* postsLikesGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.onymouslyLikedBy, req.payload)
     const next = yield postsLikesGetRequestData(req, data)
     yield put(actions.postsLikesGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsLikesGetFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.postsLikesGetFailure(error, req.payload))
   }
 }
 
@@ -188,26 +178,22 @@ function* postsFeedGetRequestData(req, api) {
 }
 
 function* postsFeedGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFeed, req.payload)
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFeedGetFailure(error, req.payload))
   }
 }
 
 function* postsFeedGetMoreRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getFeed, req.payload)
     const next = yield postsFeedGetRequestData(req, data)
     yield put(actions.postsFeedGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFeedGetMoreFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFeedGetMoreFailure(error, req.payload))
   }
 }
 
@@ -233,14 +219,12 @@ function* postsGetArchivedRequestData(req, api) {
 }
 
 function* postsGetArchivedRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getPosts, { ...req.payload, postStatus: 'ARCHIVED' })
     const next = yield postsGetArchivedRequestData(req, data)
     yield put(actions.postsGetArchivedSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsGetArchivedFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsGetArchivedFailure(error, req.payload))
   }
 }
 
@@ -271,14 +255,12 @@ function* postsEditRequestData(req, api) {
 }
 
 function* postsEditRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield handlePostsEditRequest(req.payload)
     const next = yield postsEditRequestData(req, data)
     yield put(actions.postsEditSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsEditFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsEditFailure(error, req.payload))
   }
 }
 
@@ -303,15 +285,13 @@ function* postsDeleteRequestData(req, api) {
 }
 
 function* postsDeleteRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.deletePost, req.payload)
     const next = yield postsDeleteRequestData(req, data)
 
     yield put(actions.postsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsDeleteFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsDeleteFailure(error, req.payload))
   }
 }
 
@@ -336,14 +316,12 @@ function* postsArchiveRequestData(req, api) {
 }
 
 function* postsArchiveRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.archivePost, req.payload)
     const next = yield postsArchiveRequestData(req, data)
     yield put(actions.postsArchiveSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsArchiveFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsArchiveFailure(error, req.payload))
   }
 }
 
@@ -368,14 +346,12 @@ function* postsRestoreArchivedRequestData(req, api) {
 }
 
 function* postsRestoreArchivedRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.restoreArchivedPost, req.payload)
     const next = yield postsRestoreArchivedRequestData(req, data)
     yield put(actions.postsRestoreArchivedSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsRestoreArchivedFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsRestoreArchivedFailure(error, req.payload))
   }
 }
 
@@ -400,14 +376,12 @@ function* postsFlagRequestData(req, api) {
 }
 
 function* postsFlagRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.flagPost, req.payload)
     const next = yield postsFlagRequestData(req, data)
     yield put(actions.postsFlagSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsFlagFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsFlagFailure(error, req.payload))
   }
 }
 
@@ -432,14 +406,12 @@ function* postsSingleGetRequestData(req, api) {
 }
 
 function* postsSingleGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.getPost, req.payload)
     const next = yield postsSingleGetRequestData(req, data)
     yield put(actions.postsSingleGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsSingleGetFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsSingleGetFailure(error, req.payload))
   }
 }
 
@@ -464,15 +436,13 @@ function* postsOnymouslyLikeRequestData(req, api) {
 }
 
 function* postsOnymouslyLikeRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.onymouslyLikePost, req.payload)
     const next = yield postsOnymouslyLikeRequestData(req, data)
     yield put(actions.postsOnymouslyLikeSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsOnymouslyLikeFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsOnymouslyLikeFailure(error, req.payload))
   }
 }
 
@@ -497,15 +467,13 @@ function* postsDislikeRequestData(req, api) {
 }
 
 function* postsDislikeRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.dislikePost, req.payload)
     const next = yield postsDislikeRequestData(req, data)
     yield put(actions.postsDislikeSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsDislikeFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsDislikeFailure(error, req.payload))
   }
 }
 
@@ -531,14 +499,12 @@ function* postsCommentsGetRequestData(req, api) {
 }
 
 function* postsCommentsGetRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.comments, req.payload)
     const next = yield postsCommentsGetRequestData(req, data)
     yield put(actions.postsCommentsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.postsCommentsGetFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.postsCommentsGetFailure(error, req.payload))
   }
 }
 
@@ -563,15 +529,13 @@ function* commentsAddRequestData(req, api) {
 }
 
 function* commentsAddRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     const data = yield queryService.apiRequest(queries.addComment, req.payload)
     const next = yield commentsAddRequestData(req, data)
     yield put(actions.commentsAddSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.commentsAddFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsAddFailure(error, req.payload))
   }
 }
 
@@ -596,21 +560,17 @@ function* commentsDeleteRequestData(req, api) {
 }
 
 function* commentsDeleteRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.deleteComment, req.payload)
     const next = yield commentsDeleteRequestData(req, data)
 
     yield put(actions.commentsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.commentsDeleteFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsDeleteFailure(error, req.payload))
   }
 }
 
 function* commentsFlagRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.flagComment, req.payload)
     const selector = path(['data', 'flagComment'])
@@ -618,7 +578,7 @@ function* commentsFlagRequest(req) {
 
     yield put(actions.commentsFlagSuccess({ data: selector(data), payload: req.payload, meta }))
   } catch (error) {
-    yield put(actions.commentsFlagFailure({ message: errorWrapper(error), payload: req.payload }))
+    yield put(actions.commentsFlagFailure(error, req.payload))
   }
 }
 

@@ -1,4 +1,6 @@
 import { createAction } from 'redux-actions'
+import { createFailureAction } from 'store/errors'
+
 import * as constants from 'store/ducks/purchases/constants'
 
 /**
@@ -6,11 +8,11 @@ import * as constants from 'store/ducks/purchases/constants'
  */
 export const purchaseRequest = createAction(constants.PURCHASE_REQUEST)
 export const purchaseSuccess = createAction(constants.PURCHASE_SUCCESS)
-export const purchaseFailure = createAction(constants.PURCHASE_FAILURE)
+export const purchaseFailure = createFailureAction(constants.PURCHASE_FAILURE)
 
 /**
  *
  */
 export const retryPurchaseRequest = createAction(constants.RETRY_PURCHASE_REQUEST)
 export const retryPurchaseSuccess = createAction(constants.RETRY_PURCHASE_SUCCESS)
-export const retryPurchaseFailure = createAction(constants.RETRY_PURCHASE_FAILURE)
+export const retryPurchaseFailure = createFailureAction(constants.RETRY_PURCHASE_FAILURE)

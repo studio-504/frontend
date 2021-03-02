@@ -1,7 +1,6 @@
 import { put, take, race, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as errors from 'store/ducks/auth/errors'
 import pathOr from 'ramda/src/pathOr'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
@@ -13,7 +12,7 @@ function hasAuthenticatedCondition({ dataSuccess }) {
   return (authenticated)
 }
 
-function* handleAuthFlowRequest(payload = {}) { 
+function* handleAuthFlowRequest(payload = {}) {
   /**
    * Fetching cognito credentials/tokens
    */
@@ -64,18 +63,9 @@ function* handleAuthFlowRequest(payload = {}) {
 function* authFlowRequest(req) {
   try {
     const { data, meta } = yield handleAuthFlowRequest(req.payload)
-    yield put(actions.authFlowSuccess({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_SUCCESS, 'GENERIC'),
-      data,
-      meta,
-    }))
+    yield put(actions.authFlowSuccess({ data, meta }))
   } catch (error) {
-    yield put(actions.authFlowFailure({
-      message: errors.getMessagePayload(constants.AUTH_FLOW_FAILURE, 'GENERIC', error),
-      meta: {
-        authenticated: false,
-      },
-    }))
+    yield put(actions.authFlowFailure(error, { authenticated: false }))
   }
 }
 

@@ -37,7 +37,7 @@ const ProfilePhoto = ({
     <View style={styles.root}>
       <AuthHeaderTemplate
         title={t('Add an Unmodified Profile Picture')}
-        subtitle={t('Our AI detects photoshop & filters')}
+        subtitle={t('The only thing you have to change, is nothing at all!')}
       />
       <View>
         <View style={styles.avatar}>

@@ -16,7 +16,7 @@ import testIDs from './test-ids'
 const Feed = ({
   theme,
   postsFeedGet,
-  postsFeedGetRequest,
+  loadInit,
   postsFeedGetMoreRequest,
 
   handleScrollPrev,
@@ -37,7 +37,7 @@ const Feed = ({
 
   const scroll = ScrollService({
     resource: postsFeedGet,
-    loadInit: postsFeedGetRequest,
+    loadInit,
     loadMore: postsFeedGetMoreRequest,
     multiplier: 3,
   })
@@ -75,7 +75,15 @@ const Feed = ({
   const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />
   const renderFooter = () => isEmpty ? null : scroll.loadingmore ? renderActivityIndicator() : renderBookmark()
   const renderLoader = () => scroll.refreshing ? renderActivityIndicator() : null
-  const renderEmpty = () => isEmpty ? <Placeholder /> : renderLoader()
+  const renderEmpty = () =>
+    isEmpty ? (
+      <View>
+        <Placeholder />
+        {renderBookmark()}
+      </View>
+    ) : (
+      renderLoader()
+    )
 
   return (
     <View testID={testIDs.root} style={styling.root}>
@@ -83,7 +91,6 @@ const Feed = ({
         ref={feedRef}
         keyExtractor={(item) => item.postId}
         data={data}
-        contentContainerStyle={isEmpty ? styling.emptyContainer : null}
         onEndReached={scroll.handleLoadMore}
         onEndReachedThreshold={15}
         scrollEventThrottle={500}
@@ -114,9 +121,6 @@ const styles = (theme) =>
     loading: {
       paddingVertical: 16,
     },
-    emptyContainer: {
-      flex: 1,
-    },
   })
 
 Feed.defaultProps = {
@@ -127,7 +131,7 @@ Feed.propTypes = {
   theme: PropTypes.any,
   feedRef: PropTypes.any,
   postsFeedGet: PropTypes.any,
-  postsFeedGetRequest: PropTypes.any,
+  loadInit: PropTypes.any,
   postsFeedGetMoreRequest: PropTypes.any,
   handleScrollPrev: PropTypes.any,
   handleScrollNext: PropTypes.any,

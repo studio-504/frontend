@@ -21,13 +21,12 @@ describe('signupConfirm', () => {
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
-      const message = { code: 'GENERIC', text: 'Successfully confirmed account, you can signin now', nativeError: '' }
       const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ message, data: undefined, payload }))
+        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -44,13 +43,12 @@ describe('signupConfirm', () => {
 
     it('phone', async () => {
       const usernameType = 'phone'
-      const message = { code: 'GENERIC', text: 'Successfully confirmed account, you can signin now', nativeError: '' }
       const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ message, data: undefined, payload }))
+        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -69,11 +67,10 @@ describe('signupConfirm', () => {
   describe('failure', () => {
     it('Unsupported usernameType', async () => {
       const nativeError = new Error('Unsupported usernameType')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
       const payload = { usernameType: undefined, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'GENERIC' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -81,13 +78,13 @@ describe('signupConfirm', () => {
 
     it('AliasExistsException', async () => {
       const nativeError = new Error('AliasExistsException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'AliasExistsException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'ALIAS_EXISTS' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -95,13 +92,13 @@ describe('signupConfirm', () => {
 
     it('ExpiredCodeException', async () => {
       const nativeError = new Error('ExpiredCodeException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'ExpiredCodeException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'CODE_EXPIRED' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()
@@ -109,13 +106,13 @@ describe('signupConfirm', () => {
 
     it('CodeMismatchException', async () => {
       const nativeError = new Error('CodeMismatchException')
-      const message = { code: 'GENERIC', text: 'Failed to confirm account', nativeError }
+      nativeError.code = 'CodeMismatchException'
       const payload = { usernameType: 'email', confirmationCode }
 
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupConfirm))
-        .put(actions.signupConfirmFailure({ message, payload }))
+        .put(actions.signupConfirmFailure(nativeError, { messageCode: 'CODE_MISMATCH' }))
 
         .dispatch(actions.signupConfirmRequest(payload))
         .silentRun()

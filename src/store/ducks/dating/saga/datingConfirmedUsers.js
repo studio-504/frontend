@@ -1,4 +1,4 @@
-import { put, takeLatest, getContext } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import omit from 'ramda/src/omit'
@@ -31,14 +31,12 @@ function* datingConfirmedUsersRequestData(req, api) {
 }
 
 function* datingConfirmedUsersRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     const data = yield queryService.apiRequest(queries.matchedUsers, req.payload)
     const next = yield datingConfirmedUsersRequestData(req, data)
     yield put(actions.datingConfirmedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
-    yield put(actions.datingConfirmedUsersFailure({ payload: req.payload, message: errorWrapper(error) }))
+    yield put(actions.datingConfirmedUsersFailure(error, req.payload))
   }
 }
 

@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import DiamondIcon from 'assets/svg/post/Diamond'
-import * as purchasesConstants from 'store/ducks/purchases/constants'
 import path from 'ramda/src/path'
+import * as UserService from 'services/User'
 
 export const renderDiamond = ({ user, theme }) => {
-  return path(['subscriptionLevel'], user) === purchasesConstants.SUBSCRIPTION_LEVEL.DIAMOND ? (
-    <DiamondIcon fill={theme.colors.text} />
-  ) : null
+  return UserService.isUserSubscribed(user) ? <DiamondIcon fill={theme.colors.text} /> : null
 }
 
 const Username = ({ theme, user }) => (

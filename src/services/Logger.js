@@ -2,9 +2,9 @@ import * as Sentry from '@sentry/react-native'
 // import { Debug } from '@sentry/integrations'
 import Config from 'react-native-config'
 import pick from 'ramda/src/pick'
-import codePush from 'react-native-code-push' 
-import { CancelRequestOnSignoutError } from 'services/Errors'
- 
+import codePush from 'react-native-code-push'
+import { CancelRequestOnSignoutError } from 'store/errors'
+
 /**
  * By including and configuring Sentry, the SDK will automatically attach global handlers
  * to capture uncaught exceptions and unhandled rejections.
@@ -24,9 +24,7 @@ Sentry.init({
  */
 export const captureException = (error) => {
   try {
-    if (!(error instanceof CancelRequestOnSignoutError)) {
-      Sentry.captureException(error)
-    }
+    Sentry.captureException(error)
   } catch (error) {
     // ignore
   }
@@ -35,11 +33,9 @@ export const captureException = (error) => {
 /**
  * Used for strings
  */
-export const captureMessage = (error) => {
+export const captureMessage = (message) => {
   try {
-    if (!(error instanceof CancelRequestOnSignoutError)) {
-      Sentry.captureMessage(error)
-    }
+    Sentry.captureMessage(message)
   } catch (error) {
     // ignore
   }
@@ -53,7 +49,6 @@ export const setUser = (payload) => {
   Sentry.setUser(user)
 }
 
-
 /**
  * Application version + code push version to distinguish environment
  */
@@ -61,6 +56,24 @@ codePush.getUpdateMetadata().then((update) => {
   if (update) {
     Sentry.setRelease(update.appVersion + '-codepush:' + update.label)
   }
-}) 
+})
 
 export const withScope = Sentry.withScope
+
+export function captureFailureAction(action) {
+  try {
+    const error = action.payload
+
+    if (error instanceof CancelRequestOnSignoutError) {
+      return false
+    }
+
+    withScope((scope) => {
+      scope.setExtra('action', action.type)
+      scope.setExtra('meta', JSON.stringify(action.meta))
+      captureException(error)
+    })
+  } catch (error) {
+    captureException(error)
+  }
+}

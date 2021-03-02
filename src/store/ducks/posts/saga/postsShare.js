@@ -1,5 +1,5 @@
 import { Image } from 'react-native'
-import { put, takeLatest, getContext, call } from 'redux-saga/effects'
+import { put, takeLatest, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import RNFetchBlob from 'rn-fetch-blob'
 import * as actions from 'store/ducks/posts/actions'
@@ -169,14 +169,12 @@ function* handlePostsShareRequest(payload) {
  *
  */
 function* postsShareRequest(req) {
-  const errorWrapper = yield getContext('errorWrapper')
-
   try {
     yield call(usersCheckPermissions)
     yield handlePostsShareRequest(req.payload)
     yield put(actions.postsShareSuccess({ data: {}, meta: {} }))
   } catch (error) {
-    yield put(actions.postsShareFailure({ message: errorWrapper(error) }))
+    yield put(actions.postsShareFailure(error))
   }
 }
 

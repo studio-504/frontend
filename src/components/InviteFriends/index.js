@@ -23,6 +23,7 @@ const InviteFriends = ({
   openSettings,
   contactsInviteRequest,
   contactsFollowRequest,
+  contactsCheckBonusRequest,
   contactsInvite,
 }) => {
   const styling = styles(theme)
@@ -51,8 +52,13 @@ const InviteFriends = ({
     }
   }
 
+  const handleRefresh = () => {
+    contactsGetRequest()
+    contactsCheckBonusRequest()
+  }
+  
   const refreshControl = (
-    <RefreshControl tintColor={theme.colors.border} onRefresh={contactsGetRequest} refreshing={isLoading} />
+    <RefreshControl tintColor={theme.colors.border} onRefresh={handleRefresh} refreshing={isLoading} />
   )
 
   const renderInviteContact = ({ item }) => {
@@ -167,7 +173,6 @@ const InviteFriends = ({
         )}
 
         <View style={styling.actions}>
-          {contactsGet.error ? <Text style={styling.errorText}>{contactsGet.error}</Text> : null}
           {contactsGet.status === 'failure' && (
             <>
               <DefaultButton style={styling.openSettingsBtn} label={t('Open Settings')} onPress={openSettings} />
@@ -213,9 +218,9 @@ InviteFriends.propTypes = {
   openSettings: PropTypes.func,
   contactsInviteRequest: PropTypes.func,
   contactsFollowRequest: PropTypes.func,
+  contactsCheckBonusRequest: PropTypes.func,
   contactsGet: PropTypes.shape({
     status: PropTypes.string,
-    error: PropTypes.string,
     items: PropTypes.arrayOf(
       PropTypes.shape({
         contactId: PropTypes.string,
@@ -266,13 +271,6 @@ const styles = (theme) =>
       fontWeight: '400',
       textDecorationLine: 'underline',
       color: theme.colors.primary,
-    },
-    errorText: {
-      fontSize: 14,
-      fontWeight: '300',
-      paddingBottom: 6,
-      textAlign: 'center',
-      color: 'red',
     },
     emptyText: {
       fontSize: 14,
