@@ -4,8 +4,6 @@ import * as constants from 'store/ducks/promocodes/constants'
 import * as actions from 'store/ducks/promocodes/actions'
 import * as queries from 'store/ducks/promocodes/queries'
 import * as queryService from 'services/Query'
-import * as navigationActions from 'navigation/actions'
-import * as NavigationService from 'services/Navigation'
 
 function* promoCodesRedeemRequest(req) {
   try {
@@ -17,10 +15,7 @@ function* promoCodesRedeemRequest(req) {
 }
 
 function* promoCodesRedeemSuccess() {
-  const navigation = yield NavigationService.getNavigation()
   yield put(usersActions.usersGetProfileSelfRequest())
-
-  navigationActions.navigateInviteFriendsSuccess(navigation)
 }
 
 export default () => [

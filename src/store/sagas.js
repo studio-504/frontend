@@ -47,7 +47,6 @@ import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 export default function* rootSaga(persistor) {
   yield all([]
     .concat(snackbars())
-    .concat(appState())
     .concat(camera())
     .concat(albums())
     .concat(chat())
@@ -89,6 +88,7 @@ export default function* rootSaga(persistor) {
     .concat(datingMatchedUsers())
     .concat(datingConfirmedUsers())
     .concat(datingMatchApprove())
-    .concat(datingMatchReject()),
+    .concat(datingMatchReject())
+    .concat(appState()),
   )
 }
