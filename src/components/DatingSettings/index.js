@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import dayjs from 'dayjs'
+import path from 'ramda/src/path'
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme, Switch, Text } from 'react-native-paper'
 import RowsComponent from 'templates/Rows'
@@ -11,12 +13,11 @@ import EditIcon from 'assets/svg/settings/Edit'
 import PhotoIcon from 'assets/svg/settings/Photo'
 import NextIcon from 'assets/svg/settings/Next'
 import FiltersIcon from 'assets/svg/dating/Filters'
+import DiamondIcon from 'assets/svg/settings/Diamond'
 import DatingIcon from 'assets/svg/settings/Dating'
-import MatchIcon from 'assets/svg/membership/Dating'
 import CardIcon from 'assets/svg/dating/Card'
 import { withTranslation } from 'react-i18next'
-import dayjs from 'dayjs'
-import path from 'ramda/src/path'
+import * as UserService from 'services/User'
 
 const DatingSettings = ({
   t,
@@ -32,6 +33,7 @@ const DatingSettings = ({
 }) => {
   const styling = styles(theme)
   const age = user.dateOfBirth ? `, ${dayjs().diff(user.dateOfBirth, 'year')}` : null
+  const isSubscribed = UserService.isUserSubscribed(user)
 
   return (
     <ScrollView style={styling.root}>
@@ -71,9 +73,9 @@ const DatingSettings = ({
               icon: <PhotoIcon fill={theme.colors.text} />,
             },
             {
-              label: t('Match Boots'),
+              label: isSubscribed ? t('Manage Diamond') : t('Join Diamond'),
               onPress: navigateMembership,
-              icon: <MatchIcon fill={theme.colors.text} />,
+              icon: <DiamondIcon fill={theme.colors.text} />,
             },
           ]}
         >
