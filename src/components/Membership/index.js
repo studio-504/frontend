@@ -10,6 +10,7 @@ import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import WalletIcon from 'assets/svg/membership/Wallet'
+import MusicIcon from 'assets/svg/membership/Music'
 import AppleIcon from 'assets/svg/auth/Apple'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import AuthTermsTemplate from 'templates/Auth/Terms'
@@ -125,6 +126,16 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Trending Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('Your posts are more likely to become trending')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <MusicIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
           </View>
         </View>
 
