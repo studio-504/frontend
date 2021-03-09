@@ -11,6 +11,7 @@ import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import WalletIcon from 'assets/svg/membership/Wallet'
 import AppleIcon from 'assets/svg/auth/Apple'
+import StickerIcon from 'assets/svg/membership/Sticker'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import AuthTermsTemplate from 'templates/Auth/Terms'
 import { withTranslation } from 'react-i18next'
@@ -135,6 +136,16 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('People are more likely to discover you in dating')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <StickerIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Emotes (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('React to posts with new emoticons each month')}</Text>
           </View>
         </View>
 
