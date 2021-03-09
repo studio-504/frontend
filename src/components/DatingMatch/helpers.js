@@ -55,4 +55,3 @@ export const getDateOfBirth = (user) => {
 export const makeDateOfBirth = (values) => {
   return [values.dateOfBirthYear, values.dateOfBirthMonth, values.dateOfBirthDay].join('-')
 }
-  

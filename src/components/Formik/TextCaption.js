@@ -24,7 +24,7 @@ const TextCaption = ({
   disabled,
 }) => {
   const styling = styles(theme)
-  
+
 
   /**
    * Prevent too much multiline characters

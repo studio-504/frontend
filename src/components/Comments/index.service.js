@@ -32,7 +32,7 @@ const CommentsService = ({ children }) => {
   const resetForm = () => {
     try {
       formRef.current.resetForm()
-      
+
       setTimeout(() => {
         Keyboard.dismiss()
       }, 0)
@@ -95,7 +95,7 @@ const CommentsService = ({ children }) => {
     dispatch(postsActions.commentsFlagRequest(payload))
 
   /**
-   * Keyboard movement calculator 
+   * Keyboard movement calculator
    */
   const [offset, setOffset] = useState(0)
 
@@ -118,7 +118,7 @@ const CommentsService = ({ children }) => {
   }, [])
 
   const marginBottom = offset + ifIphoneX(40, 0)
-  
+
   /**
    * FlatList feed config ref, used for reporting scroll events
    */

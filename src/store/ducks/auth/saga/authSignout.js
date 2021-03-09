@@ -43,7 +43,7 @@ function* authSignoutRequest(req) {
 
 function* authSignoutSuccess() {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
-  navigationActions.navigateReset(ReactNavigationRef.current) 
+  navigationActions.navigateReset(ReactNavigationRef.current)
 }
 
 export default () => [

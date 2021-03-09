@@ -22,7 +22,7 @@ export function* handlePostsGetTrendingPostsRequest(payload = {}, extraData = []
   const api = yield call(queryService.apiRequest, queries.trendingPosts, { limit: fetchLimit, ...payload, ...filters })
   const dataSelector = path(['data', 'trendingPosts', 'items'])
   const metaSelector = compose(omit(['items']), path(['data', 'trendingPosts']))
-  
+
   const data = [...extraData, ...dataSelector(api)]
   const meta = metaSelector(api)
 

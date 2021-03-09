@@ -12,7 +12,7 @@ const PhoneField = (props) => {
   const styling = styles
 
   const inputRef = useRef(null)
-  
+
   /**
    * Manually updating country when new country code selected
    */

@@ -25,7 +25,7 @@ function* cardSubscription() {
           const payload = path(['value', 'data', 'onCardNotification'], eventData)
           const type = path(['type'], payload)
 
-          if (type === 'DELETED') return 
+          if (type === 'DELETED') return
 
           yield fork(function* () {
             yield put(usersActions.usersGetCardsRequest({}))

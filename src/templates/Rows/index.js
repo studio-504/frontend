@@ -10,7 +10,7 @@ const RowsTemplate = ({
   items,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       {items.map((item, key) => (

@@ -53,14 +53,14 @@ export const useUploadState = ({
 
   /**
    * Cancel all pending uploads
-   * This will cancel both network request and remove item from redux store 
+   * This will cancel both network request and remove item from redux store
    */
   const cancelActiveUploads = () =>
     (Object.values(postsCreateQueue) || [])
       .filter(path(['payload', 'postId']))
       .forEach(post => dispatch(postsActions.postsCreateIdle(post)))
 
-  
+
 
   /**
    * Uploaded photo event listener
@@ -75,7 +75,7 @@ export const useUploadState = ({
     }
   }, [postsCreate.status])
 
-  
+
 
   return ({
     cancelActiveUploads,

@@ -34,18 +34,18 @@ const SearchService = ({ children }) => {
   /**
    * Trending Filters
    */
-  const postsGetTrendingPostsRequest = () => 
+  const postsGetTrendingPostsRequest = () =>
     dispatch(postsActions.postsGetTrendingPostsRequest())
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
-  
+
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
-  
+
   const postsGetTrendingPostsMoreRequest = (payload) =>
     dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload }))
 
@@ -56,7 +56,7 @@ const SearchService = ({ children }) => {
   /**
    * Following two states are tracking values of Search/Form -> searchToken input field
    * we are dynamically rendering components on Search/index based on values below
-   * 
+   *
    * formFocus is a state of focus/blur events: [searchToken input]
    * formChange is a state of value.length: [searchToken input]
    */
@@ -79,7 +79,7 @@ const SearchService = ({ children }) => {
     formChange,
     handleFormChange,
     postsGetTrendingPostsRequest,
-    formFocus, 
+    formFocus,
     handleFormFocus,
   })
 }

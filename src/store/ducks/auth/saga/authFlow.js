@@ -72,8 +72,8 @@ function* authFlowRequest(req) {
 /**
  * Fetching initial data such as feed/cards/trending
  */
-function* authFlowSuccess(req) {  
-  yield put(actions.authPrefetchRequest()) 
+function* authFlowSuccess(req) {
+  yield put(actions.authPrefetchRequest())
 
   const navigation = yield NavigationService.getNavigation()
   const authProvider = path(['payload', 'meta', 'authProvider'], req)
@@ -82,7 +82,7 @@ function* authFlowSuccess(req) {
   if (['APPLE', 'GOOGLE'].includes(authProvider) && !userExists) {
     navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
   } else {
-    navigationActions.navigateResetToApp(navigation) 
+    navigationActions.navigateResetToApp(navigation)
   }
 }
 
@@ -95,4 +95,4 @@ export default () => [
   takeEvery(constants.AUTH_FLOW_REQUEST, authFlowRequest),
   takeEvery(constants.AUTH_FLOW_SUCCESS, authFlowSuccess),
   takeEvery(constants.AUTH_FLOW_FAILURE, authFlowFailure),
-] 
+]

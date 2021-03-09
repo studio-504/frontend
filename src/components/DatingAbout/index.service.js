@@ -15,7 +15,7 @@ const DatingAboutService = ({ children }) => {
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
   const route = useRoute()
   const nextAction = pathOr(false, ['params', 'nextAction'], route)
-  
+
   useEffect(() => {
     if (usersEditProfile.status === 'success' && nextAction === false) {
       dispatch(usersActions.usersEditProfileIdle())
@@ -41,9 +41,9 @@ const DatingAboutService = ({ children }) => {
   const formSubmitLoading = usersEditProfile.status === 'loading'
 
   const formInitialValues = {
-    dateOfBirthYear: dateOfBirthParsed.dateOfBirthYear, 
-    dateOfBirthMonth: dateOfBirthParsed.dateOfBirthMonth, 
-    dateOfBirthDay: dateOfBirthParsed.dateOfBirthDay, 
+    dateOfBirthYear: dateOfBirthParsed.dateOfBirthYear,
+    dateOfBirthMonth: dateOfBirthParsed.dateOfBirthMonth,
+    dateOfBirthDay: dateOfBirthParsed.dateOfBirthDay,
     gender: user.gender,
     displayName: user.displayName,
     bio: user.bio,
