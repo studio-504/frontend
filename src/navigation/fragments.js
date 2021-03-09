@@ -104,7 +104,7 @@ export const media = ({
       <Stack.Screen
         name="Membership"
         component={MembershipScreen}
-        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
+        {...stackScreenPageProps({ options: { title: 'Membership' } })}
       />
 
       <Stack.Screen
@@ -116,7 +116,7 @@ export const media = ({
       <Stack.Screen
         name="InviteFriendsSuccess"
         component={InviteFriendsSuccessScreen}
-        {...stackScreenPageProps({ options: { title: 'Join Diamond' } })}
+        {...stackScreenPageProps({ options: { title: 'Membership' } })}
       />
     </>
   )

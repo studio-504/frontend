@@ -95,10 +95,10 @@ describe('DatingSettingsScreen', () => {
       testNavigate(navigation, 'DatingMatch')
     })
 
-    it('Join Diamond', () => {
+    it('Match Boots', () => {
       const { getByText } = setup()
 
-      fireEvent.press(getByText('Join Diamond'))
+      fireEvent.press(getByText('Match Boots'))
 
       testNavigate(navigation, 'Membership')
     })

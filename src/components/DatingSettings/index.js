@@ -11,8 +11,8 @@ import EditIcon from 'assets/svg/settings/Edit'
 import PhotoIcon from 'assets/svg/settings/Photo'
 import NextIcon from 'assets/svg/settings/Next'
 import FiltersIcon from 'assets/svg/dating/Filters'
-import DiamondIcon from 'assets/svg/settings/Diamond'
 import DatingIcon from 'assets/svg/settings/Dating'
+import MatchIcon from 'assets/svg/membership/Dating'
 import CardIcon from 'assets/svg/dating/Card'
 import { withTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
@@ -71,9 +71,9 @@ const DatingSettings = ({
               icon: <PhotoIcon fill={theme.colors.text} />,
             },
             {
-              label: t('Join Diamond'),
+              label: t('Match Boots'),
               onPress: navigateMembership,
-              icon: <DiamondIcon fill={theme.colors.text} />,
+              icon: <MatchIcon fill={theme.colors.text} />,
             },
           ]}
         >
