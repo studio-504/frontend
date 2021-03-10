@@ -148,14 +148,16 @@ const Membership = ({
           </View>
         </View>
 
-        <View style={styling.action}>
-          <DefaultButton
-            labelStyle={styling.labelStyle}
-            label={t('Get Free Diamond For Life')}
-            onPress={navigateInviteFriends}
-            mode="outlined"
-          />
-        </View>
+        {isSubscribed === false &&
+          <View style={styling.action}>
+            <DefaultButton
+              labelStyle={styling.labelStyle}
+              label={t('Get Free Diamond For Life')}
+              onPress={navigateInviteFriends}
+              mode="outlined"
+            />
+          </View>
+        }
 
         <AuthTermsTemplate />
       </SafeAreaView>
@@ -185,6 +187,7 @@ const styles = (theme) =>
     },
     action: {
       paddingHorizontal: theme.spacing.base,
+      marginTop: 24,
     },
     labelStyle: {
       marginLeft: 12,
@@ -228,7 +231,6 @@ const styles = (theme) =>
     lastChild: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
-      marginBottom: 24,
     },
     descriptionText: {
       fontSize: 12,
