@@ -185,6 +185,7 @@ const styles = (theme) =>
     },
     action: {
       paddingHorizontal: theme.spacing.base,
+      marginBottom: theme.spacing.base,
     },
     labelStyle: {
       marginLeft: 12,
