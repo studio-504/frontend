@@ -34,7 +34,7 @@ const ProfileUpgrade = ({
           </View>
           <Text style={styling.headingTitle}>{t('Join REAL')}</Text>
           <Text style={styling.headingSubtitle}>
-            {t('The Healthier Social Media Platform')}
+            {t('The Healthier Social Media Movement')}
           </Text>
         </View>
 
