@@ -32,7 +32,7 @@ const ProfileUpgrade = ({
           <View style={styling.info}>
             <InfoIcon fill={theme.colors.text} />
           </View>
-          <Text style={styling.headingTitle}>{t('Signup for REAL')}</Text>
+          <Text style={styling.headingTitle}>{t('Join REAL')}</Text>
           <Text style={styling.headingSubtitle}>
             {t('The Healthier Social Media Platform')}
           </Text>
