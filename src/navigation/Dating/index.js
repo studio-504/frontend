@@ -16,6 +16,7 @@ import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
 import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
 import DatingWizardNavigator from 'components/DatingWizard'
 import { useFocusEffect } from '@react-navigation/native'
+import * as UserService from 'services/User'
 
 const Stack = createStackNavigator()
 
@@ -24,25 +25,25 @@ const DatingNavigator = ({ navigation }) => {
   const { user, setSwipeDisabled } = useContext(AuthContext)
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
-  const datingEnabled = user.datingStatus === 'ENABLED'
+  const datingEnabled = UserService.isUserEnableDating(user)
   const initialRouteName = datingEnabled ? 'Dating' : 'DatingWizard'
-  const datingHeaderLeft = datingEnabled ? 
-    navigationOptions.datingHeaderLeft : 
+  const datingHeaderLeft = datingEnabled ?
+    navigationOptions.datingHeaderLeft :
     navigationOptions.homeHeaderLeft
-    
+
   useFocusEffect(() => {
     setSwipeDisabled(true)
 
     return () => setSwipeDisabled(false)
   })
- 
+
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps} initialRouteName={initialRouteName}>
       <Stack.Screen
         name="Dating"
         component={DatingScreen}
-        {...stackScreenPageProps({ options: { 
-          headerTitle: navigationOptions.homeHeaderTitle({ theme }), 
+        {...stackScreenPageProps({ options: {
+          headerTitle: navigationOptions.homeHeaderTitle({ theme }),
           headerLeft: datingHeaderLeft({ navigation, theme }),
           headerRight: navigationOptions.homeHeaderRight({ navigation, theme, user }),
         } })}
