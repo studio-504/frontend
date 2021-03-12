@@ -3,11 +3,16 @@ import { useNavigation } from '@react-navigation/native'
 import * as actions from 'store/ducks/promocodes/actions'
 import * as selectors from 'store/ducks/promocodes/selectors'
 import * as Validation from 'services/Validation'
+import * as authSelector from 'store/ducks/auth/selectors'
+import * as UserService from 'services/User'
 
 const PromocodesService = ({ children }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+
   const promoCodesRedeem = useSelector(selectors.promoCodesRedeem)
+  const user = useSelector(authSelector.authUserSelector)
+  const isSubscribed = UserService.isUserSubscribed(user)
 
   const handleFormTransform = (values) => ({
     code: Validation.getPromocode(values),
@@ -16,7 +21,7 @@ const PromocodesService = ({ children }) => {
   const handleFormSubmit = (values, formApi) => {
     const nextValues = handleFormTransform(values)
     formApi.setValues(nextValues)
-   
+
     dispatch(actions.promoCodesRedeemRequest(nextValues))
   }
 
@@ -24,6 +29,7 @@ const PromocodesService = ({ children }) => {
   const formInitialValues = { code: '' }
 
   return children({
+    isSubscribed,
     navigation,
     handleFormSubmit,
     formSubmitLoading,
