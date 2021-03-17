@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
@@ -7,6 +7,7 @@ import * as authActions from 'store/ducks/auth/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import UploadAvatar from 'components/UploadAvatar'
 import { useOTAVersion } from 'services/OTA'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const SettingsService = ({ children }) => {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const SettingsService = ({ children }) => {
   const authForgotRequest = () => dispatch(authActions.authForgotRequest({ username: user.email }))
   const usersDeleteRequest = () => dispatch(usersActions.usersDeleteRequest())
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersDelete.status === 'success') {
       authSignoutRequest()
     }

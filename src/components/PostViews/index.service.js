@@ -4,6 +4,7 @@ import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
 import * as postsSelector from 'store/ducks/posts/selectors'
 import { useRoute } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const PostViewsService = ({ children }) => {
   const dispatch = useDispatch()
@@ -18,26 +19,26 @@ const PostViewsService = ({ children }) => {
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
-  
+
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
-  const postsViewsGetRequest = (payload) => 
+  const postsViewsGetRequest = (payload) =>
     dispatch(postsActions.postsViewsGetRequest(payload))
-  
-  const postsViewsGetMoreRequest = (payload) => 
+
+  const postsViewsGetMoreRequest = (payload) =>
     dispatch(postsActions.postsViewsGetMoreRequest(payload))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!postId || !userId) return
-    
+
     dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
   }, [postId])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersFollow.status === 'success') {
       postsViewsGetRequest({ postId })
     }

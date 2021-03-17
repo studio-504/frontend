@@ -19,7 +19,11 @@ const user = {
 }
 
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
-jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useFocusEffect: jest.fn() }))
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
+  useFocusEffect: jest.fn(),
+  useIsFocused: jest.fn().mockReturnValue(true),
+}))
 jest.mock('react-native-code-push', () => ({ getUpdateMetadata: jest.fn() }))
 jest.mock('react-native-device-info', () => ({ getReadableVersion: jest.fn() }))
 jest.mock('components/ActionSheet', () => jest.fn().mockReturnValue(null))

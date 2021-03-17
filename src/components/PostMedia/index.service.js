@@ -5,6 +5,7 @@ import * as postsSelector from 'store/ducks/posts/selectors'
 import { useNavigation, useScrollToTop, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const PostMediaService = ({ children }) => {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ const PostMediaService = ({ children }) => {
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const username = path(['data', 'postedBy', 'username'])(postsSingleGet)
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (username) {
       navigation.setOptions({
         title: username,
@@ -31,11 +32,11 @@ const PostMediaService = ({ children }) => {
 
   useEffect(() => {
     if (!postId || !postUserId) return
-    
+
     postsSingleGetRequest({ postId })
   }, [postId, postUserId])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (postsDelete.status === 'loading') {
       navigationActions.navigateBack(navigation)
     }
@@ -91,7 +92,7 @@ const PostMediaService = ({ children }) => {
     handleScrollPrev,
     handleScrollNext,
     actionSheetRefs,
-    textPostRefs, 
+    textPostRefs,
   })
 }
 

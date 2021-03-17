@@ -4,6 +4,10 @@ import { renderWithStore, fireEvent, act } from 'tests/utils'
 import { testField } from 'tests/utils/helpers'
 import * as authSelector from 'store/ducks/auth/selectors'
 
+jest.mock('@react-navigation/native', () => ({
+  useIsFocused: jest.fn().mockReturnValue(true),
+}))
+
 jest.mock('@aws-amplify/api', () => ({
   graphql: jest.fn().mockResolvedValue({ data: { usernameStatus: 'AVAILABLE' } }),
   graphqlOperation: jest.fn().mockResolvedValue(true),

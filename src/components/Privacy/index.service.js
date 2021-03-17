@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { useSelector, useDispatch } from 'react-redux'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const PrivacyService = ({ children }) => {
   const dispatch = useDispatch()
@@ -33,7 +33,7 @@ const PrivacyService = ({ children }) => {
       sharingDisabled: !user.sharingDisabled,
     }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success') {
       dispatch(usersActions.usersEditProfileIdle({}))
     }

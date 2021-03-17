@@ -16,10 +16,15 @@ const user = {
   dateOfBirth: '1990-04-21',
   height: 170,
   bio: 'bio',
+  userStatus: 'ACTIVE',
 }
 
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
-jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useFocusEffect: jest.fn() }))
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
+  useFocusEffect: jest.fn(),
+  useIsFocused: jest.fn().mockReturnValue(true),
+}))
 jest.mock('components/Dating/Card', () => jest.fn().mockReturnValue(null))
 
 const navigation = { navigate: jest.fn() }
@@ -74,7 +79,7 @@ describe('DatingProfileScreen', () => {
         fireEvent.press(queryByText('Open Dating'))
       })
 
-      testNavigate(navigation, 'Dating')
+      testNavigate(navigation, 'Dating.Dating')
       authSelector.authUserSelector.mockReturnValue(user)
     })
   })
@@ -122,13 +127,15 @@ describe('DatingProfileScreen', () => {
     })
 
     it('redirect to dating on success', async () => {
+      authSelector.authUserSelector.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
       const { store } = setup()
 
       await act(async () => {
         store.dispatch(usersActions.usersSetUserDatingStatusSuccess({ data: {}, payload: {} }))
       })
 
-      testNavigate(navigation, 'Dating')
+      testNavigate(navigation, 'Dating.Dating')
+      authSelector.authUserSelector.mockReturnValue(user)
     })
   })
 })

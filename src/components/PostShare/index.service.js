@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as navigationActions from 'navigation/actions'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as postsSelector from 'store/ducks/posts/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ShareService = ({ children }) => {
   const dispatch = useDispatch()
@@ -17,13 +17,13 @@ const ShareService = ({ children }) => {
 
   const postsShareRequest = (payload) => dispatch(postsActions.postsShareRequest(payload))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (!postId || !postUserId) return
 
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
   }, [postId, postUserId])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (postsShare.status === 'success') {
       dispatch(postsActions.postsShareIdle())
 

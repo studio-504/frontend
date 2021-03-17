@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
@@ -10,6 +10,7 @@ import DatingAvatarScreen from 'screens/DatingAvatarScreen'
 import * as navigationOptions from 'navigation/options'
 import { ThemeContext } from 'services/providers/Theme'
 import ProgressTabBar from 'components/DatingWizard/ProgressTabBar'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const STEPS = {
   AVATAR: 'DatingAvatar',
@@ -40,7 +41,7 @@ const DatingWizardNavigator = ({ navigation }) => {
     setStep(step)
   }
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success' && step !== STEPS.AVATAR) {
       dispatch(usersActions.usersEditProfileIdle())
       handleNext()

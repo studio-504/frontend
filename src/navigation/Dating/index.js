@@ -52,7 +52,7 @@ const DatingNavigator = ({ navigation }) => {
       <Stack.Screen
         name="DatingWizard"
         component={DatingWizardNavigator}
-        {...stackScreenPageProps({ options: { title: 'Dating Onboarding' } })}
+        {...stackScreenPageProps({ options: { title: 'Dating Onboarding', headerLeft: null } })}
       />
 
       <Stack.Screen
