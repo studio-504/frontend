@@ -17,7 +17,7 @@ function* cognitoAuthentication(payload) {
 function* handleAuthSigninRequest(payload) {
   yield call(cognitoAuthentication, payload)
 
-  yield put(actions.authFlowRequest({ allowAnonymous: true }))
+  yield put(actions.authFlowRequest({ allowAnonymous: false }))
   const { flowSuccess, flowFailure } = yield race({
     flowSuccess: take(constants.AUTH_FLOW_SUCCESS),
     flowFailure: take(constants.AUTH_FLOW_FAILURE),
@@ -48,4 +48,4 @@ function* authSigninCognitoRequest(req) {
 
 export default () => [
   takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
-]
+] 

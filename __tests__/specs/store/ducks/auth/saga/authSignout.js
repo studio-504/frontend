@@ -1,6 +1,7 @@
 import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import authSignout from 'store/ducks/auth/saga/authSignout'
+import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as actions from 'store/ducks/auth/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
 
@@ -12,6 +13,9 @@ describe('authSignout', () => {
 
     await expectSaga(testAsRootSaga(authSignout))
       .provide([[getContext('ReactNavigationRef'), navigation]])
+
+      .put(subscriptionsActions.subscriptionsMainIdle())
+      .put(subscriptionsActions.subscriptionsPollIdle())
 
       .dispatch(actions.authSignoutSuccess())
       .silentRun()
