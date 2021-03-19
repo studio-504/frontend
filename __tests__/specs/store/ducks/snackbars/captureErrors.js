@@ -17,7 +17,7 @@ jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production' }))
 const error = new Error('Error')
 const failureAction = createFailureAction('ACTION_FAILURE')
 
-describe('Snackbars saga', () => {
+describe('Capture Errors', () => {
   afterEach(() => {
     Alert.alert.mockClear()
     showMessage.mockClear()
