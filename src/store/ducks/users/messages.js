@@ -7,7 +7,7 @@ export default {
   [constants.USERS_EDIT_PROFILE_SUCCESS]: {
     FORM_EDIT_PROFILE: {
       code: 'FORM_EDIT_PROFILE',
-      text: 'Profile has updated',
+      text: 'Profile has been updated',
     },
   },
   [constants.USERS_EDIT_PROFILE_FAILURE]: {

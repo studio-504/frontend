@@ -29,7 +29,7 @@ describe('Capture Success', () => {
     it('usersEditProfileSuccess', async () => {
       await expectSaga(testAsRootSaga(snackbars)).dispatch(successAction).silentRun()
 
-      testShowMessage('Profile has updated')
+      testShowMessage('Profile has been updated')
     })
 
     it('usersEditProfileSuccess generic', async () => {
