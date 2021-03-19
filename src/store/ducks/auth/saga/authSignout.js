@@ -4,6 +4,7 @@ import * as constants from 'store/ducks/auth/constants'
 import { federatedGoogleSignout } from 'services/AWS'
 import { resetAuthUserPersist } from 'services/Auth'
 import * as navigationActions from 'navigation/actions'
+import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 
 /**
  * Remove cognito credentials
@@ -42,6 +43,9 @@ function* authSignoutRequest(req) {
 }
 
 function* authSignoutSuccess() {
+  yield put(subscriptionsActions.subscriptionsMainIdle())
+  yield put(subscriptionsActions.subscriptionsPollIdle())
+
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
   navigationActions.navigateReset(ReactNavigationRef.current)
 }

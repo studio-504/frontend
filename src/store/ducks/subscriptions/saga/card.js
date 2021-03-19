@@ -7,6 +7,18 @@ import * as constants from 'store/ducks/subscriptions/constants'
 import { createChannel } from 'store/ducks/subscriptions/saga/helpers'
 import path from 'ramda/src/path'
 
+export function* handleEvent({ eventData, userId }) {
+  const payload = path(['value', 'data', 'onCardNotification'], eventData)
+  const eventType = path(['type'], payload)
+
+  if (eventType === 'DELETED') return
+
+  yield put(usersActions.usersGetCardsRequest())
+  yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
+  yield put(usersActions.usersGetProfileSelfRequest())
+  yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
+}
+
 /**
  * Cards subscription channel
  */
@@ -22,17 +34,8 @@ function* cardSubscription() {
       yield fork(function* eventListener() {
         while (true) {
           const { eventData } = yield take(channel)
-          const payload = path(['value', 'data', 'onCardNotification'], eventData)
-          const type = path(['type'], payload)
 
-          if (type === 'DELETED') return
-
-          yield fork(function* () {
-            yield put(usersActions.usersGetCardsRequest({}))
-            yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-            yield put(usersActions.usersGetProfileSelfRequest())
-            yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
-          })
+          yield fork(handleEvent, { eventData, userId })
         }
       })
 
