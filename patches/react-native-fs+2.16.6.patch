@@ -3,9 +3,9 @@ index 8ef10e4..907069d 100644
 --- a/node_modules/react-native-fs/RNFSManager.h
 +++ b/node_modules/react-native-fs/RNFSManager.h
 @@ -16,4 +16,6 @@ typedef void (^CompletionHandler)(void);
- 
+
  +(void)setCompletionHandlerForIdentifier: (NSString *)identifier completionHandler: (CompletionHandler)completionHandler;
- 
+
 +pthread_mutex_t *tj_HEICEncodingLock(void);
 +
  @end
@@ -14,17 +14,17 @@ index c443d20..bad331e 100755
 --- a/node_modules/react-native-fs/RNFSManager.m
 +++ b/node_modules/react-native-fs/RNFSManager.m
 @@ -23,6 +23,7 @@
- 
+
  #import <CommonCrypto/CommonDigest.h>
  #import <Photos/Photos.h>
 +#include <pthread.h>
- 
- 
+
+
  @interface RNFSManager()
 @@ -39,6 +40,16 @@ @implementation RNFSManager
- 
+
  RCT_EXPORT_MODULE();
- 
+
 +pthread_mutex_t *tj_HEICEncodingLock(void)
 +{
 +    static pthread_mutex_t lock;
@@ -53,7 +53,7 @@ index c443d20..bad331e 100755
                                              resultHandler:^(UIImage *result, NSDictionary<NSString *, id> *info) {
 -        if (result) {
 +        if (result && [imageDestination rangeOfString:@".HEIC"].location == NSNotFound) {
- 
+
              NSData *imageData = UIImageJPEGRepresentation(result, compression );
 -            [imageData writeToFile:destination atomically:YES];
 -            resolve(destination);
@@ -87,6 +87,6 @@ index c443d20..bad331e 100755
 +            [imageData writeToFile:imageDestination atomically:YES];
 +            resolve(imageDestination);
 +            CFRelease(destination);
- 
+
          } else {
              NSMutableDictionary* details = [NSMutableDictionary dictionary];

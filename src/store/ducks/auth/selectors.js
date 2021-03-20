@@ -27,7 +27,7 @@ export const authUserIdSelector = createSelector(
   },
 )
 
-export const languageCodeSelector = 
+export const languageCodeSelector =
   state => pathOr('', ['auth', 'user', 'languageCode'], state)
 
 const authRoot = prop('auth')

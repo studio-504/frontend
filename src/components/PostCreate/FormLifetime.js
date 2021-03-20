@@ -43,7 +43,7 @@ const FormLifetime = ({
   setFieldValue,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <Text>{t('Post will be available {{lifetime}}', { lifetime: getTextByValue(t)(values.lifetime) })}</Text>
@@ -59,7 +59,7 @@ const FormLifetime = ({
         value={getIndexByValue(values.lifetime)}
         onValueChange={(value) => setFieldValue('lifetime', getValueByIndex(value))}
       />
-      
+
       <View style={styling.sliderIndicator}>
         <LifetimeIndicator
           onValueChange={(value) => setFieldValue('lifetime', getValueByIndex(value))}

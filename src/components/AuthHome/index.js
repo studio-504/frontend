@@ -1,12 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import DefaultButton from 'components/Formik/Button/DefaultButton'
 import ActionsComponent from 'components/AuthHome/Actions'
-import AuthActionTemplate from 'templates/Auth/Action'
 import AuthHeaderTemplate from 'templates/Auth/Header'
 import AuthTermsTemplate from 'templates/Auth/Terms'
 import * as navigationActions from 'navigation/actions'
@@ -15,10 +11,12 @@ import HeaderRight from 'navigation/HeaderRight'
 
 import { useNavigation } from '@react-navigation/native'
 import { withTranslation } from 'react-i18next'
+import { withTheme } from 'react-native-paper'
 import testIDs from './test-ids'
 
 const AuthHome = ({
   t,
+  theme,
   authSigninGoogle,
   authSigninGoogleRequest,
   authSigninApple,
@@ -26,34 +24,37 @@ const AuthHome = ({
   authSigninAnonymous,
   authSigninAnonymousRequest,
 }) => {
-  const styling = styles
   const navigation = useNavigation()
   const isLoading = authSigninAnonymous.status === 'loading'
 
   return (
-    <View testID={testIDs.root} style={styling.root}>
+    <View testID={testIDs.root} style={styles.root}>
       <TouchableOpacity
         testID={testIDs.closeBtn}
-        style={[styling.closeBtn, isLoading ? styling.disabled : null]}
+        style={[styles.closeBtn, isLoading ? styles.disabled : null]}
         onPress={authSigninAnonymousRequest}
         disabled={isLoading}
       >
-        <CloseIcon />
+        <CloseIcon fill={theme.colors.text} />
       </TouchableOpacity>
 
       <HeaderRight
         testID={testIDs.skipBtn}
         onPress={authSigninAnonymousRequest}
-        containerStyle={styling.skipBtn}
-        style={isLoading ? styling.disabled : null}
+        containerStyle={styles.skipBtn}
+        style={isLoading ? styles.disabled : null}
         disabled={isLoading}
         title="Skip"
       />
 
-      <View style={styling.component}>
-        <AuthHeaderTemplate title={t('Sign up for REAL')} subtitle={t('The Healthier Social Media Movement')} />
+      <View style={styles.component}>
+        <AuthHeaderTemplate
+          title={t('Sign up for REAL')}
+          subtitle={t('The Healthier Social Media Movement')}
+          noMargin
+        />
 
-        <View style={styling.content}>
+        <View style={styles.content}>
           <ActionsComponent
             authSigninGoogle={authSigninGoogle}
             authSigninGoogleRequest={authSigninGoogleRequest}
@@ -67,24 +68,29 @@ const AuthHome = ({
         <AuthTermsTemplate />
       </View>
 
-      <AuthActionTemplate testID={testIDs.footer.signInBtn} onPress={() => navigationActions.navigateSignin(navigation)}>
-        {t('Already Have an Account? Log In')}
-      </AuthActionTemplate>
+      <View style={styles.footer}>
+        <DefaultButton
+          testID={testIDs.footer.signInBtn}
+          onPress={() => navigationActions.navigateSignin(navigation)}
+          label={t('Already Have an Account? Log In')}
+        />
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
-    paddingTop: 50,
-  },
-  component: {
+    paddingTop: 110,
     paddingHorizontal: 24,
     flex: 1,
   },
-  content: {
+  component: {
     flex: 1,
+  },
+  content: {
+    marginTop: 24,
+    marginBottom: 16,
   },
   closeBtn: {
     position: 'absolute',
@@ -105,10 +111,14 @@ const styles = StyleSheet.create({
   disabled: {
     opacity: 0.4,
   },
+  footer: {
+    marginBottom: 48,
+  },
 })
 
 AuthHome.propTypes = {
   t: PropTypes.any,
+  theme: PropTypes.any,
   authSigninGoogle: PropTypes.any,
   authSigninGoogleRequest: PropTypes.any,
   authSigninApple: PropTypes.any,
@@ -117,4 +127,4 @@ AuthHome.propTypes = {
   authSigninAnonymousRequest: PropTypes.any,
 }
 
-export default withTranslation()(AuthHome)
+export default withTranslation()(withTheme(AuthHome))

@@ -14,8 +14,8 @@ const chatUserModifier = (chat) => {
 
 const chatMessageUserModifier = (chat) => {
   const mappedUsers = pathOr([], ['messages', 'items'])(chat).map((message) => {
-		const mappedUser = pathOr(null, ['author', 'userId'])(message)
-		return assocPath(['author'], mappedUser)(message)
+    const mappedUser = pathOr(null, ['author', 'userId'])(message)
+    return assocPath(['author'], mappedUser)(message)
   })
   return assocPath(['messages', 'items'], mappedUsers)(chat)
 }
@@ -36,7 +36,7 @@ extend('$chatResourceSetSuccess', ({ payload }, original) => {
  * Resource pool set
  */
 extend('$chatResourcePoolSet', ({ payload, initialState }, original) => {
-	const nextChat = update(initialState, {
+  const nextChat = update(initialState, {
     data: { $set: compose(chatMessageUserModifier, chatUserModifier)(payload.data) },
     status: { $set: 'success' },
   })

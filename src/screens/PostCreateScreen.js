@@ -8,9 +8,9 @@ class PostCreateScreen extends React.Component {
   render() {
     return (
       <PostsPreviewServiceComponent>
-        {((previewProps) => ( 
+        {((previewProps) => (
           <PostCreateServiceComponent>
-            {(props) => ( 
+            {(props) => (
               <React.Fragment>
                 <PostsPreviewComponent
                   {...previewProps}

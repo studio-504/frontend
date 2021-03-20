@@ -87,7 +87,7 @@ const Chat = ({
     </View>
   )
 }
-  
+
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,

@@ -15,7 +15,7 @@ const ProfileEdit = ({
   usersEditProfileRequest,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <KeyboardAwareScrollView>

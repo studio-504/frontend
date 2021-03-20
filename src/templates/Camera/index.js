@@ -16,7 +16,7 @@ const CameraComponent = ({
   wrapper,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       {wrapper}

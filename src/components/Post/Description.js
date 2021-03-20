@@ -24,7 +24,7 @@ const Description = ({
   if (!visibility) {
     return null
   }
-  
+
   return (
     <TouchableOpacity style={styling.root} onPress={navigationActions.navigateComments(navigation, { postId: post.postId, userId: post.postedBy.userId })}>
       <Text style={styling.text} numberOfLines={4} ellipsizeMode="tail">
@@ -46,7 +46,7 @@ const Description = ({
                 <Text key={match + i} onPress={() => navigationActions.navigateProfile(navigation, { userId: tagged.user.userId })} style={styling.textUsername}>@{match}</Text>
               )
             }
-            
+
             return <Text key="matched" style={styling.textDefault}>{`@${match}`}</Text>
           }),
         ]}

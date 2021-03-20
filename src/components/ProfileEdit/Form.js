@@ -91,17 +91,17 @@ ProfileEditForm.propTypes = {
 }
 
 export default withTranslation()(({ usersEditProfile, usersEditProfileRequest, user, ...props }) => (
-  <Formik 
-    initialValues={user} 
-    validationSchema={formSchema} 
-    onSubmit={usersEditProfileRequest} 
+  <Formik
+    initialValues={user}
+    validationSchema={formSchema}
+    onSubmit={usersEditProfileRequest}
     enableReinitialize
   >
-    {(formikProps) => 
-      <ProfileEditForm 
-        {...formikProps} 
-        {...props} 
-        loading={usersEditProfile.status === 'loading'} 
+    {(formikProps) =>
+      <ProfileEditForm
+        {...formikProps}
+        {...props}
+        loading={usersEditProfile.status === 'loading'}
       />
     }
   </Formik>

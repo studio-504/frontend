@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import * as ReactRedux from 'react-redux'
 import * as themesActions from 'store/ducks/themes/actions'
 import testIDs from 'components/ThemeDefault/test-ids'
- 
+
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
 }))

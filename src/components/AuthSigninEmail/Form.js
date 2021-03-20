@@ -40,7 +40,7 @@ const SigninForm = ({
           testID={testIDs.form.email}
           name="email"
           component={TextField}
-          placeholder={t('Email')}          
+          placeholder={t('Email')}
         />
       </View>
       <View style={styles.input}>

@@ -32,7 +32,7 @@ function* handlePostsShareRequest(payload) {
       fontSize: fontSizeFirstLine,
       X: 30,
       Y: size.height - fontSizeFirstLine * 2,
-      scale: 1, 
+      scale: 1,
       quality: 100,
     })
 
@@ -44,13 +44,13 @@ function* handlePostsShareRequest(payload) {
       fontSize: fontSizeSecondLine,
       X: 35,
       Y: size.height - fontSizeFirstLine * 2 + fontSizeFirstLine,
-      scale: 1, 
+      scale: 1,
       quality: 100,
     })
 
     return secondLine
   }
-  
+
   function* handleInstagramPostShare({ url, title }) {
     const base64 = yield RNFetchBlob.fs.readFile(url, 'base64')
     const nextUrl = `data:image/jpg;base64,${base64}`
@@ -63,7 +63,7 @@ function* handlePostsShareRequest(payload) {
 
     yield Share.shareSingle(shareOptions)
   }
-  
+
   function* handleInstagramStoryShare({ url, title }) {
     const base64 = yield RNFetchBlob.fs.readFile(url, 'base64')
     const nextUrl = `data:image/jpg;base64,${base64}`
@@ -76,7 +76,7 @@ function* handlePostsShareRequest(payload) {
 
     yield Share.shareSingle(shareOptions)
   }
-  
+
   function* handleFacebookShare({ url, title }) {
     const shareOptions = {
       url,
@@ -110,7 +110,7 @@ function* handlePostsShareRequest(payload) {
     }]))
 
     navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
-  } 
+  }
 
   function* handleCameraRollSave(photoUri) {
     yield CameraRoll.saveToCameraRoll(photoUri)
