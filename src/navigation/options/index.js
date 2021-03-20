@@ -201,7 +201,7 @@ export const stackScreenAuthProps = ({ theme }) => ({ options } = {}) => ({
       shadowColor: 'transparent',
     },
     headerTitleStyle: {
-      color: '#ffffff',
+      color: theme.colors.text,
     },
     ...options,
   }),

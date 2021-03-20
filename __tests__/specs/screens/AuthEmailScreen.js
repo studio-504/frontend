@@ -34,8 +34,8 @@ describe('AuthEmailScreen', () => {
   it('footer', () => {
     const { getByText } = setup()
 
-    fireEvent.press(getByText('Signup with Phone Number'))
-    testNavigate(navigation, 'Auth.Signup.AuthPhone')
+    fireEvent.press(getByText('Already Have an Account? Log In'))
+    testNavigate(navigation, 'Auth.Signin')
   })
 
   it('form', () => {
