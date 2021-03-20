@@ -10,6 +10,7 @@ import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import WalletIcon from 'assets/svg/membership/Wallet'
+import VerifiedIcon from 'assets/svg/membership/Verified'
 import MusicIcon from 'assets/svg/membership/Music'
 import AppleIcon from 'assets/svg/auth/Apple'
 import StickerIcon from 'assets/svg/membership/Sticker'
@@ -107,6 +108,16 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>{t('Profile Themes')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <VerifiedIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Verified Accounts (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Verify your identity & boost your posts')}</Text>
           </View>
         </View>
 
