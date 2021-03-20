@@ -292,7 +292,7 @@ describe('Feature: Sign up', () => {
     it('Then type received confirmation code', async () => {
       const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(inbox.id)
       await typeText(AuthEmailConfirmScreen.form.confirmationCode, confirmationCode)
-      
+
     })
 
     it('Then user see feed screen', async () => {

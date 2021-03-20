@@ -23,7 +23,7 @@ const ProfileAbout = ({
   const user = path(['data'])(usersGetProfile)
   const self = UserService.isUserOwner(usersGetProfile)
   const fullName = path(['fullName'])(user)
-  
+
   return (
     <View>
       <View style={styling.username}>

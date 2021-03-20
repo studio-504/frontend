@@ -55,7 +55,7 @@ const Album = ({
 
   return (
     <View style={styling.root}>
-      <FlatList 
+      <FlatList
         data={albumsPostsGet.data}
         numColumns={3}
         keyExtractor={item => item.postId}

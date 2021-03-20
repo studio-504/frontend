@@ -43,7 +43,7 @@ describe('Entities saga', () => {
       .put(entitiesActions.entitiesImagesMerge({ data: entities.images }))
       .put(entitiesActions.entitiesMessagesMerge({ data: entities.messages }))
       .put(entitiesActions.entitiesChatsMerge({ data: entities.chats }))
-      
+
       .silentRun()
 
     await testEntitiesMerge(saga(), entities).silentRun()

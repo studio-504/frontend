@@ -11,7 +11,7 @@ const RowsItemTemplate = ({
   testID,
 }) => {
   const styling = styles
-  
+
   const rootStyle = hasBorders ? styling.rootBorder : styling.rootDefault
 
   return (

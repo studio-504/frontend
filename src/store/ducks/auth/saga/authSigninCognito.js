@@ -48,4 +48,4 @@ function* authSigninCognitoRequest(req) {
 
 export default () => [
   takeEvery(constants.AUTH_SIGNIN_COGNITO_REQUEST, authSigninCognitoRequest),
-] 
+]

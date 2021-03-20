@@ -19,7 +19,7 @@ const AuthUsernameComponentService = ({ children }) => {
     formApi.setValues(nextValues)
 
     dispatch(signupActions.signupUsernameRequest({
-      username: path(['username'], nextValues), 
+      username: path(['username'], nextValues),
       nextRoute: path(['params', 'nextRoute'], route),
     }))
   }

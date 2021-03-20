@@ -20,9 +20,9 @@ const Router = () => {
         <PinchZoomComponent />
         <NetworkComponent />
         <Stack.Navigator initialRouteName="Loading">
-          <Stack.Screen 
+          <Stack.Screen
             name="Loading"
-            component={AppLoader} 
+            component={AppLoader}
             {...navigationOptions.stackScreenStaleStaticProps}
           />
           <Stack.Screen

@@ -6,7 +6,7 @@ import * as service from 'store/ducks/cache/service'
 import path from 'ramda/src/path'
 
 /**
- * 
+ *
  */
 const progressCallback = (signature, emitter) => (data) => emitter({
   type: 'PROGRESS',
@@ -46,7 +46,7 @@ const failureCallback = (signature, emitter) => (data) => emitter({
 })
 
 /**
- * 
+ *
  */
 function cacheFetchRequestChannel({ signature, priority, thread }) {
   return eventChannel(emitter => {
@@ -68,7 +68,7 @@ function cacheFetchRequestChannel({ signature, priority, thread }) {
 }
 
 /**
- * 
+ *
  */
 function* cacheFetchRequest(req) {
   if (!path(['payload', 'signature', 'path'])(req)) {
@@ -76,7 +76,7 @@ function* cacheFetchRequest(req) {
   }
 
   /**
-   * 
+   *
    */
   if (yield service.checkLocalImage(req.payload.signature.path)) {
     yield put(actions.cacheFetchSuccess({
@@ -93,7 +93,7 @@ function* cacheFetchRequest(req) {
   }
 
   /**
-   * 
+   *
    */
   const channel = yield call(cacheFetchRequestChannel, {
     signature: req.payload.signature,

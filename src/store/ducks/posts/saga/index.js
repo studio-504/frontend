@@ -104,7 +104,7 @@ function* postsViewsGetRequestData(req, api) {
 }
 
 function* postsViewsGetRequest(req) {
-  
+
 
   try {
     const data = yield queryService.apiRequest(queries.viewedBy, req.payload)
@@ -620,7 +620,7 @@ export default () => [
   takeLatest(constants.POSTS_GET_ARCHIVED_REQUEST, postsGetArchivedRequest),
   takeLatest(constants.POSTS_EDIT_REQUEST, postsEditRequest),
   takeLatest(constants.POSTS_DELETE_REQUEST, postsDeleteRequest),
-  
+
   takeLatest(constants.POSTS_ARCHIVE_REQUEST, postsArchiveRequest),
   takeLatest(constants.POSTS_RESTORE_ARCHIVED_REQUEST, postsRestoreArchivedRequest),
 

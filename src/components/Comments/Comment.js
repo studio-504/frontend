@@ -55,7 +55,7 @@ const Comment = ({
                   <Text key={match + i} onPress={() => navigationActions.navigateProfile(navigation, { userId: tagged.user.userId })} style={styling.textUsername}>@{match}</Text>
                 )
               }
-              
+
               return <Text style={styling.textDefault}>{`@${match}`}</Text>
             }),
           ]}

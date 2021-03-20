@@ -27,7 +27,7 @@ const About = ({
     <Animated.View style={styling.root}>
       <View style={styling.title}>
         <Text style={styling.name} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-          
+
         {flingPosition === 'DOWN' ?
           <InfoIcon fill={theme.colors.text} />
         : null}

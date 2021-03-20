@@ -14,7 +14,7 @@ const AuthEmailComponentService = ({ children }) => {
   const handleFormSubmit = (values, formApi) => {
     const nextValues = handleFormTransform(values)
     formApi.setValues(nextValues)
-   
+
     dispatch(signupActions.signupCreateRequest({
       usernameType: 'email',
       email: nextValues.email,

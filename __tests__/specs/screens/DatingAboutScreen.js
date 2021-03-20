@@ -75,7 +75,7 @@ describe('DatingAboutScreen', () => {
       await act(async () => {
         openAllSections(getByAccessibilityLabel)
       })
-      
+
       testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })

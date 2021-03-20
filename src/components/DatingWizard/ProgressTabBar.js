@@ -54,9 +54,9 @@ function ProgressTabBar({ theme, onChange, state, descriptors }) {
 }
 
 ProgressTabBar.propTypes = {
-  theme: PropTypes.any, 
-  onChange: PropTypes.func, 
-  state: PropTypes.any, 
+  theme: PropTypes.any,
+  onChange: PropTypes.func,
+  state: PropTypes.any,
   descriptors: PropTypes.any,
 }
 

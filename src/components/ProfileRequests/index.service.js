@@ -13,12 +13,12 @@ const ProfileFollowerService = ({ children }) => {
   const usersUnfollow = useSelector(state => state.users.usersUnfollow)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
 
-  const usersGetPendingFollowersRequest = (payload) => 
+  const usersGetPendingFollowersRequest = (payload) =>
     dispatch(usersActions.usersGetPendingFollowersRequest(payload))
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
 

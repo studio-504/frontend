@@ -7,16 +7,16 @@ const AuthHomeComponentService = ({ children }) => {
   const authSigninApple = useSelector(state => state.auth.authSigninApple)
   const authSigninAnonymous = useSelector(state => state.auth.authSigninAnonymous)
 
-  const authSigninGoogleRequest = () => 
+  const authSigninGoogleRequest = () =>
     dispatch(authActions.authSigninGoogleRequest())
 
-  const authSigninAppleRequest = () => 
+  const authSigninAppleRequest = () =>
     dispatch(authActions.authSigninAppleRequest())
-  
-  const authSigninAnonymousRequest = () => 
+
+  const authSigninAnonymousRequest = () =>
     dispatch(authActions.authSigninAnonymousRequest())
 
-  const authSigninCognitoIdle = () => 
+  const authSigninCognitoIdle = () =>
     dispatch(authActions.authSigninCognitoIdle({}))
 
   return children({

@@ -309,7 +309,7 @@ export const stackScreenAuthModalProps = ({ theme }) => ({
 })
 
 /**
- * Used for Profile Screens without application logo but text 
+ * Used for Profile Screens without application logo but text
  */
 export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
   options: () => {

@@ -13,7 +13,7 @@ const Button = ({
   handleCameraRecordStop,
 }) => {
   const styling = styles(theme)
-  
+
 
   const [count, setCount] = React.useState(0)
   const [isRunning, toggleIsRunning] = useBoolean(false)

@@ -14,7 +14,7 @@ const Subtitle = ({
   actions,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.action}>

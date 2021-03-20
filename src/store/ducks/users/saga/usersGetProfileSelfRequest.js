@@ -25,7 +25,7 @@ function* usersGetProfileSelfRequest() {
   try {
     const data = yield queryService.apiRequest(queries.self)
     const next = yield usersGetProfileSelfRequestData(data)
-    yield put(actions.usersGetProfileSelfSuccess({ data: next.data })) 
+    yield put(actions.usersGetProfileSelfSuccess({ data: next.data }))
   } catch (error) {
     yield put(actions.usersGetProfileSelfFailure(error))
   }
