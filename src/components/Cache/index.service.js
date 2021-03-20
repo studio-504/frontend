@@ -33,7 +33,7 @@ const CacheService = ({
   const failed = useSelector(cacheSelector.failedSelector(signature.partial))
   const previousCached = usePreviousDistinct(cached)
   const uri = useMemo(() => failed ? fallback : (cached || previousCached), [cached, failed])
-  const filename = useMemo(() => helpers.getFilename(uri), [uri]) 
+  const filename = useMemo(() => helpers.getFilename(uri), [uri])
 
   /**
    * Initialize image fetch

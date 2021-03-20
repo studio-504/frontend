@@ -30,7 +30,7 @@ const Result = ({
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
-  
+
   return (
     <View style={styling.root}>
       <RowsComponent items={path(['data'])(usersSearch)}>

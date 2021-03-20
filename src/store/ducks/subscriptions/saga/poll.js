@@ -31,7 +31,7 @@ function* pollSubscription() {
     } catch (error) {
       Logger.captureException(error)
     }
-  } 
+  }
 }
 
 export default pollSubscription

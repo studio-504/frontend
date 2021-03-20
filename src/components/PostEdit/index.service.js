@@ -34,7 +34,7 @@ const PostEditService = ({ children }) => {
 
   useEffect(() => {
     if(!postId || !postUserId) return
-    
+
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
   }, [postId])
 

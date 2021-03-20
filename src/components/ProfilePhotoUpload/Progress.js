@@ -14,7 +14,7 @@ const Actions = ({
   activeUpload,
 }) => {
   const styling = styles
-  
+
   const progress = path(['meta', 'progress'])(activeUpload)
 
   return (

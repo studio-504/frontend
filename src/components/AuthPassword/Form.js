@@ -32,16 +32,16 @@ const PasswordForm = ({
     !isValid ||
     isValidating
   )
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field 
+        <Field
           {...Validation.getInputTypeProps('password')}
-          testID={testIDs.form.password} 
-          name="password" 
-          component={TextField} 
-          placeholder={t('Password')} 
+          testID={testIDs.form.password}
+          name="password"
+          component={TextField}
+          placeholder={t('Password')}
         />
       </View>
       <View style={styling.input}>

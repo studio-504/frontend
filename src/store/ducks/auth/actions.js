@@ -44,7 +44,7 @@ export const authPrefetchSuccess = createAction(constants.AUTH_PREFETCH_SUCCESS)
 export const authPrefetchFailure = createFailureAction(constants.AUTH_PREFETCH_FAILURE)
 
 /**
- * 
+ *
  */
 export const authSigninCognitoIdle = createAction(constants.AUTH_SIGNIN_COGNITO_IDLE)
 export const authSigninCognitoRequest = createAction(constants.AUTH_SIGNIN_COGNITO_REQUEST)
@@ -52,7 +52,7 @@ export const authSigninCognitoSuccess = createAction(constants.AUTH_SIGNIN_COGNI
 export const authSigninCognitoFailure = createFailureAction(constants.AUTH_SIGNIN_COGNITO_FAILURE)
 
 /**
- * 
+ *
  */
 export const authSigninAnonymousIdle = createAction(constants.AUTH_SIGNIN_ANONYMOUS_IDLE)
 export const authSigninAnonymousRequest = createAction(constants.AUTH_SIGNIN_ANONYMOUS_REQUEST)
@@ -60,7 +60,7 @@ export const authSigninAnonymousSuccess = createAction(constants.AUTH_SIGNIN_ANO
 export const authSigninAnonymousFailure = createFailureAction(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE)
 
 /**
- * 
+ *
  */
 export const authSigninGoogleIdle = createAction(constants.AUTH_SIGNIN_GOOGLE_IDLE)
 export const authSigninGoogleRequest = createAction(constants.AUTH_SIGNIN_GOOGLE_REQUEST)
@@ -68,7 +68,7 @@ export const authSigninGoogleSuccess = createAction(constants.AUTH_SIGNIN_GOOGLE
 export const authSigninGoogleFailure = createFailureAction(constants.AUTH_SIGNIN_GOOGLE_FAILURE)
 
 /**
- * 
+ *
  */
 export const authSigninAppleIdle = createAction(constants.AUTH_SIGNIN_APPLE_IDLE)
 export const authSigninAppleRequest = createAction(constants.AUTH_SIGNIN_APPLE_REQUEST)
@@ -76,7 +76,7 @@ export const authSigninAppleSuccess = createAction(constants.AUTH_SIGNIN_APPLE_S
 export const authSigninAppleFailure = createFailureAction(constants.AUTH_SIGNIN_APPLE_FAILURE)
 
 /**
- * 
+ *
  */
 export const authSignoutIdle = createAction(constants.AUTH_SIGNOUT_IDLE)
 export const authSignoutRequest = createAction(constants.AUTH_SIGNOUT_REQUEST)
@@ -84,7 +84,7 @@ export const authSignoutSuccess = createAction(constants.AUTH_SIGNOUT_SUCCESS)
 export const authSignoutFailure = createFailureAction(constants.AUTH_SIGNOUT_FAILURE)
 
 /**
- * 
+ *
  */
 export const authForgotIdle = createAction(constants.AUTH_FORGOT_IDLE)
 export const authForgotRequest = createAction(constants.AUTH_FORGOT_REQUEST)
@@ -92,7 +92,7 @@ export const authForgotSuccess = createAction(constants.AUTH_FORGOT_SUCCESS)
 export const authForgotFailure = createFailureAction(constants.AUTH_FORGOT_FAILURE)
 
 /**
- * 
+ *
  */
 export const authForgotConfirmIdle = createAction(constants.AUTH_FORGOT_CONFIRM_IDLE)
 export const authForgotConfirmRequest = createAction(constants.AUTH_FORGOT_CONFIRM_REQUEST)

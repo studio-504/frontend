@@ -15,7 +15,7 @@ export const useHeader = ({
   const headerRight = useCallback(() =>
     <HeaderRight onPress={onPress} title={title} />
   , [])
-  
+
   /**
    *
    */

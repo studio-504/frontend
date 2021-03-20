@@ -18,14 +18,14 @@ export const useHeader = ({
   const headerRight = useCallback(() =>
     <HeaderRight onPress={onPress} title={title} />
   , [])
-  
+
   /**
    *
    */
   const albumName = path(['name'])(album)
-  
+
   useEffect(() => {
-    if(!albumName) return 
+    if(!albumName) return
 
     navigation.setOptions({ title: albumName })
   }, [albumName])

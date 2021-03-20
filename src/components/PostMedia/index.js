@@ -17,7 +17,7 @@ import isEmpty from 'ramda/src/isEmpty'
 const PostMedia = ({
   t,
   theme,
-  user, 
+  user,
   postsArchiveRequest,
   postsRestoreArchivedRequest,
   postsFlag,
@@ -30,7 +30,7 @@ const PostMedia = ({
 
   handleScrollNext,
   handleScrollPrev,
-  
+
   feedRef,
   actionSheetRefs,
   textPostRefs,

@@ -23,7 +23,7 @@ const TextGrowing = ({
   inputRef,
 }) => {
   const styling = styles(theme)
-  
+
   const [height, setHeight] = useState(42)
 
   /**

@@ -13,7 +13,7 @@ export const PostPreviewService = ({ children }) => {
   const postId = path(['params', 'postId'])(route)
   const userId = path(['params', 'userId'])(route)
   const renderUri = path(['params', 'renderUri'])(route)
-  
+
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
 
   /**

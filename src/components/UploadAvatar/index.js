@@ -8,7 +8,7 @@ const UploadAvatar = ({ children, backRoute }) => {
   const actionSheetRef = useRef(null)
   const openUploadAvatarMenu = () => actionSheetRef.current && actionSheetRef.current.show()
 
-  return ( 
+  return (
     <React.Fragment>
       {children({ openUploadAvatarMenu, ...props })}
       <UploadAvatarComponent {...props} actionSheetRef={actionSheetRef} />

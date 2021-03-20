@@ -2,7 +2,7 @@ import path from 'ramda/src/path'
 import Layout from 'constants/Layout'
 
 /**
- * 
+ *
  */
 const isCloseToBottom = (multiplier = 1.80) => ({ layoutMeasurement, contentOffset, contentSize }) =>
   layoutMeasurement.height + contentOffset.y >= contentSize.height - (Layout.window.height * multiplier)
@@ -51,7 +51,7 @@ const ScrollHelper = ({
    */
   const handleScrollChange = ({ nativeEvent }) =>
     isCloseToBottom(multiplier)(nativeEvent) && handleLoadMore()
-  
+
   /**
    *
    */

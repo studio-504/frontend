@@ -20,7 +20,7 @@ const Translation = ({
   usersEditProfileRequest,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <ScrollView>
       <View style={styling.root}>

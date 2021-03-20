@@ -20,8 +20,8 @@ const Stories = ({
   const navigation = useNavigation()
   const theme = useTheme()
   const styling = styles(theme)
-  
-  const handleUserStoryPress = (user) => 
+
+  const handleUserStoryPress = (user) =>
     navigationActions.navigateStory(
       navigation,
       {

@@ -5,11 +5,11 @@ import MembershipServiceComponent from 'components/Membership/index.service'
 class MembershipScreen extends React.Component {
   render() {
     return (
-			<MembershipServiceComponent>
+      <MembershipServiceComponent>
         {(membershipProps) => (
-					<MembershipComponent {...membershipProps} />
-				)}
-			</MembershipServiceComponent>
+          <MembershipComponent {...membershipProps} />
+        )}
+      </MembershipServiceComponent>
     )
   }
 }

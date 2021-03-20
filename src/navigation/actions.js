@@ -49,7 +49,7 @@ export const navigateChat = withAuthValidation(navigateToPath('App.Chat'))
 export const navigateChatDirect = withAuthValidation(navigateToPath('App.Chat.ChatDirect'))
 export const navigateChatOptions = withAuthValidation(navigateToPath('App.Chat.ChatOptions'))
 export const navigateProfileRequests = navigateToPath('App.Chat.ProfileRequests')
- 
+
 /**
  * Dating
  */
@@ -79,7 +79,7 @@ export const navigateArchived = navigateToPath('App.Root.Home.Profile.Archived')
 /**
  * Auth
  */
-export const navigateAuthHome = navigateToPath('Auth.AuthHome') 
+export const navigateAuthHome = navigateToPath('Auth.AuthHome')
 export const navigateAuthUsername = navigateToPath('Auth.AuthUsername')
 export const navigateAuthPhoneConfirm = navigateToPath('Auth.AuthPhoneConfirm')
 export const navigateAuthPassword = navigateToPath('Auth.AuthPassword')

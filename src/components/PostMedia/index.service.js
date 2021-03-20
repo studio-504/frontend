@@ -31,7 +31,7 @@ const PostMediaService = ({ children }) => {
 
   useEffect(() => {
     if (!postId || !postUserId) return
-    
+
     postsSingleGetRequest({ postId })
   }, [postId, postUserId])
 
@@ -91,7 +91,7 @@ const PostMediaService = ({ children }) => {
     handleScrollPrev,
     handleScrollNext,
     actionSheetRefs,
-    textPostRefs, 
+    textPostRefs,
   })
 }
 

@@ -20,7 +20,7 @@ const LifetimeIndicator = ({
   onValueChange,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <TouchableOpacity style={[{ left: '0%' }, styling.indicator]} onPress={() => onValueChange(1)}>

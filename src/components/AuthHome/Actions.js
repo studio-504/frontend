@@ -38,10 +38,10 @@ const Actions = ({
       <View style={styling.item}>
         <DefaultButton testID={testIDs.actions.appleBtn} icon={AppleIcon} label={t('Continue with Apple')} onPress={authSigninAppleRequest} loading={authSigninApple.status === 'loading'} style={styling.apple} labelStyle={styling.labelStyle} />
       </View>
-      {hideAnonymousBtn === false ? 
+      {hideAnonymousBtn === false ?
         <View style={styling.item}>
           <DefaultButton testID={testIDs.actions.anonymousBtn}  label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
-        </View> 
+        </View>
       : null}
     </View>
   )

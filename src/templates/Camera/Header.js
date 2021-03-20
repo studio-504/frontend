@@ -13,7 +13,7 @@ const Header = ({
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
-  
+
 
   return (
     <View style={styling.root}>

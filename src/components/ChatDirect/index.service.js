@@ -57,7 +57,7 @@ const ChatDirectService = ({ children }) => {
       return
     }
 
-    dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))    
+    dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
   }, [chatGetChat.status])
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const ChatDirectService = ({ children }) => {
   }
 
   /**
-   * Keyboard movement calculator 
+   * Keyboard movement calculator
    */
   const [offset, setOffset] = useState(0)
 

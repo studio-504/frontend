@@ -94,7 +94,7 @@ const TabNavigator = ({ navigation, route }) => {
   }
 
   /*
-   * We use listen tabPress for save scroll to scrollView top on tabPress 
+   * We use listen tabPress for save scroll to scrollView top on tabPress
    * https://reactnavigation.org/docs/bottom-tab-navigator/#tabpress
    */
   const privateRoute = useCallback(

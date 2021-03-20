@@ -26,7 +26,7 @@ const ReactionsPreviewTemplate = ({
   const navigation = useNavigation()
 
   const postLikedVisibility = useMemo(() => PrivacyService.postLikedVisibility(post, user), [post, user])
-  
+
   if (!postLikedVisibility) {
     return null
   }

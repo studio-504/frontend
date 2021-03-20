@@ -60,7 +60,7 @@ describe('cardSubscription', () => {
   describe('Backend events', () => {
     it('update posts on event', async () => {
       const promise = createSaga(store)
-        .put(usersActions.usersGetCardsRequest({}))
+        .put(usersActions.usersGetCardsRequest())
         .put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
         .put(usersActions.usersGetProfileSelfRequest())
         .put(usersActions.usersGetPendingFollowersRequest({ userId }))
@@ -79,7 +79,7 @@ describe('cardSubscription', () => {
 
   it('should not handle update data on DELETE profile event', async () => {
     const promise = createSaga(store)
-      .not.put(usersActions.usersGetCardsRequest({}))
+      .not.put(usersActions.usersGetCardsRequest())
       .not.put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
       .not.put(usersActions.usersGetProfileSelfRequest())
       .not.put(usersActions.usersGetPendingFollowersRequest({ userId }))

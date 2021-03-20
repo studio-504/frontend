@@ -20,7 +20,7 @@ const Action = ({ t, theme, user, post, postsOnymouslyLikeRequest, postsDislikeR
   const navigation = useNavigation()
 
   const [likeStatus, setLikeStatus] = useState(post.likeStatus)
-  
+
   const handleLikeRequest = () => {
     setLikeStatus('ONYMOUSLY_LIKED')
     postsOnymouslyLikeRequest({ postId: post.postId, userId: post.postedBy.userId })

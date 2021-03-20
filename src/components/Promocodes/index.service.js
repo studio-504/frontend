@@ -16,7 +16,7 @@ const PromocodesService = ({ children }) => {
   const handleFormSubmit = (values, formApi) => {
     const nextValues = handleFormTransform(values)
     formApi.setValues(nextValues)
-   
+
     dispatch(actions.promoCodesRedeemRequest(nextValues))
   }
 
