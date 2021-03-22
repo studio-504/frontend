@@ -10,7 +10,7 @@ const TranslationService = ({ children }) => {
 
   const usersEditProfileRequest = (payload) =>
     dispatch(usersActions.usersEditProfileRequest({ languageCode: payload.languageCode }))
-  
+
   useEffect(() => {
     if (usersEditProfile.status === 'success') {
       dispatch(usersActions.usersEditProfileIdle({}))

@@ -99,7 +99,7 @@ export const userFragment = `
         anonymousLikeCount
         viewedByCount
       }
-      nextToken 
+      nextToken
     }
 
     directChat {
@@ -289,6 +289,6 @@ export const cardFragment = `
       ...imageFragment
     }
   }
- 
+
   ${imageFragment}
 `

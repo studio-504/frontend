@@ -282,7 +282,7 @@ export const reportScreenViews = `
   mutation reportScreenViews($screens: [String!]!) {
     reportScreenViews(screens: $screens)
   }
-` 
+`
 
 export const setUserDatingStatus = `
   mutation setUserDatingStatus($status: DatingStatus!) {

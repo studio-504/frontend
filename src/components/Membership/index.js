@@ -10,7 +10,10 @@ import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import WalletIcon from 'assets/svg/membership/Wallet'
+import VerifiedIcon from 'assets/svg/membership/Verified'
+import MusicIcon from 'assets/svg/membership/Music'
 import AppleIcon from 'assets/svg/auth/Apple'
+import StickerIcon from 'assets/svg/membership/Sticker'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import AuthTermsTemplate from 'templates/Auth/Terms'
 import { withTranslation } from 'react-i18next'
@@ -110,6 +113,16 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <VerifiedIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Verified Accounts (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Verify your identity & boost your posts')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <DiamondIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
@@ -130,11 +143,31 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <MusicIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <DatingIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('People are more likely to discover you in dating')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <StickerIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Emotes (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('React to posts with new emoticons each month')}</Text>
           </View>
         </View>
 
@@ -185,6 +218,7 @@ const styles = (theme) =>
     },
     action: {
       paddingHorizontal: theme.spacing.base,
+      marginBottom: theme.spacing.base,
     },
     labelStyle: {
       marginLeft: 12,

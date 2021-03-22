@@ -32,6 +32,8 @@ const ChatDirectService = ({ children }) => {
     dispatch(chatActions.chatFlagMessageRequest(payload))
 
   useEffect(() => {
+    if (!chatId) return
+
     dispatch(chatActions.chatGetChatRequest({ chatId }))
   }, [])
 
@@ -53,11 +55,9 @@ const ChatDirectService = ({ children }) => {
   }, [chatFlagMessage.status])
 
   useEffect(() => {
-    if (chatGetChat.status !== 'success') {
-      return
+    if (chatGetChat.status === 'success' && chatId) {
+      dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
     }
-
-    dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))    
   }, [chatGetChat.status])
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const ChatDirectService = ({ children }) => {
   }
 
   /**
-   * Keyboard movement calculator 
+   * Keyboard movement calculator
    */
   const [offset, setOffset] = useState(0)
 

@@ -21,7 +21,7 @@ const ProfileRequests = ({
   usersAcceptFollowerUserRequest,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       <ScrollView

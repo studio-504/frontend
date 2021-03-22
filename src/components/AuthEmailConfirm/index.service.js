@@ -8,15 +8,15 @@ import * as Validation from 'services/Validation'
 
 const AuthEmailConfirmComponentService = ({ children }) => {
   const dispatch = useDispatch()
-  const route = useRoute() 
+  const route = useRoute()
 
   const signupConfirm = useSelector(signupSelectors.signupConfirm)
   const signupCreate = useSelector(signupSelectors.signupCreate)
 
   const onUnmount = () => {
     dispatch(signupActions.signupConfirmIdle())
-  } 
-  
+  }
+
   useEffect(() => onUnmount, [])
 
   const handleFormTransform = (values) => ({

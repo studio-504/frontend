@@ -14,7 +14,7 @@ const Private = ({
   theme,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <Text>{t('This account is private')} </Text>

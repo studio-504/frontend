@@ -31,7 +31,7 @@ const ProfileService = ({ children }) => {
     })
   }, [path(['data', 'username'])(usersGetProfile)])
 
-  const usersGetProfileRequest = ({ userId }) => 
+  const usersGetProfileRequest = ({ userId }) =>
     dispatch(usersActions.usersGetProfileRequest({ userId }))
 
   const usersUnblockRequest = ({ userId }) =>
@@ -42,7 +42,7 @@ const ProfileService = ({ children }) => {
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
 

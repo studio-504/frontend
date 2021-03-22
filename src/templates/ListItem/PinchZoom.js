@@ -12,7 +12,7 @@ import {
 import ContextComponent from 'components/Feed/Context'
 
 export class PinchZoom extends React.Component {
-  
+
   baseScale = new Animated.Value(1)
   pinchScale = new Animated.Value(1)
   scale = Animated.multiply(this.baseScale, this.pinchScale)

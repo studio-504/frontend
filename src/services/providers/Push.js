@@ -11,23 +11,23 @@ import { useNavigation } from '@react-navigation/native'
 export const usePushNotification = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  
+
   const user = useSelector(authSelector.authUserSelector)
 
   const handleNotificationEvent = (notification) => {
     if (!notification || !notification.getData()) return
-    
+
     /**
      * ios deeplinking payload structure, might change on other provider/client
      */
     const action = path(['data', 'pinpoint', 'deeplink'])(notification.getData())
-      
+
     /**
      * Navigate to related screen if action is recognized and supported
      */
     if (action) {
       LinkingService.deeplinkNavigation(navigation)(action)
-    } 
+    }
 
     /**
      * Log unrecognized or unsupported actions

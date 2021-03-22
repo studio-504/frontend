@@ -27,7 +27,7 @@ const Theme = ({
   appThemePreviewUpdate,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <ScrollView style={styling.root}>
       <RowsComponent items={themesJson}>

@@ -83,7 +83,7 @@ const ChatDirect = ({
           actionSheetRef.current && actionSheetRef.current.show()
         }}
       />
-      
+
       {chatId ?
         <View style={{ marginBottom }}>
           <FormComponent
@@ -135,7 +135,7 @@ const ChatDirect = ({
     </View>
   )
 }
-  
+
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,

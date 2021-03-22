@@ -10,7 +10,7 @@ import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
 /**
- * 
+ *
  */
 function* chatGetChatsRequestData(req, api) {
   const dataSelector = path(['data', 'self', 'chats', 'items'])
@@ -41,7 +41,7 @@ function* chatGetChatsRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatGetChatRequestData(req, api) {
   const dataSelector = path(['data', 'chat'])
@@ -71,7 +71,7 @@ function* chatGetChatRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatCreateDirectRequestData(req, api) {
   const dataSelector = path(['data', 'createDirectChat'])
@@ -101,7 +101,7 @@ function* chatCreateDirectRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatAddMessageRequest(req) {
   try {
@@ -115,7 +115,7 @@ function* chatAddMessageRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatReportViewRequest(req) {
   try {
@@ -129,7 +129,7 @@ function* chatReportViewRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatFlagMessageRequest(req) {
   try {
@@ -143,7 +143,7 @@ function* chatFlagMessageRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* chatDeleteMessageRequest(req) {
   try {

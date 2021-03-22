@@ -1,5 +1,5 @@
 # REAL Frontend
-REAL is the healthier social media movement. 
+REAL is the healthier social media movement.
 It’s a camera app and social media platform designed with mental health in mind. No ads, no filters and no likes.
 
 |home   |profile   |create   |
@@ -35,7 +35,7 @@ Currently, we support e2e-tests only for iOS platform.
 - execute `yarn tests:e2e` from `[root]` folder to run tests
 
 #### Writing tests
-Tests are located in `/e2e/specs` folder and have `*.e2e.js` file extension. Each file represents tests for a one single feature. 
+Tests are located in `/e2e/specs` folder and have `*.e2e.js` file extension. Each file represents tests for a one single feature.
 
 As a test runner we use `jest` it provided `describe` and `it` blocks for organizing tests. We use a mix of [`User Stories`](https://en.wikipedia.org/wiki/User_story) and [`Gherkin`](https://cucumber.io/docs/gherkin/reference/) syntaxis to make our tests readable and supportable. Use user story in a describe section for `describe` section for describe testing functionality from a user perspective and use `Given, Then, When` syntaxis for describing each single test step.
 

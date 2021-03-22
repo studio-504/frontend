@@ -26,23 +26,23 @@ const DatingNavigator = ({ navigation }) => {
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
   const datingEnabled = user.datingStatus === 'ENABLED'
   const initialRouteName = datingEnabled ? 'Dating' : 'DatingWizard'
-  const datingHeaderLeft = datingEnabled ? 
-    navigationOptions.datingHeaderLeft : 
+  const datingHeaderLeft = datingEnabled ?
+    navigationOptions.datingHeaderLeft :
     navigationOptions.homeHeaderLeft
-    
+
   useFocusEffect(() => {
     setSwipeDisabled(true)
 
     return () => setSwipeDisabled(false)
   })
- 
+
   return (
     <Stack.Navigator {...stackNavigatorDefaultProps} initialRouteName={initialRouteName}>
       <Stack.Screen
         name="Dating"
         component={DatingScreen}
-        {...stackScreenPageProps({ options: { 
-          headerTitle: navigationOptions.homeHeaderTitle({ theme }), 
+        {...stackScreenPageProps({ options: {
+          headerTitle: navigationOptions.homeHeaderTitle({ theme }),
           headerLeft: datingHeaderLeft({ navigation, theme }),
           headerRight: navigationOptions.homeHeaderRight({ navigation, theme, user }),
         } })}
