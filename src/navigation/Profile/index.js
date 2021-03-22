@@ -10,7 +10,6 @@ import ProfileEditScreen from 'screens/ProfileEditScreen'
 import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
 import ProfilePhotoScreen from 'screens/ProfilePhotoScreen'
-import ThemeScreen from 'screens/ThemeScreen'
 import PrivacyScreen from 'screens/PrivacyScreen'
 import TranslationScreen from 'screens/TranslationScreen'
 import SettingsScreen from 'screens/SettingsScreen'
@@ -57,11 +56,7 @@ const ProfileNavigator = () => {
         component={ProfilePhotoScreen}
         {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
-      <Stack.Screen
-        name="Theme"
-        component={ThemeScreen}
-        {...stackScreenPageProps({ options: { title: 'Choose Theme' } })}
-      />
+
       <Stack.Screen
         name="Privacy"
         component={PrivacyScreen}
