@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 import * as albumsActions from 'store/ducks/albums/actions'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
@@ -29,7 +30,7 @@ const AlbumService = ({ children }) => {
     dispatch(albumsActions.albumsPostsGetRequest({ albumId }))
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (albumsDelete.status === 'success') {
       dispatch(albumsActions.albumsDeleteIdle({}))
       dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))

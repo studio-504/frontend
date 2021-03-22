@@ -8,6 +8,7 @@ import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'navigation/HeaderRight'
 import { VERIFICATION_TYPE } from 'components/Verification'
 import path from 'ramda/src/path'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoGridService = ({ children }) => {
   const dispatch = useDispatch()
@@ -24,7 +25,7 @@ const ProfilePhotoGridService = ({ children }) => {
     usersImagePostsGetRequest()
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersChangeAvatar.status === 'success') {
       const backRoute = path(['params', 'backRoute'], route)
 

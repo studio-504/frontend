@@ -7,6 +7,7 @@ import toLower from 'ramda/src/toLower'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as chatSelector from 'store/ducks/chat/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ChatService = ({ children }) => {
   const dispatch = useDispatch()
@@ -26,7 +27,7 @@ const ChatService = ({ children }) => {
   const usersGetPendingFollowersRequest = (payload) =>
     dispatch(usersActions.usersGetPendingFollowersRequest(payload))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!user.userId) return
 
     usersGetPendingFollowersRequest({ userId: user.userId })

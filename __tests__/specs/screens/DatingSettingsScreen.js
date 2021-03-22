@@ -37,6 +37,7 @@ const setup = () => renderWithStore(<DatingSettingsScreen />)
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 const navigation = { navigate: jest.fn(), goBack: jest.fn() }

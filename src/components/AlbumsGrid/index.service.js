@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as albumsActions from 'store/ducks/albums/actions'
 import { useRoute } from '@react-navigation/native'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
 import pathOr from 'ramda/src/pathOr'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const AlbumsGridService = ({ children }) => {
   const dispatch = useDispatch()
@@ -19,7 +19,7 @@ const AlbumsGridService = ({ children }) => {
   const albumsGetMoreRequest = ({ nextToken }) =>
     dispatch(albumsActions.albumsGetMoreRequest({ userId, nextToken }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!userId) return
 
     dispatch(albumsActions.albumsGetRequest({ userId }))

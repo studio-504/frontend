@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import path from 'ramda/src/path'
 import HeaderRight from 'navigation/HeaderRight'
 import InfoIcon from 'assets/svg/chat/Info'
 import * as navigationActions from 'navigation/actions'
-
 import { useNavigation } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 
 export const useHeader = ({
   user,
@@ -23,7 +23,7 @@ export const useHeader = ({
   /**
    *
    */
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (!path(['data', 'users', 'items', 'length'])(chatGetChat)) {
       return
     }
@@ -39,4 +39,3 @@ export const useHeader = ({
     })
   }, [path(['data', 'users', 'items'])(chatGetChat)])
 }
-

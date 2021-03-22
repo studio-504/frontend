@@ -26,6 +26,7 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
   useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 jest.mock('@react-native-community/geolocation', () => ({ getCurrentPosition: jest.fn() }))

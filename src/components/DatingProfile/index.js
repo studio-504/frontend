@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import DatingCard from 'components/Dating/Card'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
-import { Text } from 'react-native-paper'
-
-import { withTheme } from 'react-native-paper'
+import * as UserService from 'services/User'
+import { Text, withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import * as navigationActions from 'navigation/actions'
 
 const DatingProfile = ({
   t,
@@ -15,7 +15,7 @@ const DatingProfile = ({
   usersSetUserDatingStatus,
   usersSetUserDatingStatusRequest,
   usersImagePostsGet,
-  navigateDating,
+  navigation,
 }) => {
   const styling = styles(theme)
 
@@ -25,12 +25,13 @@ const DatingProfile = ({
         <DatingCard user={user} posts={usersImagePostsGet.data} />
       </View>
       <View style={styling.actions}>
-        {user.datingStatus === 'ENABLED' ?
+        {UserService.isUserEnableDating(user) ? (
           <DefaultButton
             style={styling.submitBtn}
             label={t('Open Dating')}
-            onPress={navigateDating}
-          /> :
+            onPress={() => navigationActions.navigateDating(navigation, {}, { user })}
+          />
+        ) : (
           <DefaultButton
             style={styling.submitBtn}
             accessibilityLabel="Submit"
@@ -39,7 +40,7 @@ const DatingProfile = ({
             loading={usersSetUserDatingStatus.status === 'loading'}
             disabled={usersSetUserDatingStatus.status === 'loading'}
           />
-        }
+        )}
 
         <Text style={styling.text}>{t('Preview your dating profile and start dating')}</Text>
       </View>
@@ -77,7 +78,7 @@ DatingProfile.propTypes = {
   usersImagePostsGet: PropTypes.shape({
     data: PropTypes.array,
   }),
-  navigateDating: PropTypes.func,
+  navigation: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(DatingProfile))

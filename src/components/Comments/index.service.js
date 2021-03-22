@@ -12,6 +12,7 @@ import useViewable from 'services/providers/Viewable'
 import trim from 'ramda/src/trim'
 import compose from 'ramda/src/compose'
 import pathOr from 'ramda/src/pathOr'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const CommentsService = ({ children }) => {
   const dispatch = useDispatch()
@@ -41,7 +42,7 @@ const CommentsService = ({ children }) => {
     }
   }
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     const commentIndex = postsCommentsGet.data.findIndex(item => item.commentId === actionId)
     if (postsCommentsGet.status === 'success' && commentIndex !== -1) {
       commentsRef.current.scrollToIndex({ animated: false, index: commentIndex })
@@ -54,7 +55,7 @@ const CommentsService = ({ children }) => {
     dispatch(postsActions.postsReportPostViewsRequest({ postIds: [postId], viewType: 'THUMBNAIL' }))
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (commentsAdd.status === 'success') {
       dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
       dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
@@ -63,7 +64,7 @@ const CommentsService = ({ children }) => {
     }
   }, [commentsAdd.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (commentsDelete.status === 'success') {
       dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
       dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
@@ -71,7 +72,7 @@ const CommentsService = ({ children }) => {
     }
   }, [commentsDelete.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (commentsFlag.status === 'success') {
       dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
       dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))

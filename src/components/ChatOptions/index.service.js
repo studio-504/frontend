@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as authSelector from 'store/ducks/auth/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -6,6 +5,7 @@ import path from 'ramda/src/path'
 import * as chatSelector from 'store/ducks/chat/selectors'
 import * as usersActions from 'store/ducks/users/actions'
 import * as navigationActions from 'navigation/actions'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ChatOptionsService = ({ children }) => {
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const ChatOptionsService = ({ children }) => {
   const usersUnblockRequest = ({ userId }) =>
     dispatch(usersActions.usersUnblockRequest({ userId }))
 
-  useEffect(() => {
+    useEffectWhenFocused(() => {
     if (usersBlock.status === 'success') {
       dispatch(usersActions.usersBlockIdle({}))
       navigationActions.navigateChat(navigation, {}, { protected: true, user })()

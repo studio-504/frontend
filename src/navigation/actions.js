@@ -17,6 +17,18 @@ const withAuthValidation = (callback) => {
   }
 }
 
+const withDatingValidation = (callback) => {
+  return (navigation, params = {}, meta = {}) => {
+    if (!UserService.isUserActive(meta.user)) {
+      return navigateProfileUpgrade(navigation)
+    } else if (UserService.isUserEnableDating(meta.user)) {
+      return callback(navigation, params)
+    } else {
+      return navigateDatingWizard(navigation, params)
+    }
+  }
+}
+
 /**
  * Common
  */
@@ -53,12 +65,12 @@ export const navigateProfileRequests = navigateToPath('App.Chat.ProfileRequests'
 /**
  * Dating
  */
-export const navigateDating = withAuthValidation(navigateToPath('Dating'))
+export const navigateDating = withDatingValidation(navigateToPath('Dating.Dating'))
 export const navigateDatingAbout = withAuthValidation(navigateToPath('DatingAbout'))
 export const navigateDatingMatch = withAuthValidation(navigateToPath('DatingMatch'))
 export const navigateDatingProfile = withAuthValidation(navigateToPath('DatingProfile'))
 export const navigateDatingSettings = withAuthValidation(navigateToPath('DatingSettings'))
-export const navigateDatingWizard = withAuthValidation(navigateToPath('DatingWizard'))
+export const navigateDatingWizard = navigateToPath('Dating.DatingWizard')
 
 /**
  * Profile

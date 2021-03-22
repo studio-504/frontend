@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersActions from 'store/ducks/users/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import * as navigationActions from 'navigation/actions'
-import { useFocusEffect } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const DatingProfileService = ({ children }) => {
   const dispatch = useDispatch()
@@ -13,14 +13,14 @@ const DatingProfileService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
-  const navigateDating = navigationActions.navigateDating(navigation)
 
   const usersSetUserDatingStatusRequest = () =>
     dispatch(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersSetUserDatingStatus.status === 'success') {
-      navigateDating()
+      dispatch(usersActions.usersSetUserDatingStatusIdle())
+      navigationActions.navigateDating(navigation, {}, { user })
     }
   }, [usersSetUserDatingStatus.status])
 
@@ -29,16 +29,18 @@ const DatingProfileService = ({ children }) => {
     dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 
-  useFocusEffect(useCallback(() => {
-    dispatch(usersActions.usersSetUserDatingStatusIdle())
-  }, []))
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(usersActions.usersSetUserDatingStatusIdle())
+    }, []),
+  )
 
   return children({
     user,
+    navigation,
     usersSetUserDatingStatus,
     usersSetUserDatingStatusRequest,
     usersImagePostsGet,
-    navigateDating,
   })
 }
 

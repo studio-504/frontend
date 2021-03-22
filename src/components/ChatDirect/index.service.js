@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import * as chatSelector from 'store/ducks/chat/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ChatDirectService = ({ children }) => {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ const ChatDirectService = ({ children }) => {
     dispatch(chatActions.chatGetChatRequest({ chatId }))
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (chatDeleteMessage.status !== 'success') {
       return
     }
@@ -46,7 +47,7 @@ const ChatDirectService = ({ children }) => {
     dispatch(chatActions.chatGetChatRequest({ chatId }))
   }, [chatDeleteMessage.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (chatFlagMessage.status !== 'success') {
       return
     }
@@ -54,20 +55,22 @@ const ChatDirectService = ({ children }) => {
     dispatch(chatActions.chatFlagMessageIdle({}))
   }, [chatFlagMessage.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (chatGetChat.status === 'success' && chatId) {
-      dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
+      return
     }
+
+    dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
   }, [chatGetChat.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (chatAddMessage.status === 'success') {
       dispatch(chatActions.chatGetChatRequest({ chatId }))
       dispatch(chatActions.chatAddMessageIdle({}))
     }
   }, [chatAddMessage.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (chatCreateDirect.status === 'success') {
       navigation.setParams({ chatId: chatCreateDirect.payload.chatId })
       dispatch(chatActions.chatGetChatRequest({ chatId: chatCreateDirect.payload.chatId }))

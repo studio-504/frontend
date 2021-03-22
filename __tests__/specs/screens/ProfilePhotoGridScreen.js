@@ -20,6 +20,7 @@ const setup = () => renderWithStore(<ProfilePhotoGridScreen />)
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useRoute: jest.fn(),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 const navigation = { navigate: jest.fn(), setOptions: jest.fn(), goBack: jest.fn() }

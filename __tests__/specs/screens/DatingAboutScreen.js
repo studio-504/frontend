@@ -22,6 +22,7 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
   useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 const navigation = { goBack: jest.fn() }

@@ -8,6 +8,7 @@ import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const PostEditService = ({ children }) => {
   const dispatch = useDispatch()
@@ -32,13 +33,13 @@ const PostEditService = ({ children }) => {
   const postsEditRequest = (payload) =>
     dispatch(postsActions.postsEditRequest({ ...payload, userId: postUserId }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!postId || !postUserId) return
 
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
   }, [postId])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (postsEdit.status === 'success') {
       dispatch(postsActions.postsEditIdle({}))
       navigationActions.navigateBack(navigation)

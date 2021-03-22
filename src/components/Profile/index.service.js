@@ -1,11 +1,12 @@
 import { useContext } from 'react'
-import { useEffect, useRef } from 'react'
+import {  useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import { useNavigation, useRoute, useScrollToTop } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as usersSelector from 'store/ducks/users/selectors'
 import { AuthContext } from 'services/providers/Auth'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileService = ({ children }) => {
   const dispatch = useDispatch()
@@ -25,7 +26,7 @@ const ProfileService = ({ children }) => {
 
   useScrollToTop(profileRef)
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     navigation.setOptions({
       title: path(['data', 'username'])(usersGetProfile),
     })
@@ -46,7 +47,7 @@ const ProfileService = ({ children }) => {
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersBlock.status === 'success') {
       dispatch(usersActions.usersBlockIdle({}))
     }
@@ -59,7 +60,7 @@ const ProfileService = ({ children }) => {
     usersUnblock.status,
   ])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!userId) return
 
     usersGetProfileRequest({ userId })

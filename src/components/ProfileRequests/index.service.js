@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileFollowerService = ({ children }) => {
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const ProfileFollowerService = ({ children }) => {
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersFollow.status === 'success') {
       usersGetPendingFollowersRequest({ userId })
     }
@@ -34,7 +34,7 @@ const ProfileFollowerService = ({ children }) => {
     }
   }, [usersFollow.status, usersUnfollow.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!userId) return
     usersGetPendingFollowersRequest({ userId })
   }, [userId])

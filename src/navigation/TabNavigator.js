@@ -60,7 +60,7 @@ const TabNavigator = ({ navigation, route }) => {
   const DatingTabButtonComponent = (props) => (
     <TouchableOpacity
       {...props}
-      onPress={navigationActions.navigateDating(navigation, {}, { protected: true, user })}
+      onPress={() => navigationActions.navigateDating(navigation, {}, { protected: true, user })}
     />
   )
 
