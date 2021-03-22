@@ -49,7 +49,7 @@ const AuthHome = ({
 
       <View style={styles.component}>
         <AuthHeaderTemplate
-          title={t('Sign up for REAL')}
+          title={t('Join REAL')}
           subtitle={t('The Healthier Social Media Movement')}
           noMargin
         />
