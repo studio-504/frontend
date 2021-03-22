@@ -2,19 +2,20 @@
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersSelector from 'store/ducks/users/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
 
 const TranslationService = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUserSelector)
-  const usersEditProfile = useSelector(state => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
 
   const usersEditProfileRequest = (payload) =>
     dispatch(usersActions.usersEditProfileRequest({ languageCode: payload.languageCode }))
 
   useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success') {
-      dispatch(usersActions.usersEditProfileIdle({}))
+      dispatch(usersActions.usersEditProfileIdle())
     }
   }, [usersEditProfile.status])
 

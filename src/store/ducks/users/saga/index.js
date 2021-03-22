@@ -296,7 +296,7 @@ function* usersEditProfileRequestData(req, api) {
   const dataSelector = path(['data', 'setUserDetails'])
 
   const data = dataSelector(api)
-  const meta = {}
+  const meta = req.meta
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
@@ -314,7 +314,7 @@ function* usersEditProfileRequest(req) {
   try {
     const data = yield queryService.apiRequest(queries.setUserDetails, req.payload)
     const next = yield usersEditProfileRequestData(req, data)
-    yield put(actions.usersEditProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
+    yield put(actions.usersEditProfileSuccess({ data: next.data, payload: next.payload }, next.meta))
   } catch (error) {
     const errorMessage = path(['errors', '0', 'message'])(error)
 

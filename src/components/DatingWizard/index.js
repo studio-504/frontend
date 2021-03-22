@@ -10,6 +10,7 @@ import DatingAvatarScreen from 'screens/DatingAvatarScreen'
 import * as navigationOptions from 'navigation/options'
 import { ThemeContext } from 'services/providers/Theme'
 import ProgressTabBar from 'components/DatingWizard/ProgressTabBar'
+import * as usersSelector from 'store/ducks/users/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
 
 const STEPS = {
@@ -30,7 +31,7 @@ const Tab = createMaterialTopTabNavigator()
 const DatingWizardNavigator = ({ navigation }) => {
   const dispatch = useDispatch()
   const [step, setStep] = useState(STEPS.AVATAR)
-  const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
   const { theme } = useContext(ThemeContext)
   const tabNavigatorDatingWizardProps = navigationOptions.tabNavigatorDatingWizardProps({ theme })
 

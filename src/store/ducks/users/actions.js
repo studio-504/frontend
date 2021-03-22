@@ -1,7 +1,10 @@
+import identity from 'ramda/src/identity'
 import { createAction } from 'redux-actions'
 import { createFailureAction } from 'store/errors'
 
 import * as constants from 'store/ducks/users/constants'
+
+const createActionWithMeta = type => createAction(type, identity, (payload, meta) => meta)
 
 /**
  *
@@ -120,8 +123,8 @@ export const usersGetProfileSelfFailure = createFailureAction(constants.USERS_GE
  *
  */
 export const usersEditProfileIdle = createAction(constants.USERS_EDIT_PROFILE_IDLE)
-export const usersEditProfileRequest = createAction(constants.USERS_EDIT_PROFILE_REQUEST)
-export const usersEditProfileSuccess = createAction(constants.USERS_EDIT_PROFILE_SUCCESS)
+export const usersEditProfileRequest = createActionWithMeta(constants.USERS_EDIT_PROFILE_REQUEST)
+export const usersEditProfileSuccess = createActionWithMeta(constants.USERS_EDIT_PROFILE_SUCCESS)
 export const usersEditProfileFailure = createFailureAction(constants.USERS_EDIT_PROFILE_FAILURE)
 
 /**

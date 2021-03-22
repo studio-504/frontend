@@ -10,9 +10,9 @@ import { withTheme } from 'react-native-paper'
 
 const ProfileEdit = ({
   theme,
-  user,
-  usersEditProfile,
-  usersEditProfileRequest,
+  formInitialValues,
+  formSubmitLoading,
+  handleFormSubmit,
 }) => {
   const styling = styles(theme)
 
@@ -20,9 +20,9 @@ const ProfileEdit = ({
     <View style={styling.root}>
       <KeyboardAwareScrollView>
         <ProfileEditForm
-          user={user}
-          usersEditProfile={usersEditProfile}
-          usersEditProfileRequest={usersEditProfileRequest}
+          formInitialValues={formInitialValues}
+          formSubmitLoading={formSubmitLoading}
+          handleFormSubmit={handleFormSubmit}
         />
       </KeyboardAwareScrollView>
     </View>
@@ -39,9 +39,13 @@ const styles = theme => StyleSheet.create({
 
 ProfileEdit.propTypes = {
   theme: PropTypes.any,
-  user: PropTypes.any,
-  usersEditProfile: PropTypes.any,
-  usersEditProfileRequest: PropTypes.func,
+  formInitialValues: PropTypes.any,
+  formSubmitLoading: PropTypes.bool,
+  handleFormSubmit: PropTypes.func,
+}
+
+ProfileEdit.defaultProps = {
+  formSubmitLoading: false,
 }
 
 export default withTheme(ProfileEdit)

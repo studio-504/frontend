@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersSelector from 'store/ducks/users/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffectWhenFocused } from 'services/hooks'
 import * as helpers from 'components/DatingMatch/helpers'
@@ -11,7 +12,7 @@ const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const usersEditProfile = useSelector(state => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
   const route = useRoute()
   const nextAction = pathOr(false, ['params', 'nextAction'], route)

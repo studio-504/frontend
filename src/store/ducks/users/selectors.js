@@ -16,10 +16,10 @@ const postsOnymouslyLike = () => path(['posts', 'postsOnymouslyLike'])
 /**
  *
  */
-const usersGetProfile = () => path(['users', 'usersGetProfile'])
+export const usersGetProfile = path(['users', 'usersGetProfile'])
 
 export const usersGetProfileSelector = (userId) => createDeepEqualSelector(
-  [usersGetProfile(), entitiesSelector.entities],
+  [usersGetProfile, entitiesSelector.entities],
   (usersGetProfile, entities) => {
     const user = userId || path(['data'])(usersGetProfile)
     const denormalized = normalizer.denormalizeUserGet(user, entities)

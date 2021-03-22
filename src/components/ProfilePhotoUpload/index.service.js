@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import { pageHeaderLeft } from 'navigation/options'
+import * as usersSelector from 'store/ducks/users/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoUploadComponentService = ({ children }) => {
@@ -15,10 +16,10 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   const route = useRoute()
 
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
-  const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
 
   const clearProfilePhotoUpload = () => {
-    dispatch(usersActions.usersEditProfileIdle({}))
+    dispatch(usersActions.usersEditProfileIdle())
 
     if (path(['payload', 'postId'])(activeUpload)) {
       dispatch(postsActions.postsCreateIdle(activeUpload))
