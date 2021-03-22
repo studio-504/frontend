@@ -93,7 +93,23 @@ describe('Finish pending purchases saga', () => {
 
         .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
         .not.call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
-        .put(actions.retryPurchaseFailure(error))
+        .put(actions.retryPurchaseFailure(error, { messageCode: 'GENERIC' }))
+
+        .dispatch(action)
+        .silentRun()
+    })
+
+    it('error with code', () => {
+      const error = new Error('Backend error')
+      error.code = 'ERROR_CODE'
+
+      return expectSaga(testAsRootSaga(purchases))
+        .provide([
+          [call([RNIap, 'getPendingPurchasesIOS']), [purchase]],
+          [matchers.call.fn(queryService.apiRequest), throwError(error)],
+        ])
+
+        .put(actions.retryPurchaseFailure(error, { messageCode: 'ERROR_CODE' }))
 
         .dispatch(action)
         .silentRun()
