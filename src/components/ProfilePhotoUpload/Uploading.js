@@ -59,7 +59,7 @@ const Uploading = ({
           </TouchableOpacity>
         </View>
       : null}
-      
+
       {post.status === 'success' ?
         <View style={styling.status}>
           <TouchableOpacity style={styling.content}>

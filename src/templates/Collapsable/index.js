@@ -42,7 +42,7 @@ const Collapsable = ({
   const handlePress = () => {
     if (!error) setVisible()
   }
-  
+
   return (
     <View style={[styling.root, style]} >
       <TouchableOpacity onPress={handlePress} accessibilityLabel={accessibilityLabel} style={styling.spacing}>

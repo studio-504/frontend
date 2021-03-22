@@ -6,13 +6,13 @@ import * as queryService from 'services/Query'
 import * as authActions from 'store/ducks/auth/actions'
 import { logEvent } from 'services/Analytics'
 import forge from 'node-forge'
-import Config from 'react-native-config' 
+import Config from 'react-native-config'
 
 /**
  *
  */
 function* handleSignupPasswordRequest(payload) {
-  const publicKey = forge.pki.publicKeyFromPem(Config.REAL_PUBLIC_KEY_PEM) 
+  const publicKey = forge.pki.publicKeyFromPem(Config.REAL_PUBLIC_KEY_PEM)
   const password = forge.util.encodeUtf8(payload.password)
   const encrypted = publicKey.encrypt(password, 'RSA-OAEP')
   const encryptedPassword = forge.util.encode64(encrypted)
@@ -25,7 +25,7 @@ function* handleSignupPasswordRequest(payload) {
 function* signupPasswordRequest(req) {
   try {
     logEvent('SIGNUP_PASSWORD_REQUEST')
-    
+
     const data = yield call(handleSignupPasswordRequest, req.payload)
     yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
   } catch (error) {

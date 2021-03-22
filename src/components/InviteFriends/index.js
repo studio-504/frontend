@@ -56,7 +56,7 @@ const InviteFriends = ({
     contactsGetRequest()
     contactsCheckBonusRequest()
   }
-  
+
   const refreshControl = (
     <RefreshControl tintColor={theme.colors.border} onRefresh={handleRefresh} refreshing={isLoading} />
   )

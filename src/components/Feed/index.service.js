@@ -30,7 +30,7 @@ const FeedService = ({ children }) => {
     dispatch(postsActions.postsFeedGetRequest(payload))
     updateRelatedData()
   }
-  
+
   const postsFeedGetMoreRequest = (payload) =>
     dispatch(postsActions.postsFeedGetMoreRequest(payload))
 
@@ -85,7 +85,7 @@ const FeedService = ({ children }) => {
   }
 
   const getActionSheetRef = post => actionSheetRefs.current[post.postId]
-  
+
   const createTextPostRef = post => element => {
     if (!textPostRefs.current[post.postId]) {
       textPostRefs.current[post.postId] = element

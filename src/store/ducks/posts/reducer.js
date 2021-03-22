@@ -316,7 +316,7 @@ const postsViewsGetMoreSuccess = (state, action) => update(state, {
       resourceKey: action.payload.payload.postId,
       initialState: initialState.postsViewsGet,
     },
-  },  
+  },
 })
 
 
@@ -943,7 +943,7 @@ const postsCommentsGetIdle = (state, action) => update(state, {
 })
 
 /**
- * 
+ *
  */
 const commentsAddRequest = (state, action) => update(state, {
   commentsAdd: {
@@ -973,7 +973,7 @@ const commentsAddIdle = (state) => update(state, {
 })
 
 /**
- * 
+ *
  */
 const commentsDeleteRequest = (state, action) => update(state, {
   commentsDelete: {
@@ -1003,7 +1003,7 @@ const commentsDeleteIdle = (state) => update(state, {
 })
 
 /**
- * 
+ *
  */
 const commentsFlagRequest = (state, action) => update(state, {
   commentsFlag: {

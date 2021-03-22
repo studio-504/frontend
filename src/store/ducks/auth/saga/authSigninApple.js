@@ -63,7 +63,7 @@ function* handleAuthAppleRequest() {
 
   if (!userExists) {
     yield call(createAnonymousUser, userPayload)
-  } 
+  }
 
   yield call(appleAuthenticateExisting, userPayload)
   yield put(actions.authFlowRequest({ allowAnonymous: userExists, authProvider: 'APPLE', userExists }))

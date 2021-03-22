@@ -8,13 +8,13 @@ import * as themeSelector from 'store/ducks/themes/selectors'
 export const ThemeContext = React.createContext({})
 
 /**
- * 
+ *
  */
 export const ThemeProvider = ({
   children,
 }) => {
   const theme = useSelector(themeSelector.themeSelector)
-  
+
   return (
     <PaperProvider theme={theme}>
       <ThemeContext.Provider value={{ theme }}>

@@ -2,7 +2,7 @@ import { take, race, put, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 
-/** 
+/**
  * Fetching cognito credentials/tokens
  */
 function* handleAuthSigninAnonymousRequest() {
@@ -37,4 +37,4 @@ function* authSigninAnonymousRequest() {
 
 export default () => [
   takeEvery(constants.AUTH_SIGNIN_ANONYMOUS_REQUEST, authSigninAnonymousRequest),
-] 
+]

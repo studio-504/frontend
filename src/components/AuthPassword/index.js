@@ -25,7 +25,7 @@ const AuthPassword = ({
         <AuthHeaderTemplate
           title={t('Secure Your Account')}
           subtitle={t('Password must be at least 8 characters')}
-        /> 
+        />
 
         <View style={styling.content}>
           <FormComponent

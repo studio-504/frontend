@@ -7,8 +7,8 @@ import { AuthProvider } from 'services/providers/Auth'
 import { ThemeProvider } from 'services/providers/Theme'
 import { ReduxNetworkProvider } from 'react-native-offline'
 import initializeStore from 'store/index'
-import codePush from 'react-native-code-push' 
-import Config from 'react-native-config' 
+import codePush from 'react-native-code-push'
+import Config from 'react-native-config'
 import linking from 'navigation/linking'
 import Router from 'navigation/Router'
 import FlashMessage from 'react-native-flash-message'
@@ -61,8 +61,8 @@ const WithNavigationContainer = () => {
       linking={linking}
     >
       {navigationReady ?
-        <Application 
-          navigationRef={navigationRef} 
+        <Application
+          navigationRef={navigationRef}
         />
       : null}
     </NavigationContainer>

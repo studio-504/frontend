@@ -15,7 +15,7 @@ import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import dayjs from 'dayjs'
 import { v4 as uuid } from 'uuid'
-import RNFS from 'react-native-fs' 
+import RNFS from 'react-native-fs'
 import * as Logger from 'services/Logger'
 import filePath from 'path'
 
@@ -152,7 +152,7 @@ function* handlePostsCreateRequest(payload) {
  */
 function* handleTextOnlyPost(req) {
   const AwsAPI = yield getContext('AwsAPI')
-  
+
   try {
     yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
   } catch (error) {
@@ -256,11 +256,11 @@ function* handleImagePost(req) {
     })
   } catch (error) {
     yield put(actions.postsCreateFailure(error, req.payload))
-  } 
+  }
 }
 
 /**
- * 
+ *
  */
 function* postsCreateRequest(req) {
   yield put(subscriptionsActions.subscriptionsMainRequest())
@@ -276,7 +276,7 @@ function* postsCreateRequest(req) {
 }
 
 /**
- * 
+ *
  */
 function* postsCreateIdle(req) {
   const jobId = path(['payload', 'meta', 'jobId'])(req)
@@ -287,12 +287,12 @@ function* postsCreateIdle(req) {
 }
 
 /**
- * 
+ *
  */
 function* postsCreateSchedulerRequest() {
   try {
     const data = yield select(state => state.posts.postsCreateQueue)
-    
+
     const failedPosts = Object.values(data)
       .filter(post => path(['status'])(post) === 'failure')
 

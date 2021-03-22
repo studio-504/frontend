@@ -84,6 +84,23 @@ describe('Settings component', () => {
     testNavigate(navigation, 'Promocodes')
   })
 
+  it('Join Diamond', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('Join Diamond'))
+
+    testNavigate(navigation, 'Membership')
+  })
+
+  it('Manage Diamond', () => {
+    const user = { subscriptionLevel: 'DIAMOND' }
+    const { getByText } = setup({ user })
+
+    fireEvent.press(getByText('Manage Diamond'))
+
+    testNavigate(navigation, 'Membership')
+  })
+
   it('Change Password', () => {
     const authForgotRequest = jest.fn()
     const { getByText } = setup({ authForgotRequest })

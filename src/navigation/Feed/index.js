@@ -24,7 +24,7 @@ const FeedNavigator = () => {
         component={FeedScreen}
         {...stackScreenDefaultProps}
       />
-      
+
       {navigationFragments.media({
         Stack,
         stackScreenPageProps,

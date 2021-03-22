@@ -9,7 +9,7 @@ const ThemeAvatarTemplate = ({
   icon,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.component}>

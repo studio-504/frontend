@@ -38,7 +38,7 @@ const Header = ({
   const handleOptionsPress = () => actionSheetRef && actionSheetRef.show()
   const archived = path(['postStatus'])(post) === 'ARCHIVED'
   const isUserPostOwner = path(['userId'])(user) === path(['postedBy', 'userId'])(post)
-  const isPostVerified = path(['isVerified'])(post) 
+  const isPostVerified = path(['isVerified'])(post)
 
   const [repostVisiblity, verificationVisibility, expiryVisiblity] = useMemo(
     () => [

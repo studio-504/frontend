@@ -35,7 +35,7 @@ export function* handleAnonymousSignin(anonymousUser) {
     token: cognito.token,
     expires_at: cognito.expires_at,
   }
-  
+
   yield AwsAuth.federatedSignIn(COGNITO_PROVIDER, credentials, {})
 }
 
@@ -64,7 +64,7 @@ export function* handleAuthDataRequestData(req, api) {
   const meta = req.meta || {}
   const payload = req.payload || {}
   const normalized = normalizer.normalizeUserGet(data)
-  
+
   yield entitiesMerge(normalized)
 
   return {
