@@ -34,21 +34,17 @@ const Header = ({
 }
 
 const styles = theme => StyleSheet.create({
-  root: {
-    paddingVertical: theme.spacing.base * 2,
-    flexDirection: 'column',
-  },
   text: {
-    color: theme.colors.primary,
+    color: theme.colors.border,
     textAlign: 'center',
   },
   link: {
-    color: theme.colors.primary,
+    color: theme.colors.border,
     fontWeight: '500',
     textDecorationLine: 'underline',
   },
   version: {
-    color: theme.colors.primary,
+    color: theme.colors.border,
     textAlign: 'center',
     marginTop: theme.spacing.base,
   },

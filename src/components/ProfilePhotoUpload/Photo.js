@@ -9,8 +9,8 @@ import { withTheme } from 'react-native-paper'
 const Photo = ({ theme, activeUpload }) => {
   const styling = styles
   const progress = pathOr(0, ['meta', 'progress'])(activeUpload)
-  const image = 
-    pathOr(null, ['payload', 'preview', 0])(activeUpload) || 
+  const image =
+    pathOr(null, ['payload', 'preview', 0])(activeUpload) ||
     pathOr(null, ['payload', 'image', 'url480p'])(activeUpload)
 
   return (

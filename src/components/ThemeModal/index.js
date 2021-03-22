@@ -22,7 +22,7 @@ const ThemeModal = ({
 }) => {
   const activeTheme = useSelector(themeSelector.themeSelector)
   const styling = styles(theme)
-  
+
   return (
     <Modal isVisible={isVisible}>
       <View accessibilityLabel="Theme Modal" style={styling.root}>
@@ -30,7 +30,7 @@ const ThemeModal = ({
           <PaperProvider theme={activeTheme}>
             <View style={styling.action}>
               <Paragraph style={styling.text}>{t('This is preview of selected theme')}</Paragraph>
-            </View> 
+            </View>
 
             <View style={styling.action}>
               <View style={styling.actionItem}>

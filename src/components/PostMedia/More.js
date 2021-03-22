@@ -13,7 +13,7 @@ const MoreComponent = ({
   onPress,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.helper}>

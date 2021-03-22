@@ -1,7 +1,9 @@
 import React from 'react'
 import { Linking } from 'react-native'
 import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 import { renderWithProviders, fireEvent } from 'tests/utils'
+import { testNavigate } from 'tests/utils/helpers'
 import * as purchasesActions from 'store/ducks/purchases/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as purchasesSelectors from 'store/ducks/purchases/selectors'
@@ -12,6 +14,9 @@ jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (fn) => f
 jest.mock('store/ducks/auth/selectors', () => ({ authUserSelector: jest.fn() }))
 jest.mock('store/ducks/purchases/selectors', () => ({ purchasesRequest: jest.fn(), retryPurchase: jest.fn() }))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
+
+const navigation = { navigate: jest.fn() }
+useNavigation.mockReturnValue(navigation)
 
 const basicUser = { subscriptionLevel: 'BASIC' }
 const premiumUser = { subscriptionLevel: 'DIAMOND' }
@@ -37,6 +42,13 @@ describe('Membership Screen', () => {
     fireEvent.press(getByText('Subscribe for $0.99 month'))
 
     expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
+  })
+
+  it('get free diamond button', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('Get Free Diamond For Life'))
+    testNavigate(navigation, 'InviteFriends')
   })
 
   it('user with premium subscription try to unsubscribe', () => {

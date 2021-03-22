@@ -7,6 +7,7 @@ import * as usersSelector from 'store/ducks/users/selectors'
 import * as navigationActions from 'navigation/actions'
 import UploadAvatar from 'components/UploadAvatar'
 import propEq from 'ramda/src/propEq'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const getDisableDatingByStatus = propEq('datingStatus', 'DISABLED')
 
@@ -18,9 +19,13 @@ const DatingSettingsService = ({ children }) => {
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const [disableDating, setDisableDating] = useState(getDisableDatingByStatus(user))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersSetUserDatingStatus.status === 'failure') {
       setDisableDating(getDisableDatingByStatus(user))
+    }
+
+    if (usersSetUserDatingStatus.status === 'success') {
+      dispatch(usersActions.usersSetUserDatingStatusIdle())
     }
   }, [usersSetUserDatingStatus.status])
 

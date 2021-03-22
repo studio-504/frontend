@@ -13,7 +13,7 @@ const ThemeAvatarTemplate = ({
   colors,
 }) => {
   const styling = styles(theme)
-  
+
 
   const componentStyle = [
     size === 'small' ? styling.sizeSmall : null,

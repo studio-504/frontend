@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as usersSelector from 'store/ducks/users/selectors'
 import { useRoute } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileFollowedService = ({ children }) => {
   const dispatch = useDispatch()
@@ -13,19 +13,19 @@ const ProfileFollowedService = ({ children }) => {
   const usersUnfollow = useSelector(state => state.users.usersUnfollow)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
 
-  const usersGetFollowedUsersRequest = () => 
+  const usersGetFollowedUsersRequest = () =>
     dispatch(usersActions.usersGetFollowedUsersRequest({ userId }))
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
-  
+
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersFollow.status === 'success') {
       usersGetFollowedUsersRequest({ userId })
     }
@@ -34,7 +34,7 @@ const ProfileFollowedService = ({ children }) => {
     }
   }, [usersFollow.status, usersUnfollow.status])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!userId) return
 
     usersGetFollowedUsersRequest({ userId })

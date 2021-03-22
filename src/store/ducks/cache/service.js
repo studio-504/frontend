@@ -2,7 +2,7 @@ import RNFS from 'react-native-fs'
 import priorityQueue from 'async/priorityQueue'
 
 /**
- * 
+ *
  */
 export const checkLocalImage = async (path) => {
   return await RNFS.exists(path)
@@ -13,7 +13,7 @@ export const stopRemoteImage = async (jobId) => {
 }
 
 /**
- * 
+ *
  */
 export const fetchRemoteImage = async ({
   signature,
@@ -77,7 +77,7 @@ export const queueInstances = {
 }
 
 /**
- * 
+ *
  */
 export const removeLocalFolder = async (pathFolder) => {
   try {

@@ -43,7 +43,7 @@ function* signupUsernameSuccess(req) {
   const nextRoute =  path(['payload', 'meta', 'nextRoute'], req)
 
   if (nextRoute === 'app') {
-    navigationActions.navigateResetToApp(navigation) 
+    navigationActions.navigateResetToApp(navigation)
   } else {
     navigationActions.navigateAuthPassword(navigation)
   }

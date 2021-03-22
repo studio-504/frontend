@@ -24,7 +24,7 @@ const UserRowActionTemplate = ({
   replyloading,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.component}>

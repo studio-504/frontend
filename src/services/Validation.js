@@ -6,6 +6,7 @@ import replace from 'ramda/src/replace'
 import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
 import debounce from 'debounce-async'
+import { Platform } from 'react-native'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
 
@@ -217,7 +218,7 @@ export const getInputTypeProps = (type) => {
     case 'username':
       return {
         accessibilityLabel: 'username',
-        keyboardType: 'default',
+        keyboardType: Platform.OS === 'android' ? 'default' : 'ascii-capable',
         textContentType: 'username',
         autoCompleteType: 'username',
       }

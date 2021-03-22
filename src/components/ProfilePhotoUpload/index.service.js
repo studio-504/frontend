@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import { pageHeaderLeft } from 'navigation/options'
 import * as usersSelector from 'store/ducks/users/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoUploadComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -69,7 +70,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
    * Profile photo change event listener
    * Once photo is uploaded usersEditProfile action must be dispatched with uploaded postId to set profile photo
    */
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success') {
       const backRoute = path(['params', 'backRoute'], route)
 

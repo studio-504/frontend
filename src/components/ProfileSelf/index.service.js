@@ -6,6 +6,7 @@ import path from 'ramda/src/path'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'components/ProfileSelf/Header'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileSelfService = ({ children }) => {
   const dispatch = useDispatch()
@@ -28,7 +29,7 @@ const ProfileSelfService = ({ children }) => {
     navigation.setOptions({ headerRight })
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (username) {
       navigation.setOptions({ title: username })
     }

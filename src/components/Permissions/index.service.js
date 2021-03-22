@@ -22,7 +22,7 @@ const Permissions = ({ children, camera, library, location }) => {
 
   /**
    * Permissions state
-   */  
+   */
   const [cameraEnabled, setCameraEnabled] = useState(true)
   const [libraryEnabled, setLibraryEnabled] = useState(true)
   const [locationEnabled, setLocationEnabled] = useState(true)

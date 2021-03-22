@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as albumsActions from 'store/ducks/albums/actions'
 import { useNavigation } from '@react-navigation/native'
 import { v4 as uuid } from 'uuid'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const AlbumCreateService = ({ children }) => {
   const dispatch = useDispatch()
@@ -23,7 +23,7 @@ const AlbumCreateService = ({ children }) => {
     )
   }
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (albumsCreate.status === 'success') {
       dispatch(albumsActions.albumsCreateIdle({}))
       dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))

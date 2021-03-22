@@ -17,7 +17,7 @@ const DatingMatch = ({
   formSubmitDisabled,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <KeyboardAwareScrollView>
@@ -56,7 +56,7 @@ DatingMatch.propTypes = {
 
 DatingMatch.defaultProps = {
   nextAction: false,
-  formSubmitLoading: false, 
+  formSubmitLoading: false,
   formSubmitDisabled: false,
 }
 

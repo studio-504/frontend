@@ -14,7 +14,7 @@ const UserRowTemplate = ({
   onPress,
 }) => {
   const styling = styles
-  
+
   return (
     <TouchableOpacity testID={testID} style={styling.root} onPress={onPress} disabled={!onPress}>
       <View style={styling.component}>

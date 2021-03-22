@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as Validation from 'services/Validation'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileEditService = ({ children }) => {
   const dispatch = useDispatch()
@@ -26,7 +26,7 @@ const ProfileEditService = ({ children }) => {
     dispatch(usersActions.usersEditProfileRequest(nextValues, meta))
   }
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success') {
       dispatch(usersActions.usersEditProfileIdle())
     }

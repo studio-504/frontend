@@ -16,7 +16,7 @@ const Payout = ({
   theme,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <ScrollView style={styling.root}>
       <Title style={styling.title}>{t('Starting March of 2019')}</Title>
@@ -25,7 +25,7 @@ const Payout = ({
       <View style={styling.amount}>
         <Title>{t('{{amount}}', '$0.11')}</Title>
       </View>
-      
+
       <Paragraph style={styling.paragraph}>{t('We feel there are many influencers on Social Media getting paid to promote products that they don’t actually use or care about in real life')}. {t('On REAL, you’ll get paid to be yourself')}.</Paragraph>
       <Paragraph style={styling.paragraph}>{t('For every view you get from another diamond member, you’ll be paid the current payout per view rate (above)')}. {t('We explain how it’s calculated below')}.</Paragraph>
       <Paragraph style={styling.paragraph}>{t('Tips to earning big on REAL')}:</Paragraph>
@@ -46,7 +46,7 @@ const Payout = ({
     </ScrollView>
   )
 }
-  
+
 const styles = theme => StyleSheet.create({
   root: {
     flex: 1,

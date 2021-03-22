@@ -14,7 +14,7 @@ const Success = ({
   theme,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <Subheading>{t('All posts have been submitted')}</Subheading>

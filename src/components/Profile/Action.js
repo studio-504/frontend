@@ -29,7 +29,7 @@ const ProfileAction = ({
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
-  
+
   const self = UserService.isUserOwner(usersGetProfile)
 
   return (
@@ -110,7 +110,7 @@ const ProfileAction = ({
     </View>
   )
 }
-  
+
 
 const styles = theme => StyleSheet.create({
   root: {

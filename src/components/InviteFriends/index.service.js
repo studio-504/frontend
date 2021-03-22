@@ -18,7 +18,7 @@ const InviteFriendsService = ({ children }) => {
   const contactsInviteRequest = (contact) => dispatch(actions.contactsInviteRequest(contact))
   const contactsFollowRequest = ({ contactId, user }) => dispatch(actions.contactsFollowRequest({ contactId, user }))
 
-  const checkPermissionUpdates = () => {    
+  const checkPermissionUpdates = () => {
     if (contactsGet.status === 'failure') {
       contactsGetRequest()
     }

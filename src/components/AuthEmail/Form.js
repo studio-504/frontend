@@ -21,7 +21,7 @@ const EmailForm = ({
   t,
   handleSubmit,
   loading,
-  disabled, 
+  disabled,
   isValid,
   isValidating,
 }) => {
@@ -30,7 +30,7 @@ const EmailForm = ({
     !isValid ||
     isValidating
   )
-  
+
   return (
     <View style={styles.root}>
       <View style={styles.input}>
@@ -67,7 +67,7 @@ EmailForm.propTypes = {
   t: PropTypes.any,
   handleSubmit: PropTypes.any,
   loading: PropTypes.any,
-  disabled: PropTypes.bool, 
+  disabled: PropTypes.bool,
   isValid: PropTypes.bool,
   isValidating: PropTypes.bool,
 }

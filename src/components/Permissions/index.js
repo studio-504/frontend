@@ -43,7 +43,7 @@ const Permissions = ({
   handleClose,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <Modal isVisible={isModalOpen}>
       <View style={styling.root}>
@@ -70,7 +70,7 @@ const Permissions = ({
     </Modal>
   )
 }
-  
+
 const styles = theme => StyleSheet.create({
   root: {
     backgroundColor: theme.colors.backgroundSecondary,

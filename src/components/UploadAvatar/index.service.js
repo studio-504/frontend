@@ -34,7 +34,7 @@ const useProfilePhoto = (props) => {
     { nextRoute: 'ProfilePhotoUpload', backRoute, multiple },
     { protected: true, user },
   )
-  
+
   const handleSkipUpload = () => navigation.goBack()
   const usersDeleteAvatarRequest = () => dispatch(usersActions.usersDeleteAvatarRequest())
   const navigateProfilePhotoGrid = () => navigationActions.navigateProfilePhotoGrid(navigation, { backRoute })
