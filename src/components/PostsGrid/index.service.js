@@ -14,7 +14,7 @@ const PostsGridService = ({ children }) => {
   const postsGet = useSelector(postsSelector.postsGetSelector(userId))
 
   const postsGetRequest = ({ userId, nextToken }) => {
-    dispatch(postsActions.postsGetRequest({ userId, nextToken })) 
+    dispatch(postsActions.postsGetRequest({ userId, nextToken }))
   }
 
   const postsGetMoreRequest = ({ nextToken }) =>

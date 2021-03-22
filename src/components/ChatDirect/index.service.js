@@ -33,6 +33,8 @@ const ChatDirectService = ({ children }) => {
     dispatch(chatActions.chatFlagMessageRequest(payload))
 
   useEffect(() => {
+    if (!chatId) return
+
     dispatch(chatActions.chatGetChatRequest({ chatId }))
   }, [])
 
@@ -54,7 +56,7 @@ const ChatDirectService = ({ children }) => {
   }, [chatFlagMessage.status])
 
   useEffectWhenFocused(() => {
-    if (chatGetChat.status !== 'success') {
+    if (chatGetChat.status === 'success' && chatId) {
       return
     }
 

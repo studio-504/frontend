@@ -12,14 +12,14 @@ import TextInput from 'components/TextInput'
 
 const getDisplayValue = (value, options) => compose(propOr('', 'label'), find(propEq('value', value)))(options)
 
-const PickerField = ({ 
-  form, 
-  field, 
-  hideError, 
-  items, 
-  label, 
+const PickerField = ({
+  form,
+  field,
+  hideError,
+  items,
+  label,
   accessibilityLabel,
-  ...props 
+  ...props
 }) => {
   const onFocus = () => {
     form.setFieldTouched(field.name, true)

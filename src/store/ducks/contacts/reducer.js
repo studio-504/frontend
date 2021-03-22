@@ -83,4 +83,4 @@ export default handleActions(
     [constants.CONTACTS_FOLLOW_FAILURE]: contactsInviteFailure,
   },
   initialState,
-) 
+)

@@ -31,7 +31,7 @@ const Formula = ({
     </View>
   )
 }
-  
+
 const styles = theme => StyleSheet.create({
   root: {
     backgroundColor: theme.colors.backgroundSecondary,

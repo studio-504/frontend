@@ -17,7 +17,7 @@ const Profile = ({
   subtitle,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.profile}>
       <Avatar

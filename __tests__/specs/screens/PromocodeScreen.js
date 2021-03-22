@@ -5,12 +5,16 @@ import * as actions from 'store/ducks/promocodes/actions'
 import { testField, testNavigate } from 'tests/utils/helpers'
 import * as Validation from 'services/Validation'
 import { useNavigation } from '@react-navigation/native'
+import * as authSelector from 'store/ducks/auth/selectors'
 
 const code = '12345678'
+const user = { subscriptionLevel: undefined }
 const navigation = { navigate: jest.fn() }
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useRoute: jest.fn() }))
 useNavigation.mockReturnValue(navigation)
+
+jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
 
 const setup = () => renderWithStore(<PromocodeScreen />)
 
@@ -63,5 +67,16 @@ describe('PromocodeScreen', () => {
     })
 
     expect(getByText('Redeem')).toBeDisabled()
+  })
+
+  it('diamond user', () => {
+    authSelector.authUserSelector.mockReturnValue({ subscriptionLevel: 'DIAMOND' })
+    const { getByText, queryByText } = setup()
+
+    expect(getByText('Promocodes')).toBeTruthy()
+    expect(getByText('Redeem your promocode')).toBeTruthy()
+    expect(queryByText('Follow & Invite Friends')).toBeFalsy()
+    expect(queryByText('Redeem promocode to get \n REAL Diamond FREE for life!')).toBeFalsy()
+    authSelector.authUserSelector.mockReturnValue({ subscriptionLevel: undefined })
   })
 })

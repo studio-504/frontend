@@ -45,7 +45,7 @@ const PostCreateService = ({
 
   useEffect(() => {
     if(!user.userId) return
-    
+
     dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))
   }, [])
 
@@ -55,7 +55,7 @@ const PostCreateService = ({
     actionType: VERIFICATION_TYPE.BACK,
     showHeader: true,
   })
- 
+
   return children({
     type,
     albumsGet,

@@ -58,7 +58,7 @@ function* handleSignupCreateRequest(payload) {
 function* signupCreateRequest(req) {
   try {
     logEvent('SIGNUP_CREATE_REQUEST')
-    
+
     yield handleSignupCreateRequest(req.payload)
     yield put(actions.signupCreateSuccess({ usernameType: req.payload.usernameType }))
   } catch (error) {

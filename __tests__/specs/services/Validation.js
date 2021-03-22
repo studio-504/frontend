@@ -305,7 +305,7 @@ describe('Validation service', () => {
     it('username', () => {
       expect(Validation.getInputTypeProps('username')).toEqual({
         accessibilityLabel: 'username',
-        keyboardType: 'default',
+        keyboardType: 'ascii-capable',
         textContentType: 'username',
         autoCompleteType: 'username',
       })

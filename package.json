@@ -7,10 +7,11 @@
     "start": "react-native start",
     "dev": "ENVFILE=.env.development react-native run-ios --simulator='iPhone 12' --scheme REAL.development -- --reset-cache",
     "lint": "eslint .",
+    "lint:editorconfig": "editorconfig-checker",
     "translations-scan": "i18next-scanner --config i18next-scanner.config.engine.js src/**/*.js",
     "tests:unit": "jest",
     "tests:e2e": "detox build && detox test",
-    "validate": "npm run lint && npm run tests:unit"
+    "validate": "npm run lint:editorconfig && npm run lint && npm run tests:unit"
   },
   "dependencies": {
     "@aws-amplify/api": "^3.2.5",
@@ -41,6 +42,7 @@
     "color": "^3.1.2",
     "dayjs": "^1.8.34",
     "debounce-async": "^0.0.2",
+    "editorconfig-checker": "^3.3.0",
     "es6-promisify": "^6.1.1",
     "formik": "^2.1.5",
     "graphql-tag": "^2.11.0",
@@ -145,6 +147,7 @@
     "metro-react-native-babel-preset": "^0.63.0",
     "patch-package": "^6.2.2",
     "prettier": "^2.1.1",
+    "react-hooks-testing-library": "^0.6.0",
     "react-native-dotenv": "^2.3.0",
     "react-test-renderer": "^16.13.1",
     "redux-saga-test-plan": "^4.0.0-rc.3"

@@ -12,11 +12,12 @@ const Header = ({
   theme,
   title,
   subtitle,
+  noMargin,
 }) => {
   const styling = styles(theme)
 
   return (
-    <View style={styling.root}>
+    <View style={[styling.root, noMargin ?  null: styling.margin]}>
       <Headline style={styling.headline}>{title}</Headline>
       <Subheading style={styling.subtitle}>{subtitle}</Subheading>
     </View>
@@ -25,9 +26,11 @@ const Header = ({
 
 const styles = theme => StyleSheet.create({
   root: {
+    alignItems: 'center',
+  },
+  margin: {
     marginTop: theme.spacing.base * 2,
     marginBottom: theme.spacing.base * 4,
-    alignItems: 'center',
   },
   headline: {
     textAlign: 'center',
@@ -48,6 +51,11 @@ Header.propTypes = {
   theme: PropTypes.any,
   title: PropTypes.any,
   subtitle: PropTypes.any,
+  noMargin: PropTypes.bool,
+}
+
+Header.defaultProps = {
+  noMargin: false,
 }
 
 export default withTheme(Header)

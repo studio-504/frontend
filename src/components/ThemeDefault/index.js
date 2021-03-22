@@ -1,38 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { Provider as PaperProvider, Text } from 'react-native-paper'
 import NightIcon from 'assets/svg/other/Night'
 import color from 'color'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
-import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import testIDs from 'components/ThemeDefault/test-ids'
 
-const ThemeDefault = ({ t, theme, handleSkip, handleEnable }) => {
+const ThemeDefault = ({ t, handleSkip, handleEnable, theme }) => {
   const styling = styles(theme)
 
   return (
-    <View style={styling.root}>
-      <TouchableOpacity testID={testIDs.backdrop} style={styling.backdrop} onPress={handleSkip} />
+    <PaperProvider theme={theme}>
+      <View style={styling.root}>
+        <TouchableOpacity testID={testIDs.backdrop} style={styling.backdrop} onPress={handleSkip} />
 
-      <SafeAreaView style={styling.component}>
-        <View style={styling.heading}>
-          <View style={styling.info}>
-            <NightIcon fill={theme.colors.text} />
+        <SafeAreaView style={styling.component}>
+          <View style={styling.heading}>
+            <View style={styling.info}>
+              <NightIcon fill={theme.colors.text} />
+            </View>
+            <Text style={styling.headingTitle}>{t('Dark Mode')}</Text>
+            <Text style={styling.headingSubtitle}>{t('You can select any theme later in profile settings')}</Text>
           </View>
-          <Text style={styling.headingTitle}>{t('Dark Mode')}</Text>
-          <Text style={styling.headingSubtitle}>
-            {t('You can select any theme later in profile settings')}
-          </Text>
-        </View>
 
-        <View style={styling.footer}>
-          <DefaultButton label={t('Enable')} onPress={handleEnable} style={styling.primaryBtn} />
-          <DefaultButton label={t('Skip')} onPress={handleSkip} mode="outlined" />
-        </View>
-      </SafeAreaView>
-    </View>
+          <View style={styling.footer}>
+            <DefaultButton label={t('Enable')} onPress={handleEnable} style={styling.primaryBtn} />
+            <DefaultButton label={t('Skip')} onPress={handleSkip} mode="outlined" />
+          </View>
+        </SafeAreaView>
+      </View>
+    </PaperProvider>
   )
 }
 
@@ -79,10 +78,10 @@ const styles = (theme) =>
   })
 
 ThemeDefault.propTypes = {
-  theme: PropTypes.any,
   t: PropTypes.any,
   handleSkip: PropTypes.any,
   handleEnable: PropTypes.func,
+  theme: PropTypes.any,
 }
 
-export default withTranslation()(withTheme(ThemeDefault))
+export default withTranslation()(ThemeDefault)

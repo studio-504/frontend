@@ -110,7 +110,7 @@ const PostComponent = ({
             resizeMode="contain"
             hideLabel={false}
           />
-       
+
           <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
           <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
         </ListItemComponent>

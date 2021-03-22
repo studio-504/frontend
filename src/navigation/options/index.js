@@ -201,7 +201,7 @@ export const stackScreenAuthProps = ({ theme }) => ({ options } = {}) => ({
       shadowColor: 'transparent',
     },
     headerTitleStyle: {
-      color: '#ffffff',
+      color: theme.colors.text,
     },
     ...options,
   }),
@@ -309,7 +309,7 @@ export const stackScreenAuthModalProps = ({ theme }) => ({
 })
 
 /**
- * Used for Profile Screens without application logo but text 
+ * Used for Profile Screens without application logo but text
  */
 export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
   options: () => {
