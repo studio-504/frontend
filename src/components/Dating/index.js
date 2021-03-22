@@ -43,7 +43,7 @@ const Dating = ({
           onRefresh={datingMatchedUsersRequest}
         />
       }
-    > 
+    >
       {matchesVisibility ?
         <React.Fragment>
           <View style={styling.carousel}>
@@ -68,7 +68,7 @@ const Dating = ({
           </View>
         </React.Fragment>
       : <DatingPlaceholder />
-      }    
+      }
     </ScrollView>
   )
 }

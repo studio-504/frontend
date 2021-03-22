@@ -18,18 +18,18 @@ const PostsLikesService = ({ children }) => {
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
-  
+
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
-  const postsLikesGetRequest = (payload) => 
+  const postsLikesGetRequest = (payload) =>
     dispatch(postsActions.postsLikesGetRequest(payload))
 
   useEffect(() => {
-    if(!postId || !userId) return 
+    if(!postId || !userId) return
 
     dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
   }, [postId])

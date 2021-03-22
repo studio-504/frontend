@@ -27,7 +27,7 @@ const ProfilePhotoGrid = ({
 }) => {
   const styling = styles(theme)
 
-  return (  
+  return (
     <ScrollView
       style={styling.root}
       refreshControl={

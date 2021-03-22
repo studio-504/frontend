@@ -18,22 +18,22 @@ const PostViewsService = ({ children }) => {
 
   const usersFollowRequest = ({ userId }) =>
     dispatch(usersActions.usersFollowRequest({ userId }))
-  
+
   const usersUnfollowRequest = ({ userId }) =>
     dispatch(usersActions.usersUnfollowRequest({ userId }))
-  
+
   const usersAcceptFollowerUserRequest = ({ userId }) =>
     dispatch(usersActions.usersAcceptFollowerUserRequest({ userId }))
 
-  const postsViewsGetRequest = (payload) => 
+  const postsViewsGetRequest = (payload) =>
     dispatch(postsActions.postsViewsGetRequest(payload))
-  
-  const postsViewsGetMoreRequest = (payload) => 
+
+  const postsViewsGetMoreRequest = (payload) =>
     dispatch(postsActions.postsViewsGetMoreRequest(payload))
 
   useEffect(() => {
     if(!postId || !userId) return
-    
+
     dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
   }, [postId])
 

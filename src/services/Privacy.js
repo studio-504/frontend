@@ -13,7 +13,7 @@ const isUserTagged = (post, user) => {
 /**
  * Visibility of like button, like button will be visible if:
  * - Post has comments setting enabled
- * - Authenticated user has like setting enabled 
+ * - Authenticated user has like setting enabled
  */
 const postLikeVisibility = (post, user) => (
   !path(['likesDisabled'], post) &&
@@ -23,7 +23,7 @@ const postLikeVisibility = (post, user) => (
 /**
  * Visibility of comment button, comment button will be visible if:
  * - Post has comments setting enabled
- * - Authenticated user has comments setting enabled 
+ * - Authenticated user has comments setting enabled
  */
 const postCommentVisibility = (post, user) => (
   !path(['commentsDisabled'], post) &&
@@ -33,9 +33,9 @@ const postCommentVisibility = (post, user) => (
 /**
  * Visibility of share button, share button will be visible if:
  * - A post has not been archived
- * 
- * - Authenticated user has share setting enabled 
- * 
+ *
+ * - Authenticated user has share setting enabled
+ *
  * - Post has share setting enabled
  * - Or Authenticated user has been tagged in post by author
  */
@@ -67,7 +67,7 @@ const postRepostVisiblity = (post) =>
  * Visibility of post verification, modal will be visible if:
  * - Authenticated user is owner of a post
  * - Post is not text only
- * - Post has isVerified setting enabled 
+ * - Post has isVerified setting enabled
  */
 const postVerificationVisibility = (post) => (
   !PrivacyService.postRepostVisiblity(post) &&
@@ -79,7 +79,7 @@ const postVerificationVisibility = (post) => (
  * Visibility of post expiry, expiry will be visible if:
  * - Authenticated user is owner of a post
  * - Post is not text only
- * - Post has isVerified setting enabled 
+ * - Post has isVerified setting enabled
  * - Post has expiresAt date
  */
 const postExpiryVisiblity = (post) => (
@@ -89,7 +89,7 @@ const postExpiryVisiblity = (post) => (
 
 /**
  * Visibility of post likes, likes will be visible if:
- * - Post has likes setting enabled 
+ * - Post has likes setting enabled
  * - Authenticated user is owner of a post
  */
 const postLikedVisibility = (post, user) => (
@@ -101,11 +101,11 @@ const postLikedVisibility = (post, user) => (
 /**
  * Visibility of followers/followed, they will be visible if:
  * - Count of followers/followed is a number
- * 
- * - Authenticated user has followCounts setting enabled 
+ *
+ * - Authenticated user has followCounts setting enabled
  * - Or Authenticated user is owner of a post
- * 
- * - Authenticated user has public account setting enabled 
+ *
+ * - Authenticated user has public account setting enabled
  * - Or Authenticated user follow a post owner profile
  * - Or Authenticated user is owner of a post
  */
@@ -131,7 +131,7 @@ const userFollowerVisibility = (user) => (
 /**
  * Mock/Spy exported functions within a single module in Jest
  * https://medium.com/@DavideRama/mock-spy-exported-functions-within-a-single-module-in-jest-cdf2b61af642
- */ 
+ */
 const PrivacyService = {
   postLikeVisibility,
   postCommentVisibility,

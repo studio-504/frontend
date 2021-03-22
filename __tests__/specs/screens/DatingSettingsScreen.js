@@ -103,6 +103,17 @@ describe('DatingSettingsScreen', () => {
       testNavigate(navigation, 'Membership')
     })
 
+    it('Manage Diamond', () => {
+      const diamondUser = { ...user, subscriptionLevel: 'DIAMOND' }
+      authSelector.authUserSelector.mockReturnValue(diamondUser)
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Manage Diamond'))
+
+      testNavigate(navigation, 'Membership')
+      authSelector.authUserSelector.mockReturnValue(user)
+    })
+
     it('Change Profile Picture', () => {
       const { getByText } = setup()
 

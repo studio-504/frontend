@@ -29,7 +29,7 @@ function createNavigationChannel(navigation) {
 function* navigationSubscription() {
   const navigation = yield NavigationService.getNavigation()
   const channel = yield call(createNavigationChannel, navigation)
-  
+
   try {
     while (true) {
       const route = yield take(channel)

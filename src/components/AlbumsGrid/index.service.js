@@ -8,20 +8,20 @@ import pathOr from 'ramda/src/pathOr'
 
 const AlbumsGridService = ({ children }) => {
   const dispatch = useDispatch()
-  const route = useRoute()  
+  const route = useRoute()
   const authUser = useSelector(authSelector.authUserSelector)
   const userId = pathOr(authUser.userId, ['params', 'userId'], route)
   const albumsGet = useSelector(albumsSelector.albumsGetSelector(userId))
 
   const albumsGetRequest = ({ nextToken }) =>
-    dispatch(albumsActions.albumsGetRequest({ userId, nextToken })) 
+    dispatch(albumsActions.albumsGetRequest({ userId, nextToken }))
 
   const albumsGetMoreRequest = ({ nextToken }) =>
     dispatch(albumsActions.albumsGetMoreRequest({ userId, nextToken }))
 
   useEffect(() => {
-    if(!userId) return 
-    
+    if(!userId) return
+
     dispatch(albumsActions.albumsGetRequest({ userId }))
   }, [userId])
 

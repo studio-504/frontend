@@ -14,10 +14,10 @@ const Gallery = ({ posts }) => {
       numColumns={3}
       keyExtractor={(item) => item.postId}
       renderItem={({ item: post, index: priorityIndex }) => (
-        <PostsGridThumbnailComponent 
-          post={post} 
-          priorityIndex={priorityIndex} 
-          thread="dating/profile" 
+        <PostsGridThumbnailComponent
+          post={post}
+          priorityIndex={priorityIndex}
+          thread="dating/profile"
           disabled
         />
       )}

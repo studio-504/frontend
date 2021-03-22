@@ -45,7 +45,7 @@ const FormLifetime = ({
   setFieldValue,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <Text>{t('Post availability')}</Text>
@@ -74,7 +74,7 @@ const FormLifetime = ({
           }
         }}
       />
-      
+
       <View style={styling.sliderIndicator}>
         <LifetimeIndicator
           onValueChange={(value) => {

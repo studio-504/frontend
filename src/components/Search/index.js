@@ -22,11 +22,11 @@ import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import { TRENDING_GALLERY } from 'constants/Gallery'
 
-const { 
-  numColumns, 
-  maxToRenderPerBatch, 
-  initialNumToRender, 
-  onEndReachedThreshold, 
+const {
+  numColumns,
+  maxToRenderPerBatch,
+  initialNumToRender,
+  onEndReachedThreshold,
 } = TRENDING_GALLERY
 
 const SearchComponent = ({
@@ -54,9 +54,9 @@ const SearchComponent = ({
 
   const scroll = ScrollService({
     resource: postsGetTrendingPosts,
-    loadInit: postsGetTrendingPostsRequest, 
+    loadInit: postsGetTrendingPostsRequest,
     loadMore: postsGetTrendingPostsMoreRequest,
-  
+
   })
 
   const {

@@ -41,7 +41,7 @@ const PostViews = ({
     loadMore: postsViewsGetMoreRequest,
     extra: { postId: path(['data', 'postId'])(postsSingleGet) },
   })
-  
+
   return (
     <View style={styling.root}>
       <ScrollView

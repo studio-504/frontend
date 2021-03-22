@@ -4,7 +4,7 @@ import { createFailureAction } from 'store/errors'
 import * as constants from 'store/ducks/camera/constants'
 
 /**
- * 
+ *
  */
 export const cameraCaptureIdle = createAction(constants.CAMERA_CAPTURE_IDLE)
 export const cameraCaptureRequest = createAction(constants.CAMERA_CAPTURE_REQUEST)

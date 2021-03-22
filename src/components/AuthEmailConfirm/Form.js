@@ -15,7 +15,7 @@ import testIDs from './test-ids'
 
 const formSchema = Yup.object().shape({
   confirmationCode: Validation.confirmationCode,
-}) 
+})
 
 const EmailConfirmForm = ({
   t,
@@ -59,7 +59,7 @@ export default withTranslation()(({
   handleFormSubmit,
   formSubmitLoading,
   formSubmitDisabled,
-  formInitialValues, 
+  formInitialValues,
   ...props
 }) => (
   <Formik

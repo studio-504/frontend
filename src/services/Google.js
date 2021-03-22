@@ -21,7 +21,7 @@ const checkTokenExpiry = async (idToken) => {
   try {
     const data = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`)
     const response = await data.json()
-    
+
     if (!response || response.error) {
       throw new TokenExpiredError('Token expired')
     }

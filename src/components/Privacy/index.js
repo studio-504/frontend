@@ -20,7 +20,7 @@ const Privacy = ({
   toggleSharingDisabled,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <ScrollView>
       <View style={styling.root}>

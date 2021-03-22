@@ -520,9 +520,9 @@ function* usersGetCardsRequest(req) {
     const selector = path(['data', 'self', 'cards', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'self', 'cards']))
 
-    yield put(actions.usersGetCardsSuccess({ 
-      payload: req.payload, 
-      data: selector(data).filter(LinkingService.isCardSupported), 
+    yield put(actions.usersGetCardsSuccess({
+      payload: req.payload,
+      data: selector(data).filter(LinkingService.isCardSupported),
       meta: metaSelector(data),
     }))
   } catch (error) {
@@ -568,7 +568,7 @@ function* usersReportScreenViewsRequest(req) {
   } catch (error) {
     yield put(actions.usersReportScreenViewsFailure(error, req.payload))
   }
-} 
+}
 
 export default () => [
   takeLatest(constants.USERS_SEARCH_REQUEST, usersSearchRequest),
@@ -579,7 +579,7 @@ export default () => [
   takeLatest(constants.USERS_GET_PENDING_FOLLOWERS_REQUEST, usersGetPendingFollowersRequest),
   takeLatest(constants.USERS_ACCEPT_FOLLOWER_USER_REQUEST, usersAcceptFollowerUserRequest),
   takeLatest(constants.USERS_DECLINE_FOLLOWER_USER_REQUEST, usersDeclineFollowerUserRequest),
-  takeLatest(constants.USERS_FOLLOW_REQUEST, usersFollowRequest), 
+  takeLatest(constants.USERS_FOLLOW_REQUEST, usersFollowRequest),
   takeLatest(constants.USERS_UNFOLLOW_REQUEST, usersUnfollowRequest),
   takeLatest(constants.USERS_BLOCK_REQUEST, usersBlockRequest),
   takeLatest(constants.USERS_UNBLOCK_REQUEST, usersUnblockRequest),

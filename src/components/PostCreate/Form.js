@@ -148,7 +148,7 @@ const PostCreateForm = ({
         <DefaultButton label={t('Create Post')} onPress={handleSubmit} loading={loading} disabled={loading} />
       </View>
 
-      {handleOpenVerification ? 
+      {handleOpenVerification ?
         <View style={styling.input}>
           <DefaultButton label={t('Trending Tips')} onPress={handleOpenVerification} mode="outlined" disabled={loading} />
         </View>
@@ -205,12 +205,12 @@ const FormWrapper = ({
 }) => (
   <Formik
     initialValues={{
-      lifetime: null, 
+      lifetime: null,
       postType: props.postType,
       likesDisabled: props.user.likesDisabled,
       commentsDisabled: props.user.commentsDisabled,
       sharingDisabled: props.user.sharingDisabled,
-      verificationHidden: props.user.verificationHidden, 
+      verificationHidden: props.user.verificationHidden,
       text: path(['text'])(cameraCapture),
       preview: [path(['preview'])(cameraCapture)],
       images: [path(['uri'])(cameraCapture)],

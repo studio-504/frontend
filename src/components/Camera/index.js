@@ -41,7 +41,7 @@ const CameraComponent = ({
 }) => {
   const styling = styles
   const navigation = useNavigation()
-  
+
   /**
    * Size calc
    */

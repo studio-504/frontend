@@ -17,7 +17,7 @@ const Button = ({
   ...props
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <TouchableOpacity
       {...props}

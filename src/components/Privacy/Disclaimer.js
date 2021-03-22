@@ -16,7 +16,7 @@ const Disclaimer = ({
   theme,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <Text style={styling.text}>
