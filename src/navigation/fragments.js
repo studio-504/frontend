@@ -16,6 +16,7 @@ import MembershipScreen from 'screens/MembershipScreen'
 import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 import InviteFriendsSuccessScreen from 'screens/InviteFriendsSuccessScreen'
 import ThemeScreen from 'screens/ThemeScreen'
+import PayoutsScreen from 'screens/PayoutsScreen'
 
 export const media = ({
   Stack,
@@ -123,6 +124,12 @@ export const media = ({
         name="Theme"
         component={ThemeScreen}
         {...stackScreenPageProps({ options: { title: 'Choose Theme' } })}
+      />
+
+      <Stack.Screen
+        name="Payouts"
+        component={PayoutsScreen}
+        {...stackScreenPageProps({ options: { title: 'Creator Payouts' } })}
       />
     </>
   )

@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-catch */
 import * as RNIap from 'react-native-iap'
+import propOr from 'ramda/src/propOr'
 import { put, call, race, delay, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as actions from 'store/ducks/purchases/actions'
@@ -77,7 +78,8 @@ function* purchase(req) {
     yield put(actions.purchaseSuccess())
     yield put(usersActions.usersGetProfileSelfRequest())
   } catch (error) {
-    yield put(actions.purchaseFailure(error))
+    const messageCode = propOr('GENERIC', 'code', error)
+    yield put(actions.purchaseFailure(error, { messageCode }))
   }
 }
 
