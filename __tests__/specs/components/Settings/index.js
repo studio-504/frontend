@@ -41,7 +41,7 @@ describe('Settings component', () => {
 
     fireEvent.press(getByText('Choose Theme'))
 
-    testNavigate(navigation, 'App.Root.Home.Profile.Theme')
+    testNavigate(navigation, 'Theme')
   })
 
   it('Archived Photos', () => {

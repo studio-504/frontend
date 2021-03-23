@@ -1,5 +1,4 @@
 import React from 'react'
-
 import PostMediaScreen from 'screens/PostMediaScreen'
 import PostLikesScreen from 'screens/PostLikesScreen'
 import PostViewsScreen from 'screens/PostViewsScreen'
@@ -16,6 +15,8 @@ import PostCreateScreen from 'screens/PostCreateScreen'
 import MembershipScreen from 'screens/MembershipScreen'
 import InviteFriendsScreen from 'screens/InviteFriendsScreen'
 import InviteFriendsSuccessScreen from 'screens/InviteFriendsSuccessScreen'
+import ThemeScreen from 'screens/ThemeScreen'
+import PayoutsScreen from 'screens/PayoutsScreen'
 
 export const media = ({
   Stack,
@@ -117,6 +118,18 @@ export const media = ({
         name="InviteFriendsSuccess"
         component={InviteFriendsSuccessScreen}
         {...stackScreenPageProps({ options: { title: 'Membership' } })}
+      />
+
+      <Stack.Screen
+        name="Theme"
+        component={ThemeScreen}
+        {...stackScreenPageProps({ options: { title: 'Choose Theme' } })}
+      />
+
+      <Stack.Screen
+        name="Payouts"
+        component={PayoutsScreen}
+        {...stackScreenPageProps({ options: { title: 'Creator Payouts' } })}
       />
     </>
   )
