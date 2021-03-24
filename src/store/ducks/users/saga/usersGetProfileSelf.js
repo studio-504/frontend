@@ -1,5 +1,6 @@
-import { put } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
+import * as constants from 'store/ducks/users/constants'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
 import * as queryService from 'services/Query'
@@ -31,4 +32,8 @@ function* usersGetProfileSelfRequest() {
   }
 }
 
-export default usersGetProfileSelfRequest
+export default () => [
+  takeLatest(constants.USERS_GET_PROFILE_SELF_REQUEST, usersGetProfileSelfRequest),
+]
+
+

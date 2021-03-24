@@ -1,9 +1,9 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
+import users from 'store/ducks/users/saga'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
-import { testEntitiesMerge } from 'tests/utils/helpers'
+import { testEntitiesMerge, testAsRootSaga } from 'tests/utils/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -21,11 +21,12 @@ describe('usersImagePostsGetRequest', () => {
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    const saga = expectSaga(usersImagePostsGetRequest, action)
+    const saga = expectSaga(testAsRootSaga(users))
 
     await testEntitiesMerge(saga, entities)
       .put(usersActions.usersImagePostsGetSuccess({ data: [1, 2] }))
 
+      .dispatch(action)
       .silentRun()
 
     expect(queryService.apiRequest).toHaveBeenCalledWith(queries.getImagePosts, payload)
@@ -36,9 +37,10 @@ describe('usersImagePostsGetRequest', () => {
 
     queryService.apiRequest.mockRejectedValueOnce(error)
 
-    await expectSaga(usersImagePostsGetRequest, action)
+    await expectSaga(testAsRootSaga(users))
       .put(usersActions.usersImagePostsGetFailure(error))
 
+      .dispatch(action)
       .silentRun()
   })
 })

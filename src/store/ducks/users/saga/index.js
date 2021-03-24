@@ -8,9 +8,13 @@ import * as constants from 'store/ducks/users/constants'
 import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
-import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
-import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
-import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
+import usersImagePostsGet from 'store/ducks/users/saga/usersImagePostsGet'
+import usersGetProfileSelf from 'store/ducks/users/saga/usersGetProfileSelf'
+import usersSetUserDatingStatus from 'store/ducks/users/saga/usersSetUserDatingStatus'
+import usersAcceptFollowerUser from 'store/ducks/users/saga/usersAcceptFollowerUser'
+import usersDeclineFollowerUser from 'store/ducks/users/saga/usersDeclineFollowerUser'
+import usersFollow from 'store/ducks/users/saga/usersFollow'
+import usersUnfollow from 'store/ducks/users/saga/usersUnfollow'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
@@ -202,66 +206,6 @@ function* usersGetFollowedUsersWithStoriesRequest(req) {
 /**
  *
  */
-function* usersAcceptFollowerUserRequestData(req, api) {
-  const dataSelector = path(['data', 'acceptFollowerUser'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield entitiesMerge(normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersAcceptFollowerUserRequest(req) {
-  try {
-    const data = yield queryService.apiRequest(queries.acceptFollowerUser, req.payload)
-    const next = yield usersAcceptFollowerUserRequestData(req, data)
-    yield put(actions.usersAcceptFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersAcceptFollowerUserFailure(error, req.payload))
-  }
-}
-
-/**
- *
- */
-function* usersDeclineFollowerUserRequestData(req, api) {
-  const dataSelector = path(['data', 'denyFollowerUser'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield entitiesMerge(normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersDeclineFollowerUserRequest(req) {
-  try {
-    const data = yield queryService.apiRequest(queries.denyFollowerUser, req.payload)
-    const next = yield usersDeclineFollowerUserRequestData(req, data)
-    yield put(actions.usersDeclineFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersDeclineFollowerUserFailure(error, req.payload))
-  }
-}
-
-/**
- *
- */
 function* usersGetProfileRequestData(req, api) {
   const dataSelector = path(['data', 'user'])
 
@@ -353,68 +297,6 @@ function* usersChangeAvatarRequest(req) {
     yield put(actions.usersChangeAvatarSuccess())
   } catch (error) {
     yield put(actions.usersChangeAvatarFailure(error))
-  }
-}
-
-/**
- *
- */
-function* usersFollowRequestData(req, api) {
-  const dataSelector = path(['data', 'followUser'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield entitiesMerge(normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersFollowRequest(req) {
-  try {
-    yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.followUser, req.payload)
-    const next = yield usersFollowRequestData(req, data)
-    yield put(actions.usersFollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersFollowFailure(error, req.payload))
-  }
-}
-
-/**
- *
- */
-function* usersUnfollowRequestData(req, api) {
-  const dataSelector = path(['data', 'unfollowUser'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield entitiesMerge(normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersUnfollowRequest(req) {
-  try {
-    yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.unfollowUser, req.payload)
-    const next = yield usersUnfollowRequestData(req, data)
-    yield put(actions.usersUnfollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersUnfollowFailure(error, req.payload))
   }
 }
 
@@ -577,16 +459,10 @@ export default () => [
   takeLatest(constants.USERS_GET_FOLLOWER_USERS_REQUEST, usersGetFollowerUsersRequest),
   takeLatest(constants.USERS_GET_FOLLOWED_USERS_REQUEST, usersGetFollowedUsersRequest),
   takeLatest(constants.USERS_GET_PENDING_FOLLOWERS_REQUEST, usersGetPendingFollowersRequest),
-  takeLatest(constants.USERS_ACCEPT_FOLLOWER_USER_REQUEST, usersAcceptFollowerUserRequest),
-  takeLatest(constants.USERS_DECLINE_FOLLOWER_USER_REQUEST, usersDeclineFollowerUserRequest),
-  takeLatest(constants.USERS_FOLLOW_REQUEST, usersFollowRequest),
-  takeLatest(constants.USERS_UNFOLLOW_REQUEST, usersUnfollowRequest),
   takeLatest(constants.USERS_BLOCK_REQUEST, usersBlockRequest),
   takeLatest(constants.USERS_UNBLOCK_REQUEST, usersUnblockRequest),
   takeLatest(constants.USERS_GET_PROFILE_REQUEST, usersGetProfileRequest),
-  takeLatest(constants.USERS_GET_PROFILE_SELF_REQUEST, usersGetProfileSelfRequest),
   takeLatest(constants.USERS_EDIT_PROFILE_REQUEST, usersEditProfileRequest),
-  takeLatest(constants.USERS_IMAGE_POSTS_GET_REQUEST, usersImagePostsGetRequest),
   takeLatest(constants.USERS_GET_TRENDING_USERS_REQUEST, usersGetTrendingUsersRequest),
   takeLatest(constants.USERS_GET_CARDS_REQUEST, usersGetCardsRequest),
   takeLatest(constants.USERS_DELETE_CARD_REQUEST, usersDeleteCardRequest),
@@ -594,5 +470,11 @@ export default () => [
   takeLatest(constants.USERS_DELETE_AVATAR_REQUEST, usersDeleteProfilePhoto),
   takeLatest(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST, usersReportScreenViewsRequest),
   takeLatest(constants.USERS_CHANGE_AVATAR_REQUEST, usersChangeAvatarRequest),
-  takeLatest(constants.USERS_SET_USER_DATING_STATUS_REQUEST, usersSetUserDatingStatusRequest),
 ]
+.concat(usersAcceptFollowerUser())
+.concat(usersDeclineFollowerUser())
+.concat(usersSetUserDatingStatus())
+.concat(usersFollow())
+.concat(usersUnfollow())
+.concat(usersGetProfileSelf())
+.concat(usersImagePostsGet())
