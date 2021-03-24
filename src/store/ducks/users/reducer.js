@@ -407,7 +407,7 @@ const usersAcceptFollowerUserIdle = (state) => update(state, {
 /**
  *
  */
- const usersDeclineFollowerUserRequest = (state, action) => update(state, {
+const usersDeclineFollowerUserRequest = (state, action) => update(state, {
   usersDeclineFollowerUser: {
     status: { $set: 'loading' },
     payload: { $set: action.payload },
