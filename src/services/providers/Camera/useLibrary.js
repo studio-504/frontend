@@ -61,11 +61,12 @@ const useLibrary = ({ handleProcessedPhoto = () => {}, multiple = true }) => {
      */
     try {
       const selectedMedia = await CropPicker.openPicker(pickerOptions(multiple))
+      const adjustmentData = await CropPicker.getAdjustmentData(selectedMedia[0].localIdentifier)
       const payloadSeries = await mapCropperResponse(selectedMedia, async (selectedPhoto, callback) => {
         const tempPhoto = formatPickerResponse(selectedPhoto)
         const snappedPhoto = { ...selectedPhoto, ...tempPhoto }
         const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, selectedPhoto))
-        const payload = requestPayload('gallery')(cameraState, snappedPhoto, croppedPhoto)
+        const payload = requestPayload('gallery')(cameraState, snappedPhoto, croppedPhoto, adjustmentData)
         autoKeyboardClose()
         callback(null, payload)
       })
