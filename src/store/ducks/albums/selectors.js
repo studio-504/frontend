@@ -2,7 +2,7 @@ import path from 'ramda/src/path'
 import assocPath from 'ramda/src/assocPath'
 import * as normalizer from 'normalizer/schemas'
 import { initialState } from 'store/ducks/albums/reducer'
-import {createDeepEqualSelector} from 'store/helpers'
+import { createDeepEqualSelector } from 'store/helpers'
 import { entitiesSelector } from 'store/ducks/entities/selectors'
 
 /**

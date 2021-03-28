@@ -1,5 +1,5 @@
 import path from 'ramda/src/path'
-import {createDeepEqualSelector} from 'store/helpers'
+import { createDeepEqualSelector } from 'store/helpers'
 
 /**
  *

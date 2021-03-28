@@ -9,8 +9,6 @@ import { entitiesMerge } from 'store/ducks/entities/saga'
 jest.mock('store/ducks/users/saga/usersCheckPermissions', () => jest.fn())
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
-const saga = () => expectSaga(testAsRootSaga(users))
-
 describe('Users saga', () => {
   afterEach(() => {
     queryService.apiRequest.mockClear()
@@ -24,7 +22,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersSearchSuccess({ data: [1], payload, meta: {} }))
 
@@ -43,7 +41,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersDeleteSuccess({ data: 1, payload, meta: {} }))
 
@@ -62,7 +60,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersGetFollowerUsersSuccess({ data: [1], payload, meta: {} }))
 
@@ -81,7 +79,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersGetFollowedUsersSuccess({ data: [1], payload, meta: {} }))
 
@@ -100,7 +98,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersGetPendingFollowersSuccess({ data: [1], payload, meta: {} }))
 
@@ -122,7 +120,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersGetFollowedUsersWithStoriesSuccess({ data: [1], payload, meta: {} }))
 
@@ -141,7 +139,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersAcceptFollowerUserSuccess({ data: 1, payload, meta: {} }))
 
@@ -160,7 +158,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersDeclineFollowerUserSuccess({ data: 1, payload, meta: {} }))
 
@@ -179,7 +177,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersGetProfileSuccess({ data: 1, payload, meta: {} }))
 
@@ -199,7 +197,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersEditProfileSuccess({ data: 1, payload }, meta))
 
@@ -217,7 +215,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersDeleteAvatarSuccess())
 
@@ -237,7 +235,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .call([queryService, 'apiRequest'], queries.setUserDetails, { photoPostId: postId })
         .put(usersActions.usersChangeAvatarSuccess())
@@ -267,7 +265,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersFollowSuccess({ data: 1, payload, meta: {} }))
 
@@ -286,7 +284,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersUnfollowSuccess({ data: 1, payload, meta: {} }))
 
@@ -305,7 +303,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersBlockSuccess({ data: 1, payload, meta: {} }))
 
@@ -324,7 +322,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: 1 })
         .put(usersActions.usersUnblockSuccess({ data: 1, payload, meta: {} }))
 
@@ -343,7 +341,7 @@ describe('Users saga', () => {
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
-      await saga()
+      await expectSaga(testAsRootSaga(users))
         .call(entitiesMerge, { entities, result: [1] })
         .put(usersActions.usersGetTrendingUsersSuccess({ data: [1], payload, meta: {} }))
 

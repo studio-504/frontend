@@ -4,7 +4,7 @@ import assocPath from 'ramda/src/assocPath'
 import * as normalizer from 'normalizer/schemas'
 import { initialState } from 'store/ducks/users/reducer'
 import { entitiesSelector } from 'store/ducks/entities/selectors'
-import {createDeepEqualSelector} from 'store/helpers'
+import { createDeepEqualSelector } from 'store/helpers'
 
 /**
  *
