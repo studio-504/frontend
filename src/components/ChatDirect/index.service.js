@@ -57,10 +57,8 @@ const ChatDirectService = ({ children }) => {
 
   useEffectWhenFocused(() => {
     if (chatGetChat.status === 'success' && chatId) {
-      return
+      dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
     }
-
-    dispatch(chatActions.chatReportViewRequest({ chatIds: [chatId] }))
   }, [chatGetChat.status])
 
   useEffectWhenFocused(() => {
