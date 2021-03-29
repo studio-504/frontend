@@ -113,6 +113,16 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <MusicIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <VerifiedIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
@@ -138,16 +148,6 @@ const Membership = ({
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Profile Trending Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('Your posts are more likely to become trending')}</Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <MusicIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
           </View>
         </View>
 
