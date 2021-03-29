@@ -113,6 +113,16 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <MusicIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <VerifiedIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
@@ -133,6 +143,16 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <StickerIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Emotes (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('React to posts with new emoticons each month')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <ProfileIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
@@ -143,31 +163,11 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
-            <MusicIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
             <DatingIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Dating Match Boost')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('People are more likely to discover you in dating')}</Text>
-          </View>
-        </View>
-
-        <View style={styling.subheading}>
-          <View style={styling.subheadingIcon}>
-            <StickerIcon fill={theme.colors.text} />
-          </View>
-          <View style={styling.subheadingContent}>
-            <Text style={styling.subheadingTitle}>{t('Emotes (coming soon)')}</Text>
-            <Text style={styling.subheadingSubtitle}>{t('React to posts with new emoticons each month')}</Text>
           </View>
         </View>
 
