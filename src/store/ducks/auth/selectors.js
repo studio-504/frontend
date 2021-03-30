@@ -12,7 +12,12 @@ const authRoot = prop('auth')
 const authUser = () => path(['auth', 'user'])
 const authData = () => path(['auth', 'authData'])
 export const authForgot = compose(prop('authForgot'), authRoot)
+export const authForgotConfirm = compose(prop('authForgotConfirm'), authRoot)
 export const authSigninCognito = compose(prop('authSigninCognito'), authRoot)
+export const authSigninGoogle = compose(prop('authSigninGoogle'), authRoot)
+export const authSigninApple = compose(prop('authSigninApple'), authRoot)
+export const authSigninAnonymous = compose(prop('authSigninAnonymous'), authRoot)
+export const authFlow = compose(prop('authFlow'), authRoot)
 
 export const authUserSelector = createSelector(
   [authUser(), authData(), usersSelector.usersEditProfile, usersSelector.usersGetProfileSelf, usersSelector.usersDeleteAvatar, usersSelector.usersChangeAvatar, usersSelector.usersSetUserDatingStatus, entitiesSelector.entities],
