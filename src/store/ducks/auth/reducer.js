@@ -14,10 +14,6 @@ export const initialState = {
   authFlow: {
     status: 'idle',
   },
-  authToken: {
-    status: 'idle',
-    meta: {},
-  },
 
   /**
    *
@@ -81,33 +77,6 @@ const authDataSuccess = (state, action) => update(state, {
   user: {
     $set: action.payload.data,
   },
-})
-
-/**
- *
- */
-const authTokenRequest = (state) => update(state, {
-  authToken: {
-    status: { $set: 'loading' },
-  },
-})
-
-const authTokenSuccess = (state, action) => update(state, {
-  authToken: {
-    status: { $set: 'success' },
-    meta: { $set: action.payload.meta },
-  },
-})
-
-const authTokenFailure = (state, action) => update(state, {
-  authToken: {
-    status: { $set: 'failure' },
-    meta: { $set: action.meta },
-  },
-})
-
-const authTokenIdle = (state) => update(state, {
-  authToken: { $set: initialState.authToken },
 })
 
 /**
@@ -279,11 +248,6 @@ export default handleActions({
   [constants.AUTH_FLOW_IDLE]: authFlowIdle,
 
   [constants.AUTH_DATA_SUCCESS]: authDataSuccess,
-
-  [constants.AUTH_TOKEN_REQUEST]: authTokenRequest,
-  [constants.AUTH_TOKEN_SUCCESS]: authTokenSuccess,
-  [constants.AUTH_TOKEN_FAILURE]: authTokenFailure,
-  [constants.AUTH_TOKEN_IDLE]: authTokenIdle,
 
   [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,
