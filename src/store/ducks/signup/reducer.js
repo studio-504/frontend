@@ -18,9 +18,7 @@ export const initialState = {
     payload: {},
   },
   signupConfirm: {
-    data: [],
     status: 'idle',
-    payload: {},
   },
 }
 
@@ -50,8 +48,7 @@ const signupUsernameFailure = (state) => update(state, {
 
 const signupUsernameIdle = (state) => update(state, {
   signupUsername: {
-    status: { $set: 'idle' },
-    payload: { $set: initialState.signupUsername.payload },
+    $set: initialState.signupUsername,
   },
 })
 
@@ -112,18 +109,15 @@ const signupCreateIdle = (state) => update(state, {
 /**
  *
  */
-const signupConfirmRequest = (state, action) => update(state, {
+const signupConfirmRequest = (state) => update(state, {
   signupConfirm: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
   },
 })
 
-const signupConfirmSuccess = (state, action) => update(state, {
+const signupConfirmSuccess = (state) => update(state, {
   signupConfirm: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
-    payload: { $set: action.payload.payload },
   },
 })
 
@@ -136,7 +130,6 @@ const signupConfirmFailure = (state) => update(state, {
 const signupConfirmIdle = (state) => update(state, {
   signupConfirm: {
     status: { $set: 'idle' },
-    payload: { $set: initialState.signupConfirm.payload },
   },
 })
 
