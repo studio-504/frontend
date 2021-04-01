@@ -19,12 +19,11 @@ describe('signupConfirm', () => {
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
-      const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
+        .put(actions.signupConfirmSuccess())
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -38,12 +37,11 @@ describe('signupConfirm', () => {
 
     it('phone', async () => {
       const usernameType = 'phone'
-      const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
+        .put(actions.signupConfirmSuccess())
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()

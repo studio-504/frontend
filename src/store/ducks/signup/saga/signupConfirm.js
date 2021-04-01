@@ -10,18 +10,18 @@ import propOr from 'ramda/src/propOr'
 /**
  *
  */
-function* queryBasedOnSignupType(payload) {
+function* handleSignupConfirmRequest(payload) {
   if (payload.usernameType === 'email') {
-    yield call([queryService, 'apiRequest'], queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
+    yield call([queryService, 'apiRequest'], queries.finishChangeUserEmail, {
+      verificationCode: payload.confirmationCode,
+    })
   } else if (payload.usernameType === 'phone') {
-    yield call([queryService, 'apiRequest'], queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
+    yield call([queryService, 'apiRequest'], queries.finishChangeUserPhoneNumber, {
+      verificationCode: payload.confirmationCode,
+    })
   } else {
     throw new Error('Unsupported usernameType')
   }
-}
-
-function* handleSignupConfirmRequest(payload) {
-  yield call(queryBasedOnSignupType, payload)
 }
 
 /**
@@ -29,13 +29,13 @@ function* handleSignupConfirmRequest(payload) {
  */
 function* signupConfirmRequest(req) {
   try {
-    const data = yield handleSignupConfirmRequest(req.payload)
-    yield put(actions.signupConfirmSuccess({ payload: req.payload, data }))
+    yield handleSignupConfirmRequest(req.payload)
+    yield put(actions.signupConfirmSuccess())
   } catch (error) {
     const messageCode = propOr('GENERIC', error.code, {
-      'AliasExistsException': 'ALIAS_EXISTS',
-      'ExpiredCodeException': 'CODE_EXPIRED',
-      'CodeMismatchException': 'CODE_MISMATCH',
+      AliasExistsException: 'ALIAS_EXISTS',
+      ExpiredCodeException: 'CODE_EXPIRED',
+      CodeMismatchException: 'CODE_MISMATCH',
     })
 
     yield put(actions.signupConfirmFailure(error, { messageCode }))
@@ -46,9 +46,9 @@ function* signupConfirmSuccess() {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
   navigationActions.navigateAuthUsername(ReactNavigationRef.current)
 
-  yield put(actions.signupCreateIdle({}))
-  yield put(actions.signupConfirmIdle({}))
-  yield put(actions.signupPasswordIdle({}))
+  yield put(actions.signupCreateIdle())
+  yield put(actions.signupConfirmIdle())
+  yield put(actions.signupPasswordIdle())
 
   Keyboard.dismiss()
 }
