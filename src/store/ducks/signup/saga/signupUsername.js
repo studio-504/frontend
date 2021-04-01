@@ -11,32 +11,10 @@ import path from 'ramda/src/path'
  *
  */
 function* handleSignupUsernameRequest(payload) {
-  const data = yield call([queryService, 'apiRequest'], queries.setUsername, { username: payload.username })
   const nextRoute = path(['nextRoute'], payload)
-  const meta = { nextRoute }
-
-  return { data, meta }
-}
-
-/**
- *
- */
-function* signupUsernameRequest(req) {
-  try {
-    const { data, meta } = yield call(handleSignupUsernameRequest, req.payload)
-    yield put(actions.signupUsernameSuccess({
-      payload: req.payload,
-      meta,
-      data,
-    }))
-  } catch (error) {
-    yield put(actions.signupUsernameFailure(error))
-  }
-}
-
-function* signupUsernameSuccess(req) {
   const navigation = yield NavigationService.getNavigation()
-  const nextRoute =  path(['payload', 'meta', 'nextRoute'], req)
+
+  yield call([queryService, 'apiRequest'], queries.setUsername, { username: payload.username })
 
   if (nextRoute === 'app') {
     navigationActions.navigateResetToApp(navigation)
@@ -45,7 +23,18 @@ function* signupUsernameSuccess(req) {
   }
 }
 
+/**
+ *
+ */
+function* signupUsernameRequest(req) {
+  try {
+    yield call(handleSignupUsernameRequest, req.payload)
+    yield put(actions.signupUsernameSuccess())
+  } catch (error) {
+    yield put(actions.signupUsernameFailure(error))
+  }
+}
+
 export default () => [
   takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest),
-  takeEvery(constants.SIGNUP_USERNAME_SUCCESS, signupUsernameSuccess),
 ]

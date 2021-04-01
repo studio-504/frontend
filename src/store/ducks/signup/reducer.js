@@ -4,9 +4,7 @@ import * as constants from 'store/ducks/signup/constants'
 
 export const initialState = {
   signupUsername: {
-    data: [],
     status: 'idle',
-    payload: {},
   },
   signupPassword: {
     data: [],
@@ -25,18 +23,15 @@ export const initialState = {
 /**
  *
  */
-const signupUsernameRequest = (state, action) => update(state, {
+const signupUsernameRequest = (state) => update(state, {
   signupUsername: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
   },
 })
 
-const signupUsernameSuccess = (state, action) => update(state, {
+const signupUsernameSuccess = (state) => update(state, {
   signupUsername: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
-    payload: { $set: action.payload.payload },
   },
 })
 

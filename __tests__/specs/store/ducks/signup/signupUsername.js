@@ -14,62 +14,53 @@ const setupSaga = () =>
   expectSaga(testAsRootSaga(signupUsername)).provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
 describe('signupUsername saga', () => {
+  const username = 'username'
+
   afterEach(() => {
     navigation.navigate.mockClear()
     navigation.reset.mockClear()
     queryService.apiRequest.mockClear()
   })
 
-  describe('request', () => {
-    const username = 'username'
-    const nextRoute = 'nextRoute'
-
-    it('success', async () => {
+  describe('success', () => {
+    it('navigate to password by default', async () => {
       const data = { a: 1, b: 2 }
       queryService.apiRequest.mockResolvedValueOnce(data)
 
       await setupSaga()
-        .put(
-          actions.signupUsernameSuccess({
-            payload: { username, nextRoute },
-            meta: { nextRoute },
-            data,
-          }),
-        )
-        .dispatch(actions.signupUsernameRequest({ username, nextRoute }))
+        .put(actions.signupUsernameSuccess())
+        .dispatch(actions.signupUsernameRequest({ username }))
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
+      testNavigate(navigation, 'Auth.AuthPassword')
     })
 
-    it('failure', async () => {
+    it('navigate to app', async () => {
+      const data = { a: 1, b: 2 }
+      queryService.apiRequest.mockResolvedValueOnce(data)
+
+      await setupSaga()
+        .put(actions.signupUsernameSuccess())
+        .dispatch(actions.signupUsernameRequest({ username, nextRoute: 'app' }))
+        .silentRun()
+
+      expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
+      expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
+    })
+  })
+
+  describe('failure', () => {
+    it('handle request error', async () => {
       const nativeError = new Error('Fetch error')
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await setupSaga()
         .put(actions.signupUsernameFailure(nativeError))
-        .dispatch(actions.signupUsernameRequest({ username, nextRoute }))
+        .dispatch(actions.signupUsernameRequest({ username }))
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
-    })
-  })
-
-  describe('success handler', () => {
-    it('redirect to app', async () => {
-      await setupSaga()
-        .dispatch(actions.signupUsernameSuccess({ meta: { nextRoute: 'app' } }))
-        .silentRun()
-
-      expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
-    })
-
-    it('redirect to auth password screen', async () => {
-      await setupSaga()
-        .dispatch(actions.signupUsernameSuccess({ meta: {} }))
-        .silentRun()
-
-      testNavigate(navigation, 'Auth.AuthPassword')
     })
   })
 })

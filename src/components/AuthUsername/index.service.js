@@ -30,7 +30,7 @@ const AuthUsernameComponentService = ({ children }) => {
 
   const formSubmitLoading = signupUsername.status === 'loading'
   const formSubmitDisabled = signupUsername.status === 'loading'
-  const formInitialValues = handleFormTransform(signupUsername.payload)
+  const formInitialValues = {}
 
   return children({
     handleFormSubmit,
