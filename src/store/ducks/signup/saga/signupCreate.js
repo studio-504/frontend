@@ -13,10 +13,10 @@ import { logEvent } from 'services/Analytics'
  */
 function* queryBasedOnSignupType(payload) {
   if (payload.usernameType === 'email') {
-    yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
+    yield call([queryService, 'apiRequest'], queries.startChangeUserEmail, { email: payload.email })
   } else if (payload.usernameType === 'phone') {
     const phoneNumber = `${payload.countryCode}${payload.phone}`
-    yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber })
+    yield call([queryService, 'apiRequest'], queries.startChangeUserPhoneNumber, { phoneNumber })
   } else {
     throw new Error('Unsupported usernameType')
   }

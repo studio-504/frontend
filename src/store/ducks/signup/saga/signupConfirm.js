@@ -13,9 +13,9 @@ import propOr from 'ramda/src/propOr'
  */
 function* queryBasedOnSignupType(payload) {
   if (payload.usernameType === 'email') {
-    yield queryService.apiRequest(queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
+    yield call([queryService, 'apiRequest'], queries.finishChangeUserEmail, { verificationCode: payload.confirmationCode })
   } else if (payload.usernameType === 'phone') {
-    yield queryService.apiRequest(queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
+    yield call([queryService, 'apiRequest'], queries.finishChangeUserPhoneNumber, { verificationCode: payload.confirmationCode })
   } else {
     throw new Error('Unsupported usernameType')
   }

@@ -78,7 +78,7 @@ export function* handleAuthDataRequestData(req, api) {
  * Get user data from api and cache into asyncstorage
  */
 function* onlineData() {
-  const response = yield queryService.apiRequest(queries.self)
+  const response = yield call([queryService, 'apiRequest'], queries.self)
   yield saveAuthUserPersist(response)
 
   if (!path(['data', 'self', 'userId'])(response)) {
@@ -116,7 +116,7 @@ function* cachedData() {
  */
 function* createAnonymousUser() {
   try {
-    const request = yield queryService.apiRequest(queries.createAnonymousUser)
+    const request = yield call([queryService, 'apiRequest'], queries.createAnonymousUser)
     yield call(handleAnonymousSignin, request.data.createAnonymousUser)
   } catch (error) {
     // ignore

@@ -12,7 +12,7 @@ import path from 'ramda/src/path'
  *
  */
 function* handleSignupUsernameRequest(payload) {
-  const data = yield queryService.apiRequest(queries.setUsername, { username: payload.username })
+  const data = yield call([queryService, 'apiRequest'], queries.setUsername, { username: payload.username })
   const nextRoute = path(['nextRoute'], payload)
   const meta = { nextRoute }
 

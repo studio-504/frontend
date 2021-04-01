@@ -16,7 +16,7 @@ function* handleSignupPasswordRequest(payload) {
   const password = forge.util.encodeUtf8(payload.password)
   const encrypted = publicKey.encrypt(password, 'RSA-OAEP')
   const encryptedPassword = forge.util.encode64(encrypted)
-  return yield queryService.apiRequest(queries.setUserPassword, { encryptedPassword })
+  return yield call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
 }
 
 /**
