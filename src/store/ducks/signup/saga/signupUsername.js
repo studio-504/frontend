@@ -24,7 +24,7 @@ function* handleSignupUsernameRequest(payload) {
  */
 function* signupUsernameRequest(req) {
   try {
-    logEvent('SIGNUP_CHECK_REQUEST')
+    yield call(logEvent, 'SIGNUP_CHECK_REQUEST')
     const { data, meta } = yield call(handleSignupUsernameRequest, req.payload)
     yield put(actions.signupUsernameSuccess({
       payload: req.payload,
@@ -37,7 +37,7 @@ function* signupUsernameRequest(req) {
 }
 
 function* signupUsernameSuccess(req) {
-  logEvent('SIGNUP_USERNAME_SUCCESS')
+  yield call(logEvent, 'SIGNUP_USERNAME_SUCCESS')
 
   const navigation = yield NavigationService.getNavigation()
   const nextRoute =  path(['payload', 'meta', 'nextRoute'], req)

@@ -24,7 +24,7 @@ function* handleSignupPasswordRequest(payload) {
  */
 function* signupPasswordRequest(req) {
   try {
-    logEvent('SIGNUP_PASSWORD_REQUEST')
+    yield call(logEvent, 'SIGNUP_PASSWORD_REQUEST')
 
     const data = yield call(handleSignupPasswordRequest, req.payload)
     yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
@@ -34,7 +34,7 @@ function* signupPasswordRequest(req) {
 }
 
 function* signupPasswordSuccess() {
-  logEvent('SIGNUP_PASSWORD_SUCCESS')
+  yield call(logEvent, 'SIGNUP_PASSWORD_SUCCESS')
   yield put(authActions.authFlowRequest())
 }
 

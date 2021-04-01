@@ -36,7 +36,7 @@ describe('authForgot', () => {
 
       expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(username)
       testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
-      expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
+      expect(logEvent).toHaveBeenCalledWith('AUTH_FORGOT_SUCCESS')
     })
 
     it('email', async () => {
@@ -55,7 +55,7 @@ describe('authForgot', () => {
 
       expect(AwsAuth.forgotPassword).toHaveBeenCalledWith(email)
       testNavigate(navigation.current, 'Auth.AuthForgotConfirm')
-      expect(logEvent).toHaveBeenCalledWith('authForgotSuccess')
+      expect(logEvent).toHaveBeenCalledWith('AUTH_FORGOT_SUCCESS')
     })
   })
 
