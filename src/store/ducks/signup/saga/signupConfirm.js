@@ -4,7 +4,6 @@ import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
-import { logEvent } from 'services/Analytics'
 import { Keyboard } from 'react-native'
 import propOr from 'ramda/src/propOr'
 
@@ -30,7 +29,6 @@ function* handleSignupConfirmRequest(payload) {
  */
 function* signupConfirmRequest(req) {
   try {
-    yield call(logEvent, 'SIGNUP_CONFIRM_REQUEST')
     const data = yield handleSignupConfirmRequest(req.payload)
     yield put(actions.signupConfirmSuccess({ payload: req.payload, data }))
   } catch (error) {
@@ -47,7 +45,6 @@ function* signupConfirmRequest(req) {
 function* signupConfirmSuccess() {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
   navigationActions.navigateAuthUsername(ReactNavigationRef.current)
-  yield call(logEvent, 'SIGNUP_CONFIRM_SUCCESS')
 
   yield put(actions.signupCreateIdle({}))
   yield put(actions.signupConfirmIdle({}))

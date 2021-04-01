@@ -20,27 +20,23 @@ describe('signupCreate', () => {
   })
 
   describe('success', () => {
-    it('email', async () => {
+    it.only('email', async () => {
       const usernameType = 'email'
 
       await expectSaga(testAsRootSaga(signupCreate))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(authActions.authTokenRequest({ allowAnonymous: true }))
-        .put(authActions.authDataRequest({ allowAnonymous: true }))
+        .call(logEvent, 'SIGNUP_CREATE_REQUEST')
+
+        .call(logEvent, 'SIGNUP_EMAIL_SUCCESS')
         .put(actions.signupCreateSuccess({ usernameType }))
 
         .dispatch(actions.signupCreateRequest({ usernameType, email }))
-        .dispatch(authActions.authTokenSuccess())
-        .dispatch(authActions.authDataSuccess())
 
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.startChangeUserEmail, { email })
-
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CREATE_REQUEST')
       expect(logEvent).toHaveBeenCalledWith('SIGNUP_EMAIL_SUCCESS')
-
       testNavigate(navigation, 'Auth.AuthEmailConfirm')
     })
 
@@ -65,7 +61,6 @@ describe('signupCreate', () => {
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.startChangeUserPhoneNumber, { phoneNumber })
 
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CREATE_REQUEST')
       expect(logEvent).toHaveBeenCalledWith('SIGNUP_PHONE_SUCCESS')
 
       testNavigate(navigation, 'Auth.AuthPhoneConfirm')

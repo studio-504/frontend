@@ -4,7 +4,6 @@ import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
 import * as authActions from 'store/ducks/auth/actions'
-import { logEvent } from 'services/Analytics'
 import forge from 'node-forge'
 import Config from 'react-native-config'
 
@@ -24,8 +23,6 @@ function* handleSignupPasswordRequest(payload) {
  */
 function* signupPasswordRequest(req) {
   try {
-    yield call(logEvent, 'SIGNUP_PASSWORD_REQUEST')
-
     const data = yield call(handleSignupPasswordRequest, req.payload)
     yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
   } catch (error) {
@@ -34,7 +31,6 @@ function* signupPasswordRequest(req) {
 }
 
 function* signupPasswordSuccess() {
-  yield call(logEvent, 'SIGNUP_PASSWORD_SUCCESS')
   yield put(authActions.authFlowRequest())
 }
 

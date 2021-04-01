@@ -12,7 +12,7 @@ import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBo
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
 import themes from 'store/ducks/themes/saga'
-
+import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
 
 import auth from 'store/ducks/auth/saga'
@@ -33,8 +33,9 @@ import postsShare from 'store/ducks/posts/saga/postsShare'
 import postsReportPostViews from 'store/ducks/posts/saga/postsReportPostViews'
 import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
-export default function* rootSaga(persistor) {
+export default function* rootSaga() {
   yield all([]
+    .concat(analytics())
     .concat(snackbars())
     .concat(camera())
     .concat(albums())

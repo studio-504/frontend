@@ -4,7 +4,6 @@ import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
 import * as actions from 'store/ducks/signup/actions'
 import signupUsername from 'store/ducks/signup/saga/signupUsername'
 import * as queries from 'store/ducks/signup/queries'
-import { logEvent } from 'services/Analytics'
 import * as queryService from 'services/Query'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
@@ -18,7 +17,6 @@ describe('signupUsername saga', () => {
   afterEach(() => {
     navigation.navigate.mockClear()
     navigation.reset.mockClear()
-    logEvent.mockClear()
     queryService.apiRequest.mockClear()
   })
 
@@ -42,7 +40,6 @@ describe('signupUsername saga', () => {
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CHECK_REQUEST')
     })
 
     it('failure', async () => {
@@ -55,7 +52,6 @@ describe('signupUsername saga', () => {
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CHECK_REQUEST')
     })
   })
 
@@ -66,7 +62,6 @@ describe('signupUsername saga', () => {
         .silentRun()
 
       expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_USERNAME_SUCCESS')
     })
 
     it('redirect to auth password screen', async () => {
@@ -75,7 +70,6 @@ describe('signupUsername saga', () => {
         .silentRun()
 
       testNavigate(navigation, 'Auth.AuthPassword')
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_USERNAME_SUCCESS')
     })
   })
 })

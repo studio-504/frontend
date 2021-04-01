@@ -1,8 +1,7 @@
-import { put, getContext, takeLatest, call } from 'redux-saga/effects'
+import { put, getContext, takeLatest } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as navigationActions from 'navigation/actions'
-import { logEvent } from 'services/Analytics'
 
 /**
  *
@@ -31,7 +30,6 @@ function* authForgotRequest(req) {
 function* authForgotSuccess() {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
   navigationActions.navigateAuthForgotConfirm(ReactNavigationRef.current)
-  yield call(logEvent, 'AUTH_FORGOT_SUCCESS')
 }
 
 /**
@@ -63,7 +61,6 @@ function* authForgotConfirmRequest(req) {
 function* authForgotConfirmSuccess() {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
   navigationActions.navigateAuthSigninEmail(ReactNavigationRef.current)
-  yield call(logEvent, 'AUTH_FORGOT_CONFIRM_SUCCESS')
 }
 
 export default () => [
