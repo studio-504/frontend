@@ -59,12 +59,12 @@ const StoryService = ({ children }) => {
       navigationActions.navigateBack(navigation)
     }
   }
-    
+
   const onPrevStory = () => {
     if (currentStory > 0) {
       return prevStory()
     }
-    
+
     if (prevUserStoryPool.length) {
       navigation.setParams({
         user: prevUserStoryPool,

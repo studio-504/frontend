@@ -6,6 +6,7 @@ import replace from 'ramda/src/replace'
 import toLower from 'ramda/src/toLower'
 import pathOr from 'ramda/src/pathOr'
 import debounce from 'debounce-async'
+import { Platform } from 'react-native'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import * as usersQueries from 'store/ducks/users/queries'
 
@@ -90,6 +91,7 @@ export const phone = Yup.string()
   .max(50)
   .trim()
 
+
 export const password = Yup.string()
   .min(8)
   .max(50)
@@ -169,9 +171,12 @@ export const promocode = Yup.string()
  */
 const onlyNumbers = replace(/[^+0-9]/g, '')
 export const getPhone = compose(onlyNumbers, trim, toLower, pathOr('', ['phone']))
+export const getPhoneNumber = compose(onlyNumbers, trim, toLower, pathOr('', ['phoneNumber']))
 export const getCountryCode = compose(onlyNumbers, trim, toLower, pathOr('+1', ['countryCode']))
 export const getEmail = compose(trim, toLower, pathOr('', ['email']))
 export const getUsername = compose(trim, toLower, pathOr('', ['username']))
+export const getFullName = compose(trim, pathOr('', ['fullName']))
+export const getBio = compose(trim, pathOr('', ['bio']))
 export const getPassword = compose(trim, pathOr('', ['password']))
 export const getConfirmationCode = compose(onlyNumbers, trim, toLower, pathOr('', ['confirmationCode']))
 export const getPromocode = compose(trim, toLower, pathOr('', ['code']))
@@ -213,7 +218,7 @@ export const getInputTypeProps = (type) => {
     case 'username':
       return {
         accessibilityLabel: 'username',
-        keyboardType: 'default',
+        keyboardType: Platform.OS === 'android' ? 'default' : 'ascii-capable',
         textContentType: 'username',
         autoCompleteType: 'username',
       }

@@ -20,7 +20,7 @@ const AuthPasswordComponentService = ({ children }) => {
 
   const handleFormSubmit = (values) => {
     const nextValues = handleFormTransform(values)
-    
+
     dispatch(signupActions.signupPasswordRequest(nextValues))
   }
 

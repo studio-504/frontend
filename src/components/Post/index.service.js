@@ -23,11 +23,11 @@ const PostsService = ({ children }) => {
 
   const postsFlagRequest = (payload) =>
     dispatch(postsActions.postsFlagRequest(payload))
-  
+
   const postsDeleteRequest = (payload) =>
     dispatch(postsActions.postsDeleteRequest(payload))
 
-  const changeAvatarRequest = (post) => 
+  const changeAvatarRequest = (post) =>
     dispatch(usersActions.usersChangeAvatarRequest(post))
 
   return children({

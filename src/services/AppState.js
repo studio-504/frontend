@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { AppState } from 'react-native'
+import propOr from 'ramda/src/propOr'
+
+const noop = () => {}
+const getCallback = propOr(noop)
 
 export default function useAppState(settings) {
-  const { onChange, onForeground, onBackground } = settings || {}
-  const [appState, setAppState] = useState(AppState.currentState)
+  const appState = useRef(AppState.currentState)
+  const onForeground = getCallback('onForeground', settings)
+  const onBackground = getCallback('onBackground', settings)
+
+  function handleAppStateChange(nextAppState) {
+    if (nextAppState === 'active' && appState.current.match(/inactive|background/)) {
+      onForeground()
+    } else if (appState.current === 'active' && nextAppState.match(/inactive|background/)) {
+      onBackground()
+    }
+
+    appState.current = nextAppState
+  }
 
   useEffect(() => {
-    function handleAppStateChange(nextAppState) {
-      if (nextAppState === 'active') {
-        isValidFunction(onForeground) && onForeground()
-      } else if (appState === 'active' && nextAppState.match(/inactive|background/)) {
-        isValidFunction(onBackground) && onBackground()
-      }
-      setAppState(nextAppState)
-      isValidFunction(onChange) && onChange(nextAppState)
-    }
     AppState.addEventListener('change', handleAppStateChange)
-    
-    return () => AppState.removeEventListener('change', handleAppStateChange)
-  }, [onChange, onForeground, onBackground, appState])
 
-  // settings validation
-  function isValidFunction(func) {
-    return func && typeof func === 'function'
-  }
-  return { appState }
+    return () => AppState.removeEventListener('change', handleAppStateChange)
+  }, [])
 }

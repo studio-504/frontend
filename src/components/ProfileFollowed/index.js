@@ -22,7 +22,7 @@ const ProfileFollowed = ({
   usersAcceptFollowerUserRequest,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <ScrollView

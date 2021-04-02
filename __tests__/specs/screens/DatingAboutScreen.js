@@ -22,6 +22,7 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
   useRoute: jest.fn().mockReturnValue({ params: { nextAction: true } }),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 const navigation = { goBack: jest.fn() }
@@ -75,7 +76,7 @@ describe('DatingAboutScreen', () => {
       await act(async () => {
         openAllSections(getByAccessibilityLabel)
       })
-      
+
       testField(getByAccessibilityLabel('dateOfBirthMonth'), { value: 'January' })
       testField(getByAccessibilityLabel('dateOfBirthDay'), { value: '01' })
       testField(getByAccessibilityLabel('dateOfBirthYear'), { value: '2000' })

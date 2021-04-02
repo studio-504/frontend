@@ -8,6 +8,7 @@ import * as usersSelector from 'store/ducks/users/selectors'
 import HeaderRight from 'navigation/HeaderRight'
 import { VERIFICATION_TYPE } from 'components/Verification'
 import path from 'ramda/src/path'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoGridService = ({ children }) => {
   const dispatch = useDispatch()
@@ -16,7 +17,7 @@ const ProfilePhotoGridService = ({ children }) => {
   const user = useSelector(authSelector.authUserSelector)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
-  
+
   const usersImagePostsGetRequest = () => dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   const usersChangeAvatarIdle = () => dispatch(usersActions.usersChangeAvatarIdle())
 
@@ -24,7 +25,7 @@ const ProfilePhotoGridService = ({ children }) => {
     usersImagePostsGetRequest()
   }, [])
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersChangeAvatar.status === 'success') {
       const backRoute = path(['params', 'backRoute'], route)
 
@@ -41,18 +42,18 @@ const ProfilePhotoGridService = ({ children }) => {
   const [selectedPost, setSelectedPost] = useState({})
   const handlePostPress = (post) => setSelectedPost(post)
 
-  const changeAvatarRequest = () => 
+  const changeAvatarRequest = () =>
     dispatch(usersActions.usersChangeAvatarRequest(selectedPost))
 
   /**
    *
    */
   const headerRight = () => (
-    <HeaderRight 
-      title="Update" 
-      onPress={changeAvatarRequest} 
-      hidden={!selectedPost.postId} 
-      loading={usersChangeAvatar.status === 'loading'} 
+    <HeaderRight
+      title="Update"
+      onPress={changeAvatarRequest}
+      hidden={!selectedPost.postId}
+      loading={usersChangeAvatar.status === 'loading'}
     />
   )
 

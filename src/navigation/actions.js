@@ -17,6 +17,18 @@ const withAuthValidation = (callback) => {
   }
 }
 
+const withDatingValidation = (callback) => {
+  return (navigation, params = {}, meta = {}) => {
+    if (!UserService.isUserActive(meta.user)) {
+      return navigateProfileUpgrade(navigation)
+    } else if (UserService.isUserEnableDating(meta.user)) {
+      return callback(navigation, params)
+    } else {
+      return navigateDatingWizard(navigation, params)
+    }
+  }
+}
+
 /**
  * Common
  */
@@ -49,16 +61,16 @@ export const navigateChat = withAuthValidation(navigateToPath('App.Chat'))
 export const navigateChatDirect = withAuthValidation(navigateToPath('App.Chat.ChatDirect'))
 export const navigateChatOptions = withAuthValidation(navigateToPath('App.Chat.ChatOptions'))
 export const navigateProfileRequests = navigateToPath('App.Chat.ProfileRequests')
- 
+
 /**
  * Dating
  */
-export const navigateDating = withAuthValidation(navigateToPath('Dating'))
+export const navigateDating = withDatingValidation(navigateToPath('Dating.Dating'))
 export const navigateDatingAbout = withAuthValidation(navigateToPath('DatingAbout'))
 export const navigateDatingMatch = withAuthValidation(navigateToPath('DatingMatch'))
 export const navigateDatingProfile = withAuthValidation(navigateToPath('DatingProfile'))
 export const navigateDatingSettings = withAuthValidation(navigateToPath('DatingSettings'))
-export const navigateDatingWizard = withAuthValidation(navigateToPath('DatingWizard'))
+export const navigateDatingWizard = navigateToPath('Dating.DatingWizard')
 
 /**
  * Profile
@@ -71,7 +83,7 @@ export const navigateProfilePhotoGrid = navigateToPath('App.Root.Home.Profile.Pr
 export const navigateProfileEdit = navigateToPath('App.Root.Home.Profile.ProfileEdit')
 export const navigateInviteFriends = withAuthValidation(navigateToPath('InviteFriends'))
 export const navigateInviteFriendsSuccess = navigateToPath('InviteFriendsSuccess')
-export const navigateTheme = navigateToPath('App.Root.Home.Profile.Theme')
+export const navigateTheme = navigateToPath('Theme')
 export const navigatePrivacy = navigateToPath('App.Root.Home.Profile.Privacy')
 export const navigateMembership = navigateToPath('Membership')
 export const navigateArchived = navigateToPath('App.Root.Home.Profile.Archived')
@@ -79,7 +91,7 @@ export const navigateArchived = navigateToPath('App.Root.Home.Profile.Archived')
 /**
  * Auth
  */
-export const navigateAuthHome = navigateToPath('Auth.AuthHome') 
+export const navigateAuthHome = navigateToPath('Auth.AuthHome')
 export const navigateAuthUsername = navigateToPath('Auth.AuthUsername')
 export const navigateAuthPhoneConfirm = navigateToPath('Auth.AuthPhoneConfirm')
 export const navigateAuthPassword = navigateToPath('Auth.AuthPassword')

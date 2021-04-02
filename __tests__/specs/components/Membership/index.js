@@ -89,4 +89,18 @@ describe('Membership component', () => {
     fireEvent.press($button)
     expect(retryPurchaseRequest).toHaveBeenCalled()
   })
+
+  it('get free diamond button', () => {
+    const navigateInviteFriends = jest.fn()
+    const { getByText } = setup({ isSubscribed: false, navigateInviteFriends })
+
+    fireEvent.press(getByText('Get Free Diamond For Life'))
+    expect(navigateInviteFriends).toHaveBeenCalled()
+  })
+
+  it('hide get free diamond button for diamond user', () => {
+    const { queryByText } = setup({ isSubscribed: true })
+
+    expect(queryByText('Get Free Diamond For Life')).toBeFalsy()
+  })
 })

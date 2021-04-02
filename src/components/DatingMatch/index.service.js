@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersSelector from 'store/ducks/users/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useEffectWhenFocused } from 'services/hooks'
 import * as helpers from 'components/DatingMatch/helpers'
 import pathOr from 'ramda/src/pathOr'
 
@@ -10,15 +11,15 @@ const DatingMatchService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUserSelector)
-  const usersEditProfile = useSelector((state) => state.users.usersEditProfile)
+  const usersEditProfile = useSelector(usersSelector.usersEditProfile)
   const route = useRoute()
   const nextAction = pathOr(false, ['params', 'nextAction'], route)
 
   const usersEditProfileRequest = (payload) => dispatch(usersActions.usersEditProfileRequest(payload))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if (usersEditProfile.status === 'success' && nextAction === false) {
-      dispatch(usersActions.usersEditProfileIdle({}))
+      dispatch(usersActions.usersEditProfileIdle())
       navigation.goBack()
     }
   }, [usersEditProfile.status])

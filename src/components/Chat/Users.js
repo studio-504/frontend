@@ -44,7 +44,7 @@ const Users = ({
           <RowsItemComponent>
             <UserRowComponent
               avatar={
-                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['user', 'directChat', 'chatId'])(user) })}>
+                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['directChat', 'chatId'])(user) })}>
                   <Avatar
                     active={UserService.hasActiveStories(user)}
                     thumbnailSource={{ uri: path(['photo', 'url64p'])(user) }}
@@ -54,13 +54,13 @@ const Users = ({
                 </TouchableOpacity>
               }
               content={
-                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['user', 'directChat', 'chatId'])(user) })} style={styling.user}>
+                <TouchableOpacity onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['directChat', 'chatId'])(user) })} style={styling.user}>
                   <Text style={styling.username}>{path(['username'])(user)}</Text>
                   <Text style={styling.fullname}>{path(['fullName'])(user)}</Text>
                 </TouchableOpacity>
               }
               action={(
-                <DefaultButton label={t('Chat')} onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['user', 'directChat', 'chatId'])(user) })} loading={false} mode="outlined" size="compact" />
+                <DefaultButton label={t('Chat')} onPress={navigationActions.navigateChatDirect(navigation, { userId: user.userId, chatId: path(['directChat', 'chatId'])(user) })} loading={false} mode="outlined" size="compact" />
               )}
             />
           </RowsItemComponent>

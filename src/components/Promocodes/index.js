@@ -9,7 +9,7 @@ import CouponIcon from 'assets/svg/settings/Coupon'
 import { withTranslation } from 'react-i18next'
 import * as navigationActions from 'navigation/actions'
 
-const Promocodes = ({ t, theme, navigation, handleFormSubmit, formSubmitLoading, formInitialValues }) => {
+const Promocodes = ({ t, theme, navigation, handleFormSubmit, formSubmitLoading, formInitialValues, isSubscribed }) => {
   const styling = styles(theme)
 
   return (
@@ -19,13 +19,17 @@ const Promocodes = ({ t, theme, navigation, handleFormSubmit, formSubmitLoading,
           <CouponIcon size={48} fill={theme.colors.text} />
         </View>
         <Text style={styling.headingTitle}>{t('Promocodes')}</Text>
-        <Text style={styling.headingSubtitle}>
-          {t('Redeem promocode to get \n ')}
-          <Text style={styling.link} onPress={() => navigationActions.navigateMembership(navigation)}>
-            {t('REAL Diamond')}
+        {isSubscribed ? (
+          <Text style={styling.headingSubtitle}>{t('Redeem your promocode')}</Text>
+        ) : (
+          <Text style={styling.headingSubtitle}>
+            {t('Redeem promocode to get \n ')}
+            <Text style={styling.link} onPress={() => navigationActions.navigateMembership(navigation)}>
+              {t('REAL Diamond')}
+            </Text>
+            {t(' FREE for life!')}
           </Text>
-          {t(' FREE for life!')}
-        </Text>
+        )}
       </View>
       <View style={styling.inner}>
         <FormComponent
@@ -34,13 +38,15 @@ const Promocodes = ({ t, theme, navigation, handleFormSubmit, formSubmitLoading,
           formInitialValues={formInitialValues}
         />
       </View>
-      <View style={styling.footer}>
-        <DefaultButton
-          label={t('Follow & Invite Friends')}
-          onPress={navigationActions.navigateInviteFriends(navigation)}
-          mode="outlined"
-        />
-      </View>
+      {!isSubscribed && (
+        <View style={styling.footer}>
+          <DefaultButton
+            label={t('Follow & Invite Friends')}
+            onPress={navigationActions.navigateInviteFriends(navigation)}
+            mode="outlined"
+          />
+        </View>
+      )}
     </View>
   )
 }
@@ -86,7 +92,6 @@ const styles = (theme) =>
     inner: {
       flex: 1,
       paddingHorizontal: 24,
-      justifyContent: 'center',
     },
     footer: {
       flexShrink: 0,
@@ -104,6 +109,7 @@ Promocodes.propTypes = {
   formInitialValues: PropTypes.shape({
     code: PropTypes.string,
   }),
+  isSubscribed: PropTypes.bool,
 }
 
 export default withTranslation()(withTheme(Promocodes))

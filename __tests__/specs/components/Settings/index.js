@@ -41,7 +41,7 @@ describe('Settings component', () => {
 
     fireEvent.press(getByText('Choose Theme'))
 
-    testNavigate(navigation, 'App.Root.Home.Profile.Theme')
+    testNavigate(navigation, 'Theme')
   })
 
   it('Archived Photos', () => {
@@ -82,6 +82,23 @@ describe('Settings component', () => {
     fireEvent.press(getByText('Enter Promo Code'))
 
     testNavigate(navigation, 'Promocodes')
+  })
+
+  it('Join Diamond', () => {
+    const { getByText } = setup()
+
+    fireEvent.press(getByText('Join Diamond'))
+
+    testNavigate(navigation, 'Membership')
+  })
+
+  it('Manage Diamond', () => {
+    const user = { subscriptionLevel: 'DIAMOND' }
+    const { getByText } = setup({ user })
+
+    fireEvent.press(getByText('Manage Diamond'))
+
+    testNavigate(navigation, 'Membership')
   })
 
   it('Change Password', () => {

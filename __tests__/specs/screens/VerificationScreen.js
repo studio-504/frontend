@@ -52,7 +52,7 @@ describe('Verification screen', () => {
 
       fireEvent.press(getByText('Hide and Proceed'))
 
-      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle({}))
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle())
       expect(navigation.goBack).toHaveBeenCalled()
     })
   })
@@ -72,7 +72,7 @@ describe('Verification screen', () => {
 
       fireEvent.press(getByText('Go Back'))
 
-      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle({}))
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle())
       expect(navigation.goBack).toHaveBeenCalled()
     })
   })
@@ -92,7 +92,7 @@ describe('Verification screen', () => {
 
       fireEvent.press(getByText('Go Back'))
 
-      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle({}))
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle())
       expect(navigation.goBack).toHaveBeenCalled()
     })
 
@@ -106,7 +106,7 @@ describe('Verification screen', () => {
 
       fireEvent.press(getByText('Hide and Proceed'))
 
-      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle({}))
+      expect(dispatch).toHaveBeenCalledWith(usersActions.usersEditProfileIdle())
     })
   })
 

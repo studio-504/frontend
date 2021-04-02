@@ -12,14 +12,14 @@ const ThemeRowActionTemplate = ({
   onDisablePress,
 }) => {
   const styling = styles
-  
+
   return (
     <View style={styling.root}>
       <View style={styling.component}>
         {enabled ?
           <DefaultButton accessibilityLabel="Disable Theme" label="Disable" onPress={onDisablePress} size="compact" />
         : null}
- 
+
         {!enabled ?
           <DefaultButton accessibilityLabel="Enable Theme" label="Enable" onPress={onEnablePress} mode="outlined" size="compact" />
         : null}

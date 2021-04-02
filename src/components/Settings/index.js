@@ -25,6 +25,7 @@ import ProfileDeleteComponent from 'components/Settings/ProfileDelete'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import * as navigationActions from 'navigation/actions'
+import * as UserService from 'services/User'
 import testIDs from './test-ids'
 
 const Settings = ({
@@ -40,6 +41,7 @@ const Settings = ({
   usersDeleteRequest,
 }) => {
   const styling = styles(theme)
+  const isSubscribed = UserService.isUserSubscribed(user)
 
   return (
     <ScrollView testID={testIDs.root} style={styling.root}>
@@ -74,7 +76,7 @@ const Settings = ({
             icon: <PrivacyIcon fill={theme.colors.text} />,
           },
           {
-            label: t('Join Diamond'),
+            label: isSubscribed ? t('Manage Diamond') : t('Join Diamond'),
             onPress: () => navigationActions.navigateMembership(navigation),
             icon: <DiamondIcon fill={theme.colors.text} />,
           },

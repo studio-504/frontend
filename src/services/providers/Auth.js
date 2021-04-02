@@ -10,7 +10,7 @@ import * as UserService from 'services/User'
 export const AuthContext = React.createContext({})
 
 /**
- * 
+ *
  */
 export const AuthProvider = ({
   children,

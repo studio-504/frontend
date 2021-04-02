@@ -185,13 +185,14 @@ describe('Users saga', () => {
       const payload = { userId: 'id123' }
       const response = { data: { setUserDetails: { userId: 1 } } }
       const entities = { users: { 1: { userId: 1 } } }
+      const meta = { messageCode: 'messageCode' }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersEditProfileSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersEditProfileSuccess({ data: 1, payload }, meta))
 
-        .dispatch(usersActions.usersEditProfileRequest(payload))
+        .dispatch(usersActions.usersEditProfileRequest(payload, meta))
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUserDetails, payload)

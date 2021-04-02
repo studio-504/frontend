@@ -37,6 +37,7 @@ const setup = () => renderWithStore(<DatingSettingsScreen />)
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
+  useIsFocused: jest.fn().mockReturnValue(true),
 }))
 
 const navigation = { navigate: jest.fn(), goBack: jest.fn() }
@@ -101,6 +102,17 @@ describe('DatingSettingsScreen', () => {
       fireEvent.press(getByText('Join Diamond'))
 
       testNavigate(navigation, 'Membership')
+    })
+
+    it('Manage Diamond', () => {
+      const diamondUser = { ...user, subscriptionLevel: 'DIAMOND' }
+      authSelector.authUserSelector.mockReturnValue(diamondUser)
+      const { getByText } = setup()
+
+      fireEvent.press(getByText('Manage Diamond'))
+
+      testNavigate(navigation, 'Membership')
+      authSelector.authUserSelector.mockReturnValue(user)
     })
 
     it('Change Profile Picture', () => {

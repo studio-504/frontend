@@ -23,12 +23,12 @@ const VerificationService = ({ children }) => {
   const handleClose = () => navigationActions.navigateBack(navigation)
 
   const handleBackAction = () => {
-    dispatch(usersActions.usersEditProfileIdle({}))
+    dispatch(usersActions.usersEditProfileIdle())
     handleClose()
   }
 
   const handleHideAction = () => {
-    dispatch(usersActions.usersEditProfileIdle({}))
+    dispatch(usersActions.usersEditProfileIdle())
   }
 
   const handleContinueAction = () => {

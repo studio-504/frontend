@@ -83,25 +83,29 @@ ProfileEditForm.propTypes = {
   handleSubmit: PropTypes.any,
   submitErrors: PropTypes.any,
   dirtySinceLastSubmit: PropTypes.any,
-  usersEditProfile: PropTypes.any,
+  formSubmitLoading: PropTypes.bool,
   values: PropTypes.any,
   t: PropTypes.any,
   loading: PropTypes.any,
   initialValues: PropTypes.any,
 }
 
-export default withTranslation()(({ usersEditProfile, usersEditProfileRequest, user, ...props }) => (
-  <Formik 
-    initialValues={user} 
-    validationSchema={formSchema} 
-    onSubmit={usersEditProfileRequest} 
+ProfileEditForm.defaultProps = {
+  formSubmitLoading: false,
+}
+
+export default withTranslation()(({ formSubmitLoading, handleFormSubmit, formInitialValues, ...props }) => (
+  <Formik
+    initialValues={formInitialValues}
+    validationSchema={formSchema}
+    onSubmit={handleFormSubmit}
     enableReinitialize
   >
-    {(formikProps) => 
-      <ProfileEditForm 
-        {...formikProps} 
-        {...props} 
-        loading={usersEditProfile.status === 'loading'} 
+    {(formikProps) =>
+      <ProfileEditForm
+        {...formikProps}
+        {...props}
+        loading={formSubmitLoading}
       />
     }
   </Formik>

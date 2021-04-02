@@ -7,6 +7,7 @@ import toLower from 'ramda/src/toLower'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersSelector from 'store/ducks/users/selectors'
 import * as chatSelector from 'store/ducks/chat/selectors'
+import { useEffectWhenFocused } from 'services/hooks'
 
 const ChatService = ({ children }) => {
   const dispatch = useDispatch()
@@ -23,12 +24,12 @@ const ChatService = ({ children }) => {
   const chatGetChatsRequest = () =>
     dispatch(chatActions.chatGetChatsRequest())
 
-  const usersGetPendingFollowersRequest = (payload) => 
+  const usersGetPendingFollowersRequest = (payload) =>
     dispatch(usersActions.usersGetPendingFollowersRequest(payload))
 
-  useEffect(() => {
+  useEffectWhenFocused(() => {
     if(!user.userId) return
-    
+
     usersGetPendingFollowersRequest({ userId: user.userId })
   }, [usersAcceptFollowerUser.status])
 
@@ -37,7 +38,7 @@ const ChatService = ({ children }) => {
    */
   const feedRef = useRef(null)
   useScrollToTop(feedRef)
-  
+
   const usersSearchRequest = ({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
     dispatch(usersActions.usersUnfollowIdle({}))
@@ -47,7 +48,7 @@ const ChatService = ({ children }) => {
   /**
    * Following two states are tracking values of Search/Form -> searchToken input field
    * we are dynamically rendering components on Search/index based on values below
-   * 
+   *
    * formFocus is a state of focus/blur events: [searchToken input]
    * formChange is a state of value.length: [searchToken input]
    */

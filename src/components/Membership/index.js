@@ -10,7 +10,10 @@ import ThemesIcon from 'assets/svg/membership/Themes'
 import SupportIcon from 'assets/svg/membership/Support'
 import DiamondIcon from 'assets/svg/settings/Diamond'
 import WalletIcon from 'assets/svg/membership/Wallet'
+import VerifiedIcon from 'assets/svg/membership/Verified'
+import MusicIcon from 'assets/svg/membership/Music'
 import AppleIcon from 'assets/svg/auth/Apple'
+import StickerIcon from 'assets/svg/membership/Sticker'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import AuthTermsTemplate from 'templates/Auth/Terms'
 import { withTranslation } from 'react-i18next'
@@ -110,11 +113,41 @@ const Membership = ({
 
         <View style={styling.subheading}>
           <View style={styling.subheadingIcon}>
+            <MusicIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Profile Music (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Have a song play when people visit your profile')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <VerifiedIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Verified Accounts (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('Verify your identity & boost your posts')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
             <DiamondIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
             <Text style={styling.subheadingTitle}>{t('Diamond Badge')}</Text>
             <Text style={styling.subheadingSubtitle}>{t('A shiny badge next to your username')}</Text>
+          </View>
+        </View>
+
+        <View style={styling.subheading}>
+          <View style={styling.subheadingIcon}>
+            <StickerIcon fill={theme.colors.text} />
+          </View>
+          <View style={styling.subheadingContent}>
+            <Text style={styling.subheadingTitle}>{t('Emotes (coming soon)')}</Text>
+            <Text style={styling.subheadingSubtitle}>{t('React to posts with new emoticons each month')}</Text>
           </View>
         </View>
 
@@ -148,14 +181,16 @@ const Membership = ({
           </View>
         </View>
 
-        <View style={styling.action}>
-          <DefaultButton
-            labelStyle={styling.labelStyle}
-            label={t('Get Free Diamond For Life')}
-            onPress={navigateInviteFriends}
-            mode="outlined"
-          />
-        </View>
+        {isSubscribed === false &&
+          <View style={styling.action}>
+            <DefaultButton
+              labelStyle={styling.labelStyle}
+              label={t('Get Free Diamond For Life')}
+              onPress={navigateInviteFriends}
+              mode="outlined"
+            />
+          </View>
+        }
 
         <AuthTermsTemplate />
       </SafeAreaView>
@@ -185,6 +220,8 @@ const styles = (theme) =>
     },
     action: {
       paddingHorizontal: theme.spacing.base,
+      marginTop: 24,
+      marginBottom: 12,
     },
     labelStyle: {
       marginLeft: 12,
@@ -228,7 +265,6 @@ const styles = (theme) =>
     lastChild: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
-      marginBottom: 24,
     },
     descriptionText: {
       fontSize: 12,

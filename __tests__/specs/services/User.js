@@ -32,4 +32,12 @@ describe('UserService', () => {
     expect(UserService.isUserSubscribed({ subscriptionLevel: undefined })).toBeFalsy()
     expect(UserService.isUserSubscribed({ subscriptionLevel: 'DIAMOND' })).toBeTruthy()
   })
+
+  it('isUserEnableDating', () => {
+    expect(UserService.isUserEnableDating()).toBeFalsy()
+    expect(UserService.isUserEnableDating(undefined)).toBeFalsy()
+    expect(UserService.isUserEnableDating({})).toBeFalsy()
+    expect(UserService.isUserEnableDating({ datingStatus: undefined })).toBeFalsy()
+    expect(UserService.isUserEnableDating({ datingStatus: 'ENABLED' })).toBeTruthy()
+  })
 })

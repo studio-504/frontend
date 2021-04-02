@@ -69,7 +69,7 @@ const MapView = memo(({ mapRef, coordinates }) => (
     showsMyLocationButton
     loadingEnabled={true}
     minZoomLevel={14}
- />
+  />
 ), mapViewPropsEqual)
 
 MapView.propTypes = {

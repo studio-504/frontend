@@ -11,6 +11,10 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }))
 
+jest.mock('@react-navigation/native', () => ({
+  useIsFocused: jest.fn().mockReturnValue(true),
+}))
+
 const user = {
   privacyStatus: 'PUBLIC',
   followCountsHidden: false,

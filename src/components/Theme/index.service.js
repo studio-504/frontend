@@ -13,7 +13,7 @@ const ThemeService = ({ children }) => {
 
   const appThemePreviewUpdate = (themeCode) => {
     dispatch(themesActions.themesEditRequest({ themeCode }))
-    appThemePreviewIdle() 
+    appThemePreviewIdle()
   }
 
   return children({

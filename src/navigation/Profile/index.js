@@ -10,12 +10,10 @@ import ProfileEditScreen from 'screens/ProfileEditScreen'
 import ProfilePhotoGridScreen from 'screens/ProfilePhotoGridScreen'
 import ProfilePhotoUploadScreen from 'screens/ProfilePhotoUploadScreen'
 import ProfilePhotoScreen from 'screens/ProfilePhotoScreen'
-import ThemeScreen from 'screens/ThemeScreen'
 import PrivacyScreen from 'screens/PrivacyScreen'
 import TranslationScreen from 'screens/TranslationScreen'
 import SettingsScreen from 'screens/SettingsScreen'
 import PayoutScreen from 'screens/PayoutScreen'
-import PayoutsScreen from 'screens/PayoutsScreen'
 import PromocodesScreen from 'screens/PromocodeScreen'
 import ArchivedScreen from 'screens/ArchivedScreen'
 import DatingSettingsScreen from 'screens/DatingSettingsScreen'
@@ -57,11 +55,7 @@ const ProfileNavigator = () => {
         component={ProfilePhotoScreen}
         {...stackScreenPageProps({ options: { title: 'Change Profile Picture' } })}
       />
-      <Stack.Screen
-        name="Theme"
-        component={ThemeScreen}
-        {...stackScreenPageProps({ options: { title: 'Choose Theme' } })}
-      />
+
       <Stack.Screen
         name="Privacy"
         component={PrivacyScreen}
@@ -81,11 +75,6 @@ const ProfileNavigator = () => {
         name="Payout"
         component={PayoutScreen}
         {...stackScreenPageProps({ options: { title: 'Diamond Payout' } })}
-      />
-      <Stack.Screen
-        name="Payouts"
-        component={PayoutsScreen}
-        {...stackScreenPageProps({ options: { title: 'Creator Payouts' } })}
       />
       <Stack.Screen
         name="Promocodes"

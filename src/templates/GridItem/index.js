@@ -19,7 +19,7 @@ const GridItemTemplate = ({
   inactiveIcon,
 }) => {
   const styling = styles
-  
+
   return (
     <TouchableOpacity style={styling.root} onPress={onPress}>
       <View style={styling.component}>

@@ -14,7 +14,6 @@ import DefaultButton from 'components/Formik/Button/DefaultButton'
 const InviteFriendsSuccess = ({ t, theme }) => {
   const navigation = useNavigation()
   const styling = styles(theme)
-  const handleBack = () => navigation.goBack()
   const navigateMembership = () => navigationActions.navigateMembership(navigation)
 
   return (
@@ -42,8 +41,7 @@ const InviteFriendsSuccess = ({ t, theme }) => {
         </View>
 
         <View style={styling.footer}>
-          <DefaultButton style={styling.primaryBtn} label={t('Thank you!')} onPress={handleBack} />
-          <DefaultButton label={t('Learn More')} onPress={navigateMembership} mode="outlined" />
+          <DefaultButton label={t('Learn More')} onPress={navigateMembership} />
         </View>
 
         <LottieView style={styling.animation} source={confettiAnimation} autoPlay loop={false} />

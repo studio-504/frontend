@@ -73,7 +73,7 @@ export const listUserFragment = `
       items {
         ...userStoryFragment
       }
-      nextToken 
+      nextToken
     }
 
     directChat {

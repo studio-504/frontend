@@ -16,7 +16,7 @@ const DatingAbout = ({
   formSubmitLoading,
 }) => {
   const styling = styles(theme)
-  
+
   return (
     <View style={styling.root}>
       <KeyboardAwareScrollView>
@@ -52,7 +52,7 @@ DatingAbout.propTypes = {
 }
 
 DatingAbout.defaultProps = {
-  formSubmitLoading: false, 
+  formSubmitLoading: false,
   nextAction: false,
 }
 

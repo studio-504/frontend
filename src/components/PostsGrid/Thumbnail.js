@@ -19,7 +19,7 @@ const PostsGridThumbnail = ({
   priorityIndex,
   thread,
   disabled,
-}) => { 
+}) => {
   const styling = styles
   const navigation = useNavigation()
 
