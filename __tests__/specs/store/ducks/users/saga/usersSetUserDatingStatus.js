@@ -4,8 +4,9 @@ import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUser
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
-import { testEntitiesMerge } from 'tests/utils/helpers'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 import { GraphQLError } from 'store/errors'
+import * as normalizer from 'normalizer/schemas'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -20,13 +21,11 @@ describe('usersSetUserDatingStatusRequest', () => {
   it('success', async () => {
     const user = { userId: 1 }
     const response = { data: { setUserDatingStatus: user } }
-    const entities = { users: { 1: user } }
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    const saga = expectSaga(usersSetUserDatingStatusRequest, action)
-
-    await testEntitiesMerge(saga, entities)
+    await expectSaga(usersSetUserDatingStatusRequest, action)
+      .call(entitiesMerge, normalizer.normalizeUserGet(response.data.setUserDatingStatus))
       .put(usersActions.usersSetUserDatingStatusSuccess({ data: 1, payload }))
 
       .silentRun()

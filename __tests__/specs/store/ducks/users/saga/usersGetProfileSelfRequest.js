@@ -3,7 +3,7 @@ import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSe
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
-import { testEntitiesMerge } from 'tests/utils/helpers'
+import { entitiesMerge } from 'store/ducks/entities/saga'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -21,9 +21,8 @@ describe('usersGetProfileSelfRequest', () => {
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    const saga = expectSaga(usersGetProfileSelfRequest, action)
-
-    await testEntitiesMerge(saga, entities)
+    await expectSaga(usersGetProfileSelfRequest, action)
+      .call(entitiesMerge, { entities, result: 1 })
       .put(usersActions.usersGetProfileSelfSuccess({ data: 1 }))
       .silentRun()
 

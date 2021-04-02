@@ -5,18 +5,16 @@ import prop from 'ramda/src/prop'
 import compose from 'ramda/src/compose'
 import is from 'ramda/src/is'
 import * as normalizer from 'normalizer/schemas'
-import * as entitiesSelector from 'store/ducks/entities/selectors'
-import * as usersSelector from 'store/ducks/users/selectors'
+import { entitiesSelector } from 'store/ducks/entities/selectors'
 
 const authRoot = prop('auth')
 const authUser = () => path(['auth', 'user'])
-const authData = () => path(['auth', 'authData'])
 export const authForgot = compose(prop('authForgot'), authRoot)
 export const authSigninCognito = compose(prop('authSigninCognito'), authRoot)
 
 export const authUserSelector = createSelector(
-  [authUser(), authData(), usersSelector.usersEditProfile, usersSelector.usersGetProfileSelf, usersSelector.usersDeleteAvatar, usersSelector.usersChangeAvatar, usersSelector.usersSetUserDatingStatus, entitiesSelector.entities],
-  (authUser, authData, usersEditProfile, usersGetProfileSelf, usersDeleteAvatar, usersChangeAvatar, usersSetUserDatingStatus, entities) => {
+  [authUser(), entitiesSelector],
+  (authUser, entities) => {
     return normalizer.denormalizeUserGet(authUser, entities)
   },
 )

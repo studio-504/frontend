@@ -22,7 +22,7 @@ function* postsGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -63,7 +63,7 @@ function* postsGetUnreadCommentsRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -94,7 +94,7 @@ function* postsViewsGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -137,7 +137,7 @@ function* postsLikesGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUsersGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -168,7 +168,7 @@ function* postsFeedGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -209,7 +209,7 @@ function* postsGetArchivedRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -245,7 +245,7 @@ function* postsEditRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -275,7 +275,7 @@ function* postsDeleteRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -306,7 +306,7 @@ function* postsArchiveRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -336,7 +336,7 @@ function* postsRestoreArchivedRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -366,7 +366,7 @@ function* postsFlagRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -396,7 +396,7 @@ function* postsSingleGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -426,7 +426,7 @@ function* postsOnymouslyLikeRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -457,7 +457,7 @@ function* postsDislikeRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizePostGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -489,7 +489,7 @@ function* postsCommentsGetRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeCommentsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -519,7 +519,7 @@ function* commentsAddRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeCommentGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -550,7 +550,7 @@ function* commentsDeleteRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeCommentGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,

@@ -14,7 +14,7 @@ function* usersImagePostsGetRequestData(response) {
   const data = dataSelector(response)
   const normalized = normalizer.normalizePostsGet(data)
 
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return normalized.result
 }

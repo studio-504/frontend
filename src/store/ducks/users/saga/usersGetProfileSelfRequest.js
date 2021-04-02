@@ -1,4 +1,4 @@
-import { put } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
@@ -14,7 +14,7 @@ function* usersGetProfileSelfRequestData(api) {
   const data = dataSelector(api)
   const normalized = normalizer.normalizeUserGet(data)
 
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
