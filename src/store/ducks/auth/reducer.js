@@ -168,7 +168,7 @@ const authSigninAnonymousRequest = (state) => update(state, {
   },
 })
 
-const authSigninAnonymousSuccess = (state, action) => update(state, {
+const authSigninAnonymousSuccess = (state) => update(state, {
   authSigninAnonymous: {
     status: { $set: 'success' },
   },
@@ -182,7 +182,7 @@ const authSigninAnonymousFailure = (state) => update(state, {
 
 const authSigninAnonymousIdle = (state) => update(state, {
   authSigninAnonymous: {
-    $set: initialState.authSigninAnonymous
+    $set: initialState.authSigninAnonymous,
   },
 })
 
@@ -223,7 +223,7 @@ const authForgotConfirmRequest = (state) => update(state, {
   },
 })
 
-const authForgotConfirmSuccess = (state, action) => update(state, {
+const authForgotConfirmSuccess = (state) => update(state, {
   authForgotConfirm: {
     status: { $set: 'success' },
   },
