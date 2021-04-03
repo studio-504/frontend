@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 import * as actions from 'store/ducks/albums/actions'
 import * as queries from 'store/ducks/albums/queries'
 import * as constants from 'store/ducks/albums/constants'
@@ -32,7 +32,7 @@ function* albumsGetRequestData(req, api) {
 
 function* albumsGetRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.getAlbums, req.payload)
+    const data = yield queryService.apiRequest(queries.getAlbums, req.payload)
     const next = yield albumsGetRequestData(req, data)
     yield put(actions.albumsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -62,7 +62,7 @@ function* albumsSingleGetRequestData(req, api) {
 
 function* albumsSingleGetRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.getAlbum, req.payload)
+    const data = yield queryService.apiRequest(queries.getAlbum, req.payload)
     const next = yield albumsSingleGetRequestData(req, data)
     yield put(actions.albumsSingleGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -93,7 +93,7 @@ function* albumsPostsGetRequestData(req, api) {
 
 function* albumsPostsGetRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.getAlbumPosts, req.payload)
+    const data = yield queryService.apiRequest(queries.getAlbumPosts, req.payload)
     const next = yield albumsPostsGetRequestData(req, data)
     yield put(actions.albumsPostsGetSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -103,7 +103,7 @@ function* albumsPostsGetRequest(req) {
 
 function* albumsPostsGetMoreRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.getAlbumPosts, req.payload)
+    const data = yield queryService.apiRequest(queries.getAlbumPosts, req.payload)
     const next = yield albumsPostsGetRequestData(req, data)
     yield put(actions.albumsPostsGetMoreSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -133,7 +133,7 @@ function* albumsCreateRequestData(req, api) {
 
 function* albumsCreateRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.addAlbum, req.payload)
+    const data = yield queryService.apiRequest(queries.addAlbum, req.payload)
     const next = yield albumsCreateRequestData(req, data)
     yield put(actions.albumsCreateSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -163,7 +163,7 @@ function* albumsEditRequestData(req, api) {
 
 function* albumsEditRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.editAlbum, req.payload)
+    const data = yield queryService.apiRequest(queries.editAlbum, req.payload)
     const next = yield albumsEditRequestData(req, data)
     yield put(actions.albumsEditSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -193,7 +193,7 @@ function* albumsDeleteRequestData(req, api) {
 
 function* albumsDeleteRequest(req) {
   try {
-    const data = yield call([queryService, 'apiRequest'], queries.deleteAlbum, req.payload)
+    const data = yield queryService.apiRequest(queries.deleteAlbum, req.payload)
     const next = yield albumsDeleteRequestData(req, data)
     yield put(actions.albumsDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
