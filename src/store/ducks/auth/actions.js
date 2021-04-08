@@ -102,7 +102,7 @@ export const authForgotConfirmFailure = createFailureAction(constants.AUTH_FORGO
 /**
  *
  */
- export const authUserIdle = createAction(constants.AUTH_USER_IDLE)
- export const authUserRequest = createAction(constants.AUTH_USER_REQUEST)
- export const authUserSuccess = createAction(constants.AUTH_USER_SUCCESS)
- export const authUserFailure = createFailureAction(constants.AUTH_USER_FAILURE)
+export const authUserIdle = createAction(constants.AUTH_USER_IDLE)
+export const authUserRequest = createAction(constants.AUTH_USER_REQUEST)
+export const authUserSuccess = createAction(constants.AUTH_USER_SUCCESS)
+export const authUserFailure = createFailureAction(constants.AUTH_USER_FAILURE)
