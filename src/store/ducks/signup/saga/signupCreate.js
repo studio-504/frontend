@@ -58,8 +58,14 @@ function* cognitoIdentityPoolSignIn(tokens) {
 }
 
 function* handleSignupCreateRequest(payload) {
-  const tokens = yield call(createAnonymousUser)
-  yield call(cognitoIdentityPoolSignIn, tokens)
+  const AwsAuth = yield getContext('AwsAuth')
+  const currentCredentials = yield AwsAuth.currentCredentials()
+
+  if (!currentCredentials.authenticated) {
+    const tokens = yield call(createAnonymousUser)
+    yield call(cognitoIdentityPoolSignIn, tokens)
+  }
+
   yield call(startConfirmUsername, payload)
 }
 

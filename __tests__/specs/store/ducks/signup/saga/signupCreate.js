@@ -20,7 +20,9 @@ jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(tru
 const navigation = { navigate: jest.fn() }
 const email = 'valid@mail.com'
 
-const AwsAuth = { federatedSignIn: jest.fn() }
+const AwsAuth = { federatedSignIn: jest.fn(), currentCredentials: jest.fn() }
+
+AwsAuth.currentCredentials.mockResolvedValue({ authenticated: false })
 
 describe('signupCreate', () => {
   afterEach(() => {
@@ -85,6 +87,31 @@ describe('signupCreate', () => {
 
       testNavigate(navigation, 'Auth.AuthPhoneConfirm')
     })
+
+    it('prevent double login for authorized user', async () => {
+      const usernameType = 'email'
+
+      AwsAuth.currentCredentials.mockResolvedValueOnce({ authenticated: true })
+
+      await expectSaga(testAsRootSaga(signupCreate))
+        .provide([
+          [getContext('AwsAuth'), AwsAuth],
+          [getContext('ReactNavigationRef'), { current: navigation }],
+
+          [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
+        ])
+
+        .not.call([queryService, 'apiRequest'], queries.createAnonymousUser)
+        .not.call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, { token: 'IdToken', expires_at: 'expirationDate' }, {})
+        .call([queryService, 'apiRequest'], queries.startChangeUserEmail, { email })
+        .call(logEvent, 'SIGNUP_EMAIL_SUCCESS')
+        .put(actions.signupCreateSuccess())
+
+        .dispatch(actions.signupCreateRequest({ usernameType, email }))
+        .silentRun()
+
+      testNavigate(navigation, 'Auth.AuthEmailConfirm')
+    })
   })
 
   describe('failure', () => {
@@ -93,6 +120,8 @@ describe('signupCreate', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
+        .provide([[getContext('AwsAuth'), AwsAuth]])
+
         .not.put.like(actions.signupCreateSuccess())
         .put(actions.signupCreateFailure(nativeError, { messageCode: 'USER_CONFIRMATION_DELIVERY' }))
 
@@ -107,6 +136,8 @@ describe('signupCreate', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
+        .provide([[getContext('AwsAuth'), AwsAuth]])
+
         .not.put.like(actions.signupCreateSuccess())
         .put(actions.signupCreateFailure(nativeError, { messageCode: 'USER_EXISTS' }))
 
@@ -121,6 +152,8 @@ describe('signupCreate', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
+        .provide([[getContext('AwsAuth'), AwsAuth]])
+
         .not.put.like(actions.signupCreateSuccess())
         .put(actions.signupCreateFailure(nativeError, { messageCode: 'INVALID_PASSWORD' }))
 
@@ -135,6 +168,8 @@ describe('signupCreate', () => {
       queryService.apiRequest.mockRejectedValueOnce(nativeError)
 
       await expectSaga(testAsRootSaga(signupCreate))
+        .provide([[getContext('AwsAuth'), AwsAuth]])
+
         .not.put.like(actions.signupCreateSuccess())
         .put(actions.signupCreateFailure(nativeError, { messageCode: 'INVALID_PARAMETER' }))
 
