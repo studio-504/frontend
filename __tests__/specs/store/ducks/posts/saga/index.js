@@ -72,13 +72,13 @@ describe('Posts sagas', () => {
   describe('postsViewsGetRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { post: { viewedBy: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { post: { viewedBy: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(postsActions.postsViewsGetSuccess({ data: [1], payload, meta: {} }))
+        .put(postsActions.postsViewsGetSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(postsActions.postsViewsGetRequest(payload))
         .silentRun()
@@ -90,13 +90,13 @@ describe('Posts sagas', () => {
   describe('postsViewsGetMoreRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { post: { viewedBy: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { post: { viewedBy: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(postsActions.postsViewsGetMoreSuccess({ data: [1], payload, meta: {} }))
+        .put(postsActions.postsViewsGetMoreSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(postsActions.postsViewsGetMoreRequest(payload))
         .silentRun()
@@ -108,13 +108,13 @@ describe('Posts sagas', () => {
   describe('postsLikesGetRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { post: { onymouslyLikedBy: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { post: { onymouslyLikedBy: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(postsActions.postsLikesGetSuccess({ data: [1], payload, meta: {} }))
+        .put(postsActions.postsLikesGetSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(postsActions.postsLikesGetRequest(payload))
         .silentRun()

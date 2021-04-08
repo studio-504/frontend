@@ -6,7 +6,7 @@ import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileFollowerService = ({ children }) => {
   const dispatch = useDispatch()
-  const user = useSelector(authSelector.authUserSelector)
+  const user = useSelector(authSelector.authUserIdentity)
   const userId = user.userId
   const usersGetPendingFollowers = useSelector(usersSelector.usersGetPendingFollowersSelector())
   const usersFollow = useSelector(state => state.users.usersFollow)

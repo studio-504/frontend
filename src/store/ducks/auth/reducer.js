@@ -6,7 +6,10 @@ export const initialState = {
   /**
    *
    */
-  user: {},
+  authUser: {
+    data: {},
+    status: 'idle',
+  },
 
   /**
    *
@@ -67,16 +70,6 @@ const authFlowFailure = (state) => update(state, {
 
 const authFlowIdle = (state) => update(state, {
   authFlow: { $set: initialState.authFlow },
-})
-
-/**
- *
- */
-
-const authDataSuccess = (state, action) => update(state, {
-  user: {
-    $set: action.payload.data,
-  },
 })
 
 /**
@@ -241,6 +234,41 @@ const authForgotConfirmIdle = (state) => update(state, {
   },
 })
 
+/**
+ *
+ */
+const authDataSuccess = (state, action) => update(state, {
+  authUser: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const authUserRequest = (state) => update(state, {
+  authUser: {
+    status: { $set: 'loading' },
+  },
+})
+
+const authUserSuccess = (state, action) => update(state, {
+  authUser: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const authUserFailure = (state) => update(state, {
+  authUser: {
+    status: { $set: 'failure' },
+  },
+})
+
+const authUserIdle = (state) => update(state, {
+  authUser: {
+    $set: initialState.authUser,
+  },
+})
+
 export default handleActions({
   [constants.AUTH_FLOW_REQUEST]: authFlowRequest,
   [constants.AUTH_FLOW_SUCCESS]: authFlowSuccess,
@@ -278,4 +306,9 @@ export default handleActions({
   [constants.AUTH_FORGOT_CONFIRM_SUCCESS]: authForgotConfirmSuccess,
   [constants.AUTH_FORGOT_CONFIRM_FAILURE]: authForgotConfirmFailure,
   [constants.AUTH_FORGOT_CONFIRM_IDLE]: authForgotConfirmIdle,
+
+  [constants.AUTH_USER_REQUEST]: authUserRequest,
+  [constants.AUTH_USER_SUCCESS]: authUserSuccess,
+  [constants.AUTH_USER_FAILURE]: authUserFailure,
+  [constants.AUTH_USER_IDLE]: authUserIdle,
 }, initialState)

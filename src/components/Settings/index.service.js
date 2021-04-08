@@ -15,7 +15,7 @@ const SettingsService = ({ children }) => {
   const { appVersion } = useOTAVersion()
 
   const usersDelete = useSelector((state) => state.users.usersDelete)
-  const user = useSelector(authSelector.authUserSelector)
+  const user = useSelector(authSelector.authUserIdentity)
 
   const authSignoutRequest = () => dispatch(authActions.authSignoutRequest())
   const authForgotRequest = () => dispatch(authActions.authForgotRequest({ username: user.email }))

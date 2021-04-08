@@ -9,7 +9,6 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGetRequest from 'store/ducks/users/saga/usersImagePostsGetRequest'
-import usersGetProfileSelfRequest from 'store/ducks/users/saga/usersGetProfileSelfRequest'
 import usersSetUserDatingStatusRequest from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
@@ -584,7 +583,6 @@ export default () => [
   takeLatest(constants.USERS_BLOCK_REQUEST, usersBlockRequest),
   takeLatest(constants.USERS_UNBLOCK_REQUEST, usersUnblockRequest),
   takeLatest(constants.USERS_GET_PROFILE_REQUEST, usersGetProfileRequest),
-  takeLatest(constants.USERS_GET_PROFILE_SELF_REQUEST, usersGetProfileSelfRequest),
   takeLatest(constants.USERS_EDIT_PROFILE_REQUEST, usersEditProfileRequest),
   takeLatest(constants.USERS_IMAGE_POSTS_GET_REQUEST, usersImagePostsGetRequest),
   takeLatest(constants.USERS_GET_TRENDING_USERS_REQUEST, usersGetTrendingUsersRequest),

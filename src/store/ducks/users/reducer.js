@@ -63,10 +63,6 @@ export const initialState = {
     status: 'idle',
     payload: {},
   },
-  usersGetProfileSelf: {
-    data: {},
-    status: 'idle',
-  },
   usersEditProfile: {
     data: {},
     status: 'idle',
@@ -502,35 +498,6 @@ const usersGetProfileIdle = (state) => update(state, {
 /**
  *
  */
-const usersGetProfileSelfRequest = (state) => update(state, {
-  usersGetProfileSelf: {
-    status: { $set: 'loading' },
-  },
-})
-
-const usersGetProfileSelfSuccess = (state, action) => update(state, {
-  usersGetProfileSelf: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-  },
-})
-
-const usersGetProfileSelfFailure = (state) => update(state, {
-  usersGetProfileSelf: {
-    status: { $set: 'failure' },
-  },
-})
-
-const usersGetProfileSelfIdle = (state) => update(state, {
-  usersGetProfileSelf: {
-    data: { $set: initialState.usersGetProfileSelf.data },
-    status: { $set: 'idle' },
-  },
-})
-
-/**
- *
- */
 const usersEditProfileRequest = (state, action) => update(state, {
   usersEditProfile: {
     status: { $set: 'loading' },
@@ -861,11 +828,6 @@ export default handleActions({
   [constants.USERS_GET_PROFILE_SUCCESS]: usersGetProfileSuccess,
   [constants.USERS_GET_PROFILE_FAILURE]: usersGetProfileFailure,
   [constants.USERS_GET_PROFILE_IDLE]: usersGetProfileIdle,
-
-  [constants.USERS_GET_PROFILE_SELF_REQUEST]: usersGetProfileSelfRequest,
-  [constants.USERS_GET_PROFILE_SELF_SUCCESS]: usersGetProfileSelfSuccess,
-  [constants.USERS_GET_PROFILE_SELF_FAILURE]: usersGetProfileSelfFailure,
-  [constants.USERS_GET_PROFILE_SELF_IDLE]: usersGetProfileSelfIdle,
 
   [constants.USERS_EDIT_PROFILE_REQUEST]: usersEditProfileRequest,
   [constants.USERS_EDIT_PROFILE_SUCCESS]: usersEditProfileSuccess,

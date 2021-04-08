@@ -16,13 +16,13 @@ describe('datingConfirmedUsersRequest', () => {
 
   it('success', async () => {
     const payload = { userId: 'id123' }
-    const response = { data: { self: { matchedUsers: { items: [{ userId: 1 }] } } } }
-    const entities = { users: { 1: { userId: 1 } } }
+    const response = { data: { self: { matchedUsers: { items: [{ userId: '1' }] } } } }
+    const entities = { users: { 1: { userId: '1' } } }
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
     await testEntitiesMerge(saga(), entities)
-      .put(datingActions.datingConfirmedUsersSuccess({ data: [1], payload, meta: {} }))
+      .put(datingActions.datingConfirmedUsersSuccess({ data: ['1'], payload, meta: {} }))
 
       .dispatch(datingActions.datingConfirmedUsersRequest(payload))
       .silentRun()

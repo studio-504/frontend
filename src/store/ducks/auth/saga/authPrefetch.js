@@ -4,6 +4,7 @@ import * as constants from 'store/ducks/auth/constants'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
+import * as authActions from 'store/ducks/auth/actions'
 import * as chatActions from 'store/ducks/chat/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as UserService from 'services/User'
@@ -54,14 +55,14 @@ function* handleAuthPrefetchAuthenticated(user) {
   yield put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
   yield put(chatActions.chatGetChatsRequest())
   yield put(postsActions.postsGetUnreadCommentsRequest())
-  yield put(usersActions.usersGetProfileSelfRequest())
+  yield put(authActions.authUserRequest())
 }
 
 /**
  * Used sequential approach to load data in UI order
  */
 function* handleAuthPrefetchRequest() {
-  const user = yield select(authSelector.authUserSelector)
+  const user = yield select(authSelector.authUserIdentity)
 
   if (UserService.isUserActive(user)) {
     yield call(handleAuthPrefetchAuthenticated, user)

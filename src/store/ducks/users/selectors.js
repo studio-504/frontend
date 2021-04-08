@@ -1,4 +1,4 @@
-import { createSelectorCreator, defaultMemoize, createSelector } from 'reselect'
+import { createSelectorCreator, defaultMemoize } from 'reselect'
 import path from 'ramda/src/path'
 import equals from 'ramda/src/equals'
 import assocPath from 'ramda/src/assocPath'
@@ -24,19 +24,6 @@ export const usersGetProfileSelector = (userId) => createDeepEqualSelector(
     const user = userId || path(['data'])(usersGetProfile)
     const denormalized = normalizer.denormalizeUserGet(user, entities)
     return assocPath(['data'], denormalized)(usersGetProfile)
-  },
-)
-
-/**
- *
- */
-const authUser = path(['auth', 'user'])
-export const usersGetProfileSelf = path(['users', 'usersGetProfileSelf'])
-export const usersGetProfileSelfSelector = createSelector(
-  [authUser, usersGetProfileSelf, entitiesSelector.entities],
-  (authUser, usersGetProfileSelf, entities) => {
-    const denormalized = normalizer.denormalizeUserGet(authUser, entities)
-    return assocPath(['data'], denormalized)(usersGetProfileSelf)
   },
 )
 

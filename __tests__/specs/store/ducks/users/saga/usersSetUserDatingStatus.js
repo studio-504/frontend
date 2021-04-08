@@ -9,7 +9,7 @@ import { GraphQLError } from 'store/errors'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
-const payload = { userId: 1 }
+const payload = { userId: '1' }
 const action = usersActions.usersSetUserDatingStatusRequest(payload)
 
 describe('usersSetUserDatingStatusRequest', () => {
@@ -18,7 +18,7 @@ describe('usersSetUserDatingStatusRequest', () => {
   })
 
   it('success', async () => {
-    const user = { userId: 1 }
+    const user = { userId: '1' }
     const response = { data: { setUserDatingStatus: user } }
     const entities = { users: { 1: user } }
 
@@ -27,7 +27,7 @@ describe('usersSetUserDatingStatusRequest', () => {
     const saga = expectSaga(usersSetUserDatingStatusRequest, action)
 
     await testEntitiesMerge(saga, entities)
-      .put(usersActions.usersSetUserDatingStatusSuccess({ data: 1, payload }))
+      .put(usersActions.usersSetUserDatingStatusSuccess({ data: '1', payload }))
 
       .silentRun()
 

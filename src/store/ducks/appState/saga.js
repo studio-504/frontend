@@ -11,7 +11,7 @@ function* appStateLaunched() {
 }
 
 function* appStateForeground() {
-  const userId = yield select(authSelector.authUserIdSelector)
+  const userId = yield select(authSelector.authUserId)
 
   yield put(updatesActions.updatesCheckRequest())
 

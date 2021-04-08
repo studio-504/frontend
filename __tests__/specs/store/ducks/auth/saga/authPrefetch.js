@@ -9,7 +9,7 @@ import { testAsRootSaga, makeAuthorizedState } from 'tests/utils/helpers'
 
 describe('Auth prefetch', () => {
   it('guest', async () => {
-    const user = { userId: 1, userStatus: 'ANONYMOUS' }
+    const user = { userId: '1', userStatus: 'ANONYMOUS' }
 
     await expectSaga(testAsRootSaga(authPrefetch))
       .withState(makeAuthorizedState(user))
@@ -24,14 +24,14 @@ describe('Auth prefetch', () => {
       .not.put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
       .not.put(chatActions.chatGetChatsRequest())
       .not.put(postsActions.postsGetUnreadCommentsRequest())
-      .not.put(usersActions.usersGetProfileSelfRequest())
+      .not.put(authActions.authUserRequest())
 
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()
   })
 
   it('authorized', async () => {
-    const user = { userId: 1, userStatus: 'ACTIVE' }
+    const user = { userId: '1', userStatus: 'ACTIVE' }
 
     await expectSaga(testAsRootSaga(authPrefetch))
       .withState(makeAuthorizedState(user))
@@ -46,7 +46,7 @@ describe('Auth prefetch', () => {
       .put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
       .put(chatActions.chatGetChatsRequest())
       .put(postsActions.postsGetUnreadCommentsRequest())
-      .put(usersActions.usersGetProfileSelfRequest())
+      .put(authActions.authUserRequest())
 
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()

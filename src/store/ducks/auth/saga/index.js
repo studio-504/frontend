@@ -10,6 +10,7 @@ import authData from 'store/ducks/auth/saga/authData'
 import authToken from 'store/ducks/auth/saga/authToken'
 import authFlow from 'store/ducks/auth/saga/authFlow'
 import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
+import authUser from 'store/ducks/auth/saga/authUser'
 
 export default () =>
   []
@@ -24,3 +25,4 @@ export default () =>
     .concat(authPrefetch())
     .concat(authSignout())
     .concat(authReset())
+    .concat(authUser())

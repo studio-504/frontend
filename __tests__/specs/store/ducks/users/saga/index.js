@@ -18,13 +18,13 @@ describe('Users saga', () => {
   describe('usersSearchRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { searchUsers: { items: [{ userId: 1 }] } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { searchUsers: { items: [{ userId: '1' }] } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersSearchSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersSearchSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersSearchRequest(payload))
         .silentRun()
@@ -36,13 +36,13 @@ describe('Users saga', () => {
   describe('usersDeleteRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { deleteUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { deleteUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersDeleteSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersDeleteSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersDeleteRequest(payload))
         .silentRun()
@@ -54,13 +54,13 @@ describe('Users saga', () => {
   describe('usersGetFollowerUsersRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { user: { followerUsers: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { user: { followerUsers: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetFollowerUsersSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersGetFollowerUsersSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersGetFollowerUsersRequest(payload))
         .silentRun()
@@ -72,13 +72,13 @@ describe('Users saga', () => {
   describe('usersGetFollowedUsersRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { user: { followedUsers: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { user: { followedUsers: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetFollowedUsersSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersGetFollowedUsersSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersGetFollowedUsersRequest(payload))
         .silentRun()
@@ -90,13 +90,13 @@ describe('Users saga', () => {
   describe('usersGetPendingFollowersRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { user: { followerUsers: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { user: { followerUsers: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetPendingFollowersSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersGetPendingFollowersSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersGetPendingFollowersRequest(payload))
         .silentRun()
@@ -111,13 +111,13 @@ describe('Users saga', () => {
   describe('usersGetFollowedUsersWithStoriesRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { self: { followedUsersWithStories: { items: [{ userId: 1 }] } } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { self: { followedUsersWithStories: { items: [{ userId: '1' }] } } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetFollowedUsersWithStoriesSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersGetFollowedUsersWithStoriesSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersGetFollowedUsersWithStoriesRequest(payload))
         .silentRun()
@@ -129,13 +129,13 @@ describe('Users saga', () => {
   describe('usersAcceptFollowerUserRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { acceptFollowerUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { acceptFollowerUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersAcceptFollowerUserSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersAcceptFollowerUserSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersAcceptFollowerUserRequest(payload))
         .silentRun()
@@ -147,13 +147,13 @@ describe('Users saga', () => {
   describe('usersDeclineFollowerUserRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { denyFollowerUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { denyFollowerUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersDeclineFollowerUserSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersDeclineFollowerUserSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersDeclineFollowerUserRequest(payload))
         .silentRun()
@@ -165,13 +165,13 @@ describe('Users saga', () => {
   describe('usersGetProfileRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { user: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { user: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetProfileSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersGetProfileSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersGetProfileRequest(payload))
         .silentRun()
@@ -183,14 +183,14 @@ describe('Users saga', () => {
   describe('usersEditProfileRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { setUserDetails: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { setUserDetails: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
       const meta = { messageCode: 'messageCode' }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersEditProfileSuccess({ data: 1, payload }, meta))
+        .put(usersActions.usersEditProfileSuccess({ data: '1', payload }, meta))
 
         .dispatch(usersActions.usersEditProfileRequest(payload, meta))
         .silentRun()
@@ -201,8 +201,8 @@ describe('Users saga', () => {
 
   describe('usersDeleteProfilePhoto', () => {
     it('success', async () => {
-      const response = { data: { setUserDetails: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { setUserDetails: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
@@ -220,8 +220,8 @@ describe('Users saga', () => {
     const postId = 1
 
     it('success', async () => {
-      const response = { data: { setUserDetails: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { setUserDetails: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
@@ -249,13 +249,13 @@ describe('Users saga', () => {
   describe('usersFollowRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { followUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { followUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersFollowSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersFollowSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersFollowRequest(payload))
         .silentRun()
@@ -267,13 +267,13 @@ describe('Users saga', () => {
   describe('usersUnfollowRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { unfollowUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { unfollowUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersUnfollowSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersUnfollowSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersUnfollowRequest(payload))
         .silentRun()
@@ -285,13 +285,13 @@ describe('Users saga', () => {
   describe('usersBlockRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { blockUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { blockUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersBlockSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersBlockSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersBlockRequest(payload))
         .silentRun()
@@ -303,13 +303,13 @@ describe('Users saga', () => {
   describe('usersUnblockRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { unblockUser: { userId: 1 } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { unblockUser: { userId: '1' } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersUnblockSuccess({ data: 1, payload, meta: {} }))
+        .put(usersActions.usersUnblockSuccess({ data: '1', payload, meta: {} }))
 
         .dispatch(usersActions.usersUnblockRequest(payload))
         .silentRun()
@@ -321,13 +321,13 @@ describe('Users saga', () => {
   describe('usersGetTrendingUsersRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }
-      const response = { data: { trendingUsers: { items: [{ userId: 1 }] } } }
-      const entities = { users: { 1: { userId: 1 } } }
+      const response = { data: { trendingUsers: { items: [{ userId: '1' }] } } }
+      const entities = { users: { 1: { userId: '1' } } }
 
       queryService.apiRequest.mockResolvedValueOnce(response)
 
       await testEntitiesMerge(saga(), entities)
-        .put(usersActions.usersGetTrendingUsersSuccess({ data: [1], payload, meta: {} }))
+        .put(usersActions.usersGetTrendingUsersSuccess({ data: ['1'], payload, meta: {} }))
 
         .dispatch(usersActions.usersGetTrendingUsersRequest(payload))
         .silentRun()
