@@ -21,7 +21,7 @@ function* chatGetChatsRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatsGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -51,7 +51,7 @@ function* chatGetChatRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -81,7 +81,7 @@ function* chatCreateDirectRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeChatGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,

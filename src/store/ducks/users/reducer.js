@@ -34,17 +34,18 @@ export const initialState = {
     payload: {},
   },
   usersFollow: {
-    data: {},
     status: 'idle',
     payload: {},
   },
   usersAcceptFollowerUser: {
-    data: {},
+    status: 'idle',
+    payload: {},
+  },
+  usersDeclineFollowerUser: {
     status: 'idle',
     payload: {},
   },
   usersUnfollow: {
-    data: {},
     status: 'idle',
     payload: {},
   },
@@ -325,9 +326,8 @@ const usersFollowRequest = (state, action) => update(state, {
   },
 })
 
-const usersFollowSuccess = (state, action) => update(state, {
+const usersFollowSuccess = (state) => update(state, {
   usersFollow: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -340,8 +340,7 @@ const usersFollowFailure = (state) => update(state, {
 
 const usersFollowIdle = (state) => update(state, {
   usersFollow: {
-    data: { $set: initialState.usersFollow.data },
-    status: { $set: 'idle' },
+    $set: initialState.usersFollow,
   },
 })
 
@@ -355,9 +354,8 @@ const usersUnfollowRequest = (state, action) => update(state, {
   },
 })
 
-const usersUnfollowSuccess = (state, action) => update(state, {
+const usersUnfollowSuccess = (state) => update(state, {
   usersUnfollow: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -370,8 +368,7 @@ const usersUnfollowFailure = (state) => update(state, {
 
 const usersUnfollowIdle = (state) => update(state, {
   usersUnfollow: {
-    data: { $set: initialState.usersUnfollow.data },
-    status: { $set: 'idle' },
+    $set: initialState.usersUnfollow,
   },
 })
 
@@ -385,9 +382,8 @@ const usersAcceptFollowerUserRequest = (state, action) => update(state, {
   },
 })
 
-const usersAcceptFollowerUserSuccess = (state, action) => update(state, {
+const usersAcceptFollowerUserSuccess = (state) => update(state, {
   usersAcceptFollowerUser: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -400,8 +396,35 @@ const usersAcceptFollowerUserFailure = (state) => update(state, {
 
 const usersAcceptFollowerUserIdle = (state) => update(state, {
   usersAcceptFollowerUser: {
-    data: { $set: initialState.usersAcceptFollowerUser.data },
-    status: { $set: 'idle' },
+    $set: initialState.usersAcceptFollowerUser,
+  },
+})
+
+/**
+ *
+ */
+const usersDeclineFollowerUserRequest = (state, action) => update(state, {
+  usersDeclineFollowerUser: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const usersDeclineFollowerUserSuccess = (state) => update(state, {
+  usersDeclineFollowerUser: {
+    status: { $set: 'success' },
+  },
+})
+
+const usersDeclineFollowerUserFailure = (state) => update(state, {
+  usersDeclineFollowerUser: {
+    status: { $set: 'failure' },
+  },
+})
+
+const usersDeclineFollowerUserIdle = (state) => update(state, {
+  usersDeclineFollowerUser: {
+    $set: initialState.usersDeclineFollowerUser,
   },
 })
 
@@ -813,6 +836,11 @@ export default handleActions({
   [constants.USERS_ACCEPT_FOLLOWER_USER_SUCCESS]: usersAcceptFollowerUserSuccess,
   [constants.USERS_ACCEPT_FOLLOWER_USER_FAILURE]: usersAcceptFollowerUserFailure,
   [constants.USERS_ACCEPT_FOLLOWER_USER_IDLE]: usersAcceptFollowerUserIdle,
+
+  [constants.USERS_DECLINE_FOLLOWER_USER_REQUEST]: usersDeclineFollowerUserRequest,
+  [constants.USERS_DECLINE_FOLLOWER_USER_SUCCESS]: usersDeclineFollowerUserSuccess,
+  [constants.USERS_DECLINE_FOLLOWER_USER_FAILURE]: usersDeclineFollowerUserFailure,
+  [constants.USERS_DECLINE_FOLLOWER_USER_IDLE]: usersDeclineFollowerUserIdle,
 
   [constants.USERS_BLOCK_REQUEST]: usersBlockRequest,
   [constants.USERS_BLOCK_SUCCESS]: usersBlockSuccess,

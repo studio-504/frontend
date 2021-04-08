@@ -1,5 +1,6 @@
-import { put, call } from 'redux-saga/effects'
+import { put, call, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
+import * as constants from 'store/ducks/users/constants'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
 import * as queryService from 'services/Query'
@@ -16,7 +17,7 @@ function* usersSetUserDatingStatusRequestData(req, api) {
   const payload = req.payload
 
   const normalized = normalizer.normalizeUserGet(data)
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return {
     data: normalized.result,
@@ -34,4 +35,6 @@ function* usersSetUserDatingStatusRequest(req) {
   }
 }
 
-export default usersSetUserDatingStatusRequest
+export default () => [
+  takeLatest(constants.USERS_SET_USER_DATING_STATUS_REQUEST, usersSetUserDatingStatusRequest),
+]

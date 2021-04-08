@@ -4,7 +4,7 @@ import assocPath from 'ramda/src/assocPath'
 import compose from 'ramda/src/compose'
 import is from 'ramda/src/is'
 import * as normalizer from 'normalizer/schemas'
-import * as entitiesSelector from 'store/ducks/entities/selectors'
+import { entitiesSelector } from 'store/ducks/entities/selectors'
 
 const authRoot = prop('auth')
 export const authForgot = compose(prop('authForgot'), authRoot)
@@ -25,7 +25,7 @@ export const authUserId = createSelector(authUser, user => {
 })
 
 export const authUserSelector = createSelector(
-  [ authUser, entitiesSelector.entities],
+  [ authUser, entitiesSelector],
   ( authUser, entities) => {
     const userId = authUser.data
     const denormalized = normalizer.denormalizeUserGet(userId, entities)
