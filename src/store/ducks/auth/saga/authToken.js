@@ -91,15 +91,15 @@ function* guestToken() {
 function* handleAuthTokenRequest(payload = {}) {
   if (payload.allowAnonymous) {
     const credentials = yield call(guestToken)
-    return { data: credentials, meta: { type: 'COGNITO_GUEST' } }
+    return { data: credentials }
   }
 
   try {
     const credentials = yield call(authenticatedToken)
-    return { data: credentials, meta: { type: 'COGNITO_AUTHENTICATED' } }
+    return { data: credentials }
   } catch (error) {
     const credentials = yield call(unauthenticatedToken)
-    return { data: credentials, meta: { type: 'COGNITO_UNAUTHENTICATED' } }
+    return { data: credentials }
   }
 }
 
@@ -108,10 +108,10 @@ function* handleAuthTokenRequest(payload = {}) {
  */
 function* authTokenRequest(req) {
   try {
-    const { data, meta } = yield handleAuthTokenRequest(req.payload)
-    yield put(actions.authTokenSuccess({ data, meta }))
+    const { data } = yield handleAuthTokenRequest(req.payload)
+    yield put(actions.authTokenSuccess({ data }))
   } catch (error) {
-    yield put(actions.authTokenFailure(error, { type: 'COGNITO_UNAUTHENTICATED' }))
+    yield put(actions.authTokenFailure(error))
   }
 }
 

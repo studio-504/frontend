@@ -6,44 +6,23 @@ export const initialState = {
   /**
    *
    */
-  user: {},
+  authUser: {
+    data: {},
+    status: 'idle',
+  },
 
   /**
    *
    */
   authFlow: {
-    data: [],
     status: 'idle',
-    payload: {},
-    meta: {},
-  },
-  authToken: {
-    data: [],
-    status: 'idle',
-    payload: {},
-    meta: {},
-  },
-  authData: {
-    data: [],
-    status: 'idle',
-    payload: {},
-    meta: {},
-  },
-  authPrefetch: {
-    data: [],
-    status: 'idle',
-    payload: {},
-    meta: {},
   },
 
   /**
    *
    */
   authSigninAnonymous: {
-    data: [],
     status: 'idle',
-    payload: {},
-    nextRoute: null,
   },
   authSigninCognito: {
     status: 'idle',
@@ -51,18 +30,9 @@ export const initialState = {
   },
   authSigninGoogle: {
     status: 'idle',
-    nextRoute: null,
   },
   authSigninApple: {
     status: 'idle',
-    payload: {},
-    nextRoute: null,
-  },
-  authSignout: {
-    data: [],
-    status: 'idle',
-    payload: {},
-    nextRoute: null,
   },
 
   /**
@@ -73,10 +43,7 @@ export const initialState = {
     payload: {},
   },
   authForgotConfirm: {
-    data: [],
     status: 'idle',
-    payload: {},
-    nextRoute: null,
   },
 }
 
@@ -89,91 +56,20 @@ const authFlowRequest = (state) => update(state, {
   },
 })
 
-const authFlowSuccess = (state, action) => update(state, {
+const authFlowSuccess = (state) => update(state, {
   authFlow: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
-    payload: {},
-    meta: { $set: action.payload.meta },
   },
 })
 
-const authFlowFailure = (state, action) => update(state, {
+const authFlowFailure = (state) => update(state, {
   authFlow: {
-    data: { $set: initialState.authFlow.data },
     status: { $set: 'failure' },
-    payload: {},
-    meta: { $set: action.meta },
   },
 })
 
 const authFlowIdle = (state) => update(state, {
   authFlow: { $set: initialState.authFlow },
-})
-
-/**
- *
- */
-const authDataRequest = (state) => update(state, {
-  authData: {
-    status: { $set: 'loading' },
-  },
-})
-
-const authDataSuccess = (state, action) => update(state, {
-  user: {
-    $set: action.payload.data,
-  },
-  authData: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-    payload: {},
-    meta: { $set: action.payload.meta },
-  },
-})
-
-const authDataFailure = (state, action) => update(state, {
-  authData: {
-    data: { $set: initialState.authData.data },
-    status: { $set: 'failure' },
-    payload: {},
-    meta: { $set: action.meta },
-  },
-})
-
-const authDataIdle = (state) => update(state, {
-  authData: { $set: initialState.authData },
-})
-
-/**
- *
- */
-const authTokenRequest = (state) => update(state, {
-  authToken: {
-    status: { $set: 'loading' },
-  },
-})
-
-const authTokenSuccess = (state, action) => update(state, {
-  authToken: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-    payload: {},
-    meta: { $set: action.payload.meta },
-  },
-})
-
-const authTokenFailure = (state, action) => update(state, {
-  authToken: {
-    data: { $set: initialState.authToken.data },
-    status: { $set: 'failure' },
-    payload: {},
-    meta: { $set: action.meta },
-  },
-})
-
-const authTokenIdle = (state) => update(state, {
-  authToken: { $set: initialState.authToken },
 })
 
 /**
@@ -265,9 +161,8 @@ const authSigninAnonymousRequest = (state) => update(state, {
   },
 })
 
-const authSigninAnonymousSuccess = (state, action) => update(state, {
+const authSigninAnonymousSuccess = (state) => update(state, {
   authSigninAnonymous: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -280,39 +175,9 @@ const authSigninAnonymousFailure = (state) => update(state, {
 
 const authSigninAnonymousIdle = (state) => update(state, {
   authSigninAnonymous: {
-    data: { $set: initialState.authSigninAnonymous.data },
-    status: { $set: 'idle' },
+    $set: initialState.authSigninAnonymous,
   },
 })
-
-
-/**
- *
- */
-const authSignoutRequest = (state) => update(state, {
-  authSignout: {
-    status: { $set: 'loading' },
-  },
-})
-
-const authSignoutSuccess = () => update(initialState, {
-  authFlow: { $set: initialState.authFlow },
-  authData: { $set: initialState.authData },
-})
-
-const authSignoutFailure = (state) => update(state, {
-  authSignout: {
-    status: { $set: 'failure' },
-  },
-})
-
-const authSignoutIdle = (state) => update(state, {
-  authSignout: {
-    data: { $set: initialState.authSignout.data },
-    status: { $set: 'idle' },
-  },
-})
-
 
 /**
  *
@@ -351,9 +216,8 @@ const authForgotConfirmRequest = (state) => update(state, {
   },
 })
 
-const authForgotConfirmSuccess = (state, action) => update(state, {
+const authForgotConfirmSuccess = (state) => update(state, {
   authForgotConfirm: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -366,8 +230,42 @@ const authForgotConfirmFailure = (state) => update(state, {
 
 const authForgotConfirmIdle = (state) => update(state, {
   authForgotConfirm: {
-    data: { $set: initialState.authForgotConfirm.data },
     status: { $set: 'idle' },
+  },
+})
+
+/**
+ *
+ */
+const authDataSuccess = (state, action) => update(state, {
+  authUser: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const authUserRequest = (state) => update(state, {
+  authUser: {
+    status: { $set: 'loading' },
+  },
+})
+
+const authUserSuccess = (state, action) => update(state, {
+  authUser: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+  },
+})
+
+const authUserFailure = (state) => update(state, {
+  authUser: {
+    status: { $set: 'failure' },
+  },
+})
+
+const authUserIdle = (state) => update(state, {
+  authUser: {
+    $set: initialState.authUser,
   },
 })
 
@@ -377,15 +275,7 @@ export default handleActions({
   [constants.AUTH_FLOW_FAILURE]: authFlowFailure,
   [constants.AUTH_FLOW_IDLE]: authFlowIdle,
 
-  [constants.AUTH_DATA_REQUEST]: authDataRequest,
   [constants.AUTH_DATA_SUCCESS]: authDataSuccess,
-  [constants.AUTH_DATA_FAILURE]: authDataFailure,
-  [constants.AUTH_DATA_IDLE]: authDataIdle,
-
-  [constants.AUTH_TOKEN_REQUEST]: authTokenRequest,
-  [constants.AUTH_TOKEN_SUCCESS]: authTokenSuccess,
-  [constants.AUTH_TOKEN_FAILURE]: authTokenFailure,
-  [constants.AUTH_TOKEN_IDLE]: authTokenIdle,
 
   [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,
@@ -407,11 +297,6 @@ export default handleActions({
   [constants.AUTH_SIGNIN_ANONYMOUS_FAILURE]: authSigninAnonymousFailure,
   [constants.AUTH_SIGNIN_ANONYMOUS_IDLE]: authSigninAnonymousIdle,
 
-  [constants.AUTH_SIGNOUT_REQUEST]: authSignoutRequest,
-  [constants.AUTH_SIGNOUT_SUCCESS]: authSignoutSuccess,
-  [constants.AUTH_SIGNOUT_FAILURE]: authSignoutFailure,
-  [constants.AUTH_SIGNOUT_IDLE]: authSignoutIdle,
-
   [constants.AUTH_FORGOT_REQUEST]: authForgotRequest,
   [constants.AUTH_FORGOT_SUCCESS]: authForgotSuccess,
   [constants.AUTH_FORGOT_FAILURE]: authForgotFailure,
@@ -421,4 +306,9 @@ export default handleActions({
   [constants.AUTH_FORGOT_CONFIRM_SUCCESS]: authForgotConfirmSuccess,
   [constants.AUTH_FORGOT_CONFIRM_FAILURE]: authForgotConfirmFailure,
   [constants.AUTH_FORGOT_CONFIRM_IDLE]: authForgotConfirmIdle,
+
+  [constants.AUTH_USER_REQUEST]: authUserRequest,
+  [constants.AUTH_USER_SUCCESS]: authUserSuccess,
+  [constants.AUTH_USER_FAILURE]: authUserFailure,
+  [constants.AUTH_USER_IDLE]: authUserIdle,
 }, initialState)

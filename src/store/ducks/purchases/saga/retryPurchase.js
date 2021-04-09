@@ -2,8 +2,8 @@ import * as RNIap from 'react-native-iap'
 import isEmpty from 'ramda/src/isEmpty'
 import propOr from 'ramda/src/propOr'
 import { put, call, delay, race, all } from 'redux-saga/effects'
+import * as authActions from 'store/ducks/auth/actions'
 import * as actions from 'store/ducks/purchases/actions'
-import * as usersActions from 'store/ducks/users/actions'
 import { purchaseComplete, purchaseRequest } from 'store/ducks/purchases/saga/purchase'
 
 /**
@@ -38,7 +38,7 @@ function* retryPurchase(req) {
     }
 
     yield put(actions.retryPurchaseSuccess())
-    yield put(usersActions.usersGetProfileSelfRequest())
+    yield put(authActions.authUserRequest())
   } catch (error) {
     yield call([RNIap, 'clearTransactionIOS'])
     const messageCode = propOr('GENERIC', 'code', error)

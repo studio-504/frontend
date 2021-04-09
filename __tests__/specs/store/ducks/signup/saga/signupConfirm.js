@@ -3,7 +3,6 @@ import { getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
 import signupConfirm from 'store/ducks/signup/saga/signupConfirm'
-import { logEvent } from 'services/Analytics'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/signup/queries'
 
@@ -15,18 +14,16 @@ describe('signupConfirm', () => {
   afterEach(() => {
     navigation.navigate.mockClear()
     queryService.apiRequest.mockClear()
-    logEvent.mockClear()
   })
 
   describe('success', () => {
     it('email', async () => {
       const usernameType = 'email'
-      const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
+        .put(actions.signupConfirmSuccess())
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -35,20 +32,16 @@ describe('signupConfirm', () => {
         verificationCode: confirmationCode,
       })
 
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CONFIRM_REQUEST')
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CONFIRM_SUCCESS')
-
       testNavigate(navigation, 'Auth.AuthUsername')
     })
 
     it('phone', async () => {
       const usernameType = 'phone'
-      const payload = { usernameType, confirmationCode }
 
       await expectSaga(testAsRootSaga(signupConfirm))
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .put(actions.signupConfirmSuccess({ data: undefined, payload }))
+        .put(actions.signupConfirmSuccess())
 
         .dispatch(actions.signupConfirmRequest({ usernameType, confirmationCode }))
         .silentRun()
@@ -56,9 +49,6 @@ describe('signupConfirm', () => {
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.finishChangeUserPhoneNumber, {
         verificationCode: confirmationCode,
       })
-
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CONFIRM_REQUEST')
-      expect(logEvent).toHaveBeenCalledWith('SIGNUP_CONFIRM_SUCCESS')
 
       testNavigate(navigation, 'Auth.AuthUsername')
     })

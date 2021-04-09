@@ -11,7 +11,7 @@ import * as Units from 'constants/Units'
 const DatingAboutService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const user = useSelector(authSelector.authUserSelector)
+  const user = useSelector(authSelector.authUserIdentity)
   const usersEditProfile = useSelector(usersSelector.usersEditProfile)
   const dateOfBirthParsed = helpers.getDateOfBirth(user)
   const route = useRoute()

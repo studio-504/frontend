@@ -31,7 +31,7 @@ function* usersUnfollowRequestData(req, api) {
 function* usersUnfollowRequest(req) {
   try {
     yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.unfollowUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.unfollowUser, req.payload)
     const next = yield usersUnfollowRequestData(req, data)
     yield put(actions.usersUnfollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

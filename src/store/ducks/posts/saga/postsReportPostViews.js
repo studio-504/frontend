@@ -23,7 +23,7 @@ export function* postsReportPostViewsRequest(req) {
 
 
   try {
-    const userId = yield select(authSelector.authUserIdSelector)
+    const userId = yield select(authSelector.authUserId)
 
     if (!userId) return
 

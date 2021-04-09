@@ -9,7 +9,6 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import usersImagePostsGet from 'store/ducks/users/saga/usersImagePostsGet'
-import usersGetProfileSelf from 'store/ducks/users/saga/usersGetProfileSelf'
 import usersSetUserDatingStatus from 'store/ducks/users/saga/usersSetUserDatingStatus'
 import usersAcceptFollowerUser from 'store/ducks/users/saga/usersAcceptFollowerUser'
 import usersDeclineFollowerUser from 'store/ducks/users/saga/usersDeclineFollowerUser'
@@ -41,7 +40,7 @@ function* usersSearchRequestData(req, api) {
 
 function* usersSearchRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.searchUsers, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.searchUsers, req.payload)
     const next = yield usersSearchRequestData(req, data)
     yield put(actions.usersSearchSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -71,7 +70,7 @@ function* usersDeleteRequestData(req, api) {
 
 function* usersDeleteRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.deleteUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.deleteUser, req.payload)
     const next = yield usersDeleteRequestData(req, data)
     yield put(actions.usersDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -102,7 +101,7 @@ function* usersGetFollowerUsersRequestData(req, api) {
 
 function* usersGetFollowerUsersRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.getFollowerUsers, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.getFollowerUsers, req.payload)
     const next = yield usersGetFollowerUsersRequestData(req, data)
     yield put(actions.usersGetFollowerUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -133,7 +132,7 @@ function* usersGetFollowedUsersRequestData(req, api) {
 
 function* usersGetFollowedUsersRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.getFollowedUsers, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.getFollowedUsers, req.payload)
     const next = yield usersGetFollowedUsersRequestData(req, data)
     yield put(actions.usersGetFollowedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -164,7 +163,7 @@ function* usersGetPendingFollowersRequestData(req, api) {
 
 function* usersGetPendingFollowersRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.getFollowerUsers, { ...req.payload, followStatus: 'REQUESTED' })
+    const data = yield call([queryService, 'apiRequest'], queries.getFollowerUsers, { ...req.payload, followStatus: 'REQUESTED' })
     const next = yield usersGetPendingFollowersRequestData(req, data)
     yield put(actions.usersGetPendingFollowersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -195,7 +194,7 @@ function* usersGetFollowedUsersWithStoriesRequestData(req, api) {
 
 function* usersGetFollowedUsersWithStoriesRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.getFollowedUsersWithStories, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.getFollowedUsersWithStories, req.payload)
     const next = yield usersGetFollowedUsersWithStoriesRequestData(req, data)
     yield put(actions.usersGetFollowedUsersWithStoriesSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -225,7 +224,7 @@ function* usersGetProfileRequestData(req, api) {
 
 function* usersGetProfileRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.user, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.user, req.payload)
     const next = yield usersGetProfileRequestData(req, data)
     yield put(actions.usersGetProfileSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -256,7 +255,7 @@ function* usersEditProfileRequestData(req, api) {
 
 function* usersEditProfileRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.setUserDetails, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.setUserDetails, req.payload)
     const next = yield usersEditProfileRequestData(req, data)
     yield put(actions.usersEditProfileSuccess({ data: next.data, payload: next.payload }, next.meta))
   } catch (error) {
@@ -276,7 +275,7 @@ function* usersEditProfileRequest(req) {
 function* usersDeleteProfilePhoto() {
   try {
     const req = { payload: { photoPostId: '' } }
-    const data = yield queryService.apiRequest(queries.setUserDetails, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.setUserDetails, req.payload)
 
     yield usersEditProfileRequestData(req, data)
     yield put(actions.usersDeleteAvatarSuccess())
@@ -323,7 +322,7 @@ function* usersBlockRequestData(req, api) {
 function* usersBlockRequest(req) {
   try {
     yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.blockUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.blockUser, req.payload)
     const next = yield usersBlockRequestData(req, data)
     yield put(actions.usersBlockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -354,7 +353,7 @@ function* usersUnblockRequestData(req, api) {
 function* usersUnblockRequest(req) {
   try {
     yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.unblockUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.unblockUser, req.payload)
     const next = yield usersUnblockRequestData(req, data)
     yield put(actions.usersUnblockSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -385,7 +384,7 @@ function* usersGetTrendingUsersRequestData(req, api) {
 
 function* usersGetTrendingUsersRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.trendingUsers, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.trendingUsers, req.payload)
     const next = yield usersGetTrendingUsersRequestData(req, data)
     yield put(actions.usersGetTrendingUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
@@ -398,7 +397,7 @@ function* usersGetTrendingUsersRequest(req) {
  */
 function* usersGetCardsRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.getCards, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.getCards, req.payload)
     const selector = path(['data', 'self', 'cards', 'items'])
     const metaSelector = compose(omit(['items']), path(['data', 'self', 'cards']))
 
@@ -417,7 +416,7 @@ function* usersGetCardsRequest(req) {
  */
 function* usersDeleteCardRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.deleteCard, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.deleteCard, req.payload)
     const selector = path(['data', 'deleteCard'])
 
     yield put(actions.usersDeleteCardSuccess({ payload: req.payload, data: selector(data), meta: {} }))
@@ -431,7 +430,7 @@ function* usersDeleteCardRequest(req) {
  */
 function* usersSetApnsTokenRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.setUserAPNSToken, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.setUserAPNSToken, req.payload)
 
     yield put(actions.usersSetApnsTokenSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
@@ -444,7 +443,7 @@ function* usersSetApnsTokenRequest(req) {
  */
 function* usersReportScreenViewsRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.reportScreenViews, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.reportScreenViews, req.payload)
 
     yield put(actions.usersReportScreenViewsSuccess({ payload: req.payload, data, meta: {} }))
   } catch (error) {
@@ -476,5 +475,4 @@ export default () => [
 .concat(usersSetUserDatingStatus())
 .concat(usersFollow())
 .concat(usersUnfollow())
-.concat(usersGetProfileSelf())
 .concat(usersImagePostsGet())

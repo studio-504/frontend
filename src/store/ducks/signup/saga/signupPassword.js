@@ -1,22 +1,53 @@
+import path from 'ramda/src/path'
+import forge from 'node-forge'
+import Config from 'react-native-config'
 import { put, call, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
+import * as usersQueries from 'store/ducks/users/queries'
 import * as authActions from 'store/ducks/auth/actions'
-import { logEvent } from 'services/Analytics'
-import forge from 'node-forge'
-import Config from 'react-native-config'
+import * as normalizer from 'normalizer/schemas'
+import { entitiesMerge } from 'store/ducks/entities/saga'
+import * as navigationActions from 'navigation/actions'
+import * as NavigationService from 'services/Navigation'
 
 /**
  *
  */
-function* handleSignupPasswordRequest(payload) {
+export function encryptPassword(password) {
   const publicKey = forge.pki.publicKeyFromPem(Config.REAL_PUBLIC_KEY_PEM)
-  const password = forge.util.encodeUtf8(payload.password)
-  const encrypted = publicKey.encrypt(password, 'RSA-OAEP')
+  const encodedPassword = forge.util.encodeUtf8(password)
+  const encrypted = publicKey.encrypt(encodedPassword, 'RSA-OAEP')
   const encryptedPassword = forge.util.encode64(encrypted)
-  return yield queryService.apiRequest(queries.setUserPassword, { encryptedPassword })
+
+  return encryptedPassword
+}
+
+/**
+ *
+ */
+export function* fetchMe() {
+  const response = yield call([queryService, 'apiRequest'], usersQueries.self)
+  const user = path(['data', 'self'], response)
+  const normalized = normalizer.normalizeUserGet(user)
+
+  yield call(entitiesMerge, normalized)
+}
+
+/**
+ *
+ */
+function* handleSignupPasswordRequest({ password }) {
+  const navigation = yield NavigationService.getNavigation()
+  const encryptedPassword = yield call(encryptPassword, password)
+
+  yield call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
+  yield call(fetchMe)
+  yield put(authActions.authPrefetchRequest())
+
+  navigationActions.navigateResetToApp(navigation)
 }
 
 /**
@@ -24,21 +55,11 @@ function* handleSignupPasswordRequest(payload) {
  */
 function* signupPasswordRequest(req) {
   try {
-    logEvent('SIGNUP_PASSWORD_REQUEST')
-
-    const data = yield call(handleSignupPasswordRequest, req.payload)
-    yield put(actions.signupPasswordSuccess({ payload: req.payload, data }))
+    yield call(handleSignupPasswordRequest, req.payload)
+    yield put(actions.signupPasswordSuccess())
   } catch (error) {
     yield put(actions.signupPasswordFailure(error))
   }
 }
 
-function* signupPasswordSuccess() {
-  logEvent('SIGNUP_PASSWORD_SUCCESS')
-  yield put(authActions.authFlowRequest())
-}
-
-export default () => [
-  takeEvery(constants.SIGNUP_PASSWORD_REQUEST, signupPasswordRequest),
-  takeEvery(constants.SIGNUP_PASSWORD_SUCCESS, signupPasswordSuccess),
-]
+export default () => [takeEvery(constants.SIGNUP_PASSWORD_REQUEST, signupPasswordRequest)]

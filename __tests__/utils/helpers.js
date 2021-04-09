@@ -69,7 +69,7 @@ export function testReducer(reducer, initialState) {
 }
 
 export const makeAuthorizedState = (user, state = {}) => ({
-  auth: { user: user.userId },
+  auth: { authUser: { data: user.userId } },
   entities: { users: { [user.userId]: user } },
   ...state,
 })

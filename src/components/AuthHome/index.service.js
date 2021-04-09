@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from 'store/ducks/auth/actions'
+import * as authSelectors from 'store/ducks/auth/selectors'
 
 const AuthHomeComponentService = ({ children }) => {
   const dispatch = useDispatch()
-  const authSigninGoogle = useSelector(state => state.auth.authSigninGoogle)
-  const authSigninApple = useSelector(state => state.auth.authSigninApple)
-  const authSigninAnonymous = useSelector(state => state.auth.authSigninAnonymous)
+  const authSigninGoogle = useSelector(authSelectors.authSigninGoogle)
+  const authSigninApple = useSelector(authSelectors.authSigninApple)
+  const authSigninAnonymous = useSelector(authSelectors.authSigninAnonymous)
 
   const authSigninGoogleRequest = () =>
     dispatch(authActions.authSigninGoogleRequest())

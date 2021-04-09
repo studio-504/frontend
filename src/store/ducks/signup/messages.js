@@ -13,6 +13,10 @@ export default {
       code: 'USER_CONFIRMATION_DELIVERY',
       text: 'Failed to deliver confirmation code',
     },
+    USER_ALREADY_EXISTS: {
+      code: 'USER_ALREADY_EXISTS',
+      text: 'User already signed up but did not confirm email address or phone number',
+    },
     USER_EXISTS: {
       code: 'USER_EXISTS',
       text: 'User already signed up but did not confirm email address or phone number',

@@ -32,7 +32,7 @@ function* datingConfirmedUsersRequestData(req, api) {
 
 function* datingConfirmedUsersRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.matchedUsers, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.matchedUsers, req.payload)
     const next = yield datingConfirmedUsersRequestData(req, data)
     yield put(actions.datingConfirmedUsersSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

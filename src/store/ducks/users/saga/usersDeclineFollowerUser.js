@@ -29,7 +29,7 @@ function* usersDeclineFollowerUserRequestData(req, api) {
 
 function* usersDeclineFollowerUserRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.denyFollowerUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.denyFollowerUser, req.payload)
     const next = yield usersDeclineFollowerUserRequestData(req, data)
     yield put(actions.usersDeclineFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

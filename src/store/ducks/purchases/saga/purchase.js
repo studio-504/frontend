@@ -4,7 +4,7 @@ import propOr from 'ramda/src/propOr'
 import { put, call, race, delay, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as actions from 'store/ducks/purchases/actions'
-import * as usersActions from 'store/ducks/users/actions'
+import * as authActions from 'store/ducks/auth/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
 
@@ -76,7 +76,7 @@ function* purchase(req) {
     const { productId } = req.payload
     yield call(purchaseRequest, productId)
     yield put(actions.purchaseSuccess())
-    yield put(usersActions.usersGetProfileSelfRequest())
+    yield put(authActions.authUserRequest())
   } catch (error) {
     const messageCode = propOr('GENERIC', 'code', error)
     yield put(actions.purchaseFailure(error, { messageCode }))

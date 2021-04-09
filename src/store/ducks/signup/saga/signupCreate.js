@@ -1,55 +1,72 @@
-import { put, call, take, race, takeEvery, getContext } from 'redux-saga/effects'
+import { put, call, takeEvery, getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
-import * as authActions from 'store/ducks/auth/actions'
-import * as authConstants from 'store/ducks/auth/constants'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
+import Config from 'react-native-config'
+import path from 'ramda/src/path'
+import { generateExpirationDate } from 'store/ducks/signup/saga/helpers'
 
-/**
- *
- */
-function* queryBasedOnSignupType(payload) {
+export const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
+
+function* startChangeUserEmail({ email }) {
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+
+  yield call([queryService, 'apiRequest'], queries.startChangeUserEmail, { email })
+
+  navigationActions.navigateAuthEmailConfirm(ReactNavigationRef.current)
+  yield call(logEvent, 'SIGNUP_EMAIL_SUCCESS')
+}
+
+function* startChangeUserPhoneNumber({ countryCode, phone }) {
+  const ReactNavigationRef = yield getContext('ReactNavigationRef')
+
+  const phoneNumber = `${countryCode}${phone}`
+  yield call([queryService, 'apiRequest'], queries.startChangeUserPhoneNumber, { phoneNumber })
+
+  navigationActions.navigateAuthPhoneConfirm(ReactNavigationRef.current)
+  yield call(logEvent, 'SIGNUP_PHONE_SUCCESS')
+}
+
+function* startConfirmUsername(payload) {
   if (payload.usernameType === 'email') {
-    yield queryService.apiRequest(queries.startChangeUserEmail, { email: payload.email })
+    yield call(startChangeUserEmail, payload)
   } else if (payload.usernameType === 'phone') {
-    const phoneNumber = `${payload.countryCode}${payload.phone}`
-    yield queryService.apiRequest(queries.startChangeUserPhoneNumber, { phoneNumber })
+    yield call(startChangeUserPhoneNumber, payload)
   } else {
     throw new Error('Unsupported usernameType')
   }
 }
 
+function* createAnonymousUser() {
+  const response = yield call([queryService, 'apiRequest'], queries.createAnonymousUser)
+  const tokens = path(['data', 'createAnonymousUser'], response)
+
+  return tokens
+}
+
+function* cognitoIdentityPoolSignIn(tokens) {
+  const AwsAuth = yield getContext('AwsAuth')
+  const credentials = {
+    token: tokens.IdToken,
+    expires_at: generateExpirationDate(),
+  }
+
+  yield call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, credentials, {})
+}
+
 function* handleSignupCreateRequest(payload) {
-  /**
-   * Fetching cognito credentials/tokens
-   */
-  yield put(authActions.authTokenRequest({ allowAnonymous: true }))
-  const { tokenFailure } = yield race({
-    tokenSuccess: take(authConstants.AUTH_TOKEN_SUCCESS),
-    tokenFailure: take(authConstants.AUTH_TOKEN_FAILURE),
-  })
+  const AwsAuth = yield getContext('AwsAuth')
+  const currentCredentials = yield AwsAuth.currentCredentials()
 
-  if (tokenFailure) {
-    throw new Error('Failed to obtain token')
+  if (!currentCredentials.authenticated) {
+    const tokens = yield call(createAnonymousUser)
+    yield call(cognitoIdentityPoolSignIn, tokens)
   }
 
-  /**
-   * Fetching user data from api
-   */
-  yield put(authActions.authDataRequest({ allowAnonymous: true }))
-  const { dataFailure } = yield race({
-    dataSuccess: take(authConstants.AUTH_DATA_SUCCESS),
-    dataFailure: take(authConstants.AUTH_DATA_FAILURE),
-  })
-
-  if (dataFailure) {
-    throw new Error('Failed to fetch data')
-  }
-
-  yield call(queryBasedOnSignupType, payload)
+  yield call(startConfirmUsername, payload)
 }
 
 /**
@@ -57,10 +74,8 @@ function* handleSignupCreateRequest(payload) {
  */
 function* signupCreateRequest(req) {
   try {
-    logEvent('SIGNUP_CREATE_REQUEST')
-
-    yield handleSignupCreateRequest(req.payload)
-    yield put(actions.signupCreateSuccess({ usernameType: req.payload.usernameType }))
+    yield call(handleSignupCreateRequest, req.payload)
+    yield put(actions.signupCreateSuccess())
   } catch (error) {
     if (error.message === 'USER_CONFIRMATION_DELIVERY') {
       yield put(actions.signupCreateFailure(error, { messageCode: 'USER_CONFIRMATION_DELIVERY' }))
@@ -76,22 +91,4 @@ function* signupCreateRequest(req) {
   }
 }
 
-function* signupCreateSuccess(req) {
-  logEvent('SIGNUP_CREATE_SUCCESS')
-  const ReactNavigationRef = yield getContext('ReactNavigationRef')
-
-  if (req.payload.usernameType === 'phone') {
-    logEvent('SIGNUP_PHONE_SUCCESS')
-    navigationActions.navigateAuthPhoneConfirm(ReactNavigationRef.current)
-  }
-
-  if (req.payload.usernameType === 'email') {
-    logEvent('SIGNUP_EMAIL_SUCCESS')
-    navigationActions.navigateAuthEmailConfirm(ReactNavigationRef.current)
-  }
-}
-
-export default () => [
-  takeEvery(constants.SIGNUP_CREATE_REQUEST, signupCreateRequest),
-  takeEvery(constants.SIGNUP_CREATE_SUCCESS, signupCreateSuccess),
-]
+export default () => [takeEvery(constants.SIGNUP_CREATE_REQUEST, signupCreateRequest)]

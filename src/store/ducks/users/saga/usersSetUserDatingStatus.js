@@ -27,7 +27,7 @@ function* usersSetUserDatingStatusRequestData(req, api) {
 
 function* usersSetUserDatingStatusRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.setUserDatingStatus, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.setUserDatingStatus, req.payload)
     const next = yield usersSetUserDatingStatusRequestData(req, data)
     yield put(actions.usersSetUserDatingStatusSuccess({ data: next.data, payload: next.payload }))
   } catch (error) {

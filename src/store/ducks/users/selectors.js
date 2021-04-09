@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect'
 import path from 'ramda/src/path'
 import assocPath from 'ramda/src/assocPath'
 import * as normalizer from 'normalizer/schemas'
@@ -17,19 +16,6 @@ export const usersGetProfileSelector = (userId) => createDeepEqualSelector(
     const user = userId || path(['data'])(usersGetProfile)
     const denormalized = normalizer.denormalizeUserGet(user, entities)
     return assocPath(['data'], denormalized)(usersGetProfile)
-  },
-)
-
-/**
- *
- */
-const authUser = path(['auth', 'user'])
-export const usersGetProfileSelf = path(['users', 'usersGetProfileSelf'])
-export const usersGetProfileSelfSelector = createSelector(
-  [authUser, usersGetProfileSelf, entitiesSelector],
-  (authUser, usersGetProfileSelf, entities) => {
-    const denormalized = normalizer.denormalizeUserGet(authUser, entities)
-    return assocPath(['data'], denormalized)(usersGetProfileSelf)
   },
 )
 

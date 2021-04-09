@@ -11,7 +11,7 @@ import * as normalizer from 'normalizer/schemas'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
-const payload = { userId: 1 }
+const payload = { userId: '1' }
 const action = usersActions.usersSetUserDatingStatusRequest(payload)
 
 describe('usersSetUserDatingStatusRequest', () => {
@@ -20,14 +20,14 @@ describe('usersSetUserDatingStatusRequest', () => {
   })
 
   it('success', async () => {
-    const user = { userId: 1 }
+    const user = { userId: '1' }
     const response = { data: { setUserDatingStatus: user } }
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
     await expectSaga(testAsRootSaga(users))
       .call(entitiesMerge, normalizer.normalizeUserGet(response.data.setUserDatingStatus))
-      .put(usersActions.usersSetUserDatingStatusSuccess({ data: 1, payload }))
+      .put(usersActions.usersSetUserDatingStatusSuccess({ data: '1', payload }))
 
       .dispatch(action)
       .silentRun()

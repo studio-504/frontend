@@ -8,7 +8,7 @@ import {  testAsRootSaga } from 'tests/utils/helpers'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
-const payload = { userId: 1 }
+const payload = { userId: '1' }
 const action = usersActions.usersImagePostsGetRequest(payload)
 
 describe('usersImagePostsGetRequest', () => {

@@ -31,7 +31,7 @@ function* usersFollowRequestData(req, api) {
 function* usersFollowRequest(req) {
   try {
     yield call(usersCheckPermissions)
-    const data = yield queryService.apiRequest(queries.followUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.followUser, req.payload)
     const next = yield usersFollowRequestData(req, data)
     yield put(actions.usersFollowSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

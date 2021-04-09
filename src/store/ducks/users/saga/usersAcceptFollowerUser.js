@@ -29,7 +29,7 @@ function* usersAcceptFollowerUserRequestData(req, api) {
 
 function* usersAcceptFollowerUserRequest(req) {
   try {
-    const data = yield queryService.apiRequest(queries.acceptFollowerUser, req.payload)
+    const data = yield call([queryService, 'apiRequest'], queries.acceptFollowerUser, req.payload)
     const next = yield usersAcceptFollowerUserRequestData(req, data)
     yield put(actions.usersAcceptFollowerUserSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {

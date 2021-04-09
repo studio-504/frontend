@@ -57,7 +57,7 @@ describe('Users reducer', () => {
     })
 
     it('loading', () => {
-      const payload = { userId: 1 }
+      const payload = { userId: '1' }
       const state = reducer(undefined, actions.usersImagePostsGetRequest(payload))
 
       expect(selector(state)).toEqual({
@@ -102,7 +102,7 @@ describe('Users reducer', () => {
     })
 
     it('loading', () => {
-      const payload = { userId: 1 }
+      const payload = { userId: '1' }
       const state = reducer(undefined, actions.usersSetUserDatingStatusRequest(payload))
 
       expect(selectors.usersSetUserDatingStatus(state)).toEqual({
@@ -132,43 +132,6 @@ describe('Users reducer', () => {
         status: 'failure',
         payload: {},
       })
-    })
-  })
-
-  describe('usersGetProfileSelf', () => {
-    const data = { a: 1, b: 2 }
-
-    it('initial state', () => {
-      const state = reducer(undefined, { type: 'MOCK' })
-
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle' })
-    })
-
-    it('loading', () => {
-      const state = reducer(undefined, actions.usersGetProfileSelfRequest())
-
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'loading' })
-    })
-
-    it('success', () => {
-      const state = reducer(undefined, actions.usersGetProfileSelfSuccess({ data }))
-
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data, status: 'success' })
-    })
-
-    it('failure', () => {
-      const state = reducer(undefined, actions.usersGetProfileSelfFailure(error))
-
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'failure' })
-    })
-
-    it('idle', () => {
-      const state = applyActions(
-        [actions.usersGetProfileSelfSuccess({ data }), actions.usersGetProfileSelfIdle()],
-        reducer,
-      )
-
-      expect(selectors.usersGetProfileSelf(state)).toEqual({ data: {}, status: 'idle' })
     })
   })
 
