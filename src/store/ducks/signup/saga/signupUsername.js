@@ -1,4 +1,5 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
+import * as authActions from 'store/ducks/auth/actions'
 import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
@@ -17,6 +18,9 @@ function* handleSignupUsernameRequest(payload) {
   yield call([queryService, 'apiRequest'], queries.setUsername, { username: payload.username })
 
   if (nextRoute === 'app') {
+    yield put(authActions.authUserRequest())
+    yield put(authActions.authPrefetchRequest())
+
     navigationActions.navigateResetToApp(navigation)
   } else {
     navigationActions.navigateAuthPassword(navigation)
@@ -35,6 +39,4 @@ function* signupUsernameRequest(req) {
   }
 }
 
-export default () => [
-  takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest),
-]
+export default () => [takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest)]

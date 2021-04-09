@@ -27,8 +27,6 @@ export function* handleAnonymousSignin() {
     const credentials = { token: tokens.IdToken, expires_at: generateExpirationDate() }
     yield call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, credentials, {})
   }
-
-  yield put(actions.authUserRequest())
 }
 
 /**
@@ -49,6 +47,7 @@ function* authSigninAnonymousRequest() {
 
 function* authSigninAnonymousSuccess() {
   try {
+    yield put(actions.authUserRequest())
     yield put(actions.authPrefetchRequest())
 
     const navigation = yield NavigationService.getNavigation()
