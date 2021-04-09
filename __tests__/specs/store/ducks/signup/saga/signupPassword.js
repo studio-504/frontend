@@ -4,14 +4,11 @@ import forge from 'node-forge'
 import * as actions from 'store/ducks/signup/actions'
 import * as authActions from 'store/ducks/auth/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import * as usersQueries from 'store/ducks/users/queries'
 import * as queries from 'store/ducks/signup/queries'
-import signupPassword, { encryptPassword, fetchMe } from 'store/ducks/signup/saga/signupPassword'
+import signupPassword, { encryptPassword } from 'store/ducks/signup/saga/signupPassword'
 import * as queryService from 'services/Query'
-import * as normalizer from 'normalizer/schemas'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
-import { entitiesMerge } from 'store/ducks/entities/saga'
 
 const password = 'password'
 const encryptedPassword = 'encryptedPassword'
@@ -47,30 +44,17 @@ describe('signupPassword', () => {
     expect(forge.util.encode64).toHaveBeenCalledWith('encryptedPassword')
   })
 
-  it('fetchMe', async () => {
-    const self = { userId: 1 }
-
-    await expectSaga(fetchMe)
-      .provide([[matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { self } })]])
-
-      .call([queryService, 'apiRequest'], usersQueries.self)
-      .call(entitiesMerge, normalizer.normalizeUserGet(self))
-
-      .silentRun()
-  })
-
   it('success', async () => {
     await expectSaga(testAsRootSaga(signupPassword))
       .provide([
         [getContext('ReactNavigationRef'), { current: navigation }],
         [matchers.call.fn(encryptPassword), encryptedPassword],
-        [matchers.call.fn(fetchMe), Promise.resolve({})],
       ])
 
       .call(encryptPassword, password)
       .call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
-      .call(fetchMe)
 
+      .put(authActions.authUserRequest())
       .put(authActions.authPrefetchRequest())
       .put(actions.signupPasswordSuccess())
 

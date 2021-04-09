@@ -51,11 +51,6 @@ export default function* rootSaga() {
     .concat(auth())
     .concat(signup())
 
-    .concat(signupCreate())
-    .concat(signupConfirm())
-    .concat(signupPassword())
-    .concat(signupUsername())
-
     .concat(posts())
     .concat(postsCreate())
     .concat(postsShare())

@@ -5,11 +5,7 @@ import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import { logEvent } from 'services/Analytics'
-import Config from 'react-native-config'
-import path from 'ramda/src/path'
-import { generateExpirationDate } from 'store/ducks/signup/saga/helpers'
-
-export const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
+import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
 
 function* startChangeUserEmail({ email }) {
   const ReactNavigationRef = yield getContext('ReactNavigationRef')
@@ -30,7 +26,9 @@ function* startChangeUserPhoneNumber({ countryCode, phone }) {
   yield call(logEvent, 'SIGNUP_PHONE_SUCCESS')
 }
 
-function* startConfirmUsername(payload) {
+function* handleSignupCreateRequest(payload) {
+  yield call(handleAnonymousSignin)
+
   if (payload.usernameType === 'email') {
     yield call(startChangeUserEmail, payload)
   } else if (payload.usernameType === 'phone') {
@@ -38,35 +36,6 @@ function* startConfirmUsername(payload) {
   } else {
     throw new Error('Unsupported usernameType')
   }
-}
-
-function* createAnonymousUser() {
-  const response = yield call([queryService, 'apiRequest'], queries.createAnonymousUser)
-  const tokens = path(['data', 'createAnonymousUser'], response)
-
-  return tokens
-}
-
-function* cognitoIdentityPoolSignIn(tokens) {
-  const AwsAuth = yield getContext('AwsAuth')
-  const credentials = {
-    token: tokens.IdToken,
-    expires_at: generateExpirationDate(),
-  }
-
-  yield call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, credentials, {})
-}
-
-function* handleSignupCreateRequest(payload) {
-  const AwsAuth = yield getContext('AwsAuth')
-  const currentCredentials = yield AwsAuth.currentCredentials()
-
-  if (!currentCredentials.authenticated) {
-    const tokens = yield call(createAnonymousUser)
-    yield call(cognitoIdentityPoolSignIn, tokens)
-  }
-
-  yield call(startConfirmUsername, payload)
 }
 
 /**
