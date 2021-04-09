@@ -16,11 +16,7 @@ import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
 
 import auth from 'store/ducks/auth/saga'
-
-import signupCreate from 'store/ducks/signup/saga/signupCreate'
-import signupConfirm from 'store/ducks/signup/saga/signupConfirm'
-import signupPassword from 'store/ducks/signup/saga/signupPassword'
-import signupUsername from 'store/ducks/signup/saga/signupUsername'
+import signup from 'store/ducks/signup/saga'
 
 import datingMatchedUsers from 'store/ducks/dating/saga/datingMatchedUsers'
 import datingConfirmedUsers from 'store/ducks/dating/saga/datingConfirmedUsers'
@@ -53,6 +49,7 @@ export default function* rootSaga() {
     .concat(promocodes())
 
     .concat(auth())
+    .concat(signup())
 
     .concat(signupCreate())
     .concat(signupConfirm())
