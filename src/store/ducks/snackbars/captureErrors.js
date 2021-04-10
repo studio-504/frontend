@@ -32,10 +32,6 @@ const getMessageCode = pathOr(DEFAULT_CODE, ['meta', 'messageCode'])
 const getDisplayMessage = (action) => pathOr(DEFAULT_MESSAGE, [action.type, getMessageCode(action), 'text'], messages)
 
 function filterError(action) {
-  if (!action.error) {
-    return true
-  }
-
   if (action.payload instanceof CancelRequestOnSignoutError) {
     return true
   }
