@@ -10,7 +10,7 @@ import { useEffectWhenFocused } from 'services/hooks'
 const ProfileSelfService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const authUser = useSelector(authSelector.authUserSelector)
   const username = path(['username'])(authUser)
 
@@ -23,7 +23,7 @@ const ProfileSelfService = ({ children }) => {
   )
 
   useEffect(() => {
-    dispatch(authActions.authUserRequest())
+    dispatch(authActions.authGetUserRequest())
 
     navigation.setOptions({ headerRight })
   }, [])

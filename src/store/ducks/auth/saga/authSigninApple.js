@@ -1,8 +1,5 @@
 import { put, call, getContext, takeEvery } from 'redux-saga/effects'
-import {
-  federatedAppleSignin,
-  validateUserExistance,
-} from 'services/AWS'
+import { federatedAppleSignin, validateUserExistance } from 'services/AWS'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import * as queries from 'store/ducks/auth/queries'
@@ -10,6 +7,7 @@ import * as queryService from 'services/Query'
 import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
+import { authorize } from 'store/ducks/auth/saga/helpers'
 
 function* getApplePayload() {
   const apple = yield call(federatedAppleSignin)
@@ -29,7 +27,17 @@ function* getApplePayload() {
 /**
  *
  */
-function* handleAppleSignin(userPayload) {
+function* appleSignUpFlow(userPayload) {
+  const navigation = yield NavigationService.getNavigation()
+
+  yield call(handleAnonymousSignin)
+  yield call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
+  yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
+
+  navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
+}
+
+function* appleSignInFlow(userPayload) {
   const AwsAuth = yield getContext('AwsAuth')
   const credentials = {
     token: userPayload.token,
@@ -37,29 +45,7 @@ function* handleAppleSignin(userPayload) {
   }
 
   yield call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
-}
-
-
-function* appleSignUpFlow(userPayload) {
-  const navigation = yield NavigationService.getNavigation()
-
-  yield call(handleAnonymousSignin)
-  yield call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
-  yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
-  yield call(handleAppleSignin, userPayload)
-
-  navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
-}
-
-function* appleSignInFlow(userPayload) {
-  const navigation = yield NavigationService.getNavigation()
-
-  yield call(handleAppleSignin, userPayload)
-
-  yield put(actions.authUserRequest())
-  yield put(actions.authPrefetchRequest())
-
-  navigationActions.navigateResetToApp(navigation)
+  yield call(authorize)
 }
 
 function* handleAuthAppleRequest() {
@@ -76,9 +62,9 @@ function* handleAuthAppleRequest() {
 /**
  *
  */
-function* authSigninAppleRequest(req) {
+function* authSigninAppleRequest() {
   try {
-    yield handleAuthAppleRequest(req.payload)
+    yield handleAuthAppleRequest()
     yield put(actions.authSigninAppleSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
@@ -89,6 +75,4 @@ function* authSigninAppleRequest(req) {
   }
 }
 
-export default () => [
-  takeEvery(constants.AUTH_SIGNIN_APPLE_REQUEST, authSigninAppleRequest),
-]
+export default () => [takeEvery(constants.AUTH_SIGNIN_APPLE_REQUEST, authSigninAppleRequest)]

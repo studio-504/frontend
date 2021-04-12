@@ -7,6 +7,7 @@ import * as queryService from 'services/Query'
 import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
+import { authorize } from 'store/ducks/auth/saga/helpers'
 
 /**
  * Authenticate using google into identity pool
@@ -26,7 +27,17 @@ function* getGooglePayload() {
   return userPayload
 }
 
-function* handleGoogleSignin(userPayload) {
+function* googleSignUpFlow(userPayload) {
+  const navigation = yield NavigationService.getNavigation()
+
+  yield call(handleAnonymousSignin)
+  yield call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
+  yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
+
+  navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
+}
+
+function* googleSignInFlow(userPayload) {
   const AwsAuth = yield getContext('AwsAuth')
   const credentials = {
     token: userPayload.token,
@@ -34,28 +45,7 @@ function* handleGoogleSignin(userPayload) {
   }
 
   yield call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
-}
-
-function* googleSignUpFlow(userPayload) {
-  const navigation = yield NavigationService.getNavigation()
-
-  yield call(handleAnonymousSignin)
-  yield call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
-  yield call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
-  yield call(handleGoogleSignin, userPayload)
-
-  navigationActions.navigateAuthUsername(navigation, { nextRoute: 'app' })
-}
-
-function* googleSignInFlow(userPayload) {
-  const navigation = yield NavigationService.getNavigation()
-
-  yield call(handleGoogleSignin, userPayload)
-
-  yield put(actions.authUserRequest())
-  yield put(actions.authPrefetchRequest())
-
-  navigationActions.navigateResetToApp(navigation)
+  yield call(authorize)
 }
 
 /**

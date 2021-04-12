@@ -15,7 +15,7 @@ function* promoCodesRedeemRequest(req) {
 }
 
 function* promoCodesRedeemSuccess() {
-  yield put(authActions.authUserRequest())
+  yield put(authActions.authGetUserRequest())
 }
 
 export default () => [

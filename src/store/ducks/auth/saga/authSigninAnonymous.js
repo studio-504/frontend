@@ -6,8 +6,7 @@ import * as queryService from 'services/Query'
 import Config from 'react-native-config'
 import path from 'ramda/src/path'
 import { generateExpirationDate } from 'store/ducks/signup/saga/helpers'
-import * as navigationActions from 'navigation/actions'
-import * as NavigationService from 'services/Navigation'
+import { authorize } from 'store/ducks/auth/saga/helpers'
 
 export const COGNITO_PROVIDER = `cognito-idp.${Config.AWS_COGNITO_REGION}.amazonaws.com/${Config.AWS_COGNITO_USER_POOL_ID}`
 
@@ -35,6 +34,7 @@ export function* handleAnonymousSignin() {
 function* authSigninAnonymousRequest() {
   try {
     yield call(handleAnonymousSignin)
+    yield call(authorize)
     yield put(actions.authSigninAnonymousSuccess())
   } catch (error) {
     if (error.message && error.message.includes('The user canceled the sign in request')) {
@@ -45,19 +45,4 @@ function* authSigninAnonymousRequest() {
   }
 }
 
-function* authSigninAnonymousSuccess() {
-  try {
-    yield put(actions.authUserRequest())
-    yield put(actions.authPrefetchRequest())
-
-    const navigation = yield NavigationService.getNavigation()
-    navigationActions.navigateResetToApp(navigation)
-  } catch (error) {
-    //ignore
-  }
-}
-
-export default () => [
-  takeEvery(constants.AUTH_SIGNIN_ANONYMOUS_REQUEST, authSigninAnonymousRequest),
-  takeEvery(constants.AUTH_SIGNIN_ANONYMOUS_SUCCESS, authSigninAnonymousSuccess),
-]
+export default () => [takeEvery(constants.AUTH_SIGNIN_ANONYMOUS_REQUEST, authSigninAnonymousRequest)]

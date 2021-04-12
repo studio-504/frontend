@@ -16,7 +16,7 @@ export function* handleEvent({ eventData, userId }) {
 
   yield put(usersActions.usersGetCardsRequest())
   yield put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-  yield put(authActions.authUserRequest())
+  yield put(authActions.authGetUserRequest())
   yield put(usersActions.usersGetPendingFollowersRequest({ userId }))
 }
 

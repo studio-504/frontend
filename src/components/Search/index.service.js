@@ -12,7 +12,7 @@ import SearchFeedContext from 'components/Search/Context'
 const SearchService = ({ children }) => {
   const dispatch = useDispatch()
   const { feedRef, formFocus, handleFormFocus } = useContext(SearchFeedContext)
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const usersSearch = useSelector(usersSelector.usersSearchSelector())
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())

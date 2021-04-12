@@ -89,11 +89,12 @@ describe('authSigninApple', () => {
         .not.call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
         .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
         .call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
-        .put(actions.authUserRequest())
+        .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())
         .put(actions.authSigninAppleSuccess())
 
         .dispatch(actions.authSigninAppleRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -122,8 +123,7 @@ describe('authSigninApple', () => {
         .call(handleAnonymousSignin)
         .call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
         .call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
-        .call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
-        .not.put(actions.authUserRequest())
+        .not.put(actions.authGetUserRequest())
         .not.put(actions.authPrefetchRequest())
         .put(actions.authSigninAppleSuccess())
 

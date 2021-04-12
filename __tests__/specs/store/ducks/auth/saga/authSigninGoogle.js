@@ -89,11 +89,12 @@ describe('authSigninGoogle', () => {
         .not.call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
         .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
         .call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
-        .put(actions.authUserRequest())
+        .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())
         .put(actions.authSigninGoogleSuccess())
 
         .dispatch(actions.authSigninGoogleRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -122,12 +123,12 @@ describe('authSigninGoogle', () => {
         .call(handleAnonymousSignin)
         .call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
         .call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
-        .call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
-        .not.put(actions.authUserRequest())
+        .not.put(actions.authGetUserRequest())
         .not.put(actions.authPrefetchRequest())
         .put(actions.authSigninGoogleSuccess())
 
         .dispatch(actions.authSigninGoogleRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       testNavigate(navigation, 'Auth.AuthUsername', { nextRoute: 'app' })

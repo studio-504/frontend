@@ -54,11 +54,12 @@ describe('signupPassword', () => {
       .call(encryptPassword, password)
       .call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
 
-      .put(authActions.authUserRequest())
+      .put(authActions.authGetUserRequest())
       .put(authActions.authPrefetchRequest())
       .put(actions.signupPasswordSuccess())
 
       .dispatch(actions.signupPasswordRequest({ password }))
+      .dispatch(authActions.authGetUserSuccess())
       .silentRun()
 
     expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })

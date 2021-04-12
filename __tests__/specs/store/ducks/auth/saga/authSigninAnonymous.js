@@ -46,10 +46,11 @@ describe('authSigninAnonymous', () => {
         .call([queryService, 'apiRequest'], queries.createAnonymousUser)
         .call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, { token: 'IdToken', expires_at: 'expirationDate' }, {})
 
-        .put(actions.authUserRequest())
+        .put(actions.authGetUserRequest())
         .put(actions.authSigninAnonymousSuccess())
 
         .dispatch(actions.authSigninAnonymousRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -74,10 +75,11 @@ describe('authSigninAnonymous', () => {
           {},
         )
 
-        .put(actions.authUserRequest())
+        .put(actions.authGetUserRequest())
         .put(actions.authSigninAnonymousSuccess())
 
         .dispatch(actions.authSigninAnonymousRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })

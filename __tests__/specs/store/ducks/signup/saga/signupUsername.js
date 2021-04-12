@@ -2,6 +2,7 @@ import { expectSaga } from 'redux-saga-test-plan'
 import { getContext } from 'redux-saga/effects'
 import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
 import * as actions from 'store/ducks/signup/actions'
+import * as authActions from 'store/ducks/auth/actions'
 import signupUsername from 'store/ducks/signup/saga/signupUsername'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
@@ -30,6 +31,7 @@ describe('signupUsername saga', () => {
       await setupSaga()
         .put(actions.signupUsernameSuccess())
         .dispatch(actions.signupUsernameRequest({ username }))
+
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })
@@ -43,6 +45,7 @@ describe('signupUsername saga', () => {
       await setupSaga()
         .put(actions.signupUsernameSuccess())
         .dispatch(actions.signupUsernameRequest({ username, nextRoute: 'app' }))
+        .dispatch(authActions.authGetUserSuccess())
         .silentRun()
 
       expect(queryService.apiRequest).toHaveBeenCalledWith(queries.setUsername, { username })

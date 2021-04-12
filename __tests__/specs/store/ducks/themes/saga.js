@@ -74,7 +74,7 @@ describe('Themes saga', () => {
         .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
         .call(queryService.apiRequest, queries.setThemeCode, { themeCode })
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
         .put(actions.themesEditSuccess())
 
         .dispatch(actions.themesEditRequest({ themeCode }))

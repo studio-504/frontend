@@ -6,7 +6,7 @@ export const initialState = {
   /**
    *
    */
-  authUser: {
+  authGetUser: {
     data: {},
     status: 'idle',
   },
@@ -46,6 +46,8 @@ export const initialState = {
     status: 'idle',
   },
 }
+
+
 
 /**
  *
@@ -238,34 +240,34 @@ const authForgotConfirmIdle = (state) => update(state, {
  *
  */
 const authDataSuccess = (state, action) => update(state, {
-  authUser: {
+  authGetUser: {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authUserRequest = (state) => update(state, {
-  authUser: {
+const authGetUserRequest = (state) => update(state, {
+  authGetUser: {
     status: { $set: 'loading' },
   },
 })
 
-const authUserSuccess = (state, action) => update(state, {
-  authUser: {
+const authGetUserSuccess = (state, action) => update(state, {
+  authGetUser: {
     data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
 
-const authUserFailure = (state) => update(state, {
-  authUser: {
+const authGetUserFailure = (state) => update(state, {
+  authGetUser: {
     status: { $set: 'failure' },
   },
 })
 
-const authUserIdle = (state) => update(state, {
-  authUser: {
-    $set: initialState.authUser,
+const authGetUserIdle = (state) => update(state, {
+  authGetUser: {
+    $set: initialState.authGetUser,
   },
 })
 
@@ -307,8 +309,8 @@ export default handleActions({
   [constants.AUTH_FORGOT_CONFIRM_FAILURE]: authForgotConfirmFailure,
   [constants.AUTH_FORGOT_CONFIRM_IDLE]: authForgotConfirmIdle,
 
-  [constants.AUTH_USER_REQUEST]: authUserRequest,
-  [constants.AUTH_USER_SUCCESS]: authUserSuccess,
-  [constants.AUTH_USER_FAILURE]: authUserFailure,
-  [constants.AUTH_USER_IDLE]: authUserIdle,
+  [constants.AUTH_GET_USER_REQUEST]: authGetUserRequest,
+  [constants.AUTH_GET_USER_SUCCESS]: authGetUserSuccess,
+  [constants.AUTH_GET_USER_FAILURE]: authGetUserFailure,
+  [constants.AUTH_GET_USER_IDLE]: authGetUserIdle,
 }, initialState)
