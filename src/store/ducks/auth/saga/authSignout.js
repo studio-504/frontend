@@ -11,28 +11,9 @@ import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 function* handleAuthSignoutRequest() {
   const AwsAuth = yield getContext('AwsAuth')
 
-  yield call([AwsAuth, 'signOut'], { global: true })
-
+  yield call([AwsAuth, 'signOut'])
   yield call(federatedGoogleSignout)
 
-  yield put(actions.authFlowIdle())
-
-  return {
-    meta: {},
-    data: {},
-  }
-}
-
-function* authSignoutRequest(req) {
-  try {
-    const { data, meta } = yield handleAuthSignoutRequest(req.payload)
-    yield put(actions.authSignoutSuccess({ data, meta }))
-  } catch (error) {
-    yield put(actions.authSignoutFailure(error, { authenticated: false }))
-  }
-}
-
-function* authSignoutSuccess() {
   yield put(subscriptionsActions.subscriptionsMainIdle())
   yield put(subscriptionsActions.subscriptionsPollIdle())
 
@@ -40,7 +21,13 @@ function* authSignoutSuccess() {
   navigationActions.navigateReset(ReactNavigationRef.current)
 }
 
-export default () => [
-  takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest),
-  takeEvery(constants.AUTH_SIGNOUT_SUCCESS, authSignoutSuccess),
-]
+function* authSignoutRequest() {
+  try {
+    yield handleAuthSignoutRequest()
+    yield put(actions.authSignoutSuccess())
+  } catch (error) {
+    yield put(actions.authSignoutFailure(error))
+  }
+}
+
+export default () => [takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest)]
