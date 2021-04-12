@@ -1,4 +1,4 @@
-import { put, call, race, take, getContext, takeEvery } from 'redux-saga/effects'
+import { put, call, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import { federatedGoogleSignout } from 'services/AWS'
@@ -13,21 +13,13 @@ function* handleAuthSignoutRequest() {
 
   yield call([AwsAuth, 'signOut'], { global: true })
 
-  yield put(actions.authResetRequest({}))
-  yield race({
-    resetSuccess: take(constants.AUTH_RESET_SUCCESS),
-    resetFailure: take(constants.AUTH_RESET_FAILURE),
-  })
-
   yield call(federatedGoogleSignout)
 
   yield put(actions.authFlowIdle())
 
   return {
-    meta: {
-    },
-    data: {
-    },
+    meta: {},
+    data: {},
   }
 }
 

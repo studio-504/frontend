@@ -12,14 +12,6 @@ export const authFlowSuccess = createAction(constants.AUTH_FLOW_SUCCESS)
 export const authFlowFailure = createFailureAction(constants.AUTH_FLOW_FAILURE)
 
 /**
- * Clear cached credentials for amplify
- */
-export const authResetIdle = createAction(constants.AUTH_RESET_IDLE)
-export const authResetRequest = createAction(constants.AUTH_RESET_REQUEST)
-export const authResetSuccess = createAction(constants.AUTH_RESET_SUCCESS)
-export const authResetFailure = createFailureAction(constants.AUTH_RESET_FAILURE)
-
-/**
  * Application Initial data prefetch
  */
 export const authPrefetchIdle = createAction(constants.AUTH_PREFETCH_IDLE)

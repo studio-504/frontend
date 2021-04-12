@@ -113,14 +113,4 @@ export default {
       text: 'Failed to complete auth prefetch',
     },
   },
-
-  /**
-   *
-   */
-  [constants.AUTH_RESET_FAILURE]: {
-    GENERIC: {
-      code: 'GENERIC',
-      text: 'Can\'t reset cognito credentials',
-    },
-  },
 }
