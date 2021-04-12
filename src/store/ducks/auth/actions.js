@@ -12,28 +12,12 @@ export const authFlowSuccess = createAction(constants.AUTH_FLOW_SUCCESS)
 export const authFlowFailure = createFailureAction(constants.AUTH_FLOW_FAILURE)
 
 /**
- * Solely for cognito request
- */
-export const authTokenIdle = createAction(constants.AUTH_TOKEN_IDLE)
-export const authTokenRequest = createAction(constants.AUTH_TOKEN_REQUEST)
-export const authTokenSuccess = createAction(constants.AUTH_TOKEN_SUCCESS)
-export const authTokenFailure = createFailureAction(constants.AUTH_TOKEN_FAILURE)
-
-/**
  * Clear cached credentials for amplify
  */
 export const authResetIdle = createAction(constants.AUTH_RESET_IDLE)
 export const authResetRequest = createAction(constants.AUTH_RESET_REQUEST)
 export const authResetSuccess = createAction(constants.AUTH_RESET_SUCCESS)
 export const authResetFailure = createFailureAction(constants.AUTH_RESET_FAILURE)
-
-/**
- * Solely for cognito request
- */
-export const authDataIdle = createAction(constants.AUTH_DATA_IDLE)
-export const authDataRequest = createAction(constants.AUTH_DATA_REQUEST)
-export const authDataSuccess = createAction(constants.AUTH_DATA_SUCCESS)
-export const authDataFailure = createFailureAction(constants.AUTH_DATA_FAILURE)
 
 /**
  * Application Initial data prefetch

@@ -239,13 +239,6 @@ const authForgotConfirmIdle = (state) => update(state, {
 /**
  *
  */
-const authDataSuccess = (state, action) => update(state, {
-  authGetUser: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-  },
-})
-
 const authGetUserRequest = (state) => update(state, {
   authGetUser: {
     status: { $set: 'loading' },
@@ -276,8 +269,6 @@ export default handleActions({
   [constants.AUTH_FLOW_SUCCESS]: authFlowSuccess,
   [constants.AUTH_FLOW_FAILURE]: authFlowFailure,
   [constants.AUTH_FLOW_IDLE]: authFlowIdle,
-
-  [constants.AUTH_DATA_SUCCESS]: authDataSuccess,
 
   [constants.AUTH_SIGNIN_COGNITO_REQUEST]: authSigninCognitoRequest,
   [constants.AUTH_SIGNIN_COGNITO_SUCCESS]: authSigninCognitoSuccess,

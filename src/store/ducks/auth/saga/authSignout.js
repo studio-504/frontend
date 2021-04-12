@@ -2,7 +2,6 @@ import { put, call, race, take, getContext, takeEvery } from 'redux-saga/effects
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import { federatedGoogleSignout } from 'services/AWS'
-import { resetAuthUserPersist } from 'services/Auth'
 import * as navigationActions from 'navigation/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 
@@ -20,7 +19,6 @@ function* handleAuthSignoutRequest() {
     resetFailure: take(constants.AUTH_RESET_FAILURE),
   })
 
-  yield call(resetAuthUserPersist)
   yield call(federatedGoogleSignout)
 
   yield put(actions.authFlowIdle())

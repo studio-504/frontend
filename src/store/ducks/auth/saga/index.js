@@ -6,8 +6,6 @@ import authSigninAnonymous from 'store/ducks/auth/saga/authSigninAnonymous'
 import authSignout from 'store/ducks/auth/saga/authSignout'
 import authReset from 'store/ducks/auth/saga/authReset'
 
-import authData from 'store/ducks/auth/saga/authData'
-import authToken from 'store/ducks/auth/saga/authToken'
 import authFlow from 'store/ducks/auth/saga/authFlow'
 import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
 import authGetUser from 'store/ducks/auth/saga/authGetUser'
@@ -19,8 +17,6 @@ export default () =>
     .concat(authSigninGoogle())
     .concat(authSigninApple())
     .concat(authSigninAnonymous())
-    .concat(authData())
-    .concat(authToken())
     .concat(authFlow())
     .concat(authPrefetch())
     .concat(authSignout())
