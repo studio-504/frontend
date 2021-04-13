@@ -1,19 +1,15 @@
-import { put, call, takeEvery, getContext } from 'redux-saga/effects'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import * as navigationActions from 'navigation/actions'
-import * as NavigationService from 'services/Navigation'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import authorize, { currentUserCredentials } from 'store/ducks/auth/saga/authorize'
 
 function* handleAuthFlowRequest() {
-  const AwsAuth = yield getContext('AwsAuth')
-  const navigation = yield NavigationService.getNavigation()
-  const currentCredentials = yield AwsAuth.currentCredentials()
+  const currentCredentials = yield call(currentUserCredentials)
 
   if (currentCredentials.authenticated) {
     yield call(authorize)
   } else {
-    navigationActions.navigateAuthHome(navigation)
+    throw new Error('Failed to authorize')
   }
 }
 

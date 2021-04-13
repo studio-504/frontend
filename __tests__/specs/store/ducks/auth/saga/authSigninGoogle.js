@@ -15,7 +15,7 @@ const googlePayload = {
   user: {
     id: 'id',
     name: 'name',
-    email: 'email',
+    email: 'valid@email.com',
   },
   token: 'token',
   expires_at: 'expires_at',
@@ -40,7 +40,7 @@ const error = new Error('Error')
 /**
  * Mock Functions
  */
-const AwsAuth = { federatedSignIn: jest.fn() }
+const AwsAuth = { federatedSignIn: jest.fn(), currentUserCredentials: jest.fn() }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 jest.mock('services/AWS', () => ({
@@ -89,6 +89,7 @@ describe('authSigninGoogle', () => {
         .not.call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
         .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
         .call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
+
         .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())
         .put(actions.authSigninGoogleSuccess())

@@ -2,7 +2,7 @@ import { put, call, getContext, takeEvery } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
 import propOr from 'ramda/src/propOr'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
  * Signin user. Currently supports email and password or phone number and password methods

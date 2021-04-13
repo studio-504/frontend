@@ -6,7 +6,7 @@ import * as queryService from 'services/Query'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
 import path from 'ramda/src/path'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
  *

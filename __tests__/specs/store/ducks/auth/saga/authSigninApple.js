@@ -40,7 +40,7 @@ const error = new Error('Error')
 /**
  * Mock Functions
  */
-const AwsAuth = { federatedSignIn: jest.fn() }
+const AwsAuth = { federatedSignIn: jest.fn(), currentUserCredentials: jest.fn() }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 jest.mock('services/AWS', () => ({

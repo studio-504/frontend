@@ -2,13 +2,13 @@ import { getContext } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as actions from 'store/ducks/auth/actions'
 import authFlow from 'store/ducks/auth/saga/authFlow'
-import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import { testAsRootSaga } from 'tests/utils/helpers'
+import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
  * Mock Function
  */
-const AwsAuth = { currentCredentials: jest.fn().mockResolvedValue({ authenticated: true }) }
+const AwsAuth = { currentUserCredentials: jest.fn().mockResolvedValue({ authenticated: true }) }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 /**
@@ -38,22 +38,20 @@ describe('Auth flow', () => {
   })
 
   it('guest', async () => {
-    AwsAuth.currentCredentials.mockResolvedValueOnce({ authenticated: false })
+    AwsAuth.currentUserCredentials.mockResolvedValueOnce({ authenticated: false })
 
     await setupSaga()
       .not.call(authorize)
-      .put(actions.authFlowSuccess())
+      .put(actions.authFlowFailure(new Error('Failed to authorize')))
 
       .dispatch(actions.authFlowRequest())
       .dispatch(actions.authGetUserSuccess())
       .silentRun()
-
-    testNavigate(navigation, 'Auth.AuthHome')
   })
 
   it('failure', async () => {
     const error = new Error('Error')
-    AwsAuth.currentCredentials.mockRejectedValueOnce(error)
+    AwsAuth.currentUserCredentials.mockRejectedValueOnce(error)
 
     await setupSaga()
       .put(actions.authFlowFailure(error))

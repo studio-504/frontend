@@ -13,6 +13,11 @@ import { throwError } from 'redux-saga-test-plan/providers'
 const password = 'password'
 const encryptedPassword = 'encryptedPassword'
 
+/**
+ * Mock Functions
+ */
+const AwsAuth = { currentUserCredentials: jest.fn() }
+
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 const navigation = { reset: jest.fn() }
 const encrypt = jest.fn().mockReturnValue(encryptedPassword)
@@ -20,6 +25,14 @@ const encrypt = jest.fn().mockReturnValue(encryptedPassword)
 jest.mock('react-native-config', () => ({
   REAL_PUBLIC_KEY_PEM: 'REAL_PUBLIC_KEY_PEM',
 }))
+
+/**
+ * Mock Context
+ */
+const context = [
+  [getContext('AwsAuth'), AwsAuth],
+  [getContext('ReactNavigationRef'), { current: navigation }],
+]
 
 describe('signupPassword', () => {
   beforeAll(() => {
@@ -46,10 +59,7 @@ describe('signupPassword', () => {
 
   it('success', async () => {
     await expectSaga(testAsRootSaga(signupPassword))
-      .provide([
-        [getContext('ReactNavigationRef'), { current: navigation }],
-        [matchers.call.fn(encryptPassword), encryptedPassword],
-      ])
+      .provide([...context, [matchers.call.fn(encryptPassword), encryptedPassword]])
 
       .call(encryptPassword, password)
       .call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
@@ -69,10 +79,7 @@ describe('signupPassword', () => {
     const error = new Error('Error')
 
     await expectSaga(testAsRootSaga(signupPassword))
-      .provide([
-        [getContext('ReactNavigationRef'), { current: navigation }],
-        [matchers.call.fn(encryptPassword), throwError(error)],
-      ])
+      .provide([...context, [matchers.call.fn(encryptPassword), throwError(error)]])
 
       .call(encryptPassword, password)
 

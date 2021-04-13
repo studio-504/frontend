@@ -13,7 +13,7 @@ const password = 'password'
 /**
  * Mock Functions
  */
-const AwsAuth = { signIn: jest.fn().mockResolvedValue(true) }
+const AwsAuth = { signIn: jest.fn().mockResolvedValue(true), currentUserCredentials: jest.fn() }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 /**

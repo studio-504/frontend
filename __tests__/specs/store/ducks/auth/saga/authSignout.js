@@ -23,20 +23,42 @@ const context = [
 ]
 
 describe('authSignout', () => {
-  it('success', async () => {
-    await expectSaga(testAsRootSaga(authSignout))
-      .provide(context)
+  describe('success', () => {
+    const testSignout = async (action) => {
+      await expectSaga(testAsRootSaga(authSignout))
+        .provide(context)
 
-      .call([AwsAuth, 'signOut'])
-      .call(federatedGoogleSignout)
-      .put(subscriptionsActions.subscriptionsMainIdle())
-      .put(subscriptionsActions.subscriptionsPollIdle())
-      .put(actions.authSignoutSuccess())
+        .call([AwsAuth, 'signOut'])
+        .call(federatedGoogleSignout)
+        .put(subscriptionsActions.subscriptionsMainIdle())
+        .put(subscriptionsActions.subscriptionsPollIdle())
+        .put(actions.authSignoutSuccess())
 
-      .dispatch(actions.authSignoutRequest())
-      .silentRun()
+        .dispatch(action)
+        .silentRun()
 
-    expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'Auth' }] })
+      expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'Auth' }] })
+    }
+
+    it('authSignoutRequest', async () => {
+      await testSignout(actions.authSignoutRequest())
+    })
+
+    it('authSigninAnonymousFailure', async () => {
+      await testSignout(actions.authSigninAnonymousFailure())
+    })
+
+    it('authSigninAppleFailure', async () => {
+      await testSignout(actions.authSigninAppleFailure())
+    })
+
+    it('authSigninCognitoFailure', async () => {
+      await testSignout(actions.authSigninCognitoFailure())
+    })
+
+    it('authSigninGoogleFailure', async () => {
+      await testSignout(actions.authSigninGoogleFailure())
+    })
   })
 
   it('failure', async () => {

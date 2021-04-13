@@ -9,10 +9,21 @@ import * as queryService from 'services/Query'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
+/**
+ * Mock Functions
+ */
+const AwsAuth = { currentUserCredentials: jest.fn() }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
-const setupSaga = () =>
-  expectSaga(testAsRootSaga(signupUsername)).provide([[getContext('ReactNavigationRef'), { current: navigation }]])
+/**
+ * Mock Context
+ */
+const context = [
+  [getContext('AwsAuth'), AwsAuth],
+  [getContext('ReactNavigationRef'), { current: navigation }],
+]
+
+const setupSaga = () => expectSaga(testAsRootSaga(signupUsername)).provide(context)
 
 describe('signupUsername saga', () => {
   const username = 'username'

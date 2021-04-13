@@ -7,7 +7,8 @@ import * as queryService from 'services/Query'
 import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import authorize from 'store/ducks/auth/saga/authorize'
+import * as signupQueries from 'store/ducks/signup/queries'
 
 function* getApplePayload() {
   const apple = yield call(federatedAppleSignin)
@@ -22,6 +23,14 @@ function* getApplePayload() {
   }
 
   return userPayload
+}
+
+function* createAppleUser(userPayload) {
+  yield call([queryService, 'apiRequest'], signupQueries.createAppleUser, {
+    username: userPayload.email.split('@')[0],
+    fullName: userPayload.name,
+    appleIdToken: userPayload.token,
+  })
 }
 
 /**
@@ -45,7 +54,13 @@ function* appleSignInFlow(userPayload) {
   }
 
   yield call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
-  yield call(authorize)
+
+  try {
+    yield call(authorize)
+  } catch (error) {
+    yield call(createAppleUser, userPayload)
+    yield call(authorize)
+  }
 }
 
 function* handleAuthAppleRequest() {

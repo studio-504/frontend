@@ -30,4 +30,11 @@ function* authSignoutRequest() {
   }
 }
 
-export default () => [takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest)]
+export default () => [
+  takeEvery(constants.AUTH_SIGNOUT_REQUEST, authSignoutRequest),
+  takeEvery(constants.AUTH_FLOW_FAILURE, authSignoutRequest),
+  takeEvery(constants.AUTH_SIGNIN_ANONYMOUS_FAILURE, authSignoutRequest),
+  takeEvery(constants.AUTH_SIGNIN_APPLE_FAILURE, authSignoutRequest),
+  takeEvery(constants.AUTH_SIGNIN_COGNITO_FAILURE, authSignoutRequest),
+  takeEvery(constants.AUTH_SIGNIN_GOOGLE_FAILURE, authSignoutRequest),
+]

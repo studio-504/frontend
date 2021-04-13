@@ -5,7 +5,7 @@ import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
-import { authorize } from 'store/ducks/auth/saga/helpers'
+import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
  *

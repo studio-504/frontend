@@ -16,6 +16,7 @@ const DEFAULT_CODE = 'GENERIC'
 const DEFAULT_MESSAGE = 'Oops! Something went wrong'
 
 const BLACKLIST = [
+  authConstants.AUTH_GET_USER_FAILURE,
   authConstants.AUTH_FLOW_FAILURE,
   authConstants.AUTH_PREFETCH_FAILURE,
   cacheConstants.CACHE_FETCH_FAILURE,

@@ -8,12 +8,18 @@ import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/signup/queries'
 import * as helpers from 'store/ducks/signup/saga/helpers'
 
-const navigation = { reset: jest.fn() }
+/**
+ * Mock Data
+ */
 
 const tokens = { IdToken: 'IdToken' }
 
-const AwsAuth = { federatedSignIn: jest.fn(), currentCredentials: jest.fn() }
-AwsAuth.currentCredentials.mockResolvedValue({ authenticated: false })
+/**
+ * Mock Functions
+ */
+const navigation = { reset: jest.fn() }
+const AwsAuth = { federatedSignIn: jest.fn(), currentUserCredentials: jest.fn() }
+AwsAuth.currentUserCredentials.mockResolvedValue({ authenticated: false })
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 jest.spyOn(helpers, 'generateExpirationDate').mockReturnValue('expirationDate')
@@ -22,6 +28,14 @@ jest.mock('react-native-config', () => ({
   AWS_COGNITO_REGION: 'AWS_COGNITO_REGION',
   AWS_COGNITO_USER_POOL_ID: 'AWS_COGNITO_USER_POOL_ID',
 }))
+
+/**
+ * Mock Context
+ */
+const context = [
+  [getContext('AwsAuth'), AwsAuth],
+  [getContext('ReactNavigationRef'), { current: navigation }],
+]
 
 describe('authSigninAnonymous', () => {
   afterEach(() => {
@@ -37,8 +51,7 @@ describe('authSigninAnonymous', () => {
     it('guest user', async () => {
       await expectSaga(testAsRootSaga(authSigninAnonymous))
         .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
+          ...context,
           [matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { createAnonymousUser: tokens } })],
           [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
         ])
@@ -57,12 +70,11 @@ describe('authSigninAnonymous', () => {
     })
 
     it('authorized user', async () => {
-      AwsAuth.currentCredentials.mockResolvedValueOnce({ authenticated: true })
+      AwsAuth.currentUserCredentials.mockResolvedValueOnce({ authenticated: true })
 
       await expectSaga(testAsRootSaga(authSigninAnonymous))
         .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
+          ...context,
           [matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { createAnonymousUser: tokens } })],
           [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
         ])
@@ -91,11 +103,7 @@ describe('authSigninAnonymous', () => {
       const nativeError = new Error('Failed to obtain flow')
 
       await expectSaga(testAsRootSaga(authSigninAnonymous))
-        .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
-          [matchers.call.fn(queryService.apiRequest), Promise.reject(nativeError)],
-        ])
+        .provide([...context, [matchers.call.fn(queryService.apiRequest), Promise.reject(nativeError)]])
 
         .put(actions.authSigninAnonymousFailure(nativeError))
 
