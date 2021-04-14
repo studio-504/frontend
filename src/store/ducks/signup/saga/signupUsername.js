@@ -12,16 +12,7 @@ import authorize from 'store/ducks/auth/saga/authorize'
  *
  */
 function* handleSignupUsernameRequest(payload) {
-  const nextRoute = path(['nextRoute'], payload)
-  const navigation = yield NavigationService.getNavigation()
-
   yield call([queryService, 'apiRequest'], queries.setUsername, { username: payload.username })
-
-  if (nextRoute === 'app') {
-    yield call(authorize)
-  } else {
-    navigationActions.navigateAuthPassword(navigation)
-  }
 }
 
 /**
@@ -30,10 +21,25 @@ function* handleSignupUsernameRequest(payload) {
 function* signupUsernameRequest(req) {
   try {
     yield call(handleSignupUsernameRequest, req.payload)
-    yield put(actions.signupUsernameSuccess())
+
+    yield put(actions.signupUsernameSuccess(req.payload))
   } catch (error) {
     yield put(actions.signupUsernameFailure(error))
   }
 }
 
-export default () => [takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest)]
+function* signupUsernameSuccess(req) {
+  const nextRoute = path(['nextRoute'], req.payload)
+  const navigation = yield NavigationService.getNavigation()
+
+  if (nextRoute === 'app') {
+    yield call(authorize)
+  } else {
+    navigationActions.navigateAuthPassword(navigation)
+  }
+}
+
+export default () => [
+  takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest),
+  takeEvery(constants.SIGNUP_USERNAME_SUCCESS, signupUsernameSuccess),
+]
