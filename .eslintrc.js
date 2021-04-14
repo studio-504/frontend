@@ -63,6 +63,7 @@ module.exports = {
           'setupSaga',
           'testReducer',
           'testSignout',
+          'testSetScope',
         ],
       },
     ],

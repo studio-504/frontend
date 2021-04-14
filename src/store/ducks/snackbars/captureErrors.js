@@ -71,8 +71,6 @@ export default function* captureErrors(action) {
     if (!skipError) {
       yield call(showError, action)
     }
-
-    Logger.captureFailureAction(action)
   } catch (error) {
     Logger.captureException(error)
   }

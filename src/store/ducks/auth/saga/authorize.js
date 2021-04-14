@@ -1,9 +1,9 @@
+import Config from 'react-native-config'
 import { put, race, take, call, getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
 import * as constants from 'store/ducks/auth/constants'
-import Config from 'react-native-config'
 
 /**
  *
