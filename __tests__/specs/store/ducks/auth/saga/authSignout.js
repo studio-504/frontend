@@ -30,9 +30,6 @@ describe('authSignout', () => {
 
         .call([AwsAuth, 'signOut'])
         .call(federatedGoogleSignout)
-        .put(subscriptionsActions.subscriptionsMainIdle())
-        .put(subscriptionsActions.subscriptionsPollIdle())
-        .put(actions.authSignoutSuccess())
 
         .dispatch(action)
         .silentRun()
@@ -41,7 +38,35 @@ describe('authSignout', () => {
     }
 
     it('authSignoutRequest', async () => {
-      await testSignout(actions.authSignoutRequest())
+      await expectSaga(testAsRootSaga(authSignout))
+        .provide(context)
+
+        .call([AwsAuth, 'signOut'])
+        .call(federatedGoogleSignout)
+        .put(subscriptionsActions.subscriptionsMainIdle())
+        .put(subscriptionsActions.subscriptionsPollIdle())
+        .put(actions.authSignoutSuccess())
+
+        .dispatch(actions.authSignoutRequest())
+        .silentRun()
+
+      expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'Auth' }] })
+    })
+
+    it('authFlowFailure', async () => {
+      await expectSaga(testAsRootSaga(authSignout))
+        .provide(context)
+
+        .call([AwsAuth, 'signOut'])
+        .call(federatedGoogleSignout)
+        .put(subscriptionsActions.subscriptionsMainIdle())
+        .put(subscriptionsActions.subscriptionsPollIdle())
+        .put(actions.authSignoutSuccess())
+
+        .dispatch(actions.authFlowFailure())
+        .silentRun()
+
+      expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'Auth' }] })
     })
 
     it('authSigninAnonymousFailure', async () => {

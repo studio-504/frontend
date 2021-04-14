@@ -5,23 +5,25 @@ import { federatedGoogleSignout } from 'services/AWS'
 import * as navigationActions from 'navigation/actions'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 
-const SINGOUT_ACTIONS = [
-  constants.AUTH_SIGNOUT_REQUEST,
-  constants.AUTH_FLOW_FAILURE,
+const SIGNIN_FAILURE_ACTIONS = [
   constants.AUTH_SIGNIN_ANONYMOUS_FAILURE,
   constants.AUTH_SIGNIN_APPLE_FAILURE,
   constants.AUTH_SIGNIN_COGNITO_FAILURE,
   constants.AUTH_SIGNIN_GOOGLE_FAILURE,
 ]
 
-/**
- * Remove cognito credentials
- */
-function* handleAuthSignoutRequest() {
+function* singOut() {
   const AwsAuth = yield getContext('AwsAuth')
 
   yield call([AwsAuth, 'signOut'])
   yield call(federatedGoogleSignout)
+}
+
+/**
+ * Remove cognito credentials
+ */
+function* handleAuthSignoutRequest() {
+  yield call(singOut)
 
   yield put(subscriptionsActions.subscriptionsMainIdle())
   yield put(subscriptionsActions.subscriptionsPollIdle())
@@ -39,4 +41,7 @@ function* authSignoutRequest() {
   }
 }
 
-export default () => [takeEvery(SINGOUT_ACTIONS, authSignoutRequest)]
+export default () => [
+  takeEvery([constants.AUTH_SIGNOUT_REQUEST, constants.AUTH_FLOW_FAILURE], authSignoutRequest),
+  takeEvery(SIGNIN_FAILURE_ACTIONS, singOut),
+]
