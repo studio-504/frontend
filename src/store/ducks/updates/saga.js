@@ -6,15 +6,17 @@ import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
 import * as constants from 'store/ducks/updates/constants'
 
-function isNewerThan(v1, v2) {
-  v1 = v1.split('.')
-  v2 = v2.split('.')
+export function isNewerThan(v1, v2) {
+  v1 = v1.split('.').map((i) => parseInt(i, 10))
+  v2 = v2.split('.').map((i) => parseInt(i, 10))
+
   for (var i = 0; i < Math.max(v1.length, v2.length); i++) {
-    if (v1[i] == undefined) return false
-    if (v2[i] == undefined) return true
+    if (!v1[i] && v1[i] !== 0) return false
+    if (!v2[i] && v2[i] !== 0) return true
     if (v1[i] > v2[i]) return true
     if (v1[i] < v2[i]) return false
   }
+
   return false
 }
 
