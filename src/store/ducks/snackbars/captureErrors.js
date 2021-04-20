@@ -7,6 +7,7 @@ import * as authConstants from 'store/ducks/auth/constants'
 import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
+import * as pushConstants from 'store/ducks/push/constants'
 import * as themesConstants from 'store/ducks/themes/constants'
 import * as Logger from 'services/Logger'
 import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError, stringifyFailureAction } from 'store/errors'
@@ -23,7 +24,7 @@ const BLACKLIST = [
   authConstants.AUTH_PREFETCH_FAILURE,
   cacheConstants.CACHE_FETCH_FAILURE,
   postsConstants.POSTS_REPORT_POST_VIEWS_FAILURE,
-  usersConstants.USERS_SET_APNS_TOKEN_FAILURE,
+  pushConstants.PUSH_SET_APNS_TOKEN_FAILURE,
   usersConstants.USERS_REPORT_SCREEN_VIEWS_FAILURE,
   themesConstants.THEMES_CHECK_DEFAULT_FAILURE,
 ]

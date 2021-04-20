@@ -155,14 +155,6 @@ export const usersDeleteCardFailure = createFailureAction(constants.USERS_DELETE
 /**
  *
  */
-export const usersSetApnsTokenIdle = createAction(constants.USERS_SET_APNS_TOKEN_IDLE)
-export const usersSetApnsTokenRequest = createAction(constants.USERS_SET_APNS_TOKEN_REQUEST)
-export const usersSetApnsTokenSuccess = createAction(constants.USERS_SET_APNS_TOKEN_SUCCESS)
-export const usersSetApnsTokenFailure = createFailureAction(constants.USERS_SET_APNS_TOKEN_FAILURE)
-
-/**
- *
- */
 export const usersDeleteAvatarIdle = createAction(constants.USERS_DELETE_AVATAR_IDLE)
 export const usersDeleteAvatarRequest = createAction(constants.USERS_DELETE_AVATAR_REQUEST)
 export const usersDeleteAvatarSuccess = createAction(constants.USERS_DELETE_AVATAR_SUCCESS)

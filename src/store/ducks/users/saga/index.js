@@ -425,18 +425,7 @@ function* usersDeleteCardRequest(req) {
   }
 }
 
-/**
- *
- */
-function* usersSetApnsTokenRequest(req) {
-  try {
-    const data = yield call([queryService, 'apiRequest'], queries.setUserAPNSToken, req.payload)
 
-    yield put(actions.usersSetApnsTokenSuccess({ payload: req.payload, data, meta: {} }))
-  } catch (error) {
-    yield put(actions.usersSetApnsTokenFailure(error, req.payload))
-  }
-}
 
 /**
  *
@@ -465,7 +454,6 @@ export default () => [
   takeLatest(constants.USERS_GET_TRENDING_USERS_REQUEST, usersGetTrendingUsersRequest),
   takeLatest(constants.USERS_GET_CARDS_REQUEST, usersGetCardsRequest),
   takeLatest(constants.USERS_DELETE_CARD_REQUEST, usersDeleteCardRequest),
-  takeLatest(constants.USERS_SET_APNS_TOKEN_REQUEST, usersSetApnsTokenRequest),
   takeLatest(constants.USERS_DELETE_AVATAR_REQUEST, usersDeleteProfilePhoto),
   takeLatest(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST, usersReportScreenViewsRequest),
   takeLatest(constants.USERS_CHANGE_AVATAR_REQUEST, usersChangeAvatarRequest),

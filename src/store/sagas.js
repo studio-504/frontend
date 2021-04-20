@@ -14,6 +14,7 @@ import updates from 'store/ducks/updates/saga'
 import themes from 'store/ducks/themes/saga'
 import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
+import push from 'store/ducks/push/saga'
 
 import auth from 'store/ducks/auth/saga'
 
@@ -36,6 +37,7 @@ import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 export default function* rootSaga() {
   yield all([]
     .concat(analytics())
+    .concat(push())
     .concat(snackbars())
     .concat(camera())
     .concat(albums())
