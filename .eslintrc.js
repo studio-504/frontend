@@ -60,7 +60,6 @@ module.exports = {
           'run',
           'testField',
           'testNavigate',
-          'testEntitiesMerge',
           'setupSaga',
           'testReducer',
         ],

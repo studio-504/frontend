@@ -98,7 +98,7 @@ const mixedContacts = [
     emails: ['test1@email.com', 'test2@email.com'],
     phones: ['+19999999', '+2999999', '(888) 555-5512', '999-999', '7', ''],
     thumbnailPath: 'thumbnailPath',
-    user: { userId: 2 },
+    user: { userId: '2' },
   },
   {
     contactId: 1,
@@ -106,7 +106,7 @@ const mixedContacts = [
     emails: ['test1@email.com', 'test2@email.com'],
     phones: ['+19999999', '+2999999', '(888) 555-5512', '999-999', '7', ''],
     thumbnailPath: 'thumbnailPath',
-    user: { userId: 1 },
+    user: { userId: '1' },
   },
   {
     contactId: 2,
@@ -209,8 +209,8 @@ describe('Contacts saga', () => {
     queryService.apiRequest.mockResolvedValueOnce({
       data: {
         findContacts: [
-          { contactId: normalizedItems[0].contactId, user: { userId: 1 } },
-          { contactId: normalizedItems[2].contactId, user: { userId: 2 } },
+          { contactId: normalizedItems[0].contactId, user: { userId: '1' } },
+          { contactId: normalizedItems[2].contactId, user: { userId: '2' } },
         ],
       },
     })

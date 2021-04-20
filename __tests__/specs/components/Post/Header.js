@@ -15,12 +15,12 @@ jest.mock('services/Privacy', () => ({
 }))
 
 const postId = 1
-const postedBy = { userId: 1, username: 'username' }
-const user = { userId: 2 }
+const postedBy = { userId: '1', username: 'username' }
+const user = { userId: '2' }
 const post = {
   postId,
   postedBy,
-  originalPost: { postedBy: { userId: 2, username: 'username2' } },
+  originalPost: { postedBy: { userId: '2', username: 'username2' } },
   expiresAt: '2020-09-10T05:26:58.746Z',
   isVerified: false,
 }
@@ -59,7 +59,7 @@ describe('Post Header component', () => {
     })
 
     it('user is not an owner of a post', () => {
-      const user = { userId: 2 }
+      const user = { userId: '2' }
       const { getByTestId } = setup({ user })
 
       expect(getByTestId(testIDs.header.openDropDownMenu)).toBeTruthy()

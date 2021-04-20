@@ -1,6 +1,5 @@
 import { all, call } from 'redux-saga/effects'
 import { createPath } from 'navigation/helpers'
-import * as entitiesActions from 'store/ducks/entities/actions'
 
 export const applyActions = (actions, reducer) => {
   let state
@@ -51,17 +50,6 @@ export const testField = (field, props) => {
   })
 }
 
-export const testEntitiesMerge = (saga, entities = {}) => {
-  return saga
-    .put(entitiesActions.entitiesAlbumsMerge({ data: entities.albums || {} }))
-    .put(entitiesActions.entitiesPostsMerge({ data: entities.posts || {} }))
-    .put(entitiesActions.entitiesUsersMerge({ data: entities.users || {} }))
-    .put(entitiesActions.entitiesCommentsMerge({ data: entities.comments || {} }))
-    .put(entitiesActions.entitiesImagesMerge({ data: entities.images || {} }))
-    .put(entitiesActions.entitiesMessagesMerge({ data: entities.messages || {} }))
-    .put(entitiesActions.entitiesChatsMerge({ data: entities.chats || {} }))
-}
-
 export function testReducer(reducer, initialState) {
   if (!(this instanceof testReducer)) {
     return new testReducer(reducer, initialState)
@@ -81,7 +69,14 @@ export function testReducer(reducer, initialState) {
 }
 
 export const makeAuthorizedState = (user, state = {}) => ({
-  auth: { user: user.userId },
+  auth: { authUser: { data: user.userId } },
   entities: { users: { [user.userId]: user } },
   ...state,
 })
+
+export const mockDate = (date) => {
+  const value = Date.parse(date)
+  const mockFn = jest.spyOn(global.Date, 'now').mockImplementation(() => value)
+
+  return { value, mockFn }
+}

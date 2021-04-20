@@ -7,7 +7,7 @@ import { testAsRootSaga } from 'tests/utils/helpers'
 import purchases from 'store/ducks/purchases/saga'
 import { purchaseRequest } from 'store/ducks/purchases/saga/purchase'
 import retryPurchaseRequest from 'store/ducks/purchases/saga/retryPurchase'
-import * as usersActions from 'store/ducks/users/actions'
+import * as authActions from 'store/ducks/auth/actions'
 import * as actions from 'store/ducks/purchases/actions'
 import * as queries from 'store/ducks/purchases/queries'
 import * as queryService from 'services/Query'
@@ -53,7 +53,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseSuccess())
 
         .next()
-        .put(usersActions.usersGetProfileSelfRequest())
+        .put(authActions.authUserRequest())
 
         .next()
         .isDone()
@@ -74,7 +74,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseSuccess())
 
         .next()
-        .put(usersActions.usersGetProfileSelfRequest())
+        .put(authActions.authUserRequest())
 
         .next()
         .isDone()
@@ -125,7 +125,7 @@ describe('Finish pending purchases saga', () => {
         .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
         .call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
         .put(actions.retryPurchaseSuccess())
-        .put(usersActions.usersGetProfileSelfRequest())
+        .put(authActions.authUserRequest())
 
         .dispatch(action)
         .silentRun()

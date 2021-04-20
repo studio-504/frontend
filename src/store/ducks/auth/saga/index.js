@@ -1,0 +1,28 @@
+import authForgot from 'store/ducks/auth/saga/authForgot'
+import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
+import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
+import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
+import authSigninAnonymous from 'store/ducks/auth/saga/authSigninAnonymous'
+import authSignout from 'store/ducks/auth/saga/authSignout'
+import authReset from 'store/ducks/auth/saga/authReset'
+
+import authData from 'store/ducks/auth/saga/authData'
+import authToken from 'store/ducks/auth/saga/authToken'
+import authFlow from 'store/ducks/auth/saga/authFlow'
+import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
+import authUser from 'store/ducks/auth/saga/authUser'
+
+export default () =>
+  []
+    .concat(authForgot())
+    .concat(authSigninCognito())
+    .concat(authSigninGoogle())
+    .concat(authSigninApple())
+    .concat(authSigninAnonymous())
+    .concat(authData())
+    .concat(authToken())
+    .concat(authFlow())
+    .concat(authPrefetch())
+    .concat(authSignout())
+    .concat(authReset())
+    .concat(authUser())

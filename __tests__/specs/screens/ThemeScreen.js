@@ -15,7 +15,7 @@ const user = {
   bio: 'bio',
 }
 
-jest.spyOn(authSelector, 'authUserSelector').mockReturnValue(user)
+jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue(user)
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useFocusEffect: jest.fn() }))
 jest.mock('screens/FeedScreen', () => jest.fn().mockReturnValue(null))
 

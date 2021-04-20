@@ -7,7 +7,7 @@ import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfileEditService = ({ children }) => {
   const dispatch = useDispatch()
-  const user = useSelector(authSelector.authUserSelector)
+  const user = useSelector(authSelector.authUserIdentity)
   const usersEditProfile = useSelector(usersSelector.usersEditProfile)
 
   const handleFormTransform = (values) => ({

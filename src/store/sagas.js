@@ -12,21 +12,10 @@ import contactsGrantBonusRequest from 'store/ducks/contacts/saga/contactsGrantBo
 import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
 import themes from 'store/ducks/themes/saga'
-
+import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
 
-import authForgot from 'store/ducks/auth/saga/authForgot'
-import authSigninCognito from 'store/ducks/auth/saga/authSigninCognito'
-import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
-import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
-import authSigninAnonymous from 'store/ducks/auth/saga/authSigninAnonymous'
-import authSignout from 'store/ducks/auth/saga/authSignout'
-import authReset from 'store/ducks/auth/saga/authReset'
-
-import authData from 'store/ducks/auth/saga/authData'
-import authToken from 'store/ducks/auth/saga/authToken'
-import authFlow from 'store/ducks/auth/saga/authFlow'
-import authPrefetch from 'store/ducks/auth/saga/authPrefetch'
+import auth from 'store/ducks/auth/saga'
 
 import signupCreate from 'store/ducks/signup/saga/signupCreate'
 import signupConfirm from 'store/ducks/signup/saga/signupConfirm'
@@ -44,8 +33,9 @@ import postsShare from 'store/ducks/posts/saga/postsShare'
 import postsReportPostViews from 'store/ducks/posts/saga/postsReportPostViews'
 import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
-export default function* rootSaga(persistor) {
+export default function* rootSaga() {
   yield all([]
+    .concat(analytics())
     .concat(snackbars())
     .concat(camera())
     .concat(albums())
@@ -62,17 +52,7 @@ export default function* rootSaga(persistor) {
     .concat(users())
     .concat(promocodes())
 
-    .concat(authForgot())
-    .concat(authSigninCognito(persistor))
-    .concat(authSigninGoogle(persistor))
-    .concat(authSigninApple(persistor))
-    .concat(authSigninAnonymous(persistor))
-    .concat(authData(persistor))
-    .concat(authToken(persistor))
-    .concat(authFlow(persistor))
-    .concat(authPrefetch(persistor))
-    .concat(authSignout(persistor))
-    .concat(authReset(persistor))
+    .concat(auth())
 
     .concat(signupCreate())
     .concat(signupConfirm())

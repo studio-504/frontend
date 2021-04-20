@@ -12,7 +12,7 @@ import * as authSelector from 'store/ducks/auth/selectors'
 import { AuthProvider } from 'services/providers/Auth'
 import { testNavigate } from 'tests/utils/helpers'
 
-jest.spyOn(authSelector, 'authUserSelector').mockReturnValue({ userStatus: 'ACTIVE' })
+jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue({ userStatus: 'ACTIVE' })
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (cb) => cb() }))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('services/providers/Camera/useLibrary')
@@ -47,7 +47,7 @@ describe('PostType screen', () => {
   })
 
   it('Redirect anonymous user', () => {
-    authSelector.authUserSelector.mockReturnValueOnce({ userStatus: 'ANONYMOUS' })
+    authSelector.authUserIdentity.mockReturnValueOnce({ userStatus: 'ANONYMOUS' })
 
     const { getByText } = setup()
 

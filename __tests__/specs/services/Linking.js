@@ -184,7 +184,7 @@ describe('deeplinkNavigation redirect routes', () => {
     const rootUrl = `${baseUrl}/signup/${userId}`
     LinkingService.deeplinkNavigation(navigation)(rootUrl)
 
-    testNavigate(navigation, 'Auth.Signup', { _: baseUrl, userId, action: 'signup' })
+    testNavigate(navigation, 'App.Root.ProfileUpgrade', { _: baseUrl, userId, action: 'signup' })
   })
 
   it('open direct url', () => {

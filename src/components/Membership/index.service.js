@@ -11,7 +11,7 @@ import * as UserService from 'services/User'
 const MembershipService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const user = useSelector(authSelector.authUserSelector)
+  const user = useSelector(authSelector.authUserIdentity)
   const purchasesRequest = useSelector(purchasesSelectors.purchasesRequest)
   const retryPurchase = useSelector(purchasesSelectors.retryPurchase)
 

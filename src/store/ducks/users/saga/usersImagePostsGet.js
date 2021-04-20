@@ -1,5 +1,6 @@
-import { put, call } from 'redux-saga/effects'
+import { put, call, takeLatest } from 'redux-saga/effects'
 import path from 'ramda/src/path'
+import * as constants from 'store/ducks/users/constants'
 import * as actions from 'store/ducks/users/actions'
 import * as queries from 'store/ducks/users/queries'
 import * as queryService from 'services/Query'
@@ -14,7 +15,7 @@ function* usersImagePostsGetRequestData(response) {
   const data = dataSelector(response)
   const normalized = normalizer.normalizePostsGet(data)
 
-  yield entitiesMerge(normalized)
+  yield call(entitiesMerge, normalized)
 
   return normalized.result
 }
@@ -29,4 +30,7 @@ function* usersImagePostsGetRequest(req) {
   }
 }
 
-export default usersImagePostsGetRequest
+export default () => [
+  takeLatest(constants.USERS_IMAGE_POSTS_GET_REQUEST, usersImagePostsGetRequest),
+]
+

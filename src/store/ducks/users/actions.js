@@ -114,14 +114,6 @@ export const usersGetProfileFailure = createFailureAction(constants.USERS_GET_PR
 /**
  *
  */
-export const usersGetProfileSelfIdle = createAction(constants.USERS_GET_PROFILE_SELF_IDLE)
-export const usersGetProfileSelfRequest = createAction(constants.USERS_GET_PROFILE_SELF_REQUEST)
-export const usersGetProfileSelfSuccess = createAction(constants.USERS_GET_PROFILE_SELF_SUCCESS)
-export const usersGetProfileSelfFailure = createFailureAction(constants.USERS_GET_PROFILE_SELF_FAILURE)
-
-/**
- *
- */
 export const usersEditProfileIdle = createAction(constants.USERS_EDIT_PROFILE_IDLE)
 export const usersEditProfileRequest = createActionWithMeta(constants.USERS_EDIT_PROFILE_REQUEST)
 export const usersEditProfileSuccess = createActionWithMeta(constants.USERS_EDIT_PROFILE_SUCCESS)
