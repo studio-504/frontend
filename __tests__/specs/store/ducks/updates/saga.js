@@ -5,7 +5,7 @@ import Config from 'react-native-config'
 import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import updates from 'store/ducks/updates/saga'
+import updates, { isNewerThan } from 'store/ducks/updates/saga'
 import * as updatesActions from 'store/ducks/updates/actions'
 
 jest.mock('services/Query', () => ({ httpRequest: jest.fn() }))
@@ -28,6 +28,42 @@ describe('Updates saga', () => {
   afterEach(() => {
     Alert.alert.mockClear()
     Linking.openURL.mockClear()
+  })
+
+  it('isNewerThan', () => {
+    expect(isNewerThan('1', '2')).toBeFalsy()
+    expect(isNewerThan('2', '1')).toBeTruthy()
+    expect(isNewerThan('10', '11')).toBeFalsy()
+    expect(isNewerThan('11', '10')).toBeTruthy()
+    expect(isNewerThan('10', '10')).toBeFalsy()
+
+    expect(isNewerThan('1.0', '1.1')).toBeFalsy()
+    expect(isNewerThan('1.9', '1.10')).toBeFalsy()
+    expect(isNewerThan('1.1', '1.0')).toBeTruthy()
+    expect(isNewerThan('1.10', '1.9')).toBeTruthy()
+
+    expect(isNewerThan('2.0', '1.0')).toBeTruthy()
+    expect(isNewerThan('1.0', '2.0')).toBeFalsy()
+    expect(isNewerThan('2.0', '2.0')).toBeFalsy()
+
+    expect(isNewerThan('1.9.0', '1.10.0')).toBeFalsy()
+    expect(isNewerThan('1.10.0', '1.9.0')).toBeTruthy()
+    expect(isNewerThan('1.1.0', '1.2.0')).toBeFalsy()
+    expect(isNewerThan('1.2.0', '1.1.0')).toBeTruthy()
+    expect(isNewerThan('1.2.0', '1.2.0')).toBeFalsy()
+
+    expect(isNewerThan('1.0.9', '1.0.10')).toBeFalsy()
+    expect(isNewerThan('1.0.10', '1.0.9')).toBeTruthy()
+    expect(isNewerThan('1.0.1', '1.0.2')).toBeFalsy()
+    expect(isNewerThan('1.0.2', '1.0.1')).toBeTruthy()
+    expect(isNewerThan('1.0.2', '1.0.2')).toBeFalsy()
+
+    expect(isNewerThan('1.0.0', '1.0.0.1')).toBeFalsy()
+    expect(isNewerThan('1.0.0.1', '1.0.0')).toBeTruthy()
+
+    expect(isNewerThan('', '')).toBeFalsy()
+    expect(isNewerThan('1', '')).toBeTruthy()
+    expect(isNewerThan('', '1')).toBeFalsy()
   })
 
   it('show update alert', async () => {
