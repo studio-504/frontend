@@ -18,7 +18,7 @@ const params = {
   userId: 'id31234',
 }
 
-jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue(user)
+jest.spyOn(authSelector, 'authUser').mockReturnValue(user)
 jest.spyOn(authSelector, 'authUserId').mockReturnValue(user.userId)
 
 jest.spyOn(albumsSelector, 'albumsGetSelector')

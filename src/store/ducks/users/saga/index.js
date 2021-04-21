@@ -14,6 +14,7 @@ import usersAcceptFollowerUser from 'store/ducks/users/saga/usersAcceptFollowerU
 import usersDeclineFollowerUser from 'store/ducks/users/saga/usersDeclineFollowerUser'
 import usersFollow from 'store/ducks/users/saga/usersFollow'
 import usersUnfollow from 'store/ducks/users/saga/usersUnfollow'
+import usersDelete from 'store/ducks/users/saga/usersDelete'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
@@ -45,36 +46,6 @@ function* usersSearchRequest(req) {
     yield put(actions.usersSearchSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
     yield put(actions.usersSearchFailure(error, req.payload))
-  }
-}
-
-/**
- *
- */
-function* usersDeleteRequestData(req, api) {
-  const dataSelector = path(['data', 'deleteUser'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizeUserGet(data)
-  yield call(entitiesMerge, normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* usersDeleteRequest(req) {
-  try {
-    const data = yield call([queryService, 'apiRequest'], queries.deleteUser, req.payload)
-    const next = yield usersDeleteRequestData(req, data)
-    yield put(actions.usersDeleteSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.usersDeleteFailure(error, req.payload))
   }
 }
 
@@ -453,7 +424,6 @@ function* usersReportScreenViewsRequest(req) {
 
 export default () => [
   takeLatest(constants.USERS_SEARCH_REQUEST, usersSearchRequest),
-  takeLatest(constants.USERS_DELETE_REQUEST, usersDeleteRequest),
   takeLatest(constants.USERS_GET_FOLLOWED_USERS_WITH_STORIES_REQUEST, usersGetFollowedUsersWithStoriesRequest),
   takeLatest(constants.USERS_GET_FOLLOWER_USERS_REQUEST, usersGetFollowerUsersRequest),
   takeLatest(constants.USERS_GET_FOLLOWED_USERS_REQUEST, usersGetFollowedUsersRequest),
@@ -476,3 +446,4 @@ export default () => [
 .concat(usersFollow())
 .concat(usersUnfollow())
 .concat(usersImagePostsGet())
+.concat(usersDelete())

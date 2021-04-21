@@ -12,9 +12,9 @@ jest.spyOn(Linking, 'openURL')
 Linking.openURL.mockResolvedValue(true)
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
-jest.mock('store/ducks/auth/selectors', () => ({ authUserIdentity: jest.fn() }))
+jest.mock('store/ducks/auth/selectors', () => ({ authUser: jest.fn() }))
 
-authSelectors.authUserIdentity.mockReturnValue({ username: 'username' })
+authSelectors.authUser.mockReturnValue({ username: 'username' })
 
 const user = { contactId: 1 }
 const emailContact = { value: 'test@email.com', type: 'email' }

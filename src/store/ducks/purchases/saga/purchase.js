@@ -76,7 +76,7 @@ function* purchase(req) {
     const { productId } = req.payload
     yield call(purchaseRequest, productId)
     yield put(actions.purchaseSuccess())
-    yield put(authActions.authUserRequest())
+    yield put(authActions.authGetUserRequest())
   } catch (error) {
     const messageCode = propOr('GENERIC', 'code', error)
     yield put(actions.purchaseFailure(error, { messageCode }))

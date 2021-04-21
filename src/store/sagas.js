@@ -14,13 +14,10 @@ import updates from 'store/ducks/updates/saga'
 import themes from 'store/ducks/themes/saga'
 import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
+import logger from 'store/ducks/logger/saga'
 
 import auth from 'store/ducks/auth/saga'
-
-import signupCreate from 'store/ducks/signup/saga/signupCreate'
-import signupConfirm from 'store/ducks/signup/saga/signupConfirm'
-import signupPassword from 'store/ducks/signup/saga/signupPassword'
-import signupUsername from 'store/ducks/signup/saga/signupUsername'
+import signup from 'store/ducks/signup/saga'
 
 import datingMatchedUsers from 'store/ducks/dating/saga/datingMatchedUsers'
 import datingConfirmedUsers from 'store/ducks/dating/saga/datingConfirmedUsers'
@@ -35,6 +32,7 @@ import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
 export default function* rootSaga() {
   yield all([]
+    .concat(logger())
     .concat(analytics())
     .concat(snackbars())
     .concat(camera())
@@ -53,11 +51,7 @@ export default function* rootSaga() {
     .concat(promocodes())
 
     .concat(auth())
-
-    .concat(signupCreate())
-    .concat(signupConfirm())
-    .concat(signupPassword())
-    .concat(signupUsername())
+    .concat(signup())
 
     .concat(posts())
     .concat(postsCreate())

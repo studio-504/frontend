@@ -55,14 +55,14 @@ function* handleAuthPrefetchAuthenticated(user) {
   yield put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
   yield put(chatActions.chatGetChatsRequest())
   yield put(postsActions.postsGetUnreadCommentsRequest())
-  yield put(authActions.authUserRequest())
+  yield put(authActions.authGetUserRequest())
 }
 
 /**
  * Used sequential approach to load data in UI order
  */
 function* handleAuthPrefetchRequest() {
-  const user = yield select(authSelector.authUserIdentity)
+  const user = yield select(authSelector.authUser)
 
   if (UserService.isUserActive(user)) {
     yield call(handleAuthPrefetchAuthenticated, user)

@@ -20,7 +20,7 @@ const CommentsService = ({ children }) => {
   const postId = route.params.postId
   const postUserId = route.params.userId
   const actionId = route.params.actionId
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const commentsAdd = useSelector(state => state.posts.commentsAdd)
   const commentsDelete = useSelector(state => state.posts.commentsDelete)
   const commentsFlag = useSelector(state => state.posts.commentsFlag)

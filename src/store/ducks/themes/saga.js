@@ -12,7 +12,7 @@ import * as authSelector from 'store/ducks/auth/selectors'
 function* themesCheckDefaultRequest() {
   try {
     const navigation = yield NavigationService.getNavigation()
-    const authUser = yield select(authSelector.authUserIdentity)
+    const authUser = yield select(authSelector.authUser)
     const themeCode = path(['themeCode'], authUser)
 
     if (!themeCode) {
@@ -28,7 +28,7 @@ function* themesCheckDefaultRequest() {
 function* themesEditRequest(req) {
   try {
     yield call(queryService.apiRequest, queries.setThemeCode, { themeCode: req.payload.themeCode })
-    yield put(authActions.authUserRequest())
+    yield put(authActions.authGetUserRequest())
     yield put(actions.themesEditSuccess())
   } catch (error) {
     yield put(actions.themesEditFailure(error))

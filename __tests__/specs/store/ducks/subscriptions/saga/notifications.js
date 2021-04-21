@@ -43,7 +43,7 @@ describe('notificationSubscription', () => {
 
     it('USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED', async () => {
       const promise = createSaga(store)
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
         .dispatch(subscriptionsActions.subscriptionsMainRequest())
         .silentRun()
 

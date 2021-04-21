@@ -143,57 +143,57 @@ describe('Auth reducer', () => {
     })
   })
 
-  describe('authUser', () => {
+  describe('authGetUser', () => {
     const user = { userId: '1', a: 1, b: 2 }
     const normalized = normalizer.normalizeUserGet(user)
 
     it('initial state', () => {
       testReducer(reducer)
-        .expect(selectors.authUser, { data: {}, status: 'idle' })
+        .expect(selectors.authGetUser, { data: {}, status: 'idle' })
         .expect(selectors.authUserId, false)
         .expect(selectors.authUserSelector, { data: {}, status: 'idle' })
-        .expect(selectors.authUserIdentity, {})
+        .expect(selectors.authUser, {})
     })
 
     it('loading', () => {
       testReducer(reducer)
-        .put(actions.authUserRequest())
-        .expect(selectors.authUser, { data: {}, status: 'loading' })
+        .put(actions.authGetUserRequest())
+        .expect(selectors.authGetUser, { data: {}, status: 'loading' })
         .expect(selectors.authUserId, false)
         .expect(selectors.authUserSelector, { data: {}, status: 'loading' })
-        .expect(selectors.authUserIdentity, {})
+        .expect(selectors.authUser, {})
     })
 
     it('success', () => {
       testReducer(reducer)
         .put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users }))
-        .put(actions.authUserSuccess({ data: normalized.result }))
-        .expect(selectors.authUser, { data: user.userId, status: 'success' })
+        .put(actions.authGetUserSuccess({ data: normalized.result }))
+        .expect(selectors.authGetUser, { data: user.userId, status: 'success' })
         .expect(selectors.authUserId, user.userId)
         .expect(selectors.authUserSelector, { data: user, status: 'success' })
-        .expect(selectors.authUserIdentity, user)
+        .expect(selectors.authUser, user)
     })
 
     it('failure', () => {
       const error = new Error('Native Error')
 
       testReducer(reducer)
-        .put(actions.authUserFailure(error))
-        .expect(selectors.authUser, { data: {}, status: 'failure' })
+        .put(actions.authGetUserFailure(error))
+        .expect(selectors.authGetUser, { data: {}, status: 'failure' })
         .expect(selectors.authUserId, false)
         .expect(selectors.authUserSelector, { data: {}, status: 'failure' })
-        .expect(selectors.authUserIdentity, {})
+        .expect(selectors.authUser, {})
     })
 
     it('idle', () => {
       testReducer(reducer)
         .put(entitiesActions.entitiesUsersMerge({ data: normalized.entities.users }))
-        .put(actions.authUserSuccess({ data: normalized.result }))
-        .put(actions.authUserIdle())
-        .expect(selectors.authUser, { data: {}, status: 'idle' })
+        .put(actions.authGetUserSuccess({ data: normalized.result }))
+        .put(actions.authGetUserIdle())
+        .expect(selectors.authGetUser, { data: {}, status: 'idle' })
         .expect(selectors.authUserId, false)
         .expect(selectors.authUserSelector, { data: {}, status: 'idle' })
-        .expect(selectors.authUserIdentity, {})
+        .expect(selectors.authUser, {})
     })
   })
 })

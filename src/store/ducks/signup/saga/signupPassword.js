@@ -1,4 +1,3 @@
-import path from 'ramda/src/path'
 import forge from 'node-forge'
 import Config from 'react-native-config'
 import { put, call, takeEvery } from 'redux-saga/effects'
@@ -6,12 +5,7 @@ import * as actions from 'store/ducks/signup/actions'
 import * as constants from 'store/ducks/signup/constants'
 import * as queries from 'store/ducks/signup/queries'
 import * as queryService from 'services/Query'
-import * as usersQueries from 'store/ducks/users/queries'
-import * as authActions from 'store/ducks/auth/actions'
-import * as normalizer from 'normalizer/schemas'
-import { entitiesMerge } from 'store/ducks/entities/saga'
-import * as navigationActions from 'navigation/actions'
-import * as NavigationService from 'services/Navigation'
+import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
  *
@@ -28,26 +22,11 @@ export function encryptPassword(password) {
 /**
  *
  */
-export function* fetchMe() {
-  const response = yield call([queryService, 'apiRequest'], usersQueries.self)
-  const user = path(['data', 'self'], response)
-  const normalized = normalizer.normalizeUserGet(user)
-
-  yield call(entitiesMerge, normalized)
-}
-
-/**
- *
- */
 function* handleSignupPasswordRequest({ password }) {
-  const navigation = yield NavigationService.getNavigation()
   const encryptedPassword = yield call(encryptPassword, password)
 
   yield call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
-  yield call(fetchMe)
-  yield put(authActions.authPrefetchRequest())
-
-  navigationActions.navigateResetToApp(navigation)
+  yield call(authorize)
 }
 
 /**

@@ -10,7 +10,7 @@ describe('App state', () => {
   it('on launched', async () => {
     await expectSaga(testAsRootSaga(appState))
       .put(updatesActions.updatesCheckRequest())
-      .put(authActions.authFlowRequest({ allowAnonymous: false }))
+      .put(authActions.authFlowRequest())
 
       .dispatch(actions.appStateLaunched())
       .silentRun()

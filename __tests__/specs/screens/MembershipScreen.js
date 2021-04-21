@@ -11,7 +11,7 @@ import MembershipScreen from 'screens/MembershipScreen'
 
 jest.spyOn(Linking, 'openURL')
 jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (fn) => fn() }))
-jest.mock('store/ducks/auth/selectors', () => ({ authUserIdentity: jest.fn() }))
+jest.mock('store/ducks/auth/selectors', () => ({ authUser: jest.fn() }))
 jest.mock('store/ducks/purchases/selectors', () => ({ purchasesRequest: jest.fn(), retryPurchase: jest.fn() }))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 
@@ -21,7 +21,7 @@ useNavigation.mockReturnValue(navigation)
 const basicUser = { subscriptionLevel: 'BASIC' }
 const premiumUser = { subscriptionLevel: 'DIAMOND' }
 
-authSelector.authUserIdentity.mockReturnValue(basicUser)
+authSelector.authUser.mockReturnValue(basicUser)
 purchasesSelectors.purchasesRequest.mockReturnValue({ status: 'idle', error: '' })
 purchasesSelectors.retryPurchase.mockReturnValue({ status: 'idle', error: '' })
 
@@ -52,7 +52,7 @@ describe('Membership Screen', () => {
   })
 
   it('user with premium subscription try to unsubscribe', () => {
-    authSelector.authUserIdentity.mockReturnValueOnce(premiumUser)
+    authSelector.authUser.mockReturnValueOnce(premiumUser)
     const { getByText } = setup()
 
     fireEvent.press(getByText('Unsubscribe'))

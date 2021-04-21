@@ -4,30 +4,30 @@ import * as actions from 'store/ducks/auth/actions'
 import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/auth/queries'
-import authSigninApple from 'store/ducks/auth/saga/authSigninApple'
-import { federatedAppleSignin, validateUserExistance } from 'services/AWS'
+import authSigninGoogle from 'store/ducks/auth/saga/authSigninGoogle'
+import { federatedGoogleSignin, validateUserExistance } from 'services/AWS'
 import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
 
 /**
  * Mock Data
  */
-const applePayload = {
+const googlePayload = {
   user: {
     id: 'id',
-    fullName: 'fullName',
-    email: 'email',
+    name: 'name',
+    email: 'valid@email.com',
   },
   token: 'token',
   expires_at: 'expires_at',
 }
 
 const userPayload = {
-  id: applePayload.user.id,
-  fullName: applePayload.user.fullName,
-  email: applePayload.user.email,
-  authProvider: 'APPLE',
-  token: applePayload.token,
-  expires_at: applePayload.expires_at,
+  id: googlePayload.user.id,
+  name: googlePayload.user.name,
+  email: googlePayload.user.email,
+  authProvider: 'GOOGLE',
+  token: googlePayload.token,
+  expires_at: googlePayload.expires_at,
 }
 
 const credentials = {
@@ -44,7 +44,7 @@ const AwsAuth = { federatedSignIn: jest.fn(), currentUserCredentials: jest.fn() 
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 jest.mock('services/AWS', () => ({
-  federatedAppleSignin: jest.fn(),
+  federatedGoogleSignin: jest.fn(),
   validateUserExistance: jest.fn(),
 }))
 
@@ -62,14 +62,14 @@ const context = [
   [getContext('ReactNavigationRef'), { current: navigation }],
 ]
 
-describe('authSigninApple', () => {
+describe('authSigninGoogle', () => {
   beforeAll(() => {
-    federatedAppleSignin.mockResolvedValue(applePayload)
+    federatedGoogleSignin.mockResolvedValue(googlePayload)
     validateUserExistance.mockResolvedValue(false)
   })
 
   afterEach(() => {
-    federatedAppleSignin.mockClear()
+    federatedGoogleSignin.mockClear()
     validateUserExistance.mockClear()
     handleAnonymousSignin.mockClear()
     AwsAuth.federatedSignIn.mockClear()
@@ -81,19 +81,20 @@ describe('authSigninApple', () => {
     it('success', async () => {
       validateUserExistance.mockResolvedValueOnce(true)
 
-      await expectSaga(testAsRootSaga(authSigninApple))
+      await expectSaga(testAsRootSaga(authSigninGoogle))
         .provide(context)
 
         .call(validateUserExistance, userPayload)
         .not.call(handleAnonymousSignin)
-        .not.call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
-        .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
-        .call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
+        .not.call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
+        .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
+        .call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
+
         .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())
-        .put(actions.authSigninAppleSuccess())
+        .put(actions.authSigninGoogleSuccess())
 
-        .dispatch(actions.authSigninAppleRequest())
+        .dispatch(actions.authSigninGoogleRequest())
         .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
@@ -104,30 +105,31 @@ describe('authSigninApple', () => {
       validateUserExistance.mockResolvedValueOnce(true)
       AwsAuth.federatedSignIn.mockRejectedValueOnce(error)
 
-      await expectSaga(testAsRootSaga(authSigninApple))
+      await expectSaga(testAsRootSaga(authSigninGoogle))
         .provide(context)
 
-        .put(actions.authSigninAppleFailure(error))
+        .put(actions.authSigninGoogleFailure(error))
 
-        .dispatch(actions.authSigninAppleRequest())
+        .dispatch(actions.authSigninGoogleRequest())
         .silentRun()
     })
   })
 
   describe('sign up flow', () => {
     it('success', async () => {
-      await expectSaga(testAsRootSaga(authSigninApple))
+      await expectSaga(testAsRootSaga(authSigninGoogle))
         .provide(context)
 
         .call(validateUserExistance, userPayload)
         .call(handleAnonymousSignin)
-        .call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
-        .call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
+        .call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
+        .call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
         .not.put(actions.authGetUserRequest())
         .not.put(actions.authPrefetchRequest())
-        .put(actions.authSigninAppleSuccess())
+        .put(actions.authSigninGoogleSuccess())
 
-        .dispatch(actions.authSigninAppleRequest())
+        .dispatch(actions.authSigninGoogleRequest())
+        .dispatch(actions.authGetUserSuccess())
         .silentRun()
 
       testNavigate(navigation, 'Auth.AuthUsername', { nextRoute: 'app' })
@@ -136,12 +138,12 @@ describe('authSigninApple', () => {
     it('failure', async () => {
       handleAnonymousSignin.mockRejectedValueOnce(error)
 
-      await expectSaga(testAsRootSaga(authSigninApple))
+      await expectSaga(testAsRootSaga(authSigninGoogle))
         .provide(context)
 
-        .put(actions.authSigninAppleFailure(error))
+        .put(actions.authSigninGoogleFailure(error))
 
-        .dispatch(actions.authSigninAppleRequest())
+        .dispatch(actions.authSigninGoogleRequest())
         .silentRun()
     })
   })

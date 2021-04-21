@@ -19,7 +19,7 @@ describe('Promocodes saga', () => {
     await expectSaga(testAsRootSaga(promocodes))
       .call(queryService.apiRequest, queries.redeemPromotion, { code })
       .put(actions.promoCodesRedeemSuccess())
-      .put(authActions.authUserRequest())
+      .put(authActions.authGetUserRequest())
 
       .dispatch(actions.promoCodesRedeemRequest({ code }))
       .silentRun()
@@ -32,7 +32,7 @@ describe('Promocodes saga', () => {
     await expectSaga(testAsRootSaga(promocodes))
       .put(actions.promoCodesRedeemFailure(error))
       .not.put(actions.promoCodesRedeemSuccess())
-      .not.put(authActions.authUserRequest())
+      .not.put(authActions.authGetUserRequest())
 
       .dispatch(actions.promoCodesRedeemRequest({ code }))
       .silentRun()

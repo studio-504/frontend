@@ -18,19 +18,19 @@ export const authFlow = compose(prop('authFlow'), authRoot)
 /**
  *
  */
-export const authUser = compose(prop('authUser'), authRoot)
-export const authUserId = createSelector(authUser, user => {
-  const userId = prop('data', user)
+export const authGetUser = compose(prop('authGetUser'), authRoot)
+export const authUserId = createSelector(authGetUser, authGetUser => {
+  const userId = prop('data', authGetUser)
   return is(String, userId) && userId
 })
 
 export const authUserSelector = createSelector(
-  [ authUser, entitiesSelector],
-  ( authUser, entities) => {
-    const userId = authUser.data
+  [ authGetUser, entitiesSelector],
+  ( authGetUser, entities) => {
+    const userId = authGetUser.data
     const denormalized = normalizer.denormalizeUserGet(userId, entities)
-    return assocPath(['data'], denormalized)(authUser)
+    return assocPath(['data'], denormalized)(authGetUser)
   },
 )
 
-export const authUserIdentity = createSelector(authUserSelector, prop('data'))
+export const authUser = createSelector(authUserSelector, prop('data'))

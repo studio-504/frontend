@@ -24,7 +24,7 @@ describe('Auth prefetch', () => {
       .not.put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
       .not.put(chatActions.chatGetChatsRequest())
       .not.put(postsActions.postsGetUnreadCommentsRequest())
-      .not.put(authActions.authUserRequest())
+      .not.put(authActions.authGetUserRequest())
 
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()
@@ -46,7 +46,7 @@ describe('Auth prefetch', () => {
       .put(usersActions.usersGetPendingFollowersRequest({ userId: user.userId }))
       .put(chatActions.chatGetChatsRequest())
       .put(postsActions.postsGetUnreadCommentsRequest())
-      .put(authActions.authUserRequest())
+      .put(authActions.authGetUserRequest())
 
       .dispatch(authActions.authPrefetchRequest())
       .silentRun()
