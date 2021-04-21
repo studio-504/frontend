@@ -10,7 +10,7 @@ import { entitiesMerge } from 'store/ducks/entities/saga'
 /**
  *
  */
-function* authUserRequestData(api) {
+function* authGetUserRequestData(api) {
   const dataSelector = path(['data', 'self'])
   const data = dataSelector(api)
   const normalized = normalizer.normalizeUserGet(data)
@@ -22,16 +22,16 @@ function* authUserRequestData(api) {
   }
 }
 
-function* authUserRequest() {
+function* authGetUserRequest() {
   try {
     const data = yield call([queryService, 'apiRequest'], queries.self)
-    const next = yield authUserRequestData(data)
-    yield put(actions.authUserSuccess({ data: next.data }))
+    const next = yield authGetUserRequestData(data)
+    yield put(actions.authGetUserSuccess({ data: next.data }))
   } catch (error) {
-    yield put(actions.authUserFailure(error))
+    yield put(actions.authGetUserFailure(error))
   }
 }
 
 export default () => [
-  takeEvery(constants.AUTH_USER_REQUEST, authUserRequest),
+  takeEvery(constants.AUTH_GET_USER_REQUEST, authGetUserRequest),
 ]

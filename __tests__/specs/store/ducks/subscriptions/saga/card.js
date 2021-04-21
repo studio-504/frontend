@@ -64,7 +64,7 @@ describe('cardSubscription', () => {
       const promise = createSaga(store)
         .put(usersActions.usersGetCardsRequest())
         .put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
         .put(usersActions.usersGetPendingFollowersRequest({ userId }))
 
         .dispatch(subscriptionsActions.subscriptionsMainRequest())
@@ -83,7 +83,7 @@ describe('cardSubscription', () => {
     const promise = createSaga(store)
       .not.put(usersActions.usersGetCardsRequest())
       .not.put(postsActions.postsGetUnreadCommentsRequest({ limit: 20 }))
-      .not.put(authActions.authUserRequest())
+      .not.put(authActions.authGetUserRequest())
       .not.put(usersActions.usersGetPendingFollowersRequest({ userId }))
 
       .dispatch(subscriptionsActions.subscriptionsMainRequest())

@@ -9,9 +9,7 @@ export const initialState = {
     payload: {},
   },
   usersDelete: {
-    data: [],
     status: 'idle',
-    payload: {},
   },
   usersGetFollowedUsersWithStories: {
     data: [],
@@ -138,16 +136,14 @@ const usersSearchIdle = (state) => update(state, {
 /**
  *
  */
-const usersDeleteRequest = (state, action) => update(state, {
+const usersDeleteRequest = (state) => update(state, {
   usersDelete: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
   },
 })
 
-const usersDeleteSuccess = (state, action) => update(state, {
+const usersDeleteSuccess = (state) => update(state, {
   usersDelete: {
-    data: { $set: action.payload.data },
     status: { $set: 'success' },
   },
 })
@@ -160,7 +156,6 @@ const usersDeleteFailure = (state) => update(state, {
 
 const usersDeleteIdle = (state) => update(state, {
   usersDelete: {
-    data: { $set: initialState.usersDelete.data },
     status: { $set: 'idle' },
   },
 })

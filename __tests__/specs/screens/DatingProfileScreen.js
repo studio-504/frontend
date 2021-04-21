@@ -20,7 +20,7 @@ const user = {
   userStatus: 'ACTIVE',
 }
 
-jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue(user)
+jest.spyOn(authSelector, 'authUser').mockReturnValue(user)
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
   useFocusEffect: jest.fn(),
@@ -52,7 +52,7 @@ describe('DatingProfileScreen', () => {
     it('request data for authorized user', () => {
       setup()
 
-      expect(dispatch).toHaveBeenCalledWith(authActions.authUserRequest())
+      expect(dispatch).toHaveBeenCalledWith(authActions.authGetUserRequest())
       expect(dispatch).toHaveBeenCalledWith(
         usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }),
       )
@@ -71,7 +71,7 @@ describe('DatingProfileScreen', () => {
     })
 
     it('open dating button', async () => {
-      authSelector.authUserIdentity.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
+      authSelector.authUser.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
       const { queryByText } = setup()
 
       expect(queryByText('Start Dating')).toBeFalsy()
@@ -81,7 +81,7 @@ describe('DatingProfileScreen', () => {
       })
 
       testNavigate(navigation, 'Dating.Dating')
-      authSelector.authUserIdentity.mockReturnValue(user)
+      authSelector.authUser.mockReturnValue(user)
     })
   })
 
@@ -128,7 +128,7 @@ describe('DatingProfileScreen', () => {
     })
 
     it('redirect to dating on success', async () => {
-      authSelector.authUserIdentity.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
+      authSelector.authUser.mockReturnValue({ ...user, datingStatus: 'ENABLED' })
       const { store } = setup()
 
       await act(async () => {
@@ -136,7 +136,7 @@ describe('DatingProfileScreen', () => {
       })
 
       testNavigate(navigation, 'Dating.Dating')
-      authSelector.authUserIdentity.mockReturnValue(user)
+      authSelector.authUser.mockReturnValue(user)
     })
   })
 })

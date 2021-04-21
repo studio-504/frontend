@@ -63,7 +63,7 @@ describe('chatMessageSubscription', () => {
       const promise = createSaga(store)
         .put(chatActions.chatGetChatRequest({ chatId }))
         .put(chatActions.chatGetChatsRequest())
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
 
         .dispatch(subscriptionsActions.subscriptionsMainRequest())
         .silentRun()

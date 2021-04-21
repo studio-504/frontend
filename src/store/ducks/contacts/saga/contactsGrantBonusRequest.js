@@ -16,7 +16,7 @@ import * as LinkingService from 'services/Linking'
 
 function* contactsCheckBonusRequest() {
   try {
-    const user = yield select(authSelector.authUserIdentity)
+    const user = yield select(authSelector.authUser)
     const { invited } = yield select(selectors.contactsInvite)
 
     if (!UserService.isUserAuthorized(user)) return
@@ -40,7 +40,7 @@ function* contactsGrantBonusRequest(req) {
 }
 
 function* contactsGrantBonusSuccess() {
-  yield put(authActions.authUserRequest())
+  yield put(authActions.authGetUserRequest())
 }
 
 function* handleGrantBonusCard(req) {

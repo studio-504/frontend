@@ -33,25 +33,6 @@ describe('Users saga', () => {
     })
   })
 
-  describe('usersDeleteRequest', () => {
-    it('success', async () => {
-      const payload = { userId: 'id123' }
-      const response = { data: { deleteUser: { userId: '1' } } }
-      const entities = { users: { 1: { userId: '1' } } }
-
-      queryService.apiRequest.mockResolvedValueOnce(response)
-
-      await expectSaga(testAsRootSaga(users))
-        .call(entitiesMerge, { entities, result: '1' })
-        .put(usersActions.usersDeleteSuccess({ data: '1', payload, meta: {} }))
-
-        .dispatch(usersActions.usersDeleteRequest(payload))
-        .silentRun()
-
-      expect(queryService.apiRequest).toHaveBeenCalledWith(queries.deleteUser, payload)
-    })
-  })
-
   describe('usersGetFollowerUsersRequest', () => {
     it('success', async () => {
       const payload = { userId: 'id123' }

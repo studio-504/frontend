@@ -38,7 +38,7 @@ function* retryPurchase(req) {
     }
 
     yield put(actions.retryPurchaseSuccess())
-    yield put(authActions.authUserRequest())
+    yield put(authActions.authGetUserRequest())
   } catch (error) {
     yield call([RNIap, 'clearTransactionIOS'])
     const messageCode = propOr('GENERIC', 'code', error)

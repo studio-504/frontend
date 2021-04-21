@@ -10,7 +10,7 @@ function* contactsInviteRequest(req) {
   const contactId = getContactId(req)
 
   try {
-    const authUser = yield select(authSelector.authUserIdentity)
+    const authUser = yield select(authSelector.authUser)
     const subject = 'Invite to REAL.app'
     const body = `https://apps.apple.com/us/app/real-social-media/id1485194570?referralId=${authUser.username}&ls=1`
     const { contact } = req.payload

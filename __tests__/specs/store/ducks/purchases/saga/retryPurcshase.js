@@ -53,7 +53,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseSuccess())
 
         .next()
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
 
         .next()
         .isDone()
@@ -74,7 +74,7 @@ describe('Finish pending purchases saga', () => {
         .put(actions.retryPurchaseSuccess())
 
         .next()
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
 
         .next()
         .isDone()
@@ -125,7 +125,7 @@ describe('Finish pending purchases saga', () => {
         .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
         .call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
         .put(actions.retryPurchaseSuccess())
-        .put(authActions.authUserRequest())
+        .put(authActions.authGetUserRequest())
 
         .dispatch(action)
         .silentRun()

@@ -11,7 +11,7 @@ import { useEffectWhenFocused } from 'services/hooks'
 const DatingProfileService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
 
@@ -26,7 +26,7 @@ const DatingProfileService = ({ children }) => {
   }, [usersSetUserDatingStatus.status])
 
   useEffect(() => {
-    dispatch(authActions.authUserRequest())
+    dispatch(authActions.authGetUserRequest())
     dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
   }, [])
 

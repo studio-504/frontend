@@ -12,7 +12,7 @@ export const usePushNotification = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
 
   const handleNotificationEvent = (notification) => {
     if (!notification || !notification.getData()) return

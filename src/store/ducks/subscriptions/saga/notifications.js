@@ -18,7 +18,7 @@ function* handleEvent({ eventData }) {
    * Fires when one of the user's followeds changes their first story
    */
   if (type === 'USER_CHATS_WITH_UNVIEWED_MESSAGES_COUNT_CHANGED') {
-    return yield put(authActions.authUserRequest())
+    return yield put(authActions.authGetUserRequest())
   }
 
   /**

@@ -17,10 +17,8 @@ const DEFAULT_CODE = 'GENERIC'
 const DEFAULT_MESSAGE = 'Oops! Something went wrong'
 
 const BLACKLIST = [
-  authConstants.AUTH_DATA_FAILURE,
+  authConstants.AUTH_GET_USER_FAILURE,
   authConstants.AUTH_FLOW_FAILURE,
-  authConstants.AUTH_TOKEN_FAILURE,
-  authConstants.AUTH_RESET_FAILURE,
   authConstants.AUTH_PREFETCH_FAILURE,
   cacheConstants.CACHE_FETCH_FAILURE,
   postsConstants.POSTS_REPORT_POST_VIEWS_FAILURE,
@@ -70,8 +68,6 @@ export default function* captureErrors(action) {
     if (!skipError) {
       yield call(showError, action)
     }
-
-    Logger.captureFailureAction(action)
   } catch (error) {
     Logger.captureException(error)
   }

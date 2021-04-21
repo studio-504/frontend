@@ -15,7 +15,7 @@ const getDisableDatingByStatus = propEq('datingStatus', 'DISABLED')
 const DatingSettingsService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
   const [disableDating, setDisableDating] = useState(getDisableDatingByStatus(user))
 

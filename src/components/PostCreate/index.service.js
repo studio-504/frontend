@@ -17,7 +17,7 @@ const PostCreateService = ({
   const navigation = useNavigation()
   const route = useRoute()
 
-  const user = useSelector(authSelector.authUserIdentity)
+  const user = useSelector(authSelector.authUser)
   const postsCreate = useSelector(postsSelector.postsCreate)
   const cameraCapture = useSelector(state => state.camera.cameraCapture)
   const albumsGet = useSelector(albumsSelector.albumsGetSelector(user.userId))

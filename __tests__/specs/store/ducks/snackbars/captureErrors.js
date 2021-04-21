@@ -122,8 +122,6 @@ describe('Capture Errors', () => {
 
       testBlackListAction('AUTH_DATA_FAILURE')
       testBlackListAction('AUTH_FLOW_FAILURE')
-      testBlackListAction('AUTH_TOKEN_FAILURE')
-      testBlackListAction('AUTH_RESET_FAILURE')
       testBlackListAction('AUTH_PREFETCH_FAILURE')
       testBlackListAction('CACHE_FETCH_FAILURE')
       testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')

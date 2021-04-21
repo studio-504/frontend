@@ -26,7 +26,6 @@ export const removeItem = async (name) => {
 }
 
 export const STORAGE_KEYS = {
-  AUTH_USER: '@real:auth:user',
   AUTH_APPLE: '@real:auth:apple',
   SETTINGS_PHOTO_VALIDATION: '@real:settings:photoValidation',
   VERIFICATION_SCREEN: '@real:uploads:verificationScreen',
