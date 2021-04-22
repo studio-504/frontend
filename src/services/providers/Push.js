@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as usersActions from 'store/ducks/users/actions'
+import * as pushActions from 'store/ducks/push/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import path from 'ramda/src/path'
 import * as Logger from 'services/Logger'
@@ -67,7 +67,7 @@ export const usePushNotification = () => {
       scope.setExtra('apns', token)
       Logger.captureMessage('PUSH_NOTIFICATION_REGISTER')
     })
-    dispatch(usersActions.usersSetApnsTokenRequest({ token }))
+    dispatch(pushActions.pushSetApnsTokenRequest({ token }))
   }
 
   const handleRegistrationError = (payload) => {
