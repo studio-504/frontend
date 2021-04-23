@@ -67,7 +67,7 @@ describe('DatingSettingsScreen', () => {
       const { getByText } = setup()
 
       expect(getByText(user.bio)).toBeTruthy()
-      expect(getByText(`${user.displayName}, 30`)).toBeTruthy()
+      expect(getByText(`${user.displayName} 31`)).toBeTruthy()
     })
   })
 
