@@ -4,17 +4,19 @@ import forge from 'node-forge'
 import * as actions from 'store/ducks/signup/actions'
 import * as authActions from 'store/ducks/auth/actions'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import * as usersQueries from 'store/ducks/users/queries'
 import * as queries from 'store/ducks/signup/queries'
-import signupPassword, { encryptPassword, fetchMe } from 'store/ducks/signup/saga/signupPassword'
+import signupPassword, { encryptPassword } from 'store/ducks/signup/saga/signupPassword'
 import * as queryService from 'services/Query'
-import * as normalizer from 'normalizer/schemas'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
-import { entitiesMerge } from 'store/ducks/entities/saga'
 
 const password = 'password'
 const encryptedPassword = 'encryptedPassword'
+
+/**
+ * Mock Functions
+ */
+const AwsAuth = { currentUserCredentials: jest.fn() }
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 const navigation = { reset: jest.fn() }
@@ -23,6 +25,14 @@ const encrypt = jest.fn().mockReturnValue(encryptedPassword)
 jest.mock('react-native-config', () => ({
   REAL_PUBLIC_KEY_PEM: 'REAL_PUBLIC_KEY_PEM',
 }))
+
+/**
+ * Mock Context
+ */
+const context = [
+  [getContext('AwsAuth'), AwsAuth],
+  [getContext('ReactNavigationRef'), { current: navigation }],
+]
 
 describe('signupPassword', () => {
   beforeAll(() => {
@@ -47,34 +57,19 @@ describe('signupPassword', () => {
     expect(forge.util.encode64).toHaveBeenCalledWith('encryptedPassword')
   })
 
-  it('fetchMe', async () => {
-    const self = { userId: 1 }
-
-    await expectSaga(fetchMe)
-      .provide([[matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { self } })]])
-
-      .call([queryService, 'apiRequest'], usersQueries.self)
-      .call(entitiesMerge, normalizer.normalizeUserGet(self))
-
-      .silentRun()
-  })
-
   it('success', async () => {
     await expectSaga(testAsRootSaga(signupPassword))
-      .provide([
-        [getContext('ReactNavigationRef'), { current: navigation }],
-        [matchers.call.fn(encryptPassword), encryptedPassword],
-        [matchers.call.fn(fetchMe), Promise.resolve({})],
-      ])
+      .provide([...context, [matchers.call.fn(encryptPassword), encryptedPassword]])
 
       .call(encryptPassword, password)
       .call([queryService, 'apiRequest'], queries.setUserPassword, { encryptedPassword })
-      .call(fetchMe)
 
+      .put(authActions.authGetUserRequest())
       .put(authActions.authPrefetchRequest())
       .put(actions.signupPasswordSuccess())
 
       .dispatch(actions.signupPasswordRequest({ password }))
+      .dispatch(authActions.authGetUserSuccess())
       .silentRun()
 
     expect(navigation.reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: 'App' }] })
@@ -84,10 +79,7 @@ describe('signupPassword', () => {
     const error = new Error('Error')
 
     await expectSaga(testAsRootSaga(signupPassword))
-      .provide([
-        [getContext('ReactNavigationRef'), { current: navigation }],
-        [matchers.call.fn(encryptPassword), throwError(error)],
-      ])
+      .provide([...context, [matchers.call.fn(encryptPassword), throwError(error)]])
 
       .call(encryptPassword, password)
 

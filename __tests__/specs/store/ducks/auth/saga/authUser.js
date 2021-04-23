@@ -1,5 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import authUser from 'store/ducks/auth/saga/authUser'
+import authGetUser from 'store/ducks/auth/saga/authGetUser'
 import * as authActions from 'store/ducks/auth/actions'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/users/queries'
@@ -9,9 +9,9 @@ import { entitiesMerge } from 'store/ducks/entities/saga'
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
-const action = authActions.authUserRequest()
+const action = authActions.authGetUserRequest()
 
-describe('authUser', () => {
+describe('authGetUser', () => {
   afterEach(() => {
     queryService.apiRequest.mockClear()
   })
@@ -22,8 +22,8 @@ describe('authUser', () => {
 
     queryService.apiRequest.mockResolvedValueOnce(response)
 
-    await expectSaga(testAsRootSaga(authUser))
-      .put(authActions.authUserSuccess({ data: '1' }))
+    await expectSaga(testAsRootSaga(authGetUser))
+      .put(authActions.authGetUserSuccess({ data: '1' }))
       .call(entitiesMerge, normalizer.normalizeUserGet(self))
 
       .dispatch(action)
@@ -37,8 +37,8 @@ describe('authUser', () => {
 
     queryService.apiRequest.mockRejectedValueOnce(error)
 
-    await expectSaga(testAsRootSaga(authUser))
-      .put(authActions.authUserFailure(error))
+    await expectSaga(testAsRootSaga(authGetUser))
+      .put(authActions.authGetUserFailure(error))
 
       .dispatch(action)
       .silentRun()

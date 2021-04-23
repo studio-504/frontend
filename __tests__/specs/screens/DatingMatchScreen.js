@@ -33,7 +33,7 @@ jest.mock('@react-native-community/geolocation', () => ({ getCurrentPosition: je
 
 jest.spyOn(RNPermissions, 'request').mockResolvedValue(true)
 jest.spyOn(RNPermissions, 'check').mockResolvedValue(RNPermissions.RESULTS.GRANTED)
-jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue(user)
+jest.spyOn(authSelector, 'authUser').mockReturnValue(user)
 
 const navigation = { goBack: jest.fn(), useRoute: jest.fn() }
 useNavigation.mockReturnValue(navigation)
@@ -76,7 +76,7 @@ describe('DatingMatchScreen', () => {
     })
 
     it('default values', () => {
-      authSelector.authUserIdentity.mockReturnValue({})
+      authSelector.authUser.mockReturnValue({})
       const { queryByAccessibilityLabel } = setup()
       openAllSections(queryByAccessibilityLabel)
 
@@ -87,7 +87,7 @@ describe('DatingMatchScreen', () => {
       testField(queryByAccessibilityLabel('matchGenders'), { value: '' })
       testField(queryByAccessibilityLabel('matchLocationRadius'), { value: '50 mi' })
 
-      authSelector.authUserIdentity.mockReturnValue(user)
+      authSelector.authUser.mockReturnValue(user)
     })
 
     it('values from profile', () => {
@@ -103,23 +103,23 @@ describe('DatingMatchScreen', () => {
     })
 
     it('opposite gender for male', () => {
-      authSelector.authUserIdentity.mockReturnValue({ gender: 'MALE' })
+      authSelector.authUser.mockReturnValue({ gender: 'MALE' })
       const { queryByAccessibilityLabel } = setup()
       openAllSections(queryByAccessibilityLabel)
 
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Female' })
 
-      authSelector.authUserIdentity.mockReturnValue(user)
+      authSelector.authUser.mockReturnValue(user)
     })
 
     it('opposite gender for female', () => {
-      authSelector.authUserIdentity.mockReturnValue({ gender: 'FEMALE' })
+      authSelector.authUser.mockReturnValue({ gender: 'FEMALE' })
       const { queryByAccessibilityLabel } = setup()
       openAllSections(queryByAccessibilityLabel)
 
       testField(queryByAccessibilityLabel('matchGenders'), { value: 'Male' })
 
-      authSelector.authUserIdentity.mockReturnValue(user)
+      authSelector.authUser.mockReturnValue(user)
     })
 
     it('submit form', async () => {

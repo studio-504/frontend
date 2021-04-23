@@ -14,7 +14,7 @@ const user = {
 }
 
 jest.spyOn(authSelector, 'authUserSelector').mockReturnValue({ data: user })
-jest.spyOn(authSelector, 'authUserIdentity').mockReturnValue(user)
+jest.spyOn(authSelector, 'authUser').mockReturnValue(user)
 jest.spyOn(authSelector, 'authUserId').mockReturnValue(user.userId)
 jest.spyOn(ReactRedux, 'useDispatch')
 
@@ -47,7 +47,7 @@ describe('ProfileSelfScreen', () => {
     it('request data for authorized user', () => {
       setup()
 
-      expect(dispatch).toHaveBeenCalledWith(authActions.authUserRequest())
+      expect(dispatch).toHaveBeenCalledWith(authActions.authGetUserRequest())
       expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest({ userId: 'id123' }))
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest({ userId: 'id123' }))
     })
@@ -57,7 +57,7 @@ describe('ProfileSelfScreen', () => {
       useRoute.mockReturnValue({ params })
       setup()
 
-      expect(dispatch).toHaveBeenCalledWith(authActions.authUserRequest())
+      expect(dispatch).toHaveBeenCalledWith(authActions.authGetUserRequest())
       expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest(params))
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest(params))
     })
@@ -68,7 +68,7 @@ describe('ProfileSelfScreen', () => {
 
       setup()
 
-      expect(dispatch).toHaveBeenCalledWith(authActions.authUserRequest())
+      expect(dispatch).toHaveBeenCalledWith(authActions.authGetUserRequest())
       expect(dispatch).toHaveBeenCalledTimes(1)
     })
 

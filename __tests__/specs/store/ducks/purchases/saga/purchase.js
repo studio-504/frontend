@@ -110,7 +110,7 @@ describe('Purchases saga', () => {
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
       .put(actions.purchaseSuccess())
-      .put(authActions.authUserRequest())
+      .put(authActions.authGetUserRequest())
 
       .dispatch(actions.purchaseRequest(premium))
       .silentRun()

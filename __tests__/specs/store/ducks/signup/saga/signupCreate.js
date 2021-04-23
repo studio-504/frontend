@@ -1,20 +1,17 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import * as matchers from 'redux-saga-test-plan/matchers'
 import { getContext } from 'redux-saga/effects'
 import * as actions from 'store/ducks/signup/actions'
 import { testAsRootSaga, testNavigate } from 'tests/utils/helpers'
-import signupCreate, { COGNITO_PROVIDER } from 'store/ducks/signup/saga/signupCreate'
+import signupCreate from 'store/ducks/signup/saga/signupCreate'
 import { logEvent } from 'services/Analytics'
 import * as queryService from 'services/Query'
 import * as queries from 'store/ducks/signup/queries'
 import * as helpers from 'store/ducks/signup/saga/helpers'
+import { handleAnonymousSignin } from 'store/ducks/auth/saga/authSigninAnonymous'
+
+jest.mock('store/ducks/auth/saga/authSigninAnonymous', () => ({ handleAnonymousSignin: jest.fn() }))
 
 jest.spyOn(helpers, 'generateExpirationDate').mockReturnValue('expirationDate')
-
-jest.mock('react-native-config', () => ({
-  AWS_COGNITO_REGION: 'AWS_COGNITO_REGION',
-  AWS_COGNITO_USER_POOL_ID: 'AWS_COGNITO_USER_POOL_ID',
-}))
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 const navigation = { navigate: jest.fn() }
@@ -29,29 +26,17 @@ describe('signupCreate', () => {
     navigation.navigate.mockClear()
     queryService.apiRequest.mockClear()
     logEvent.mockClear()
-    AwsAuth.federatedSignIn.mockClear()
-  })
-
-  it('COGNITO_PROVIDER', () => {
-    expect(COGNITO_PROVIDER).toBe('cognito-idp.AWS_COGNITO_REGION.amazonaws.com/AWS_COGNITO_USER_POOL_ID')
+    handleAnonymousSignin.mockClear()
   })
 
   describe('success', () => {
-    const tokens = { IdToken: 'IdToken' }
-
     it('email', async () => {
       const usernameType = 'email'
 
       await expectSaga(testAsRootSaga(signupCreate))
-        .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
-          [matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { createAnonymousUser: tokens } })],
-          [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
-        ])
+        .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .call([queryService, 'apiRequest'], queries.createAnonymousUser)
-        .call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, { token: 'IdToken', expires_at: 'expirationDate' }, {})
+        .call(handleAnonymousSignin)
         .call([queryService, 'apiRequest'], queries.startChangeUserEmail, { email })
         .call(logEvent, 'SIGNUP_EMAIL_SUCCESS')
         .put(actions.signupCreateSuccess())
@@ -69,15 +54,8 @@ describe('signupCreate', () => {
       const usernameType = 'phone'
 
       await expectSaga(testAsRootSaga(signupCreate))
-        .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
-          [matchers.call.fn(queryService.apiRequest), Promise.resolve({ data: { createAnonymousUser: tokens } })],
-          [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
-        ])
+        .provide([[getContext('ReactNavigationRef'), { current: navigation }]])
 
-        .call([queryService, 'apiRequest'], queries.createAnonymousUser)
-        .call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, { token: 'IdToken', expires_at: 'expirationDate' }, {})
         .call([queryService, 'apiRequest'], queries.startChangeUserPhoneNumber, { phoneNumber })
         .call(logEvent, 'SIGNUP_PHONE_SUCCESS')
         .put(actions.signupCreateSuccess())
@@ -86,31 +64,6 @@ describe('signupCreate', () => {
         .silentRun()
 
       testNavigate(navigation, 'Auth.AuthPhoneConfirm')
-    })
-
-    it('prevent double login for authorized user', async () => {
-      const usernameType = 'email'
-
-      AwsAuth.currentCredentials.mockResolvedValueOnce({ authenticated: true })
-
-      await expectSaga(testAsRootSaga(signupCreate))
-        .provide([
-          [getContext('AwsAuth'), AwsAuth],
-          [getContext('ReactNavigationRef'), { current: navigation }],
-
-          [matchers.call.fn(queryService.apiRequest), Promise.resolve(true)],
-        ])
-
-        .not.call([queryService, 'apiRequest'], queries.createAnonymousUser)
-        .not.call([AwsAuth, 'federatedSignIn'], COGNITO_PROVIDER, { token: 'IdToken', expires_at: 'expirationDate' }, {})
-        .call([queryService, 'apiRequest'], queries.startChangeUserEmail, { email })
-        .call(logEvent, 'SIGNUP_EMAIL_SUCCESS')
-        .put(actions.signupCreateSuccess())
-
-        .dispatch(actions.signupCreateRequest({ usernameType, email }))
-        .silentRun()
-
-      testNavigate(navigation, 'Auth.AuthEmailConfirm')
     })
   })
 
