@@ -32,7 +32,7 @@ function pushChannel() {
      * once permissions are enabled, handleRegistrationEvent will be called
      */
     PushNotificationIOS.checkPermissions(handlePermissions)
-    // PushNotificationIOS.getInitialNotification().then(handleNotificationEvent)
+    PushNotificationIOS.getInitialNotification().then(handleNotificationEvent)
 
     return function unsubscribe() {
       PushNotificationIOS.abandonPermissions()
