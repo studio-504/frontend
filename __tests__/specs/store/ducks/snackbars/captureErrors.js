@@ -125,7 +125,6 @@ describe('Capture Errors', () => {
       testBlackListAction('AUTH_PREFETCH_FAILURE')
       testBlackListAction('CACHE_FETCH_FAILURE')
       testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')
-      testBlackListAction('PUSH_SET_APNS_TOKEN_FAILURE')
       testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE')
       testBlackListAction('THEMES_CHECK_DEFAULT_FAILURE')
     })
