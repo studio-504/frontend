@@ -48,31 +48,42 @@ function handleRegistrationError(error) {
   })
 }
 
+function* handleNotificationPress(payload) {
+  /**
+   * ios deeplinking payload structure, might change on other provider/client
+   */
+  const navigation = yield NavigationService.getNavigation()
+  const action = path(['data', 'pinpoint', 'deeplink'])(payload)
+
+  if (!LinkingService.isCardSupported({ action })) {
+    Logger.withScope((scope) => {
+      scope.setExtra('payload', JSON.stringify(payload))
+      Logger.captureMessage('PUSH_NOTIFICATION_UNSUPPORTED')
+    })
+
+    return false
+  }
+
+  /**
+   * Navigate to related screen if action is recognized and supported
+   */
+  LinkingService.deeplinkNavigation(navigation)(action)
+}
+
 function* handleNotificationEvent(notification) {
   try {
+
     /**
      * Let ios know that push notification is handled succesfully
      */
     notification.finish(PushNotificationIOS.FetchResult.NewData)
+    yield call(resetBadgeNumber)
 
-    /**
-     * ios deeplinking payload structure, might change on other provider/client
-     */
-    const action = path(['data', 'pinpoint', 'deeplink'])(notification.getData())
+    const payload = notification.getData()
 
-    /**
-     * Navigate to related screen if action is recognized and supported
-     */
-    if (LinkingService.isCardSupported({ action })) {
-      const navigation = yield NavigationService.getNavigation()
-      LinkingService.deeplinkNavigation(navigation)(action)
-      yield call(resetBadgeNumber)
+    if (payload.userInteraction === 1) {
+      yield call(handleNotificationPress, payload)
     }
-
-    /**
-     * Log unrecognized or unsupported actions
-     */
-    throw new Error('NOT_SUPPORTED_PUSH_NOTIFICATION')
   } catch (error) {
     Logger.captureException(error)
   }

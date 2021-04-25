@@ -24,8 +24,9 @@ function getHandlers() {
  * Mock Data
  */
 const token = 'token'
-const notificationData = { data: { pinpoint: { deeplink: 'https:/real.app/chat' } } }
+const notificationData = { data: { pinpoint: { deeplink: 'https:/real.app/chat' } }, userInteraction: 1 }
 const notification = { finish: jest.fn(), getData: jest.fn().mockReturnValue(notificationData) }
+const initialNotification = { finish: jest.fn(), getData: jest.fn().mockReturnValue({ userInteraction: 0, data: {} }) }
 
 /**
  * Mock Functions
@@ -37,11 +38,13 @@ jest.mock('@react-native-community/push-notification-ios', () => ({
   requestPermissions: jest.fn(),
   addEventListener: jest.fn(),
   checkPermissions: jest.fn().mockImplementation((callback) => callback()),
-  getInitialNotification: jest.fn().mockResolvedValue(true),
+  getInitialNotification: jest.fn(),
   abandonPermissions: jest.fn(),
   removeEventListener: jest.fn(),
   FetchResult: { NewData: 'NewData' },
 }))
+
+PushNotificationIOS.getInitialNotification.mockResolvedValue(initialNotification)
 
 jest.mock('services/Query', () => ({ apiRequest: jest.fn().mockResolvedValue(true) }))
 
@@ -58,6 +61,13 @@ function mockLoggerScope() {
  */
 const context = [[getContext('ReactNavigationRef'), { current: navigation }]]
 
+const setupSaga = () =>
+  expectSaga(testAsRootSaga(push))
+    .provide(context)
+
+    .dispatch(actions.pushStartRequest())
+    .silentRun()
+
 describe('Push', () => {
   afterEach(() => {
     PushNotificationIOS.setApplicationIconBadgeNumber.mockClear()
@@ -71,6 +81,8 @@ describe('Push', () => {
     navigation.reset.mockClear()
     notification.finish.mockClear()
     notification.getData.mockClear()
+    initialNotification.finish.mockClear()
+    initialNotification.getData.mockClear()
   })
 
   describe('launch app', () => {
@@ -91,11 +103,7 @@ describe('Push', () => {
       const error = new Error('Error')
       const LoggerScope = mockLoggerScope()
 
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().registrationError(error)
@@ -121,15 +129,11 @@ describe('Push', () => {
     })
   })
 
-  describe('register event', () => {
+  describe('register APNS-token event', () => {
     it('success', async () => {
       const LoggerScope = mockLoggerScope()
 
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().register(token)
@@ -146,11 +150,7 @@ describe('Push', () => {
       const error = new Error('Error')
       queryService.apiRequest.mockRejectedValueOnce(error)
 
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().register(token)
@@ -163,53 +163,65 @@ describe('Push', () => {
   })
 
   describe('notification event', () => {
-    it('navigate to related screen', async () => {
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+    it('let ios know that push notification is handled succesfully', async () => {
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().notification(notification)
-
-      await sleep()
       expect(notification.finish).toHaveBeenCalledWith('NewData')
-      testNavigate(navigation, 'App.Chat')
 
       return promise
     })
 
     it('reset badge number', async () => {
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().notification(notification)
-
-      await sleep()
       expect(PushNotificationIOS.setApplicationIconBadgeNumber).toHaveBeenCalledWith(0)
 
       return promise
     })
 
-    it('unsupported actions', async () => {
-      notification.getData.mockReturnValueOnce(null)
-
-      const promise = expectSaga(testAsRootSaga(push))
-        .provide(context)
-
-        .dispatch(actions.pushStartRequest())
-        .silentRun()
+    it('navigate to related screen', async () => {
+      const promise = setupSaga()
 
       await sleep()
       getHandlers().notification(notification)
 
       await sleep()
-      expect(Logger.captureException).toHaveBeenCalledWith(new Error('NOT_SUPPORTED_PUSH_NOTIFICATION'))
+      testNavigate(navigation, 'App.Chat')
+
+      return promise
+    })
+
+    it('navigate only when user tap by push', async () => {
+      notification.getData.mockReturnValueOnce({ ...notificationData, userInteraction: 0 })
+
+      const promise = setupSaga()
+
+      await sleep()
+      getHandlers().notification(notification)
+
+      await sleep()
+      expect(navigation.navigate).not.toHaveBeenCalled()
+
+      return promise
+    })
+
+    it('unsupported actions', async () => {
+      const LoggerScope = mockLoggerScope()
+      const payload = { userInteraction: 1, data: {} }
+      notification.getData.mockReturnValueOnce(payload)
+
+      const promise = setupSaga()
+
+      await sleep()
+      getHandlers().notification(notification)
+
+      await sleep()
+      expect(LoggerScope.setExtra).toHaveBeenCalledWith('payload', JSON.stringify(payload))
+      expect(Logger.captureMessage).toHaveBeenCalledWith('PUSH_NOTIFICATION_UNSUPPORTED')
 
       return promise
     })
