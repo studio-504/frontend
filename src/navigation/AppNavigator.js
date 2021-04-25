@@ -5,14 +5,12 @@ import * as navigationOptions from 'navigation/options'
 import CameraScreen from 'screens/CameraScreen'
 import RootNavigator from 'navigation/RootNavigator'
 import ChatNavigator from 'navigation/ChatNavigator'
-import { usePushNotification } from 'services/providers/Push'
 
 const Tab = createMaterialTopTabNavigator()
 
 const AppNavigator = () => {
   const tabNavigatorDefaultProps = navigationOptions.tabNavigatorDefaultProps()
 
-  usePushNotification()
   useEffect(() => {
     Keyboard.dismiss()
   }, [])
