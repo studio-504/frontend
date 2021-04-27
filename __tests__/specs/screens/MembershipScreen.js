@@ -41,7 +41,7 @@ describe('Membership Screen', () => {
 
     fireEvent.press(getByText('Subscribe for $0.99 month'))
 
-    expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
+    expect(dispatch).toHaveBeenCalledWith(purchasesActions.purchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
   })
 
   it('get free diamond button', () => {
@@ -86,7 +86,7 @@ describe('Membership Screen', () => {
       expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
     })
 
     it('retry failure', () => {
@@ -97,7 +97,7 @@ describe('Membership Screen', () => {
       expect(queryByText('Subscribe for $0.99 month')).toBeFalsy()
       fireEvent.press(getByText('Retry Subscription'))
 
-      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M.trial' }))
+      expect(dispatch).toHaveBeenCalledWith(purchasesActions.retryPurchaseRequest({ productId: 'app.real.mobile.diamond1M' }))
     })
 
     it('contact us', () => {

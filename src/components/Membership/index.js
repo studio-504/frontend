@@ -61,17 +61,14 @@ const Membership = ({
   )
 
   const renderSubscribe = () => (
-    <>
-      <Text style={styling.descriptionText}>{t('Start with a 1 month free trial')}</Text>
-      <DefaultButton
-        labelStyle={styling.labelStyle}
-        label={t('Subscribe for $0.99 month')}
-        icon={AppleIcon}
-        onPress={requestSubscription}
-        loading={purchasesRequest.status === 'loading'}
-        disabled={purchasesRequest.status === 'loading'}
-      />
-    </>
+    <DefaultButton
+      labelStyle={styling.labelStyle}
+      label={t('Subscribe for $0.99 month')}
+      icon={AppleIcon}
+      onPress={requestSubscription}
+      loading={purchasesRequest.status === 'loading'}
+      disabled={purchasesRequest.status === 'loading'}
+    />
   )
 
   return (
@@ -106,7 +103,9 @@ const Membership = ({
             <ThemesIcon fill={theme.colors.text} />
           </View>
           <View style={styling.subheadingContent}>
-            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>{t('Profile Themes')}</Text>
+            <Text style={[styling.subheadingTitle, styling.link]} onPress={navigateTheme}>
+              {t('Profile Themes')}
+            </Text>
             <Text style={styling.subheadingSubtitle}>{t('Change the look and feel of your profile')}</Text>
           </View>
         </View>
@@ -181,7 +180,7 @@ const Membership = ({
           </View>
         </View>
 
-        {isSubscribed === false &&
+        {isSubscribed === false && (
           <View style={styling.action}>
             <DefaultButton
               labelStyle={styling.labelStyle}
@@ -190,7 +189,7 @@ const Membership = ({
               mode="outlined"
             />
           </View>
-        }
+        )}
 
         <AuthTermsTemplate />
       </SafeAreaView>
@@ -265,12 +264,6 @@ const styles = (theme) =>
     lastChild: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
-    },
-    descriptionText: {
-      fontSize: 12,
-      fontWeight: '300',
-      paddingBottom: 6,
-      textAlign: 'center',
     },
     contactUsLabel: {
       fontSize: 14,

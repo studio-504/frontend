@@ -1,4 +1,4 @@
-export const PRIMARY_SUBSCRIPTION = 'app.real.mobile.diamond1M.trial'
+export const PRIMARY_SUBSCRIPTION = 'app.real.mobile.diamond1M'
 
 export const SUBSCRIPTION_LEVEL = {
   DIAMOND: 'DIAMOND',
