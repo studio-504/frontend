@@ -87,11 +87,6 @@ export const initialState = {
     status: 'idle',
     payload: {},
   },
-  usersSetApnsToken: {
-    data: [],
-    status: 'idle',
-    payload: {},
-  },
   usersDeleteAvatar: {
     status: 'idle',
   },
@@ -724,36 +719,6 @@ const usersChangeAvatarIdle = (state) => update(state, {
 /**
  *
  */
-const usersSetApnsTokenRequest = (state, action) => update(state, {
-  usersSetApnsToken: {
-    status: { $set: 'loading' },
-    payload: { $set: action.payload },
-  },
-})
-
-const usersSetApnsTokenSuccess = (state, action) => update(state, {
-  usersSetApnsToken: {
-    data: { $set: action.payload.data },
-    status: { $set: 'success' },
-  },
-})
-
-const usersSetApnsTokenFailure = (state) => update(state, {
-  usersSetApnsToken: {
-    status: { $set: 'failure' },
-  },
-})
-
-const usersSetApnsTokenIdle = (state) => update(state, {
-  usersSetApnsToken: {
-    data: { $set: initialState.usersSetApnsToken.data },
-    status: { $set: 'idle' },
-  },
-})
-
-/**
- *
- */
 const usersSetUserDatingStatusRequest = (state, action) => update(state, {
   usersSetUserDatingStatus: {
     status: { $set: 'loading' },
@@ -872,11 +837,6 @@ export default handleActions({
   [constants.USERS_DELETE_CARD_SUCCESS]: usersDeleteCardSuccess,
   [constants.USERS_DELETE_CARD_FAILURE]: usersDeleteCardFailure,
   [constants.USERS_DELETE_CARD_IDLE]: usersDeleteCardIdle,
-
-  [constants.USERS_SET_APNS_TOKEN_REQUEST]: usersSetApnsTokenRequest,
-  [constants.USERS_SET_APNS_TOKEN_SUCCESS]: usersSetApnsTokenSuccess,
-  [constants.USERS_SET_APNS_TOKEN_FAILURE]: usersSetApnsTokenFailure,
-  [constants.USERS_SET_APNS_TOKEN_IDLE]: usersSetApnsTokenIdle,
 
   [constants.USERS_DELETE_AVATAR_REQUEST]: usersDeleteAvatarRequest,
   [constants.USERS_DELETE_AVATAR_SUCCESS]: usersDeleteAvatarSuccess,

@@ -4,6 +4,7 @@ import * as actions from 'store/ducks/auth/actions'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
 import * as constants from 'store/ducks/auth/constants'
+import * as pushActions from 'store/ducks/push/actions'
 
 /**
  *
@@ -49,6 +50,7 @@ function* authorize() {
   }
 
   yield put(actions.authPrefetchRequest())
+  yield put(pushActions.pushStartRequest())
 
   navigationActions.navigateResetToApp(navigation)
 }
