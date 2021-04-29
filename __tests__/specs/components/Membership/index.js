@@ -37,10 +37,8 @@ describe('Membership component', () => {
 
   it('subscribe button', () => {
     const requestSubscription = jest.fn()
-    const { getByText, queryByText } = setup({ requestSubscription })
+    const { getByText } = setup({ requestSubscription })
     const $button = getByText('Subscribe for $0.99 month')
-
-    expect(queryByText('Start with a 1 month free trial')).toBeTruthy()
 
     expect($button).toBeEnabled()
     fireEvent.press($button)
@@ -57,10 +55,8 @@ describe('Membership component', () => {
 
   it('unsubscribe button', () => {
     const manageSubscriptions = jest.fn()
-    const { getByText, queryByText } = setup({ manageSubscriptions, isSubscribed: true })
+    const { getByText } = setup({ manageSubscriptions, isSubscribed: true })
     const $button = getByText('Unsubscribe')
-
-    expect(queryByText('Start with a 1 month free trial')).not.toBeTruthy()
 
     fireEvent.press($button)
     expect(manageSubscriptions).toHaveBeenCalled()
