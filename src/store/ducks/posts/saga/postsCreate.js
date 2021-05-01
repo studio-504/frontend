@@ -1,5 +1,5 @@
 import { graphqlOperation } from '@aws-amplify/api'
-import { call, put, takeEvery, all, getContext, select, take, spawn, delay, race, retry } from 'redux-saga/effects'
+import { call, put, takeEvery, getContext, take, spawn, delay, race, retry } from 'redux-saga/effects'
 import { eventChannel, END } from 'redux-saga'
 import path from 'ramda/src/path'
 import pathEq from 'ramda/src/pathEq'
@@ -13,10 +13,7 @@ import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as subscriptionsConstants from 'store/ducks/subscriptions/constants'
 import * as usersActions from 'store/ducks/users/actions'
 import * as queryService from 'services/Query'
-import dayjs from 'dayjs'
-import { v4 as uuid } from 'uuid'
 import RNFS from 'react-native-fs'
-import * as Logger from 'services/Logger'
 import filePath from 'path'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
@@ -165,7 +162,6 @@ function* handleTextOnlyPost(req) {
  */
 function* handlePostsCreateSuccess(post) {
   const userId = path(['postedBy', 'userId'], post)
-
   yield put(actions.postsCreateSuccess({ data: {}, payload: post, meta: {} }))
   yield put(actions.postsGetRequest({ userId }))
   yield put(usersActions.usersImagePostsGetRequest({ userId, isVerified: true }))
@@ -286,83 +282,8 @@ function* postsCreateIdle(req) {
   }
 }
 
-/**
- *
- */
-function* postsCreateSchedulerRequest() {
-  try {
-    const data = yield select(state => state.posts.postsCreateQueue)
-
-    const failedPosts = Object.values(data)
-      .filter(post => path(['status'])(post) === 'failure')
-
-    const loadingPosts = Object.values(data)
-      .filter(post => path(['status'])(post) === 'loading')
-      .filter(post => dayjs(dayjs()).diff(path(['payload', 'createdAt'])(post), 'minute') > 5)
-
-    const idlePosts = Object.values(data)
-      .filter(post => path(['status'])(post) === 'idle')
-
-    const successPosts = Object.values(data)
-      .filter(post => path(['status'])(post) === 'success')
-
-    function* removePost(post) {
-      yield put(actions.postsCreateIdle({
-        payload: path(['payload'])(post),
-      }))
-      return post
-    }
-
-    function* createPost(post) {
-      const postId = uuid()
-      const mediaId = uuid()
-      yield put(actions.postsCreateRequest({
-        ...path(['payload'])(post),
-        createdAt: dayjs().toJSON(),
-        postId,
-        mediaId,
-      }))
-      return post
-    }
-
-    function* recreatePost(post) {
-      yield removePost(post)
-      yield createPost(post)
-    }
-
-    /**
-     * Cleanup
-     */
-    yield all(
-      successPosts.map((post) => call(removePost, post)),
-    )
-
-    yield all(
-      idlePosts.map((post) => call(removePost, post)),
-    )
-
-    /**
-     * Retry
-     */
-    yield all(
-      loadingPosts
-      .map((post) => call(recreatePost, post)),
-    )
-
-    yield all(
-      failedPosts
-      .map((post) => call(recreatePost, post)),
-    )
-  } catch (error) {
-    Logger.withScope(scope => {
-      scope.setExtra('message', error.message)
-      Logger.captureMessage('POSTS_CREATE_SCHEDULER_REQUEST')
-    })
-  }
-}
 
 export default () => [
   takeEvery(constants.POSTS_CREATE_REQUEST, postsCreateRequest),
   takeEvery(constants.POSTS_CREATE_IDLE, postsCreateIdle),
-  takeEvery(constants.POSTS_CREATE_SCHEDULER_REQUEST, postsCreateSchedulerRequest),
 ]
