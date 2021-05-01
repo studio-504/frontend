@@ -84,6 +84,9 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
     if (usersChangeAvatar.status === 'success') {
       usersChangeAvatarSuccess()
     }
+    if (usersChangeAvatar.status === 'failure') {
+      handleClose()
+    }
   }, [usersChangeAvatar.status])
 
   /**
