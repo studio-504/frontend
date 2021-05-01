@@ -48,7 +48,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
     )
   }
 
-  const { handlePostUpload } = useUpload({})
+  const { handlePostUpload } = useUpload()
   const { activeUpload, activePhoto } = useUploadState({
     handleUploadSuccess,
     handleUploadFailure,

@@ -39,9 +39,7 @@ const PostCreateService = ({
   /**
    *
    */
-  const { handlePostUpload } = useUpload({
-    handlePostUploadStarted,
-  })
+  const { handlePostUpload } = useUpload()
 
   useEffect(() => {
     if(!user.userId) return
@@ -49,7 +47,10 @@ const PostCreateService = ({
     dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))
   }, [])
 
-  const postsCreateRequest = handlePostUpload
+  const postsCreateRequest = (post) => {
+    handlePostUpload(post)
+    handlePostUploadStarted(post)
+  }
 
   const handleOpenVerification = navigationActions.navigateVerification(navigation, {
     actionType: VERIFICATION_TYPE.BACK,

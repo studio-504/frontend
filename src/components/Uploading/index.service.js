@@ -5,10 +5,7 @@ import useUpload from 'services/providers/Upload'
 const UploadingService = ({ children }) => {
   const dispatch = useDispatch()
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
-
-  const { handlePostUpload } = useUpload({
-    handlePostUploadStarted: () => {},
-  })
+  const { handlePostUpload } = useUpload()
 
   const postsCreateRequest = handlePostUpload
   const postsCreateIdle = (payload) => dispatch(postsActions.postsCreateIdle(payload))

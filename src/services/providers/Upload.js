@@ -73,9 +73,7 @@ export const useUploadState = ({
   })
 }
 
-const useUpload = ({
-  handlePostUploadStarted = () => {},
-}) => {
+const useUpload = () => {
   const dispatch = useDispatch()
 
   /**
@@ -94,7 +92,6 @@ const useUpload = ({
     const payload = postUploadDefaultValues(post)
     dispatch(postsActions.postsCreateRequest(payload))
     uploadStartedHandler(post)
-    handlePostUploadStarted(post)
   }
 
   return ({
