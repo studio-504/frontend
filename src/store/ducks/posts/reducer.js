@@ -153,7 +153,6 @@ export const initialState = {
   },
 
   postsCreateQueue: {},
-  postsRecreateQueue: {},
   postsGetCache: {},
   postsCommentsGetCache: {},
   postsViewsGetCache: {},
