@@ -155,6 +155,7 @@ function* handleTextOnlyPost(post) {
 
   try {
     yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, post))
+    yield put(actions.postsCreateSuccess({ data: {}, payload: post, meta: {} }))
   } catch (error) {
     yield put(actions.postsCreateFailure(error, post))
   }
