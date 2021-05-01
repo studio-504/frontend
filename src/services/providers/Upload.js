@@ -5,7 +5,6 @@ import * as cameraActions from 'store/ducks/camera/actions'
 import * as postsSelector from 'store/ducks/posts/selectors'
 import { v4 as uuid } from 'uuid'
 import dayjs from 'dayjs'
-import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
 import last from 'ramda/src/last'
 
@@ -42,24 +41,12 @@ export const useUploadState = ({
   handleUploadSuccess = () => {},
   handleUploadFailure = () => {},
 }) => {
-  const dispatch = useDispatch()
-
   const postsCreate = useSelector(postsSelector.postsCreate)
   const postsCreateQueue = useSelector(state => state.posts.postsCreateQueue)
   const cameraCapture = useSelector(state => state.camera.cameraCapture)
 
   const activePhoto = pathOr({}, ['data', 0])(cameraCapture)
   const activeUpload = last(Object.values(postsCreateQueue))
-
-  /**
-   * Cancel all pending uploads
-   * This will cancel both network request and remove item from redux store
-   */
-  const cancelActiveUploads = () =>
-    (Object.values(postsCreateQueue) || [])
-      .filter(path(['payload', 'postId']))
-      .forEach(post => dispatch(postsActions.postsCreateIdle(post)))
-
 
 
   /**
@@ -78,7 +65,6 @@ export const useUploadState = ({
 
 
   return ({
-    cancelActiveUploads,
     postsCreate,
     postsCreateQueue,
     cameraCapture,
