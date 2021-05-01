@@ -2,12 +2,14 @@ import { useEffect } from 'react'
 import { Alert } from 'react-native'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
-import useUpload, { useUploadState } from 'services/providers/Upload'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
+import pathOr from 'ramda/src/pathOr'
+import last from 'ramda/src/last'
 import { pageHeaderLeft } from 'navigation/options'
 import * as usersSelector from 'store/ducks/users/selectors'
+import * as postsSelector from 'store/ducks/posts/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoUploadComponentService = ({ children }) => {
@@ -16,7 +18,12 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   const route = useRoute()
 
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
+  const postsCreate = useSelector(postsSelector.postsCreate)
   const usersEditProfile = useSelector(usersSelector.usersEditProfile)
+  const cameraCapture = useSelector(state => state.camera.cameraCapture)
+
+  const activePhoto = pathOr({}, ['data', 0])(cameraCapture)
+  const activeUpload = last(Object.values(postsCreateQueue))
 
   const clearProfilePhotoUpload = () => {
     dispatch(usersActions.usersEditProfileIdle())
@@ -48,11 +55,19 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
     )
   }
 
-  const { handlePostUpload } = useUpload()
-  const { activeUpload, activePhoto } = useUploadState({
-    handleUploadSuccess,
-    handleUploadFailure,
-  })
+
+  /**
+   * Uploaded photo event listener
+   * postCreate status will be changed by upload subscription listener defined in subscription/saga
+   */
+   useEffect(() => {
+    if (postsCreate.status === 'success') {
+      handleUploadSuccess(postsCreate)
+    }
+    if (postsCreate.status === 'failure') {
+      handleUploadFailure(postsCreate)
+    }
+  }, [postsCreate.status])
 
   /**
    *
@@ -91,7 +106,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   useEffect(() => {
     if (!activePhoto.uri) return
 
-    handlePostUpload({
+    dispatch(postsActions.postsCreateRequest({
       images: [activePhoto.uri],
       preview: [activePhoto.preview],
       takenInReal: activePhoto.takenInReal,
@@ -99,7 +114,7 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
       originalFormat: activePhoto.originalFormat,
       originalMetadata: activePhoto.originalMetadata,
       crop: activePhoto.crop,
-    })
+    }))
   }, [activePhoto.uri])
 
   const handleClose = () => {
@@ -116,3 +131,4 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
 }
 
 export default ProfilePhotoUploadComponentService
+

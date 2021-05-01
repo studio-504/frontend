@@ -12,9 +12,12 @@ import * as constants from 'store/ducks/posts/constants'
 import * as subscriptionsActions from 'store/ducks/subscriptions/actions'
 import * as subscriptionsConstants from 'store/ducks/subscriptions/constants'
 import * as usersActions from 'store/ducks/users/actions'
+import * as cameraActions from 'store/ducks/camera/actions'
 import * as queryService from 'services/Query'
 import RNFS from 'react-native-fs'
 import filePath from 'path'
+import { v4 as uuid } from 'uuid'
+import dayjs from 'dayjs'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   const getName = (image) => {
@@ -147,13 +150,13 @@ function* handlePostsCreateRequest(payload) {
 /**
  *
  */
-function* handleTextOnlyPost(req) {
+function* handleTextOnlyPost(post) {
   const AwsAPI = yield getContext('AwsAPI')
 
   try {
-    yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, req.payload))
+    yield AwsAPI.graphql(graphqlOperation(queries.addTextOnlyPost, post))
   } catch (error) {
-    yield put(actions.postsCreateFailure(error, req.payload))
+    yield put(actions.postsCreateFailure(error, post))
   }
 }
 
@@ -218,56 +221,87 @@ export function* checkPostsCreateProcessing(processingPost) {
 /**
  *
  */
-function* handleImagePost(req) {
+function* handleImagePost(post) {
   try {
-    const data = yield handlePostsCreateRequest(req.payload)
+    const data = yield handlePostsCreateRequest(post)
 
     const channel = yield call(initPostsCreateUploadChannel, {
       uploadUrl: data.imageUrl,
       image: data.image,
-      payload: req.payload,
+      payload: post,
     })
 
     yield takeEvery(channel, function *(upload) {
       const meta = (nextProgress) => ({
-        attempt: upload.attempt || req.payload.attempt,
+        attempt: upload.attempt || post.attempt,
         progress: nextProgress || parseInt(upload.progress, 10),
         error: upload.error,
         jobId: upload.jobId,
       })
 
       if (upload.status === 'progress') {
-        yield put(actions.postsCreateProgress({ data: {}, payload: req.payload, meta: meta() }))
+        yield put(actions.postsCreateProgress({ data: {}, payload: post, meta: meta() }))
       }
 
       if (upload.status === 'success') {
-        yield put(actions.postsCreateProgress({ data: {}, payload: req.payload, meta: meta(99) }))
-        yield spawn(checkPostsCreateProcessing, req.payload)
+        yield put(actions.postsCreateProgress({ data: {}, payload: post, meta: meta(99) }))
+        yield spawn(checkPostsCreateProcessing, post)
       }
 
       if (upload.status === 'failure') {
-        const error = new Error('Posts Create Failure')
-        yield put(actions.postsCreateFailure(error, req.payload))
+        throw new Error('Posts Create Failure')
       }
     })
   } catch (error) {
-    yield put(actions.postsCreateFailure(error, req.payload))
+    yield put(actions.postsCreateFailure(error, post))
   }
 }
 
 /**
  *
  */
+ const postUploadDefaultValues = (post) => ({
+  postId: uuid(),
+  mediaId: uuid(),
+  createdAt: dayjs().toJSON(),
+  attempt: 0,
+
+  albumId: post.albumId || null,
+  postType: post.postType || 'IMAGE',
+  text: post.text || '',
+  images: post.images || [],
+  preview: post.preview || [],
+  lifetime: post.lifetime || '',
+  commentsDisabled: post.commentsDisabled || false,
+  likesDisabled: post.likesDisabled || false,
+  sharingDisabled: post.sharingDisabled || false,
+  verificationHidden: post.verificationHidden || false,
+  takenInReal: post.takenInReal || false,
+  originalFormat: post.originalFormat || 'jpg',
+  originalMetadata: post.originalMetadata || '',
+  imageFormat: post.imageFormat || 'JPEG',
+  crop: post.crop || null,
+})
+
 function* postsCreateRequest(req) {
+  const post = postUploadDefaultValues(req.payload)
+
   yield put(subscriptionsActions.subscriptionsMainRequest())
   yield put(subscriptionsActions.subscriptionsPollRequest())
 
-  if (req.payload.postType === 'TEXT_ONLY') {
-    return yield handleTextOnlyPost(req)
+  if (post.postType === 'TEXT_ONLY') {
+    return yield handleTextOnlyPost(post)
   }
 
-  if (req.payload.postType === 'IMAGE') {
-    return yield handleImagePost(req)
+  if (post.postType === 'IMAGE') {
+    return yield handleImagePost(post)
+  }
+
+  /**
+   * Remove uploaded photo from camera queue
+   */
+  if (post.postType === 'IMAGE' && post.images.length) {
+    yield put(cameraActions.cameraCaptureIdle({ payload: { uri: post.images[0] } }))
   }
 }
 
