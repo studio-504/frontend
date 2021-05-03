@@ -41,9 +41,9 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
    * Uploaded photo event listener
    * postCreate status will be changed by upload subscription listener defined in subscription/saga
    */
-   useEffect(() => {
+  useEffect(() => {
     if (postsCreate.status === 'success') {
-      dispatch(usersActions.usersChangeAvatarRequest({postId: postsCreate.payload.postId}))
+      dispatch(usersActions.usersChangeAvatarRequest({ postId: postsCreate.payload.postId }))
     }
 
     if (postsCreate.status === 'failure') {

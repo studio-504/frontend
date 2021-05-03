@@ -261,11 +261,11 @@ function* handleImagePost(post) {
 /**
  *
  */
- const postUploadDefaultValues = (post) => ({
-  postId: uuid(),
-  mediaId: uuid(),
-  createdAt: dayjs().toJSON(),
-  attempt: 0,
+const postUploadDefaultValues = (post) => ({
+  postId: post.postId || uuid(),
+  mediaId: post.mediaId || uuid(),
+  createdAt: post.createdAt || dayjs().toJSON(),
+  attempt: post.attempt || 0,
 
   albumId: post.albumId || null,
   postType: post.postType || 'IMAGE',
