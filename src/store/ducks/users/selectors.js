@@ -112,6 +112,7 @@ export const usersImagePostsGetSelector = () => createDeepEqualSelector(
 
 export const usersDeleteAvatar = path(['users', 'usersDeleteAvatar'])
 export const usersChangeAvatar = path(['users', 'usersChangeAvatar'])
+export const usersCreateAvatar = path(['users', 'usersCreateAvatar'])
 export const usersSetUserDatingStatus = path(['users', 'usersSetUserDatingStatus'])
 export const usersEditProfile = path(['users', 'usersEditProfile'])
 export const usersAcceptFollowerUser = path(['users', 'usersAcceptFollowerUser'])

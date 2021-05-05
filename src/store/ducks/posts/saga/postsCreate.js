@@ -1,5 +1,5 @@
 import { graphqlOperation } from '@aws-amplify/api'
-import { call, put, takeEvery, getContext } from 'redux-saga/effects'
+import { call, put, takeEvery, getContext, select } from 'redux-saga/effects'
 import path from 'ramda/src/path'
 import RNFS from 'react-native-fs'
 import { v4 as uuid } from 'uuid'
@@ -8,6 +8,8 @@ import * as actions from 'store/ducks/posts/actions'
 import * as queries from 'store/ducks/posts/queries'
 import * as constants from 'store/ducks/posts/constants'
 import * as cameraActions from 'store/ducks/camera/actions'
+import * as authSelector from 'store/ducks/auth/selectors'
+import * as usersActions from 'store/ducks/users/actions'
 import postsUploadRequest from 'store/ducks/posts/saga/postsUpload'
 
 /**
@@ -114,7 +116,7 @@ function* postsCreateRequest(req) {
       throw new Error('Unsupported post type')
     }
 
-    yield put(actions.postsCreateSuccess({ data: {}, payload: values, meta: {} }))
+    yield put(actions.postsCreateSuccess({ data: {}, payload: values, meta: {} }, req.meta))
   } catch (error) {
     yield put(actions.postsCreateFailure(error, values))
   }
@@ -132,13 +134,16 @@ function* postsCreateIdle(req) {
 }
 
 /**
- *
+ * Refresh feeds
  */
-function* postsCreateSuccess() {
-  // const userId = path(['postedBy', 'userId'], req.payload.payload)
-  // yield put(actions.postsGetRequest({ userId }))
-  // yield put(usersActions.usersImagePostsGetRequest({ userId, isVerified: true }))
-  yield put(actions.postsFeedGetRequest({ limit: 20 }))
+function* postsCreateSuccess(req) {
+  if (!path(['meta', 'avatar'], req)) {
+    const userId = yield select(authSelector.authUserId)
+
+    yield put(actions.postsGetRequest({ userId }))
+    yield put(usersActions.usersImagePostsGetRequest({ userId, isVerified: true }))
+    yield put(actions.postsFeedGetRequest({ limit: 20 }))
+  }
 }
 
 export default () => [

@@ -1,10 +1,7 @@
-import identity from 'ramda/src/identity'
 import { createAction } from 'redux-actions'
 import { createFailureAction } from 'store/errors'
-
+import { createActionWithMeta } from 'store/helpers'
 import * as constants from 'store/ducks/users/constants'
-
-const createActionWithMeta = type => createAction(type, identity, (payload, meta) => meta)
 
 /**
  *
@@ -167,6 +164,14 @@ export const usersChangeAvatarIdle = createAction(constants.USERS_CHANGE_AVATAR_
 export const usersChangeAvatarRequest = createAction(constants.USERS_CHANGE_AVATAR_REQUEST)
 export const usersChangeAvatarSuccess = createAction(constants.USERS_CHANGE_AVATAR_SUCCESS)
 export const usersChangeAvatarFailure = createFailureAction(constants.USERS_CHANGE_AVATAR_FAILURE)
+
+/**
+ *
+ */
+export const usersCreateAvatarIdle = createAction(constants.USERS_CREATE_AVATAR_IDLE)
+export const usersCreateAvatarRequest = createAction(constants.USERS_CREATE_AVATAR_REQUEST)
+export const usersCreateAvatarSuccess = createAction(constants.USERS_CREATE_AVATAR_SUCCESS)
+export const usersCreateAvatarFailure = createFailureAction(constants.USERS_CREATE_AVATAR_FAILURE)
 
 /**
  *

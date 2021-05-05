@@ -16,6 +16,7 @@ import usersFollow from 'store/ducks/users/saga/usersFollow'
 import usersUnfollow from 'store/ducks/users/saga/usersUnfollow'
 import usersDelete from 'store/ducks/users/saga/usersDelete'
 import usersChangeAvatar from 'store/ducks/users/saga/usersChangeAvatar'
+import usersCreateAvatar from 'store/ducks/users/saga/usersCreateAvatar'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
@@ -421,3 +422,4 @@ export default () => [
 .concat(usersImagePostsGet())
 .concat(usersDelete())
 .concat(usersChangeAvatar())
+.concat(usersCreateAvatar())

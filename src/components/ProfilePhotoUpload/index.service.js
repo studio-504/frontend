@@ -8,7 +8,6 @@ import pathOr from 'ramda/src/pathOr'
 import last from 'ramda/src/last'
 import { pageHeaderLeft } from 'navigation/options'
 import * as usersSelector from 'store/ducks/users/selectors'
-import * as postsSelector from 'store/ducks/posts/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
 
 const ProfilePhotoUploadComponentService = ({ children }) => {
@@ -17,15 +16,14 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   const route = useRoute()
 
   const postsCreateQueue = useSelector((state) => state.posts.postsCreateQueue)
-  const postsCreate = useSelector(postsSelector.postsCreate)
-  const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
-  const cameraCapture = useSelector(state => state.camera.cameraCapture)
+  const usersCreateAvatar = useSelector(usersSelector.usersCreateAvatar)
+  const cameraCapture = useSelector((state) => state.camera.cameraCapture)
 
   const activePhoto = pathOr({}, ['data', 0])(cameraCapture)
   const activeUpload = last(Object.values(postsCreateQueue))
 
-  const clearProfilePhotoUpload = () => {
-    dispatch(usersActions.usersEditProfileIdle())
+  const usersCreateAvatarIdle = () => {
+    dispatch(usersActions.usersCreateAvatarIdle())
 
     if (path(['payload', 'postId'])(activeUpload)) {
       dispatch(postsActions.postsCreateIdle(activeUpload))
@@ -33,23 +31,9 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   }
 
   const handleClose = () => {
-    clearProfilePhotoUpload()
+    usersCreateAvatarIdle()
     navigation.goBack()
   }
-
-  /**
-   * Uploaded photo event listener
-   * postCreate status will be changed by upload subscription listener defined in subscription/saga
-   */
-  useEffect(() => {
-    if (postsCreate.status === 'success') {
-      dispatch(usersActions.usersChangeAvatarRequest({ postId: postsCreate.payload.postId }))
-    }
-
-    if (postsCreate.status === 'failure') {
-      handleClose()
-    }
-  }, [postsCreate.status])
 
   /**
    *
@@ -67,11 +51,10 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
    * Profile photo change event listener
    * Once photo is uploaded usersEditProfile action must be dispatched with uploaded postId to set profile photo
    */
-
-  const usersChangeAvatarSuccess = () => {
+  const usersCreateAvatarSuccess = () => {
     const backRoute = path(['params', 'backRoute'], route)
 
-    clearProfilePhotoUpload()
+    usersCreateAvatarIdle()
 
     if (backRoute) {
       navigation.navigate(backRoute)
@@ -81,13 +64,13 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   }
 
   useEffectWhenFocused(() => {
-    if (usersChangeAvatar.status === 'success') {
-      usersChangeAvatarSuccess()
+    if (usersCreateAvatar.status === 'success') {
+      usersCreateAvatarSuccess()
     }
-    if (usersChangeAvatar.status === 'failure') {
+    if (usersCreateAvatar.status === 'failure') {
       handleClose()
     }
-  }, [usersChangeAvatar.status])
+  }, [usersCreateAvatar.status])
 
   /**
    * Intended for profile photo upload
@@ -96,15 +79,17 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
   useEffect(() => {
     if (!activePhoto.uri) return
 
-    dispatch(postsActions.postsCreateRequest({
-      images: [activePhoto.uri],
-      preview: [activePhoto.preview],
-      takenInReal: activePhoto.takenInReal,
-      imageFormat: activePhoto.imageFormat,
-      originalFormat: activePhoto.originalFormat,
-      originalMetadata: activePhoto.originalMetadata,
-      crop: activePhoto.crop,
-    }))
+    dispatch(
+      usersActions.usersCreateAvatarRequest({
+        images: [activePhoto.uri],
+        preview: [activePhoto.preview],
+        takenInReal: activePhoto.takenInReal,
+        imageFormat: activePhoto.imageFormat,
+        originalFormat: activePhoto.originalFormat,
+        originalMetadata: activePhoto.originalMetadata,
+        crop: activePhoto.crop,
+      }),
+    )
   }, [activePhoto.uri])
 
   return children({
@@ -113,4 +98,3 @@ const ProfilePhotoUploadComponentService = ({ children }) => {
 }
 
 export default ProfilePhotoUploadComponentService
-
