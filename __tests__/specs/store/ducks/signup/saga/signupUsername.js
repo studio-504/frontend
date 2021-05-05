@@ -34,6 +34,26 @@ describe('signupUsername saga', () => {
     queryService.apiRequest.mockClear()
   })
 
+  describe('skip', () => {
+    it('navigate to password by default', async () => {
+      await setupSaga()
+        .not.call(authorize)
+
+        .dispatch(actions.signupUsernameSkip())
+        .silentRun()
+
+      testNavigate(navigation, 'Auth.AuthPassword')
+    })
+
+    it('navigate to app', async () => {
+      await setupSaga()
+        .call(authorize)
+
+        .dispatch(actions.signupUsernameSkip({ nextRoute: 'app' }))
+        .silentRun()
+    })
+  })
+
   describe('success', () => {
     it('navigate to password by default', async () => {
       const data = { a: 1, b: 2 }
