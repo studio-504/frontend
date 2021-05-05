@@ -721,7 +721,7 @@ const usersChangeAvatarIdle = (state) => update(state, {
 /**
  *
  */
- const usersCreateAvatarRequest = (state) => update(state, {
+const usersCreateAvatarRequest = (state) => update(state, {
   usersCreateAvatar: {
     status: { $set: 'loading' },
   },
