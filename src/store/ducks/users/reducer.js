@@ -98,7 +98,9 @@ export const initialState = {
   usersChangeAvatar: {
     status: 'idle',
   },
-
+  usersCreateAvatar: {
+    status: 'idle',
+  },
   usersGetFollowerUsersCache: {},
   usersGetFollowedUsersCache: {},
 }
@@ -719,6 +721,31 @@ const usersChangeAvatarIdle = (state) => update(state, {
 /**
  *
  */
+const usersCreateAvatarRequest = (state) => update(state, {
+  usersCreateAvatar: {
+    status: { $set: 'loading' },
+  },
+})
+
+const usersCreateAvatarSuccess = (state) => update(state, {
+  usersCreateAvatar: {
+    status: { $set: 'success' },
+  },
+})
+
+const usersCreateAvatarFailure = (state) => update(state, {
+  usersCreateAvatar: {
+    status: { $set: 'failure' },
+  },
+})
+
+const usersCreateAvatarIdle = (state) => update(state, {
+  usersCreateAvatar: { $set: initialState.usersCreateAvatar },
+})
+
+/**
+ *
+ */
 const usersSetUserDatingStatusRequest = (state, action) => update(state, {
   usersSetUserDatingStatus: {
     status: { $set: 'loading' },
@@ -852,4 +879,9 @@ export default handleActions({
   [constants.USERS_CHANGE_AVATAR_SUCCESS]: usersChangeAvatarSuccess,
   [constants.USERS_CHANGE_AVATAR_FAILURE]: usersChangeAvatarFailure,
   [constants.USERS_CHANGE_AVATAR_IDLE]: usersChangeAvatarIdle,
+
+  [constants.USERS_CREATE_AVATAR_REQUEST]: usersCreateAvatarRequest,
+  [constants.USERS_CREATE_AVATAR_SUCCESS]: usersCreateAvatarSuccess,
+  [constants.USERS_CREATE_AVATAR_FAILURE]: usersCreateAvatarFailure,
+  [constants.USERS_CREATE_AVATAR_IDLE]: usersCreateAvatarIdle,
 }, initialState)

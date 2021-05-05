@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 import { createFailureAction } from 'store/errors'
-
+import { createActionWithMeta } from 'store/helpers'
 import * as constants from 'store/ducks/posts/constants'
 
 /**
@@ -117,18 +117,10 @@ export const postsShareFailure = createFailureAction(constants.POSTS_SHARE_FAILU
  *
  */
 export const postsCreateIdle = createAction(constants.POSTS_CREATE_IDLE)
-export const postsCreateRequest = createAction(constants.POSTS_CREATE_REQUEST)
-export const postsCreateSuccess = createAction(constants.POSTS_CREATE_SUCCESS)
+export const postsCreateRequest = createActionWithMeta(constants.POSTS_CREATE_REQUEST)
+export const postsCreateSuccess = createActionWithMeta(constants.POSTS_CREATE_SUCCESS)
 export const postsCreateFailure = createFailureAction(constants.POSTS_CREATE_FAILURE)
 export const postsCreateProgress = createAction(constants.POSTS_CREATE_PROGRESS)
-
-/**
- *
- */
-export const postsCreateSchedulerRequest = createAction(constants.POSTS_CREATE_SCHEDULER_REQUEST)
-export const postsCreateSchedulerSuccess = createAction(constants.POSTS_CREATE_SCHEDULER_SUCCESS)
-export const postsCreateSchedulerFailure = createFailureAction(constants.POSTS_CREATE_SCHEDULER_FAILURE)
-export const postsCreateSchedulerIdle = createAction(constants.POSTS_CREATE_SCHEDULER_IDLE)
 
 /**
  *
