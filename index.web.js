@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
+import { name as appName } from './app.json'
 
-class REAL extends Component {
+class App extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -26,5 +27,5 @@ const styles = StyleSheet.create({
   },
 })
 
-AppRegistry.registerComponent('REAL', () => REAL)
-AppRegistry.runApplication('REAL', { rootTag: document.getElementById('react-native-app') })
+AppRegistry.registerComponent(appName, () => App)
+AppRegistry.runApplication(appName, { rootTag: document.getElementById('react-native-app') })
