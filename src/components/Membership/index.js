@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { SafeAreaView, StyleSheet, ScrollView, View } from 'react-native'
+import { SafeAreaView, StyleSheet, ScrollView, View, RefreshControl } from 'react-native'
 import color from 'color'
 import { Text, withTheme } from 'react-native-paper'
 import DiamondHeaderIcon from 'assets/svg/membership/Diamond'
@@ -24,6 +24,8 @@ const Membership = ({
   navigateInviteFriends,
   requestSubscription,
   manageSubscriptions,
+  subscriptionGet,
+  subscriptionGetRequest,
   isSubscribed,
   purchasesRequest,
   retryPurchase,
@@ -45,7 +47,7 @@ const Membership = ({
         loading={retryPurchase.status === 'loading'}
         disabled={retryPurchase.status === 'loading'}
       />
-      <Text onPress={handleContactUs} style={styling.contactUsLabel}>
+      <Text onPress={handleContactUs} style={styling.text}>
         {t('Or contact us')}
       </Text>
     </>
@@ -60,19 +62,45 @@ const Membership = ({
     />
   )
 
-  const renderSubscribe = () => (
-    <DefaultButton
-      labelStyle={styling.labelStyle}
-      label={t('Subscribe for $0.99 month')}
-      icon={AppleIcon}
-      onPress={requestSubscription}
-      loading={purchasesRequest.status === 'loading'}
-      disabled={purchasesRequest.status === 'loading'}
-    />
-  )
+  const renderSubscribe = () => {
+    if (subscriptionGet.status === 'failure') {
+      return (
+        <View>
+          <DefaultButton labelStyle={styling.labelStyle} label={t('Loading price failed')} icon={AppleIcon} disabled />
+          <Text style={styling.failedPriceLabel}>{t('Pull down to refresh')}</Text>
+        </View>
+      )
+    }
+
+    if (subscriptionGet.status !== 'success') {
+      return (
+        <DefaultButton labelStyle={styling.labelStyle} label={t('Loading price')} icon={AppleIcon} loading disabled />
+      )
+    }
+
+    return (
+      <DefaultButton
+        labelStyle={styling.labelStyle}
+        label={t('Subscribe for {{localizedPrice}} month', subscriptionGet.data)}
+        icon={AppleIcon}
+        onPress={requestSubscription}
+        loading={purchasesRequest.status === 'loading'}
+        disabled={purchasesRequest.status === 'loading'}
+      />
+    )
+  }
 
   return (
-    <ScrollView style={styling.root}>
+    <ScrollView
+      style={styling.root}
+      refreshControl={
+        <RefreshControl
+          tintColor={theme.colors.border}
+          onRefresh={subscriptionGetRequest}
+          refreshing={subscriptionGet.status === 'loading'}
+        />
+      }
+    >
       <SafeAreaView style={styling.component}>
         <View style={styling.heading}>
           <View style={styling.info}>
@@ -265,10 +293,16 @@ const styles = (theme) =>
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
     },
-    contactUsLabel: {
+    text: {
       fontSize: 14,
       fontWeight: '300',
       paddingBottom: 6,
+      textAlign: 'center',
+    },
+    failedPriceLabel: {
+      fontSize: 14,
+      fontWeight: '300',
+      paddingVertical: 6,
       textAlign: 'center',
     },
     unsubscribeBtnLabel: {
@@ -302,6 +336,13 @@ Membership.propTypes = {
   retryPurchase: PropTypes.shape({
     status: PropTypes.string,
   }),
+  subscriptionGet: PropTypes.shape({
+    status: PropTypes.string,
+    data: PropTypes.shape({
+      localizedPrice: PropTypes.string,
+    }),
+  }),
+  subscriptionGetRequest: PropTypes.func,
   navigateInviteFriends: PropTypes.func,
   navigatePayouts: PropTypes.func,
   navigateTheme: PropTypes.func,
