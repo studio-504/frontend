@@ -69,7 +69,6 @@ describe('Purchases saga', () => {
     const promise = expectSaga(testAsRootSaga(purchases))
       .provide([provideDelay(true)])
 
-      .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .put(actions.purchaseFailure(new Error('Purchase Request Timeout'), { messageCode: 'GENERIC' }))
 
@@ -86,7 +85,6 @@ describe('Purchases saga', () => {
   it('error from listener', () => {
     const error = new Error('Listener error')
     const promise = expectSaga(testAsRootSaga(purchases))
-      .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .put(actions.purchaseFailure(error, { messageCode: 'GENERIC' }))
 
@@ -105,7 +103,6 @@ describe('Purchases saga', () => {
     const promise = expectSaga(testAsRootSaga(purchases))
       .provide([[matchers.call.fn(queryService.apiRequest), Promise.resolve()]])
 
-      .call([RNIap, 'getSubscriptions'], [premium.productId])
       .call([RNIap, 'requestSubscription'], premium.productId, false)
       .call(queryService.apiRequest, queries.addAppStoreReceipt, { receiptData: purchase.transactionReceipt })
       .call([RNIap, 'finishTransactionIOS'], purchase.transactionId)
