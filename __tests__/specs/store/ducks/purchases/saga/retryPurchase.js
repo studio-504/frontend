@@ -6,7 +6,7 @@ import { throwError } from 'redux-saga-test-plan/providers'
 import { testAsRootSaga } from 'tests/utils/helpers'
 import purchases from 'store/ducks/purchases/saga'
 import { purchaseRequest } from 'store/ducks/purchases/saga/purchase'
-import retryPurchaseRequest from 'store/ducks/purchases/saga/retryPurchase'
+import { retryPurchase } from 'store/ducks/purchases/saga/retryPurchase'
 import * as authActions from 'store/ducks/auth/actions'
 import * as actions from 'store/ducks/purchases/actions'
 import * as queries from 'store/ducks/purchases/queries'
@@ -39,7 +39,7 @@ describe('Finish pending purchases saga', () => {
 
   describe('retry request', () => {
     it('no pending transactions', () => {
-      testSaga(retryPurchaseRequest, action)
+      testSaga(retryPurchase, action)
         .next()
         .race({
           timeout: delay(10000),
@@ -60,7 +60,7 @@ describe('Finish pending purchases saga', () => {
     })
 
     it('pending purchases request timeout', () => {
-      testSaga(retryPurchaseRequest, action)
+      testSaga(retryPurchase, action)
         .next()
         .race({
           timeout: delay(10000),
