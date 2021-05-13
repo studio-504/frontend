@@ -39,7 +39,12 @@ function* signupUsernameSuccess(req) {
   }
 }
 
+function* signupUsernameSkip(req) {
+  yield call(signupUsernameSuccess, req)
+}
+
 export default () => [
   takeEvery(constants.SIGNUP_USERNAME_REQUEST, signupUsernameRequest),
   takeEvery(constants.SIGNUP_USERNAME_SUCCESS, signupUsernameSuccess),
+  takeEvery(constants.SIGNUP_USERNAME_SKIP, signupUsernameSkip),
 ]

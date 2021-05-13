@@ -15,6 +15,8 @@ import usersDeclineFollowerUser from 'store/ducks/users/saga/usersDeclineFollowe
 import usersFollow from 'store/ducks/users/saga/usersFollow'
 import usersUnfollow from 'store/ducks/users/saga/usersUnfollow'
 import usersDelete from 'store/ducks/users/saga/usersDelete'
+import usersChangeAvatar from 'store/ducks/users/saga/usersChangeAvatar'
+import usersCreateAvatar from 'store/ducks/users/saga/usersCreateAvatar'
 import * as LinkingService from 'services/Linking'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
@@ -258,21 +260,6 @@ function* usersDeleteProfilePhoto() {
 /**
  *
  */
-function* usersChangeAvatarRequest(req) {
-  try {
-    const photoPostId = req.payload.postId
-    const data = yield call([queryService, 'apiRequest'], queries.setUserDetails, { photoPostId })
-
-    yield usersEditProfileRequestData(req, data)
-    yield put(actions.usersChangeAvatarSuccess())
-  } catch (error) {
-    yield put(actions.usersChangeAvatarFailure(error))
-  }
-}
-
-/**
- *
- */
 function* usersBlockRequestData(req, api) {
   const dataSelector = path(['data', 'blockUser'])
 
@@ -396,18 +383,7 @@ function* usersDeleteCardRequest(req) {
   }
 }
 
-/**
- *
- */
-function* usersSetApnsTokenRequest(req) {
-  try {
-    const data = yield call([queryService, 'apiRequest'], queries.setUserAPNSToken, req.payload)
 
-    yield put(actions.usersSetApnsTokenSuccess({ payload: req.payload, data, meta: {} }))
-  } catch (error) {
-    yield put(actions.usersSetApnsTokenFailure(error, req.payload))
-  }
-}
 
 /**
  *
@@ -435,10 +411,8 @@ export default () => [
   takeLatest(constants.USERS_GET_TRENDING_USERS_REQUEST, usersGetTrendingUsersRequest),
   takeLatest(constants.USERS_GET_CARDS_REQUEST, usersGetCardsRequest),
   takeLatest(constants.USERS_DELETE_CARD_REQUEST, usersDeleteCardRequest),
-  takeLatest(constants.USERS_SET_APNS_TOKEN_REQUEST, usersSetApnsTokenRequest),
   takeLatest(constants.USERS_DELETE_AVATAR_REQUEST, usersDeleteProfilePhoto),
   takeLatest(constants.USERS_REPORT_SCREEN_VIEWS_REQUEST, usersReportScreenViewsRequest),
-  takeLatest(constants.USERS_CHANGE_AVATAR_REQUEST, usersChangeAvatarRequest),
 ]
 .concat(usersAcceptFollowerUser())
 .concat(usersDeclineFollowerUser())
@@ -447,3 +421,5 @@ export default () => [
 .concat(usersUnfollow())
 .concat(usersImagePostsGet())
 .concat(usersDelete())
+.concat(usersChangeAvatar())
+.concat(usersCreateAvatar())

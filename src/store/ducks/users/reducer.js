@@ -87,11 +87,6 @@ export const initialState = {
     status: 'idle',
     payload: {},
   },
-  usersSetApnsToken: {
-    data: [],
-    status: 'idle',
-    payload: {},
-  },
   usersDeleteAvatar: {
     status: 'idle',
   },
@@ -103,7 +98,9 @@ export const initialState = {
   usersChangeAvatar: {
     status: 'idle',
   },
-
+  usersCreateAvatar: {
+    status: 'idle',
+  },
   usersGetFollowerUsersCache: {},
   usersGetFollowedUsersCache: {},
 }
@@ -724,31 +721,26 @@ const usersChangeAvatarIdle = (state) => update(state, {
 /**
  *
  */
-const usersSetApnsTokenRequest = (state, action) => update(state, {
-  usersSetApnsToken: {
+const usersCreateAvatarRequest = (state) => update(state, {
+  usersCreateAvatar: {
     status: { $set: 'loading' },
-    payload: { $set: action.payload },
   },
 })
 
-const usersSetApnsTokenSuccess = (state, action) => update(state, {
-  usersSetApnsToken: {
-    data: { $set: action.payload.data },
+const usersCreateAvatarSuccess = (state) => update(state, {
+  usersCreateAvatar: {
     status: { $set: 'success' },
   },
 })
 
-const usersSetApnsTokenFailure = (state) => update(state, {
-  usersSetApnsToken: {
+const usersCreateAvatarFailure = (state) => update(state, {
+  usersCreateAvatar: {
     status: { $set: 'failure' },
   },
 })
 
-const usersSetApnsTokenIdle = (state) => update(state, {
-  usersSetApnsToken: {
-    data: { $set: initialState.usersSetApnsToken.data },
-    status: { $set: 'idle' },
-  },
+const usersCreateAvatarIdle = (state) => update(state, {
+  usersCreateAvatar: { $set: initialState.usersCreateAvatar },
 })
 
 /**
@@ -873,11 +865,6 @@ export default handleActions({
   [constants.USERS_DELETE_CARD_FAILURE]: usersDeleteCardFailure,
   [constants.USERS_DELETE_CARD_IDLE]: usersDeleteCardIdle,
 
-  [constants.USERS_SET_APNS_TOKEN_REQUEST]: usersSetApnsTokenRequest,
-  [constants.USERS_SET_APNS_TOKEN_SUCCESS]: usersSetApnsTokenSuccess,
-  [constants.USERS_SET_APNS_TOKEN_FAILURE]: usersSetApnsTokenFailure,
-  [constants.USERS_SET_APNS_TOKEN_IDLE]: usersSetApnsTokenIdle,
-
   [constants.USERS_DELETE_AVATAR_REQUEST]: usersDeleteAvatarRequest,
   [constants.USERS_DELETE_AVATAR_SUCCESS]: usersDeleteAvatarSuccess,
   [constants.USERS_DELETE_AVATAR_FAILURE]: usersDeleteAvatarFailure,
@@ -892,4 +879,9 @@ export default handleActions({
   [constants.USERS_CHANGE_AVATAR_SUCCESS]: usersChangeAvatarSuccess,
   [constants.USERS_CHANGE_AVATAR_FAILURE]: usersChangeAvatarFailure,
   [constants.USERS_CHANGE_AVATAR_IDLE]: usersChangeAvatarIdle,
+
+  [constants.USERS_CREATE_AVATAR_REQUEST]: usersCreateAvatarRequest,
+  [constants.USERS_CREATE_AVATAR_SUCCESS]: usersCreateAvatarSuccess,
+  [constants.USERS_CREATE_AVATAR_FAILURE]: usersCreateAvatarFailure,
+  [constants.USERS_CREATE_AVATAR_IDLE]: usersCreateAvatarIdle,
 }, initialState)
