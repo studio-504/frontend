@@ -13,7 +13,6 @@ import AuthPasswordScreen from 'screens/AuthPasswordScreen'
 import AuthPhoneConfirmScreen from 'screens/AuthPhoneConfirmScreen'
 import AuthEmailConfirmScreen from 'screens/AuthEmailConfirmScreen'
 import VerificationScreen from 'screens/VerificationScreen'
-import CameraScreen from 'screens/CameraScreen'
 import AuthForgotConfirmScreen from 'screens/AuthForgotConfirmScreen'
 
 const Stack = createStackNavigator()
@@ -21,7 +20,6 @@ const Stack = createStackNavigator()
 const AuthNavigator = () => {
   const { theme } = useContext(ThemeContext)
   const stackScreenOnboardProps = navigationOptions.stackScreenOnboardProps({ theme })
-  const stackScreenBlankProps = navigationOptions.stackScreenBlankProps({ theme })
   const stackNavigatorDefaultProps = navigationOptions.stackNavigatorDefaultProps({ theme })
   const stackScreenAuthProps = navigationOptions.stackScreenAuthProps({ theme })
   const stackScreenAuthModalProps = navigationOptions.stackScreenAuthModalProps({ theme })
@@ -81,12 +79,6 @@ const AuthNavigator = () => {
         name="Verification"
         component={VerificationScreen}
         {...stackScreenAuthModalProps}
-      />
-
-      <Stack.Screen
-        name="AuthCamera"
-        component={CameraScreen}
-        {...stackScreenBlankProps}
       />
 
       <Stack.Screen
