@@ -1,7 +1,7 @@
 import { navigateToPath, pushToPath } from 'navigation/helpers'
 import * as UserService from 'services/User'
 
-const withAuthValidation = (callback) => {
+export const withAuthValidation = (callback) => {
   return (navigation, params = {}, meta = {}) => {
     return () => {
       if (!meta.protected) {
