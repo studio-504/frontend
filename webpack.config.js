@@ -79,6 +79,7 @@ module.exports = {
       'react-native-config': path.resolve(appDirectory, 'src/web/config'),
       'react-native-offline': path.resolve(appDirectory, 'src/web/react-native-offline'),
       'react-native-code-push': path.resolve(appDirectory, 'src/web/react-native-code-push'),
+      'react-native-flash-message': path.resolve(appDirectory, 'src/web/react-native-flash-message'),
       '@sentry/react-native': '@sentry/react',
     },
     // If you're working on a multi-platform React Native app, web-specific
