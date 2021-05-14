@@ -3,6 +3,6 @@
  * check webpack.config.js
  */
 
-export const reducer = () => null
+export const reducer = () => ({ isConnected: true })
 export const ReduxNetworkProvider = ({ children }) => children
 export const createNetworkMiddleware = () => () => (next) => (action) => next(action)
