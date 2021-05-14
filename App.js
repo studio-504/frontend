@@ -21,7 +21,7 @@ const codePushOptions = {
   minimumBackgroundDuration: 60 * 5,
 }
 
-// codePush.sync(codePushOptions)
+codePush.sync(codePushOptions)
 
 const Application = ({ navigationRef }) => {
   const { store, persistor } = useMemo(() => initializeStore({ navigationRef }), [])
