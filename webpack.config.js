@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const dotenv = require('dotenv')
+const packageJson = require('./package.json')
 
 const appDirectory = path.resolve(__dirname, './')
 
@@ -63,7 +64,10 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       process: {
-        env: JSON.stringify(dotenv.config({ path: path.resolve(appDirectory, process.env.ENVFILE) }).parsed),
+        env: JSON.stringify({
+          ...dotenv.config({ path: path.resolve(appDirectory, process.env.ENVFILE) }).parsed,
+          version: packageJson.version,
+        }),
       },
     }),
   ],
@@ -74,6 +78,7 @@ module.exports = {
       'react-native$': 'react-native-web',
       'react-native-config': path.resolve(appDirectory, 'src/web/config'),
       'react-native-offline': path.resolve(appDirectory, 'src/web/react-native-offline'),
+      '@sentry/react-native': '@sentry/react',
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
