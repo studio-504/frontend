@@ -73,10 +73,11 @@ module.exports = {
     alias: {
       'react-native$': 'react-native-web',
       'react-native-config': path.resolve(appDirectory, 'src/web/config'),
+      'react-native-offline': path.resolve(appDirectory, 'src/web/react-native-offline'),
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
     // `.web.js`.
-    extensions: ['.web.js', '.js'],
+    extensions: ['.mjs', '.web.js', '.js', '.ios.js', '.android.js'],
   },
 }
