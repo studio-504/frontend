@@ -1,4 +1,6 @@
+const webpack = require('webpack')
 const path = require('path')
+const dotenv = require('dotenv')
 
 const appDirectory = path.resolve(__dirname, './')
 
@@ -58,10 +60,19 @@ module.exports = {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration],
   },
 
+  plugins: [
+    new webpack.DefinePlugin({
+      process: {
+        env: JSON.stringify(dotenv.config({ path: path.resolve(appDirectory, process.env.ENVFILE) }).parsed),
+      },
+    }),
+  ],
+
   resolve: {
     // This will only alias the exact import "react-native"
     alias: {
       'react-native$': 'react-native-web',
+      'react-native-config': path.resolve(appDirectory, 'src/web/config'),
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
