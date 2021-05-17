@@ -61,6 +61,10 @@ module.exports = {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration],
   },
 
+  devServer: {
+    historyApiFallback: true,
+  },
+
   plugins: [
     new webpack.DefinePlugin({
       process: {
