@@ -11,22 +11,30 @@ const appDirectory = path.resolve(__dirname, './')
 // errors. To fix this webpack can be configured to compile to the necessary
 // `node_module`.
 const babelLoaderConfiguration = {
-  test: /\.js$/,
+  test: /\.(mjs|js|jsx)$/,
+  type: 'javascript/auto',
+
   // Add every directory that needs to be compiled by Babel during the build.
   include: [
+    path.resolve(appDirectory, 'node_modules/@react-native-community/viewpager'),
+    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+    path.resolve(appDirectory, 'node_modules/@aws-amplify/core'),
+    path.resolve(appDirectory, 'node_modules/@aws-amplify/api'),
+    path.resolve(appDirectory, 'node_modules/@aws-amplify/auth'),
+    path.resolve(appDirectory, 'node_modules/@aws-amplify/pubsub'),
+    path.resolve(appDirectory, 'node_modules/react-native-tab-view-viewpager-adapter'),
+    path.resolve(appDirectory, 'node_modules/@sentry/react-native'),
+    path.resolve(appDirectory, 'node_modules/@sentry/integrations'),
+    path.resolve(appDirectory, 'node_modules/react-native-snap-carousel'),
+    path.resolve(appDirectory, 'node_modules/react-native-phone-input'),
+    path.resolve(appDirectory, 'node_modules/react-native-gesture-handler'),
+    path.resolve(appDirectory, 'node_modules/react-native-reanimated'),
+    path.resolve(appDirectory, 'App.js'),
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
-    path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
   ],
   use: {
     loader: 'babel-loader',
-    options: {
-      cacheDirectory: true,
-      // The 'metro-react-native-babel-preset' preset is recommended to match React Native's packager
-      presets: ['module:metro-react-native-babel-preset'],
-      // Re-write paths to import only the modules needed by the app
-      plugins: ['react-native-web'],
-    },
   },
 }
 
@@ -42,6 +50,8 @@ const imageLoaderConfiguration = {
 }
 
 module.exports = {
+  mode: 'development',
+
   entry: [
     // load any web API polyfills
     // path.resolve(appDirectory, 'polyfills-web.js'),
@@ -77,6 +87,10 @@ module.exports = {
   ],
 
   resolve: {
+    roots: [path.resolve(appDirectory, 'src')],
+
+    mainFields: ['browser', 'main', 'module'],
+
     // This will only alias the exact import "react-native"
     alias: {
       'react-native$': 'react-native-web',
