@@ -99,6 +99,7 @@ module.exports = {
       'react-native-code-push': path.resolve(appDirectory, 'src/web/react-native-code-push'),
       'react-native-flash-message': path.resolve(appDirectory, 'src/web/react-native-flash-message'),
       'react-native-permissions': path.resolve(appDirectory, 'src/web/react-native-permissions'),
+      'react-native-circular-progress': path.resolve(appDirectory, 'src/web/react-native-circular-progress'),
       '@sentry/react-native': '@sentry/react',
     },
     // If you're working on a multi-platform React Native app, web-specific
