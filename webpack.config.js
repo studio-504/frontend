@@ -103,6 +103,7 @@ module.exports = {
       '@invertase/react-native-apple-authentication': path.resolve(appDirectory, 'src/web/react-native-apple-authentication'),
       '@react-native-community/google-signin': path.resolve(appDirectory, 'src/web/google-signin'),
       '@sentry/react-native': '@sentry/react',
+      'react-native-linear-gradient': 'react-native-web-linear-gradient',
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
