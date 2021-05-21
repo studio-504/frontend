@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const dotenv = require('dotenv')
+const CopyPlugin = require('copy-webpack-plugin')
 const packageJson = require('./package.json')
 
 const appDirectory = path.resolve(__dirname, './')
@@ -83,6 +84,8 @@ module.exports = {
           version: packageJson.version,
         }),
       },
+    new CopyPlugin({
+      patterns: [{ from: path.resolve(appDirectory, 'src/assets/favicon'), to: 'favicon' }],
     }),
   ],
 
