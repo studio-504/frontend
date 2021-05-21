@@ -50,7 +50,11 @@ export const homeHeaderLeft = ({ theme, navigation, user }) => () => (
   </TouchableOpacity>
 )
 
-export const homeHeaderTitle = ({ theme }) => () => <LogoIcon height="28" fill={path(['colors', 'primaryIcon'], theme)} />
+export const homeHeaderTitle = ({ theme, navigation }) => () => (
+  <TouchableOpacity style={styles.button} onPress={() => navigationActions.navigateHome(navigation)}>
+    <LogoIcon height="28" fill={path(['colors', 'primaryIcon'], theme)} />
+  </TouchableOpacity>
+)
 
 export const homeHeaderRight = ({ theme, navigation, user }) => () => (
   <TouchableOpacity style={styles.chatButton} onPress={navigationActions.navigateChat(navigation, {}, { protected: true, user })}>
@@ -84,7 +88,7 @@ const HomeNavigationComponent = ({ navigation, theme, user, headerLeft = homeHea
     shadowColor: 'transparent',
   },
   headerLeft: headerLeft({ navigation, theme, user }),
-  headerTitle: homeHeaderTitle({ theme }),
+  headerTitle: homeHeaderTitle({ theme, navigation }),
   headerRight: homeHeaderRight({ navigation, theme, user }),
 })
 
