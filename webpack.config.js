@@ -36,6 +36,22 @@ const babelLoaderConfiguration = {
   ],
   use: {
     loader: 'babel-loader',
+    options: {
+      // Disable reading babel configuration
+      babelrc: false,
+      configFile: false,
+
+      presets: ['module:metro-react-native-babel-preset'],
+      plugins: [
+        'react-native-web',
+        'react-native-paper/babel',
+        'inline-dotenv',
+        ['transform-require-extensions', { extensions: { '.mjs': '' } }],
+        ['module-resolver', { root: ['./src'], extensions: ['.mjs', '.jsx', '.js'] }],
+        ['optional-require', { blacklist: ['react-native-vector-icons'] }],
+        ['babel-plugin-transform-builtin-extend', { globals: ['Error'] }],
+      ],
+    },
   },
 }
 
