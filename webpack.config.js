@@ -43,7 +43,7 @@ const babelLoaderConfiguration = {
 
       presets: ['module:metro-react-native-babel-preset'],
       plugins: [
-        'react-native-web',
+        ['react-native-web', { commonjs: true }],
         'react-native-paper/babel',
         'inline-dotenv',
         ['transform-require-extensions', { extensions: { '.mjs': '' } }],
