@@ -101,7 +101,15 @@ module.exports = {
         }),
       },
     new CopyPlugin({
-      patterns: [{ from: path.resolve(appDirectory, 'src/assets/favicon'), to: 'favicon' }],
+      patterns: [
+        {
+          from: path.resolve(appDirectory, 'src/assets/favicon'),
+          to: 'favicon',
+          globOptions: {
+            ignore: ['**/.DS_Store'],
+          },
+        },
+      ],
     }),
   ],
 
