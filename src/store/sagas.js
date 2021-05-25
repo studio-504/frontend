@@ -3,7 +3,6 @@ import camera from 'store/ducks/camera/saga'
 import cache from 'store/ducks/cache/saga'
 import purchases from 'store/ducks/purchases/saga'
 import contacts from 'store/ducks/contacts/saga'
-import snackbars from 'store/ducks/snackbars/saga'
 import updates from 'store/ducks/updates/saga'
 import push from 'store/ducks/push/saga/pushStart'
 import postsCreate from 'store/ducks/posts/saga/postsCreate'
@@ -14,7 +13,7 @@ export default function* rootSaga() {
   yield all(
     []
       .concat(push())
-      .concat(snackbars())
+
       .concat(camera())
       .concat(updates())
       .concat(cache())
