@@ -27,18 +27,18 @@ const Application = ({ navigationRef }) => {
   const { store, persistor } = useMemo(() => initializeStore({ navigationRef }), [])
 
   return (
-      <Provider store={store}>
-        <ReduxNetworkProvider>
-          <PersistGate persistor={persistor}>
-            <AuthProvider>
-              <ThemeProvider>
-                <Router />
-                <FlashMessage position="top" />
-              </ThemeProvider>
-            </AuthProvider>
-          </PersistGate>
-        </ReduxNetworkProvider>
-      </Provider>
+    <Provider store={store}>
+      <ReduxNetworkProvider>
+        <PersistGate persistor={persistor}>
+          <AuthProvider>
+            <ThemeProvider>
+              <Router />
+              <FlashMessage position="top" />
+            </ThemeProvider>
+          </AuthProvider>
+        </PersistGate>
+      </ReduxNetworkProvider>
+    </Provider>
   )
 }
 
