@@ -249,6 +249,7 @@ export const stackScreenBlankProps = ({ theme }) => ({
  */
 export const stackScreenModalProps = ({
   options: {
+    mode: 'modal',
     gestureDirection: 'vertical',
     gestureResponseDistance: {
       horizontal: Layout.window.width,
@@ -260,6 +261,7 @@ export const stackScreenModalProps = ({
     },
     headerShown: false,
     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+    stackPresentation: 'transparentModal',
   },
 })
 

@@ -131,6 +131,7 @@ module.exports = {
       '@react-native-community/google-signin': path.resolve(appDirectory, 'src/web/google-signin'),
       '@sentry/react-native': '@sentry/react',
       'react-native-linear-gradient': 'react-native-web-linear-gradient',
+      'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
