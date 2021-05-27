@@ -101,7 +101,8 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(appDirectory, 'index.html'),
+      template: 'index.html',
+      inject: false,
     }),
 
     new webpack.DefinePlugin({
