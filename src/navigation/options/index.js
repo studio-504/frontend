@@ -1,10 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { HeaderStyleInterpolators, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack'
-import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
 
-import { AuthContext } from 'services/providers/Auth'
 import * as navigationActions from 'navigation/actions'
+import pager from 'navigation/options/pager'
 import path from 'ramda/src/path'
 import Layout from 'constants/Layout'
 
@@ -92,16 +91,7 @@ const HomeNavigationComponent = ({ navigation, theme, user, headerLeft = homeHea
   headerRight: homeHeaderRight({ navigation, theme, user }),
 })
 
-const AppViewPagerAdapter = (props) => {
-  const { swipeEnabled } = useContext(AuthContext)
-  const currentIndex = path(['navigationState', 'index'])(props)
-  const nextIndex = path(['navigationState', 'routes', currentIndex, 'state', 'index'])(props)
-  const hasNextScreen = !nextIndex || nextIndex === 0
 
-  return <ViewPagerAdapter {...props} swipeEnabled={swipeEnabled && hasNextScreen} />
-}
-
-const pager = (props) => <AppViewPagerAdapter {...props} />
 
 export const tabNavigatorDefaultProps = () => ({
   initialRouteName: 'Root',
