@@ -140,6 +140,7 @@ module.exports = {
       'react-native-circular-progress': path.resolve(appDirectory, 'src/web/react-native-circular-progress'),
       '@invertase/react-native-apple-authentication': path.resolve(appDirectory, 'src/web/react-native-apple-authentication'),
       '@react-native-community/google-signin': path.resolve(appDirectory, 'src/web/google-signin'),
+      '@react-native-community/blur': path.resolve(appDirectory, 'src/web/blur'),
       '@sentry/react-native': '@sentry/react',
       'react-native-linear-gradient': 'react-native-web-linear-gradient',
       'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
