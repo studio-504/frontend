@@ -14,6 +14,7 @@ import AuthPhoneConfirmScreen from 'screens/AuthPhoneConfirmScreen'
 import AuthEmailConfirmScreen from 'screens/AuthEmailConfirmScreen'
 import VerificationScreen from 'screens/VerificationScreen'
 import AuthForgotConfirmScreen from 'screens/AuthForgotConfirmScreen'
+import DownloadAppScreen from 'screens/DownloadAppScreen'
 
 const Stack = createStackNavigator()
 
@@ -26,7 +27,7 @@ const AuthNavigator = () => {
   const headerLeft = props => navigationOptions.pageHeaderLeft({ ...props, theme })
 
   return (
-    <Stack.Navigator {...stackNavigatorDefaultProps}>
+    <Stack.Navigator {...stackNavigatorDefaultProps} mode="modal">
       <Stack.Screen
         name="AuthHome"
         component={AuthHomeScreen}
@@ -85,6 +86,12 @@ const AuthNavigator = () => {
         name="AuthForgotConfirm"
         component={AuthForgotConfirmScreen}
         {...stackScreenAuthProps({ options: { title: 'Forgot Confirm', headerLeft, gestureEnabled: true } })}
+      />
+
+      <Stack.Screen
+        name="DownloadApp"
+        component={DownloadAppScreen}
+        {...navigationOptions.stackScreenModalProps}
       />
     </Stack.Navigator>
   )
