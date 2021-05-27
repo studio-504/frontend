@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const dotenv = require('dotenv')
 const CopyPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const packageJson = require('./package.json')
 
 const appDirectory = path.resolve(__dirname, './')
@@ -67,6 +68,11 @@ const imageLoaderConfiguration = {
   },
 }
 
+const fileLoaderConfiguration = {
+  test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/,
+  loader: 'file-loader',
+}
+
 module.exports = {
   mode: 'development',
 
@@ -86,7 +92,7 @@ module.exports = {
   // ...the rest of your config
 
   module: {
-    rules: [babelLoaderConfiguration, imageLoaderConfiguration],
+    rules: [babelLoaderConfiguration, imageLoaderConfiguration, fileLoaderConfiguration],
   },
 
   devServer: {
@@ -94,6 +100,10 @@ module.exports = {
   },
 
   plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(appDirectory, 'index.html'),
+    }),
+
     new webpack.DefinePlugin({
       process: {
         env: JSON.stringify({
