@@ -144,6 +144,7 @@ module.exports = {
       '@sentry/react-native': '@sentry/react',
       'react-native-linear-gradient': 'react-native-web-linear-gradient',
       'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
+      'react-native-maps': 'react-native-web-maps',
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension

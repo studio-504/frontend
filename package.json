@@ -111,6 +111,7 @@
     "react-native-view-shot": "^3.1.2",
     "react-native-web": "^0.16.2",
     "react-native-web-linear-gradient": "^1.1.1",
+    "react-native-web-maps": "^0.3.0",
     "react-redux": "^7.2.1",
     "react-string-replace": "^0.4.4",
     "react-use": "^15.3.3",
