@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import ViewPagerAdapter from 'react-native-tab-view-viewpager-adapter'
+import path from 'ramda/src/path'
 import { AuthContext } from 'services/providers/Auth'
 
 const AppViewPagerAdapter = (props) => {

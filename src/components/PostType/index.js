@@ -59,7 +59,7 @@ const styles = theme => StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(52, 52, 52, 0.5)'
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
   gradient: {
     position: 'absolute',

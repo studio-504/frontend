@@ -75,7 +75,7 @@ const styles = theme => StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
     borderColor: theme.colors.border,
-  }
+  },
 })
 
 TextGrowing.propTypes = {

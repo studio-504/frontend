@@ -10,7 +10,7 @@ import * as updatesActions from 'store/ducks/updates/actions'
 
 jest.mock('services/Query', () => ({ httpRequest: jest.fn() }))
 jest.mock('react-native-device-info', () => ({ getBundleId: jest.fn(), getVersion: jest.fn() }))
-jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production' }))
+jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production', APPSTORE_ID: 'APPSTORE_ID' }))
 jest.spyOn(Alert, 'alert')
 jest.spyOn(Linking, 'openURL')
 
@@ -80,7 +80,7 @@ describe('Updates saga', () => {
     expect(updateBtn.style).toBe('cancel')
 
     updateBtn.onPress()
-    expect(Linking.openURL).toHaveBeenCalledWith('itms-apps://itunes.apple.com/app/id1485194570')
+    expect(Linking.openURL).toHaveBeenCalledWith('itms-apps://itunes.apple.com/app/idAPPSTORE_ID')
   })
 
   describe('should not show alert when', () => {

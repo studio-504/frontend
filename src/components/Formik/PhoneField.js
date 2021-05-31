@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
-import TextInput from 'components/TextInput'
 import TextField from 'components/Formik/TextField'
 import CountryPicker from 'react-native-country-picker-modal'
 import { withTheme } from 'react-native-paper'
@@ -59,6 +58,7 @@ const styles = (theme) =>
   })
 
 PhoneField.propTypes = {
+  theme: PropTypes.any,
   field: PropTypes.any,
   form: PropTypes.any,
 }

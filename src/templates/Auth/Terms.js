@@ -8,7 +8,7 @@ import {
 import { Text } from 'react-native-paper'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import {getReadableVersion} from 'services/OTA'
+import { getReadableVersion } from 'services/OTA'
 
 const Header = ({
   t,

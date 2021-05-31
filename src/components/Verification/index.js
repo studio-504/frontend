@@ -148,7 +148,7 @@ const styles = (theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: 'rgba(52, 52, 52, 0.5)'
+      backgroundColor: 'rgba(52, 52, 52, 0.5)',
     },
     component: {
       borderRadius: 24,

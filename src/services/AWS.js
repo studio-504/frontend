@@ -4,7 +4,7 @@ import Config from 'react-native-config'
 import * as Google from 'services/Google'
 import * as Apple from 'services/Apple'
 import DeviceInfo from 'react-native-device-info'
-import {getReadableVersion} from 'services/OTA'
+import { getReadableVersion } from 'services/OTA'
 
 const headers = {
   'x-real-version': getReadableVersion(),
