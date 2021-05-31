@@ -95,6 +95,9 @@ module.exports = {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration, fileLoaderConfiguration],
   },
 
+  // Enable source map support
+  devtool: 'source-map',
+
   devServer: {
     historyApiFallback: true,
   },
