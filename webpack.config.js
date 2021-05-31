@@ -115,6 +115,9 @@ module.exports = {
           version: packageJson.version,
         }),
       },
+      __DEV__: 'false',
+    }),
+
     new CopyPlugin({
       patterns: [
         {
