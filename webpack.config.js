@@ -102,7 +102,8 @@ module.exports = {
   // configures where the build ends up
   output: {
     filename: 'bundle.web.js',
-    path: path.resolve(appDirectory, 'dist'),
+    path: path.resolve(appDirectory, 'build'),
+    clean: true,
   },
 
   // ...the rest of your config
