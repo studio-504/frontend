@@ -7,7 +7,7 @@ const isWeb = Platform.OS === 'web'
 const mockPathForWeb = path => isWeb ? 'DownloadApp' : path
 export const mockForWeb = (callback, navigation) => isWeb ? () => navigateDownloadApp(navigation) : callback
 
-const withAuthValidation = (callback) => {
+export const withAuthValidation = (callback) => {
   return (navigation, params = {}, meta = {}) => {
     return () => {
       if (!meta.protected) {
