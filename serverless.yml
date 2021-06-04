@@ -69,6 +69,17 @@ resources:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ErrorCachingMinTTL: 300
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+            - ErrorCode: 403
+              ErrorCachingMinTTL: 300
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
@@ -80,7 +91,7 @@ resources:
               Cookies:
                 Forward: none
             TargetOriginId: WebsiteCloudFrontDistributionOriginId
-            ViewerProtocolPolicy: allow-all
+            ViewerProtocolPolicy: redirect-to-https
           DefaultRootObject: index.html
           Enabled: true
           Origins:

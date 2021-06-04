@@ -10,7 +10,7 @@
     "web:build:prod": "ENVFILE=.env.production webpack --mode production --env production --config webpack.config.js",
     "web:build:dev": "ENVFILE=.env.development webpack --mode development --env development --config webpack.config.js",
     "web:deploy:prod": "yarn run web:build:prod && serverless deploy --stage production",
-    "web:deploy:staging": "yarn run web:build:dev && serverless deploy --stage staging",
+    "web:deploy:dev": "yarn run web:build:dev && serverless deploy",
     "lint": "eslint .",
     "lint:editorconfig": "editorconfig-checker",
     "translations-scan": "i18next-scanner --config i18next-scanner.config.engine.js src/**/*.js",
