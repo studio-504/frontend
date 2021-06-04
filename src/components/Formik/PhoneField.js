@@ -2,65 +2,47 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
 import TextField from 'components/Formik/TextField'
-import CountryPicker from 'react-native-country-picker-modal'
-import { withTheme } from 'react-native-paper'
+import CountryCode from 'components/CountryCode'
+import countries from 'assets/countries.json'
 
-const PhoneField = ({ theme, ...props }) => {
+function PhoneField(props) {
   const [countryCode, setCountryCode] = useState('US')
-  const styling = styles(theme)
 
   /**
    * Manually updating country when new country code selected
    */
   const onSelectCountry = (country) => {
-    setCountryCode(country.cca2)
-    props.form.setFieldValue('countryCode', `+${country.callingCode[0]}`)
+    setCountryCode(country.value)
+    props.form.setFieldValue('countryCode', country.dialCode)
   }
 
   return (
-    <View style={styling.root}>
-      <View style={styling.flag}>
-        <CountryPicker
-          countryCode={countryCode}
-          onSelect={onSelectCountry}
-          modalProps={{ ariaHideApp: false }}
-          withFlag
-          withCallingCode
-          withCallingCodeButton
-          withCloseButton={false}
-          withEmoji
-          withFilter
-          withModal
-        />
+    <View style={styles.root}>
+      <View style={styles.flag}>
+        <CountryCode value={countryCode} onChange={onSelectCountry} options={countries} />
       </View>
-      <View style={styling.input}>
+      <View style={styles.input}>
         <TextField {...props} />
       </View>
     </View>
   )
 }
 
-const styles = (theme) =>
-  StyleSheet.create({
-    root: {
-      flexDirection: 'row',
-    },
-    input: {
-      flex: 1,
-    },
-    flag: {
-      backgroundColor: theme.colors.backgroundSecondary,
-      paddingHorizontal: 6,
-      borderRadius: 2,
-      height: 40,
-      marginRight: 10,
-    },
-  })
+const styles = StyleSheet.create({
+  root: {
+    flexDirection: 'row',
+  },
+  input: {
+    flex: 1,
+  },
+  flag: {
+    flexShrink: 0,
+  },
+})
 
 PhoneField.propTypes = {
-  theme: PropTypes.any,
   field: PropTypes.any,
   form: PropTypes.any,
 }
 
-export default withTheme(PhoneField)
+export default PhoneField
