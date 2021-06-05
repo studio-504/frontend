@@ -60,6 +60,7 @@ module.exports = {
           'run',
           'testField',
           'testNavigate',
+          'testPushAction',
           'setupSaga',
           'testReducer',
           'testSignout',
