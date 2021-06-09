@@ -16,6 +16,7 @@ const ACTIONS = {
   VIEWS: 'views',
   LIKES: 'likes',
   DIAMOND: 'diamond',
+  NEW_FOLLOWERS: 'newFollowers',
 }
 
 const PATTERNS = {
@@ -23,6 +24,7 @@ const PATTERNS = {
   [ACTIONS.PROFILE_PHOTO]: new UrlPattern('*/user/:userId/settings/photo(/)', options),
   [ACTIONS.INVITE_FRIENDS]: new UrlPattern('*/user/:userId/settings/contacts(/)', options),
   [ACTIONS.SIGNUP]: new UrlPattern('*/signup/:userId(/)', options),
+  [ACTIONS.NEW_FOLLOWERS]: new UrlPattern('*/user/:userId/new_followers(/)', options),
   [ACTIONS.CHATS]: new UrlPattern('*/chat(/)', options),
   [ACTIONS.DIAMOND]: new UrlPattern('*/diamond(/)', options),
 }
@@ -81,6 +83,9 @@ export const deeplinkNavigation = (navigation) => (action) => {
         break
       case ACTIONS.DIAMOND:
         navigationActions.navigateInviteFriendsSuccess(navigation)
+        break
+      case ACTIONS.NEW_FOLLOWERS:
+        navigationActions.navigateProfileFollower(navigation, params)
         break
       default:
         break
