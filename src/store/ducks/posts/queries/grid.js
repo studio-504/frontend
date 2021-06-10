@@ -43,6 +43,7 @@ export const gridPostFragment = `
     postStatus
     postType
     postedAt
+    payment
     expiresAt
     text
     likesDisabled
