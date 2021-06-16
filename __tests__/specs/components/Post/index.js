@@ -22,7 +22,7 @@ const requiredProps = { post: textPost }
 /**
  * Mock Functions
  */
-jest.mock('react-native-view-shot')
+jest.mock('react-native-view-shot', () => jest.fn().mockReturnValue(null))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('components/Cache', () => jest.fn().mockReturnValue(null))
 
