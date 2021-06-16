@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, Platform } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import EyeIcon from 'assets/svg/post/Eye'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
@@ -14,7 +14,11 @@ export const a11y = {
 
 const PostUnlock = ({ t, postId, payment }) => {
   const dispatch = useDispatch()
-  const handlePay = () => dispatch(postsActions.postsPayRequest({ postId }))
+  const [isLoading, setLoading] = useState(false)
+  const handlePay = () => {
+    setLoading(true)
+    dispatch(postsActions.postsPayRequest({ postId }))
+  }
 
   return (
     <BlurView accessibilityLabel={a11y.unlock} style={styles.overlay} blurType="xlight">
@@ -27,6 +31,7 @@ const PostUnlock = ({ t, postId, payment }) => {
         label={t('Pay & Continue')}
         mode="outlined"
         size="compact"
+        loading={isLoading}
       />
     </BlurView>
   )
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     padding: 12,
+    backgroundColor: Platform.OS === 'web' ? 'rgba(255, 255, 255, 0.8)' : 'transparent',
   },
   icon: {
     marginBottom: 10,
