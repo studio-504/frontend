@@ -50,6 +50,7 @@ export const gridPostFragment = `
     commentsDisabled
     sharingDisabled
     commentsUnviewedCount: commentsCount(viewedStatus: NOT_VIEWED)
+    viewedStatus
 
     image {
       ...imageFragment
