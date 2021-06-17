@@ -6,7 +6,7 @@
     "postinstall": "patch-package",
     "start": "react-native start",
     "dev": "ENVFILE=.env.development react-native run-ios --simulator='iPhone 12' --scheme REAL.development -- --reset-cache",
-    "android": "ENVFILE=.env.development react-native run-android",
+    "android": "react-native run-android --variant=developmentdebug",
     "lint": "eslint .",
     "lint:editorconfig": "editorconfig-checker",
     "translations-scan": "i18next-scanner --config i18next-scanner.config.engine.js src/**/*.js",
