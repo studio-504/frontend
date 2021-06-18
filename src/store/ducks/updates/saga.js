@@ -49,7 +49,7 @@ function showUpdateAlert() {
   const subtitle = 'Please update REAL to continue'
   const updateBtn = {
     text: 'Update Now',
-    onPress: () => Linking.openURL('itms-apps://itunes.apple.com/app/id1485194570'),
+    onPress: () => Linking.openURL(`itms-apps://itunes.apple.com/app/id${Config.APPSTORE_ID}`),
     style: 'cancel',
   }
 

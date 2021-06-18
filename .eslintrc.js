@@ -1,7 +1,8 @@
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   reportUnusedDisableDirectives: true,
   env: {
+    browser: true,
     'jest/globals': true,
     'detox/detox': true,
     'react-native/react-native': true,
@@ -60,6 +61,7 @@ module.exports = {
           'run',
           'testField',
           'testNavigate',
+          'testPushAction',
           'setupSaga',
           'testReducer',
           'testSignout',
