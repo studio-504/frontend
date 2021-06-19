@@ -15,6 +15,12 @@ export const imageFragment = `
   }
 `
 
+export const videoFragment = `
+  fragment videoFragment on Video {
+    urlMasterM3U8
+  }
+`
+
 export const userFragment = `
   fragment rootUser on User {
     userId
@@ -149,6 +155,10 @@ export const postFragment = `
       ...imageFragment
     }
     imageUploadUrl
+    video {
+      urlMasterM3U8
+    }
+    videoUploadUrl
     isVerified
     likeStatus
     commentsCount

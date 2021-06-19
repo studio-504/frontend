@@ -67,7 +67,7 @@ function* handleTextOnlyPost(values) {
 /**
  *
  */
-function* createImagePost(values) {
+function* createMediaPost(values) {
   const AwsAPI = yield getContext('AwsAPI')
 
   function* postExists({ postId }) {
@@ -81,8 +81,7 @@ function* createImagePost(values) {
   }
 
   function* postCreate(values) {
-    const post = yield AwsAPI.graphql(graphqlOperation(queries.addPhotoPost, values))
-
+    const post = yield AwsAPI.graphql(graphqlOperation(queries.addVideoPost, values))
     return post.data.addPost
   }
 
@@ -93,10 +92,12 @@ function* createImagePost(values) {
   }
 }
 
-function* handleImagePost(values) {
-  const post = yield call(createImagePost, values)
+function* handleMediaPost(values) {
+  const post = yield call(createMediaPost, values)
 
-  yield call(postsUploadRequest, post.imageUploadUrl, values)
+  const uploadUrl = post.postType === 'VIDEO' ? post.videoUploadUrl : post.imageUploadUrl
+
+  yield call(postsUploadRequest, uploadUrl, values)
   yield call(waitForPostCompleted, post)
 }
 
@@ -110,8 +111,8 @@ function* postsCreateRequest(req) {
 
     if (values.postType === 'TEXT_ONLY') {
       yield call(handleTextOnlyPost, values)
-    } else if (values.postType === 'IMAGE') {
-      yield call(handleImagePost, values)
+    } else if (values.postType === 'IMAGE' || values.postType === 'VIDEO') {
+      yield call(handleMediaPost, values)
     } else {
       throw new Error('Unsupported post type')
     }

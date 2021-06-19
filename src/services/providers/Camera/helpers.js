@@ -30,8 +30,8 @@ export const autoKeyboardClose = () => {
 export const cropperOptions = (state, snappedPhoto) => ({
   avoidEmptySpaceAroundImage: false,
   path: snappedPhoto.path || snappedPhoto.uri,
-  width: getScreenAspectRatio(state.photoSize, snappedPhoto.width).x,
-  height: getScreenAspectRatio(state.photoSize, snappedPhoto.width).y,
+  width: getScreenAspectRatio(state.mediaSize, snappedPhoto.width).x,
+  height: getScreenAspectRatio(state.mediaSize, snappedPhoto.width).y,
   includeExif: true,
   compressImageQuality: 1,
 })
@@ -54,5 +54,22 @@ export const requestPayload = (type = 'gallery') => (state, snappedPhoto, croppe
   crop: formatCropCoordinates(croppedPhoto.cropRect),
   originalMetadata: JSON.stringify(originalMetadata(snappedPhoto)),
   takenInReal: type === 'camera',
-  photoSize: state.photoSize,
+  mediaSize: state.mediaSize,
 })
+
+/**
+ *
+ * @param {string} originalFormat
+ * @returns VIDEO | IMAGE
+ */
+export const mediaType = (originalFormat) => {
+  const images = ['jpg', 'jpeg', 'heic']
+  if (images.includes(originalFormat))
+    return 'IMAGE'
+
+  const videos = ['mp4', 'mov']
+  if (videos.includes(originalFormat))
+    return 'VIDEO'
+
+  throw new Error('Unsupported format')
+}

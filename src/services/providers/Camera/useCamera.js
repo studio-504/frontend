@@ -20,7 +20,7 @@ const useCameraState = () => {
   const postsCreate = useSelector(postsSelector.postsCreate)
   const [flashMode, handleFlashToggle] = useToggle(false)
   const [flipMode, handleFlipToggle] = useToggle(false)
-  const [photoSize, setPhotoSize] = useState('4:3')
+  const [mediaSize, setMediaSize] = useState('4:3')
 
   return {
     postsCreate,
@@ -28,12 +28,12 @@ const useCameraState = () => {
     handleFlashToggle,
     flipMode,
     handleFlipToggle,
-    photoSize,
-    setPhotoSize,
+    mediaSize,
+    setMediaSize,
   }
 }
 
-const useCamera = ({ handleProcessedPhoto = () => {} }) => {
+const useCamera = ({ handleProcessedMedia = () => {} }) => {
   const cameraState = useCameraState()
   const cameraRef = useRef(null)
 
@@ -50,7 +50,7 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
       const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
       const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
       const payload = await requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
-      handleProcessedPhoto([payload])
+      handleProcessedMedia([payload])
       cameraRef.current.resumePreview()
       autoKeyboardClose()
     } catch (error) {
@@ -58,8 +58,33 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
     }
   }
 
+  /**
+   * Handle camera video recording
+   */
+   const handleVideoRecord = async () => {
+    /**
+     * Camera module might eventually throw an error when camera is not initialized on native side
+     */
+    try {
+      if (!cameraRef.current) return
+      const promise = cameraRef.current.recordAsync({})
+      if (promise)
+        console.log('recording')
+      // cameraRef.current.pausePreview()
+      // const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
+      // const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
+      // const payload = await requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
+      // handleProcessedMedia([payload])
+      // cameraRef.current.resumePreview()
+      // autoKeyboardClose()
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
   return {
     handleCameraSnap,
+    handleVideoRecord,
     cameraRef,
     ...cameraState,
   }

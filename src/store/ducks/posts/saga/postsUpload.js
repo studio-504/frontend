@@ -10,7 +10,7 @@ import filePath from 'path'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   const getName = (image) => {
-    return compose(replace('.heic', ''), replace('.jpg', ''), toLower, filePath.basename)(image)
+    return compose(replace('.heic', ''), replace('.jpg', ''), replace('.mp4', ''), toLower, filePath.basename)(image)
   }
 
   const getFilename = (image) => {
@@ -25,7 +25,8 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
     if (toLower(image.imageFormat) === 'heic') {
       return 'image/heic'
     }
-    return 'image/jpeg'
+    // return 'image/jpeg'
+    return 'video/mp4'
   }
 
   const files = [
@@ -105,9 +106,9 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
 /**
  *
  */
-function* postsUploadRequest(imageUploadUrl, post) {
+function* postsUploadRequest(uploadUrl, post) {
   const channel = yield call(initPostsCreateUploadChannel, {
-    uploadUrl: imageUploadUrl,
+    uploadUrl: uploadUrl,
     image: path(['images', 0])(post),
     payload: post,
   })

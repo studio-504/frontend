@@ -1,6 +1,7 @@
 import CropPicker from 'react-native-image-crop-picker'
 import mapSeries from 'async/mapSeries'
 import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
+import { mediaType } from 'services/providers/Camera/helpers'
 
 /**
  * Asset format definition is required for createPost graphql query
@@ -8,6 +9,9 @@ import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from '
 const generateAssetFormat = (extension) => {
   if (extension && extension.toUpperCase().includes('HEIC')) {
     return 'HEIC'
+  }
+  if (extension && extension.toUpperCase().includes('MP4')) {
+    return 'MP4'
   }
   return 'JPEG'
 }
@@ -18,8 +22,9 @@ const generateAssetFormat = (extension) => {
 const pickerOptions = (multiple) => ({
   multiple: true,
   avoidEmptySpaceAroundImage: false,
-  mediaType: 'photo',
   includeExif: true,
+  mediaType: 'any',
+  compressVideoPreset: 'HighestQuality',
   compressImageQuality: 1,
   maxFiles: multiple ? 5 : 1,
 })
@@ -34,43 +39,51 @@ const mapCropperResponse = async (selected, processor) => {
  * Formatting react-native-image-crop-picker libs response
  * to match react-native-camera libs response
  *
- * note that selectedPhoto.fileSource is coming from manual code
+ * note that selectedMedia.fileSource is coming from manual code
  * which only works by applying a patch from patches/react-native-image-crop-picker
  */
-const formatPickerResponse = (selectedPhoto) => {
-  const extension = selectedPhoto.fileSource.split('?')[0].split('#')[0].split('.').pop()
+const formatPickerResponse = (selectedMedia) => {
+  const extension = selectedMedia.path.split('?')[0].split('#')[0].split('.').pop()
   const format = generateAssetFormat(extension)
 
   return {
     format,
     extension,
-    path: selectedPhoto.fileSource,
-    filename: selectedPhoto.filename,
+    path: selectedMedia.path,
+    filename: selectedMedia.filename,
   }
 }
 
-const useLibrary = ({ handleProcessedPhoto = () => {}, multiple = true }) => {
+const useLibrary = ({ handleProcessedMedia = () => {}, multiple = true }) => {
   /**
-   * Handle gallery photo selection
+   * Handle gallery media selection
    */
   const handleLibrarySnap = async () => {
-    const cameraState = { photoSize: '4:3' }
+    const cameraState = { mediaSize: '4:3' }
 
     /**
      * Image crop picker might eventually throw an error when user cancelled image selection
      */
     try {
       const selectedMedia = await CropPicker.openPicker(pickerOptions(multiple))
-      const payloadSeries = await mapCropperResponse(selectedMedia, async (selectedPhoto, callback) => {
-        const tempPhoto = formatPickerResponse(selectedPhoto)
-        const snappedPhoto = { ...selectedPhoto, ...tempPhoto }
-        const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, selectedPhoto))
-        const payload = requestPayload('gallery')(cameraState, snappedPhoto, croppedPhoto)
+      const payloadSeries = await mapCropperResponse(selectedMedia, async (media, callback) => {
+        const tempMedia = formatPickerResponse(media)
+        const snappedMedia = { ...media, ...tempMedia }
+        const croppedMedia = mediaType(tempMedia.extension) === 'VIDEO' ? {
+          path: '',
+          cropRect: {
+            x: 0,
+            y: 0,
+            height: selectedMedia.width,
+            width: selectedMedia.width,
+          },
+        } : await CropPicker.openCropper(cropperOptions(cameraState, media))
+        const payload = requestPayload('gallery')(cameraState, snappedMedia, croppedMedia)
         autoKeyboardClose()
         callback(null, payload)
       })
 
-      return handleProcessedPhoto(payloadSeries)
+      return handleProcessedMedia(payloadSeries)
     } catch (error) {
       handleError(error)
     }

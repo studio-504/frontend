@@ -31,7 +31,7 @@ const PostCreateService = ({
     if (post.postType === 'TEXT_ONLY') {
       navigationActions.navigateHome(navigation)
     }
-    if (post.postType === 'IMAGE' && cameraCaptureLength === 1) {
+    if ((post.postType === 'IMAGE' || post.postType === 'VIDEO') && cameraCaptureLength === 1) {
       navigationActions.navigateHome(navigation)
     }
   }

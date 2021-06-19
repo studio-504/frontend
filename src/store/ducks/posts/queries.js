@@ -130,6 +130,37 @@ export const addPhotoPost = `
   ${postFragment}
 `
 
+export const addVideoPost = `
+  mutation AddMediaPost(
+    $postId: ID!,
+    $postType: PostType,
+    $albumId: ID,
+    $lifetime: String,
+    $text: String,
+    $commentsDisabled: Boolean,
+    $likesDisabled: Boolean,
+    $sharingDisabled: Boolean,
+    $verificationHidden: Boolean,
+    $setAsUserPhoto: Boolean,
+  ) {
+    addPost (
+      postId: $postId,
+      postType: $postType,
+      albumId: $albumId,
+      lifetime: $lifetime,
+      text: $text,
+      commentsDisabled: $commentsDisabled,
+      likesDisabled: $likesDisabled,
+      sharingDisabled: $sharingDisabled,
+      verificationHidden: $verificationHidden,
+      setAsUserPhoto: $setAsUserPhoto,
+    ) {
+      ...postFragment
+    }
+  }
+  ${postFragment}
+`
+
 export const archivePost = `
   mutation ArchivePost($postId: ID!) {
     archivePost (postId: $postId) {

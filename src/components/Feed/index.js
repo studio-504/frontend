@@ -42,34 +42,34 @@ const Feed = ({
     multiplier: 3,
   })
 
-  const { onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
+  const { postInView, onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
 
   const renderBookmark = () => <BookmarkComponent postsGetTrendingPosts={postsGetTrendingPosts} />
 
   const renderItem = useCallback(
     ({ item: post, index }) => (
-      <React.Fragment>
-        {bookmarkSeparatorIndex === index ? renderBookmark() : null}
+        <React.Fragment>
+          {bookmarkSeparatorIndex === index ? renderBookmark() : null}
 
-        <PostServiceComponent>
-          {(postProps) => (
-            <PostComponent
-              {...postProps}
-              post={post}
-              priorityIndex={index}
-              handleScrollPrev={handleScrollPrev(index)}
-              handleScrollNext={handleScrollNext(index)}
-              createActionSheetRef={createActionSheetRef(post)}
-              actionSheetRef={getActionSheetRef(post)}
-              createTextPostRef={createTextPostRef(post)}
-              textPostRef={getTextPostRef(post)}
-              feedRef={feedRef}
-            />
-          )}
-        </PostServiceComponent>
-      </React.Fragment>
-    ),
-    [data],
+          <PostServiceComponent>
+            {(postProps) => (
+              <PostComponent
+                {...postProps}
+                post={post}
+                priorityIndex={index}
+                handleScrollPrev={handleScrollPrev(index)}
+                handleScrollNext={handleScrollNext(index)}
+                createActionSheetRef={createActionSheetRef(post)}
+                actionSheetRef={getActionSheetRef(post)}
+                createTextPostRef={createTextPostRef(post)}
+                textPostRef={getTextPostRef(post)}
+                feedRef={feedRef}
+                postInView={postInView}
+              />
+            )}
+          </PostServiceComponent>
+        </React.Fragment>
+    ), [data],
   )
 
   const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />

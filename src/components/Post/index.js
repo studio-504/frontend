@@ -11,6 +11,7 @@ import AlbumComponent from 'components/Post/Album'
 import CommentComponent from 'components/Post/Comment'
 import DescriptionComponent from 'components/Post/Description'
 import HeaderComponent from 'components/Post/Header'
+import VideoPlayer from 'components/VideoPlayer'
 
 import ListItemComponent from 'templates/ListItem'
 import CacheComponent from 'components/Cache'
@@ -43,6 +44,8 @@ const PostComponent = ({
 
   feedRef,
   changeAvatarRequest,
+
+  postInView,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -110,11 +113,17 @@ const PostComponent = ({
             resizeMode="contain"
             hideLabel={false}
           />
-
           <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
           <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
         </ListItemComponent>
       : null}
+
+      {post.postType === 'VIDEO' && (
+        <VideoPlayer
+          post={post}
+          postInView={postInView}
+        />
+      )}
 
       {albumLength > 1 ?
         <AlbumComponent post={post} />
@@ -191,6 +200,7 @@ PostComponent.propTypes = {
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
   changeAvatarRequest: PropTypes.func,
+  postInView: PropTypes.any,
 }
 
 export default withTheme(PostComponent)

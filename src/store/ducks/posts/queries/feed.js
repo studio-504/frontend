@@ -175,6 +175,18 @@ export const feedPostFragment = `
       ...imageFragment
     }
 
+    video {
+      urlMasterM3U8
+      accessCookies {
+        domain
+        path
+        expiresAt
+        policy
+        signature
+        keyPairId
+      }
+    }
+
     postedBy {
       ...postUserFragment
     }

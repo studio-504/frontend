@@ -45,7 +45,7 @@ const PostCreateComponent = ({
           </View>
         ) : null}
 
-        {type === 'IMAGE' && cameraCapture ? (
+        {(type === 'IMAGE' || type === 'VIDEO') && cameraCapture ? (
           <View style={styling.form}>
             <PostCreateForm
               user={user}

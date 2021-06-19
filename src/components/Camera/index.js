@@ -27,14 +27,15 @@ const usePulse = (fromValue, toValue) => {
 }
 
 const CameraComponent = ({
-  photoSize,
-  setPhotoSize,
+  mediaSize,
+  setMediaSize,
   cameraRef,
   flashMode,
   flipMode,
   handleFlipToggle,
   handleLibrarySnap,
   handleCameraSnap,
+  handleVideoRecord,
   handleFlashToggle,
   postsCreateRequest,
   postsCreate,
@@ -45,9 +46,9 @@ const CameraComponent = ({
   /**
    * Size calc
    */
-  const prevStatus = usePrevious(photoSize)
-  const topHeight = usePulse(getCameraBonds(prevStatus).top, getCameraBonds(photoSize).top)
-  const bottomHeight = usePulse(getCameraBonds(prevStatus).bottom, getCameraBonds(photoSize).bottom)
+  const prevStatus = usePrevious(mediaSize)
+  const topHeight = usePulse(getCameraBonds(prevStatus).top, getCameraBonds(mediaSize).top)
+  const bottomHeight = usePulse(getCameraBonds(prevStatus).bottom, getCameraBonds(mediaSize).bottom)
 
   return (
     <View style={styling.root}>
@@ -88,12 +89,13 @@ const CameraComponent = ({
               flashMode={flashMode}
               handleLibrarySnap={handleLibrarySnap}
               handleCameraSnap={handleCameraSnap}
+              handleVideoRecord={handleVideoRecord}
               handleFlipToggle={handleFlipToggle}
               handleFlashToggle={handleFlashToggle}
               postsCreateRequest={postsCreateRequest}
               postsCreate={postsCreate}
             />
-            <PickerComponent setPhotoSize={setPhotoSize} />
+            <PickerComponent setMediaSize={setMediaSize} />
           </View>
         )}
         selector={(
@@ -140,11 +142,12 @@ CameraComponent.propTypes = {
   handleFlipToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
   handleCameraSnap: PropTypes.any,
+  handleVideoRecord: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   postsCreateRequest: PropTypes.any,
   postsCreate: PropTypes.any,
-  photoSize: PropTypes.any,
-  setPhotoSize: PropTypes.any,
+  mediaSize: PropTypes.any,
+  setMediaSize: PropTypes.any,
   cameraEnabled: PropTypes.any,
   libraryEnabled: PropTypes.any,
 }

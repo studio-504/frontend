@@ -5,6 +5,7 @@ import UploadIcon from 'assets/svg/camera/Upload'
 import FlipIcon from 'assets/svg/camera/Flip'
 import FlashOnIcon from 'assets/svg/camera/FlashOn'
 import FlashOffIcon from 'assets/svg/camera/FlashOff'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 
 import { withTheme } from 'react-native-paper'
 
@@ -14,6 +15,7 @@ const Shutter = ({
   handleFlipToggle,
   handleLibrarySnap,
   handleCameraSnap,
+  handleVideoRecord,
   handleFlashToggle,
 }) => {
   const styling = styles(theme)
@@ -28,7 +30,18 @@ const Shutter = ({
         </TouchableOpacity>
         <View style={styling.item} />
 
-        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap}>
+        <TouchableOpacity
+          style={styling.capture}
+          onPress={handleCameraSnap}
+          onLongPress={() => handleVideoRecord()}
+          // onPressOut={() => console.log('out')}
+        >
+          <AnimatedCircularProgress
+            size={80}
+            width={10}
+            fill={15}
+            tintColor="#e74c3c"
+          />
         </TouchableOpacity>
 
         <TouchableOpacity style={styling.item} onPress={handleFlipToggle}>
@@ -91,6 +104,7 @@ Shutter.propTypes = {
   handleCameraSnap: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
+  handleVideoRecord: PropTypes.any,
 }
 
 export default withTheme(Shutter)

@@ -7,6 +7,7 @@ import * as navigationActions from 'navigation/actions'
 import path from 'ramda/src/path'
 import pathOr from 'ramda/src/pathOr'
 import { navigateToPath } from 'navigation/helpers'
+import { mediaType } from 'services/providers/Camera/helpers'
 
 const CameraService = ({ children }) => {
   const dispatch = useDispatch()
@@ -17,11 +18,14 @@ const CameraService = ({ children }) => {
   /**
    *
    */
-  const handleProcessedPhoto = (payload) => {
+  const handleProcessedMedia = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     const nextRoute = path(['params', 'nextRoute'])(route)
     const backRoute = path(['params', 'backRoute'])(route)
-    const nextPayload = ({ type: 'IMAGE', backRoute })
+    const nextPayload = ({
+      type: mediaType(payload[0].originalFormat),
+      backRoute,
+    })
 
     if (nextRoute) {
       navigateToPath(nextRoute)(navigation, nextPayload)
@@ -30,8 +34,8 @@ const CameraService = ({ children }) => {
     }
   }
 
-  const camera = useCamera({ handleProcessedPhoto })
-  const library = useLibrary({ handleProcessedPhoto, multiple })
+  const camera = useCamera({ handleProcessedMedia })
+  const library = useLibrary({ handleProcessedMedia, multiple })
 
   return children({ ...camera, ...library })
 }
