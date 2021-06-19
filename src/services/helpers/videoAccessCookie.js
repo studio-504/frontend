@@ -25,8 +25,8 @@ const videoAccessCookie = (domain, keyPairId, policy, signature, expiresAt) => {
     },
   ]
 
-  cookies.map((cookie) => {
-    CookieManager.set(`https://${domain}`, {
+  return Promise.all(cookies.map(async (cookie) => {
+    return await CookieManager.set(`https://${domain}`, {
       name: cookie.name,
       value: cookie.value,
       domain: domain,
@@ -34,7 +34,7 @@ const videoAccessCookie = (domain, keyPairId, policy, signature, expiresAt) => {
       version: '1',
       expires: expiresAt,
     })
-  })
+  }))
 }
 
 export default videoAccessCookie

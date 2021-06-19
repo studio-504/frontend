@@ -83,7 +83,6 @@ function* watchPostsReportPostViewsRequest() {
     const firstAction = yield take(channel)
 
     // yield delay(3000)
-
     const accumedActions = yield flush(channel)
     const preparedActions = packActions(groupActionsByType([firstAction, ...accumedActions]))
 
