@@ -121,15 +121,15 @@ describe('PostType screen', () => {
     expect(navigation.popToTop).toHaveBeenCalled()
   })
 
-  it('should provide handleProcessedPhoto for useLibrary hook', () => {
+  it('should provide handleProcessedMedia for useLibrary hook', () => {
     setup()
 
     expect(useLibrary).toHaveBeenCalled()
 
-    const { handleProcessedPhoto } = useLibrary.mock.calls[0][0]
+    const { handleProcessedMedia } = useLibrary.mock.calls[0][0]
     const payload = [{ preview: 'preview' }]
 
-    handleProcessedPhoto(payload)
+    handleProcessedMedia(payload)
     expect(dispatch).toHaveBeenCalledWith(cameraActions.cameraCaptureRequest(payload))
     testNavigate(navigation, 'PostCreate', { type: 'IMAGE' })
   })

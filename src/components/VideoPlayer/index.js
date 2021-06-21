@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, memo } from 'react'
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
 import Video from 'react-native-video'
-import videoAccessCookie from 'services/helpers/videoAccessCookie'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
@@ -14,10 +13,16 @@ const VideoPlayer = ({ post, postInView }) => {
   const [soundVisible, setSoundVisible] = useState(false)
   const [duration, setDuration] = useState(0)
   const [progress, setProgress] = useState(0)
+  const [videoSize, setVideoSize] = useState({
+    width: 1,
+    height: 1,
+  })
 
   const isInView = post.postId === postInView
 
-  const onVideoLoad = ({ duration }) => {
+  const onVideoLoad = ({ duration, naturalSize }) => {
+    console.log(post.image)
+    setVideoSize(naturalSize)
     setDuration(duration)
   }
 
@@ -31,15 +36,9 @@ const VideoPlayer = ({ post, postInView }) => {
 
   const toggleMuted = () => setMuted(isMuted => !isMuted)
 
-  const setAccessCookies = async () => {
-    const { domain, keyPairId, policy, signature, expiresAt } = post.video.accessCookies
-    await videoAccessCookie(domain, keyPairId, policy, signature, expiresAt)
-    setPlaying(isInView)
-  }
-
   useEffect(() => {
     if (isInView)
-      setAccessCookies()
+      setPlaying(isInView)
 
     if (!isInView && isPlaying)
       setPlaying(false)
@@ -68,12 +67,16 @@ const VideoPlayer = ({ post, postInView }) => {
         <Video
           ref={player}
           poster={post.image.url}
-          source={!isPlaying ? null : { uri: post.video.urlMasterM3U8 }}
-          // source={{ uri: post.video.urlMasterM3U8 }}
-          style={styles.videoStyle}
+          source={{
+            uri: post.video.urlMasterM3U8,
+            headers: {
+              Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
+            },
+          }}
+          style={styles.videoStyle(videoSize.width, videoSize.height)}
           paused={!isPlaying}
           muted={muted}
-          resizeMode="cover"
+          resizeMode="contain"
           repeat
           onLoad={onVideoLoad}
           onProgress={onProgress}
@@ -89,11 +92,11 @@ const styles = StyleSheet.create({
   playerContainer: {
     position: 'relative',
   },
-  videoStyle: {
+  videoStyle: (width = 1, height = 1) => ({
     width: '100%',
     height: undefined,
-    aspectRatio: 1,
-  },
+    aspectRatio: width / height,
+  }),
   progress: {
     color: '#fff',
     fontSize: 12,
