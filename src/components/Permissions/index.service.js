@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Platform } from 'react-native'
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions'
 import useAppState from 'services/AppState'
 import { openSettings } from 'react-native-permissions'
@@ -28,12 +29,18 @@ const Permissions = ({ children, camera, library, location }) => {
   const [locationEnabled, setLocationEnabled] = useState(true)
 
   const checkCamera = async () => {
-    const result = await check(PERMISSIONS.IOS.CAMERA) === RESULTS.GRANTED
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.CAMERA) === RESULTS.GRANTED,
+      android: await check(PERMISSIONS.ANDROID.CAMERA) === RESULTS.GRANTED,
+    })
     setCameraEnabled(result)
   }
 
   const checkLibrary = async () => {
-    const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY) === RESULTS.GRANTED
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.PHOTO_LIBRARY) === RESULTS.GRANTED,
+      android: await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE) === RESULTS.GRANTED,
+    })
     setLibraryEnabled(result)
   }
 
@@ -43,19 +50,28 @@ const Permissions = ({ children, camera, library, location }) => {
   }
 
   const requestCamera = async () => {
-    const result = await check(PERMISSIONS.IOS.CAMERA)
-
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.CAMERA),
+      android: await check(PERMISSIONS.ANDROID.CAMERA),
+    })
     if (result === RESULTS.DENIED) {
-      await request(PERMISSIONS.IOS.CAMERA)
+      Platform.OS == 'ios' ? 
+        await request(PERMISSIONS.IOS.CAMERA) 
+        : await request(PERMISSIONS.ANDROID.CAMERA)
+      
       await checkCamera()
     }
   }
 
   const requestLibrary = async () => {
-    const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY)
-
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.PHOTO_LIBRARY),
+      android: await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE),
+    })
     if (result === RESULTS.DENIED) {
-      await request(PERMISSIONS.IOS.PHOTO_LIBRARY)
+      Platform.OS == 'ios' ? 
+        await request(PERMISSIONS.IOS.PHOTO_LIBRARY)
+        : await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
       await checkLibrary()
     }
   }
