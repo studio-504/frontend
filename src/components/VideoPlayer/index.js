@@ -1,92 +1,58 @@
-import React, { useEffect, useRef, useState, memo } from 'react'
+import React, { memo } from 'react'
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
 import Video from 'react-native-video'
+import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
-const VideoPlayer = ({ post, postInView }) => {
-  const player = useRef()
-  const soundTimeout = useRef()
-  const [isPlaying, setPlaying] = useState(false)
-  const [muted, setMuted] = useState(true)
-  const [soundVisible, setSoundVisible] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const [progress, setProgress] = useState(0)
-  const [videoSize, setVideoSize] = useState({
-    width: 1,
-    height: 1,
-  })
-
-  const isInView = post.postId === postInView
-
-  const onVideoLoad = ({ duration, naturalSize }) => {
-    console.log(post.image)
-    setVideoSize(naturalSize)
-    setDuration(duration)
-  }
-
-  const onProgress = ({ currentTime }) => {
-    setProgress(currentTime)
-  }
-
-  const timeLeft = (seconds) => {
-    return new Date(seconds * 1000).toISOString().substr(15, 4)
-  }
-
-  const toggleMuted = () => setMuted(isMuted => !isMuted)
-
-  useEffect(() => {
-    if (isInView)
-      setPlaying(isInView)
-
-    if (!isInView && isPlaying)
-      setPlaying(false)
-  }, [postInView])
-
-  useEffect(() => {
-    if (soundTimeout.current)
-      clearTimeout(soundTimeout.current)
-    setSoundVisible(true)
-    soundTimeout.current = setTimeout(() => {
-      setSoundVisible(false)
-    }, 3000)
-  }, [muted])
-
-  return (
-    <TouchableWithoutFeedback onPress={toggleMuted}>
-      <View style={styles.playerContainer}>
-        {isInView && (
-          <Text style={styles.progress}>{timeLeft(duration - ~~progress)}</Text>
-        )}
-        {soundVisible && (
-          <View style={styles.volume}>
-            {muted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
-          </View>
-        )}
-        <Video
-          ref={player}
-          poster={post.image.url}
-          source={{
-            uri: post.video.urlMasterM3U8,
-            headers: {
-              Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
-            },
-          }}
-          style={styles.videoStyle(videoSize.width, videoSize.height)}
-          paused={!isPlaying}
-          muted={muted}
-          resizeMode="contain"
-          repeat
-          onLoad={onVideoLoad}
-          onProgress={onProgress}
-          progressUpdateInterval={1000}
-          onError={(error) => console.log(error)}
-        />
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
+const VideoPlayer = ({ post, postInView }) => (
+  <VideoPlayerService
+    postId={post.postId}
+    postInView={postInView}
+  >
+    {({
+      toggleSound,
+      isInView,
+      soundVisible,
+      isPlaying,
+      onVideoLoad,
+      onProgress,
+      isMuted,
+      timeLeft,
+    }) => (
+      <TouchableWithoutFeedback onPress={toggleSound}>
+        <View style={styles.playerContainer}>
+          {isInView && (
+            <Text style={styles.progress}>{timeLeft}</Text>
+          )}
+          {soundVisible && (
+            <View style={styles.volume}>
+              {isMuted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
+            </View>
+          )}
+          <Video
+            poster={post.image.url}
+            source={{
+              uri: post.video.urlMasterM3U8,
+              headers: {
+                Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
+              },
+            }}
+            style={styles.videoStyle(1, 1)}
+            paused={!isPlaying}
+            muted={isMuted}
+            resizeMode="contain"
+            repeat
+            onLoad={onVideoLoad}
+            onProgress={onProgress}
+            progressUpdateInterval={1000}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    )}
+  </VideoPlayerService>
+)
 
 const styles = StyleSheet.create({
   playerContainer: {
