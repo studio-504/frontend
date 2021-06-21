@@ -69,7 +69,7 @@ const Permissions = ({ children, camera, library, location }) => {
       android: await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE),
     })
     if (result === RESULTS.DENIED) {
-      Platform.OS == 'ios' ? 
+      Platform.OS == 'ios' ?
         await request(PERMISSIONS.IOS.PHOTO_LIBRARY)
         : await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
       await checkLibrary()
