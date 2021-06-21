@@ -1,7 +1,6 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "testNavigate"] }] */
 import { Linking } from 'react-native'
 import * as LinkingService from 'services/Linking'
-import { testNavigate } from 'tests/utils/helpers'
+import { testNavigate, testPushAction } from 'tests/utils/helpers'
 import * as Logger from 'services/Logger'
 
 jest.spyOn(Linking, 'openURL')
@@ -81,14 +80,16 @@ describe('deeplinkPath determines provided post params', () => {
 })
 
 describe('deeplinkNavigation redirect routes', () => {
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
   const navigation = {
     navigate: jest.fn(),
     push: jest.fn(),
   }
+
+  afterEach(() => {
+    navigation.navigate.mockClear()
+    navigation.push.mockClear()
+    jest.clearAllMocks()
+  })
 
   it('chats', () => {
     const rootUrl = `${baseUrl}/chat/`
@@ -185,6 +186,13 @@ describe('deeplinkNavigation redirect routes', () => {
     LinkingService.deeplinkNavigation(navigation)(rootUrl)
 
     testNavigate(navigation, 'App.Root.ProfileUpgrade', { _: baseUrl, userId, action: 'signup' })
+  })
+
+  it('new followers', () => {
+    const rootUrl = `${baseUrl}/user/${userId}/new_followers`
+    LinkingService.deeplinkNavigation(navigation)(rootUrl)
+
+    testPushAction(navigation, 'ProfileFollower', { _: baseUrl, userId, action: 'newFollowers' })
   })
 
   it('open direct url', () => {
