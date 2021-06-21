@@ -1,6 +1,5 @@
-import { applyActions } from 'tests/utils/helpers'
-import playerReducer from 'store/ducks/player/reducer'
-import * as playerActions from 'store/ducks/player/actions'
+import reducer from 'store/ducks/player/reducer'
+import * as constants from 'store/ducks/player/constants'
 
 const initialState = {
   muted: true
@@ -8,14 +7,19 @@ const initialState = {
 
 describe('Player reducer', () => {
   it('should return initial state', () => {
-    const state = playerReducer(undefined, {})
+    const state = reducer(undefined, {})
     expect(state).toEqual(initialState)
   })
 
   it('should toggle sound', () => {
-    const state = applyActions([playerActions.toggleSound()], playerReducer)
+    const state = reducer(undefined, { type: constants.TOGGLE_SOUND })
     expect(state).toEqual({
       muted: false
+    })
+
+    const toggleAgain = reducer(state, { type: constants.TOGGLE_SOUND })
+    expect(toggleAgain).toEqual({
+      muted: true
     })
   })
 })
