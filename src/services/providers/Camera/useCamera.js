@@ -61,7 +61,7 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
   /**
    * Handle camera video recording
    */
-   const handleVideoRecord = async () => {
+  const handleVideoRecord = async () => {
     /**
      * Camera module might eventually throw an error when camera is not initialized on native side
      */
