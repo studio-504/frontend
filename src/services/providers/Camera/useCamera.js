@@ -53,7 +53,7 @@ const useCamera = ({ handleProcessedPhoto = () => {} }) => {
       handleProcessedPhoto([payload])
       Platform.OS == 'ios' && cameraRef.current.resumePreview()
       autoKeyboardClose()
-      
+
     } catch (error) {
       handleError(error)
     }

@@ -55,10 +55,10 @@ const Permissions = ({ children, camera, library, location }) => {
       android: await check(PERMISSIONS.ANDROID.CAMERA),
     })
     if (result === RESULTS.DENIED) {
-      Platform.OS == 'ios' ? 
-        await request(PERMISSIONS.IOS.CAMERA) 
+      Platform.OS == 'ios' ?
+        await request(PERMISSIONS.IOS.CAMERA)
         : await request(PERMISSIONS.ANDROID.CAMERA)
-      
+
       await checkCamera()
     }
   }
