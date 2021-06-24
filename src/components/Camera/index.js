@@ -36,9 +36,12 @@ const CameraComponent = ({
   handleLibrarySnap,
   handleCameraSnap,
   handleVideoRecord,
+  handleVideoRecordEnd,
   handleFlashToggle,
   postsCreateRequest,
   postsCreate,
+  recordedDuration,
+  shutterButtonScale,
 }) => {
   const styling = styles
   const navigation = useNavigation()
@@ -90,9 +93,12 @@ const CameraComponent = ({
               handleLibrarySnap={handleLibrarySnap}
               handleCameraSnap={handleCameraSnap}
               handleVideoRecord={handleVideoRecord}
+              handleVideoRecordEnd={handleVideoRecordEnd}
               handleFlipToggle={handleFlipToggle}
               handleFlashToggle={handleFlashToggle}
               postsCreateRequest={postsCreateRequest}
+              recordedDuration={recordedDuration}
+              shutterButtonScale={shutterButtonScale}
               postsCreate={postsCreate}
             />
             <PickerComponent setMediaSize={setMediaSize} />
@@ -143,6 +149,7 @@ CameraComponent.propTypes = {
   handleLibrarySnap: PropTypes.func,
   handleCameraSnap: PropTypes.any,
   handleVideoRecord: PropTypes.any,
+  handleVideoRecordEnd: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   postsCreateRequest: PropTypes.any,
   postsCreate: PropTypes.any,
@@ -150,6 +157,8 @@ CameraComponent.propTypes = {
   setMediaSize: PropTypes.any,
   cameraEnabled: PropTypes.any,
   libraryEnabled: PropTypes.any,
+  recordedDuration: PropTypes.number,
+  shutterButtonScale: PropTypes.any,
 }
 
 export default CameraComponent

@@ -27,6 +27,7 @@ const CameraService = ({ children }) => {
       backRoute,
     })
 
+
     if (nextRoute) {
       navigateToPath(nextRoute)(navigation, nextPayload)
     } else {

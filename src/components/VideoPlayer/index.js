@@ -42,7 +42,7 @@ const VideoPlayer = ({ post, postInView }) => (
             style={styles.videoStyle(1, 1)}
             paused={!isPlaying}
             muted={isMuted}
-            resizeMode="contain"
+            resizeMode="cover"
             repeat
             onLoad={onVideoLoad}
             onProgress={onProgress}

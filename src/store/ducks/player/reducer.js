@@ -3,7 +3,7 @@ import update from 'immutability-helper'
 import * as constants from 'store/ducks/player/constants'
 
 export const initialState = {
-  muted: true
+  muted: true,
 }
 
 /**
@@ -11,7 +11,7 @@ export const initialState = {
  */
 const toggleSound = (state) => update(state, {
   muted: {
-    $set: !state.muted
+    $set: !state.muted,
   },
 })
 

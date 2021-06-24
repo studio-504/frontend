@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Animated, Pressable } from 'react-native'
 import UploadIcon from 'assets/svg/camera/Upload'
 import FlipIcon from 'assets/svg/camera/Flip'
 import FlashOnIcon from 'assets/svg/camera/FlashOn'
@@ -8,6 +8,7 @@ import FlashOffIcon from 'assets/svg/camera/FlashOff'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 
 import { withTheme } from 'react-native-paper'
+import { MAX_VIDEO_RECORD_DURATION } from 'store/ducks/player/constants'
 
 const Shutter = ({
   theme,
@@ -16,7 +17,10 @@ const Shutter = ({
   handleLibrarySnap,
   handleCameraSnap,
   handleVideoRecord,
+  handleVideoRecordEnd,
   handleFlashToggle,
+  recordedDuration,
+  shutterButtonScale,
 }) => {
   const styling = styles(theme)
 
@@ -30,19 +34,28 @@ const Shutter = ({
         </TouchableOpacity>
         <View style={styling.item} />
 
-        <TouchableOpacity
-          style={styling.capture}
+        <Pressable
           onPress={handleCameraSnap}
-          onLongPress={() => handleVideoRecord()}
-          // onPressOut={() => console.log('out')}
+          onLongPress={handleVideoRecord}
+          onPressOut={handleVideoRecordEnd}
         >
-          <AnimatedCircularProgress
-            size={80}
-            width={10}
-            fill={15}
-            tintColor="#e74c3c"
-          />
-        </TouchableOpacity>
+          <Animated.View
+            style={[styling.capture, {
+              transform: [
+                {
+                  scale: shutterButtonScale,
+                },
+              ],
+            }]}
+          >
+            <AnimatedCircularProgress
+              size={80}
+              width={10}
+              fill={recordedDuration * 100 / MAX_VIDEO_RECORD_DURATION}
+              tintColor="#e74c3c"
+            />
+          </Animated.View>
+        </Pressable>
 
         <TouchableOpacity style={styling.item} onPress={handleFlipToggle}>
           <FlipIcon
@@ -105,6 +118,9 @@ Shutter.propTypes = {
   handleFlashToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
   handleVideoRecord: PropTypes.any,
+  handleVideoRecordEnd: PropTypes.any,
+  recordedDuration: PropTypes.number,
+  shutterButtonScale: PropTypes.any,
 }
 
 export default withTheme(Shutter)

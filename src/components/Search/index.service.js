@@ -17,6 +17,11 @@ const SearchService = ({ children }) => {
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
   const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
 
+  console.log(
+    postsGetTrendingPosts.data.filter(item => item.postType === 'IMAGE')
+    .map(item => item.image.url),
+  )
+
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
    */
