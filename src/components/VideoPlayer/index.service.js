@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import secondsToDuration from 'services/helpers/secondsToDuration'
 import * as playerActions from 'store/ducks/player/actions'
 
 const VideoPlayerService = ({ postId, postInView, children }) => {
   const dispatch = useDispatch()
-  const playerState = useSelector(({player}) => player)
+  const playerState = useSelector(({ player }) => player)
   const soundTimeout = useRef()
   const [isPlaying, setPlaying] = useState(false)
   const [soundVisible, setSoundVisible] = useState(false)
@@ -19,10 +20,6 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
 
   const onProgress = ({ currentTime }) => {
     setProgress(currentTime)
-  }
-
-  const timeLeft = (seconds) => {
-    return new Date(seconds * 1000).toISOString().substr(15, 4)
   }
 
   const toggleSound = () => dispatch(playerActions.toggleSound())
@@ -52,7 +49,7 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     onVideoLoad,
     onProgress,
     isMuted: playerState.muted,
-    timeLeft: timeLeft(duration - ~~progress),
+    timeLeft: secondsToDuration(duration - ~~progress),
   })
 }
 

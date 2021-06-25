@@ -10,6 +10,7 @@ import TextOnlyComponent from 'templates/TextOnly/Thumbnail'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import BellIcon from 'assets/svg/action/Bell'
+import VideoIcon from 'assets/svg/post/Video'
 
 import { useNavigation } from '@react-navigation/native'
 import testIDs from './test-ids'
@@ -73,7 +74,12 @@ const PostsGridThumbnail = ({
         activeIcon={activeIcon}
         inactiveIcon={null}
       >
-        {post.postType === 'IMAGE' ?
+        {post.postType === 'VIDEO' && (
+          <View style={styling.videoIconWrapper}>
+            <VideoIcon fill="#fff" size={20} />
+          </View>
+        )}
+        {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ?
           <CacheComponent
             thread={thread}
             images={images}
@@ -97,6 +103,12 @@ const PostsGridThumbnail = ({
 const styles = StyleSheet.create({
   icon: {
     padding: 12,
+  },
+  videoIconWrapper: {
+    position: 'absolute',
+    zIndex: 2,
+    right: 8,
+    top: 4,
   },
 })
 
