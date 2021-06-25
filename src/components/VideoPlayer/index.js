@@ -39,7 +39,7 @@ const VideoPlayer = ({ post, postInView }) => (
                 Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
               },
             }}
-            style={styles.videoStyle(1, 1)}
+            style={styles.videoStyle(post.video.resolutions[0].width, post.video.resolutions[0].height)}
             paused={!isPlaying}
             muted={isMuted}
             resizeMode="cover"

@@ -189,6 +189,10 @@ export const feedPostFragment = `
         signature
         keyPairId
       }
+      resolutions {
+        width
+        height
+      }
     }
 
     postedBy {

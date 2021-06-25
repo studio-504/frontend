@@ -4,6 +4,7 @@ import secondsToDuration from 'services/helpers/secondsToDuration'
 import * as playerActions from 'store/ducks/player/actions'
 
 const VideoPlayerService = ({ postId, postInView, children }) => {
+
   const dispatch = useDispatch()
   const playerState = useSelector(({ player }) => player)
   const soundTimeout = useRef()
