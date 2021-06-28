@@ -2,7 +2,7 @@ import reducer from 'store/ducks/player/reducer'
 import * as constants from 'store/ducks/player/constants'
 
 const initialState = {
-  muted: true
+  muted: true,
 }
 
 describe('Player reducer', () => {
@@ -14,12 +14,12 @@ describe('Player reducer', () => {
   it('should toggle sound', () => {
     const state = reducer(undefined, { type: constants.TOGGLE_SOUND })
     expect(state).toEqual({
-      muted: false
+      muted: false,
     })
 
     const toggleAgain = reducer(state, { type: constants.TOGGLE_SOUND })
     expect(toggleAgain).toEqual({
-      muted: true
+      muted: true,
     })
   })
 })
