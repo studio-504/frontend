@@ -14,6 +14,22 @@ export const feedPostFragment = `
     }
   }
 
+  fragment videoFragment on Video {
+    urlMasterM3U8
+    accessCookies {
+      domain
+      path
+      expiresAt
+      policy
+      signature
+      keyPairId
+    }
+    resolutions {
+      width
+      height
+    }
+  }
+
   fragment postUserFragment on User {
     userId
     username
@@ -180,19 +196,7 @@ export const feedPostFragment = `
     }
 
     video {
-      urlMasterM3U8
-      accessCookies {
-        domain
-        path
-        expiresAt
-        policy
-        signature
-        keyPairId
-      }
-      resolutions {
-        width
-        height
-      }
+      ...videoFragment
     }
 
     postedBy {

@@ -34,8 +34,6 @@ const FeedService = ({ children }) => {
   const postsFeedGetMoreRequest = (payload) =>
     dispatch(postsActions.postsFeedGetMoreRequest(payload))
 
-  console.log(postsFeedGet)
-
   const handleScrollPrev = (index) => () => {
     try {
       feedRef.current.scrollToIndex({
