@@ -42,6 +42,11 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     }, 3000)
   }, [playerState.muted])
 
+  useEffect(() => {
+    if (postInView === undefined)
+      setPlaying(true)
+  }, [])
+
   return children({
     toggleSound,
     isInView,
