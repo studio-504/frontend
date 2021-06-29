@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
 import { Animated } from 'react-native'
 import CropPicker from 'react-native-image-crop-picker'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useToggle from 'react-use/lib/useToggle'
 import * as postsSelector from 'store/ducks/posts/selectors'
 import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
 import { MAX_VIDEO_RECORD_DURATION } from 'store/ducks/player/constants'
+import * as cameraActions from 'store/ducks/camera/actions'
 
 /**
  * react-native-camera request object
@@ -39,6 +40,7 @@ const useCameraState = () => {
 }
 
 const useCamera = ({ handleProcessedMedia = () => {} }) => {
+  const dispatch = useDispatch()
   const cameraState = useCameraState()
   const cameraRef = useRef(null)
   const recordIntervalRef = useRef()
@@ -53,13 +55,13 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
      */
     try {
       if (!cameraRef.current) return
-      cameraRef.current.pausePreview()
-      const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
-      const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
-      const payload = await requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
-      handleProcessedMedia([payload])
-      cameraRef.current.resumePreview()
-      autoKeyboardClose()
+        cameraRef.current.pausePreview()
+        const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
+        const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
+        const payload = await requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
+        handleProcessedMedia([payload])
+        cameraRef.current.resumePreview()
+        autoKeyboardClose()
     } catch (error) {
       handleError(error)
     }
@@ -80,6 +82,7 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
       })
       if (promise) {
         handleShutterButtonAnimation(1.4)
+        dispatch(cameraActions.changeRecordingState(true))
         recordIntervalRef.current = setInterval(() => {
           cameraState.setRecordedDuration(duration => {
             if (duration === MAX_VIDEO_RECORD_DURATION - 1)
@@ -121,6 +124,7 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
     cameraRef.current.stopRecording()
     clearInterval(recordIntervalRef.current)
     handleShutterButtonAnimation(1)
+    dispatch(cameraActions.changeRecordingState(false))
     if (shouldResetDuration)
       cameraState.setRecordedDuration(0)
   }
