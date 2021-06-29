@@ -45,7 +45,10 @@ const Permissions = ({ children, camera, library, location }) => {
   }
 
   const checkLocation = async () => {
-    const result = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE) === RESULTS.GRANTED
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE) === RESULTS.GRANTED,
+      android: await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION) === RESULTS.GRANTED,
+    })
     setLocationEnabled(result)
   }
 
@@ -77,10 +80,16 @@ const Permissions = ({ children, camera, library, location }) => {
   }
 
   const requestLocation = async () => {
-    const result = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+    const result = Platform.select({
+      ios: await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE),
+      android: await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION),
+    })
 
     if (result === RESULTS.DENIED) {
-      await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+      Platform.OS == 'ios' ? 
+        await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+        : await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+      
       await checkLocation()
     }
   }
