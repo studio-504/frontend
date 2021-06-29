@@ -86,10 +86,10 @@ const Permissions = ({ children, camera, library, location }) => {
     })
 
     if (result === RESULTS.DENIED) {
-      Platform.OS == 'ios' ? 
+      Platform.OS == 'ios' ?
         await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
         : await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
-      
+
       await checkLocation()
     }
   }
