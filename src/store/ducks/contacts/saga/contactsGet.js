@@ -80,12 +80,12 @@ function* findContacts() {
 
 function* checkContactsPermission() {
   const permission = yield call(function* () {
-    const status = Platform.OS == 'ios' ? 
+    const status = Platform.OS == 'ios' ?
       yield call(check, PERMISSIONS.IOS.CONTACTS)
       : yield call(check, PERMISSIONS.ANDROID.READ_CONTACTS)
 
     if (status === RESULTS.DENIED) {
-      return Platform.OS == 'ios' ? 
+      return Platform.OS == 'ios' ?
         yield call(request, PERMISSIONS.IOS.CONTACTS)
         : yield call(request, PERMISSIONS.ANDROID.READ_CONTACTS)
     } else {
