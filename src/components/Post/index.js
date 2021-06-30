@@ -144,12 +144,13 @@ const PostComponent = ({
         handlePostShare={handlePostShare}
       />
 
+
       <ReactionsPreviewTemplate
         post={post}
         user={user}
       />
 
-      {post.postType === 'IMAGE' ?
+      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ?
         <DescriptionComponent
           post={post}
         />

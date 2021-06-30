@@ -22,21 +22,21 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   }
 
   const getFiletype = (image) => {
-    if (toLower(image.imageFormat) === 'heic') {
+    if (toLower(image.imageFormat) === 'heic')
       return 'image/heic'
-    }
-    // return 'image/jpeg'
+
+    if (toLower(image.imageFormat) === 'jpg' || toLower(image.imageFormat) === 'jpeg')
+      return 'image/jpeg'
+
     return 'video/mp4'
   }
 
-  const files = [
-    {
-      name: getName(image),
-      filename: getFilename(image),
-      filepath: getFilepath(image),
-      filetype: getFiletype(payload),
-    },
-  ]
+  const files = [{
+    name: getName(image),
+    filename: getFilename(image),
+    filepath: getFilepath(image),
+    filetype: getFiletype(payload),
+  }]
 
   const handleRequest = (emitter) => (response) => {
     const jobId = response.jobId

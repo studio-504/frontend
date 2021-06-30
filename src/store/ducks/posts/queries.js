@@ -90,7 +90,7 @@ export const addTextOnlyPost = `
 `
 
 export const addPhotoPost = `
-  mutation AddMediaPost(
+  mutation addPhotoPost(
     $postId: ID!,
     $postType: PostType,
     $albumId: ID,
@@ -135,7 +135,7 @@ export const addPhotoPost = `
 `
 
 export const addVideoPost = `
-  mutation AddMediaPost(
+  mutation addVideoPost(
     $postId: ID!,
     $postType: PostType,
     $albumId: ID,

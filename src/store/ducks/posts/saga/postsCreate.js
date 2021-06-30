@@ -82,7 +82,11 @@ function* createMediaPost(values) {
   }
 
   function* postCreate(values) {
-    const post = yield AwsAPI.graphql(graphqlOperation(queries.addVideoPost, values))
+    const queryByMediaType = {
+      'IMAGE': queries.addPhotoPost,
+      'VIDEO': queries.addVideoPost,
+    }
+    const post = yield AwsAPI.graphql(graphqlOperation(queryByMediaType[values.postType], values))
     return post.data.addPost
   }
 
@@ -96,9 +100,12 @@ function* createMediaPost(values) {
 function* handleMediaPost(values) {
   const post = yield call(createMediaPost, values)
 
-  const uploadUrl = post.postType === 'VIDEO' ? post.videoUploadUrl : post.imageUploadUrl
+  const urlByMediaType = {
+    'IMAGE': post.imageUploadUrl,
+    'VIDEO': post.videoUploadUrl,
+  }
 
-  yield call(postsUploadRequest, uploadUrl, values)
+  yield call(postsUploadRequest, urlByMediaType[post.postType], values)
   yield call(waitForPostCompleted, post)
 }
 
