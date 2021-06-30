@@ -13,6 +13,7 @@ import parsePhoneNumber from 'libphonenumber-js/min'
 import * as actions from 'store/ducks/contacts/actions'
 import * as queries from 'store/ducks/contacts/queries'
 import * as queryService from 'services/Query'
+import { Platform } from 'react-native'
 
 function normalizeContacts(contacts) {
   const makeFullName = (user) => {
@@ -79,10 +80,14 @@ function* findContacts() {
 
 function* checkContactsPermission() {
   const permission = yield call(function* () {
-    const status = yield call(check, PERMISSIONS.IOS.CONTACTS)
+    const status = Platform.OS == 'ios' ? 
+      yield call(check, PERMISSIONS.IOS.CONTACTS)
+      : yield call(check, PERMISSIONS.ANDROID.READ_CONTACTS)
 
     if (status === RESULTS.DENIED) {
-      return yield call(request, PERMISSIONS.IOS.CONTACTS)
+      return Platform.OS == 'ios' ? 
+        yield call(request, PERMISSIONS.IOS.CONTACTS)
+        : yield call(request, PERMISSIONS.ANDROID.READ_CONTACTS)
     } else {
       return status
     }
