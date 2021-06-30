@@ -58,7 +58,7 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
         cameraRef.current.pausePreview()
         const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
         const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
-        const payload = await requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
+        const payload = requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
         handleProcessedMedia([payload])
         cameraRef.current.resumePreview()
         autoKeyboardClose()

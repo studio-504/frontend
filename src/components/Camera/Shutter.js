@@ -40,13 +40,7 @@ const Shutter = ({
           onPressOut={handleVideoRecordEnd}
         >
           <Animated.View
-            style={[styling.capture, {
-              transform: [
-                {
-                  scale: shutterButtonScale,
-                },
-              ],
-            }]}
+            style={[styling.capture, styling.shutterButtonScale(shutterButtonScale)]}
           >
             <AnimatedCircularProgress
               size={80}
@@ -108,6 +102,13 @@ const styles = theme => StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  shutterButtonScale: (shutterButtonScale) => ({
+    transform: [
+      {
+        scale: shutterButtonScale,
+      },
+    ],
+  }),
 })
 
 Shutter.propTypes = {
