@@ -83,6 +83,7 @@ function* checkContactsPermission() {
     const status = Platform.OS == 'ios' ?
       yield call(check, PERMISSIONS.IOS.CONTACTS)
       : yield call(check, PERMISSIONS.ANDROID.READ_CONTACTS)
+
     if (status === RESULTS.DENIED) {
       return Platform.OS == 'ios' ?
         yield call(request, PERMISSIONS.IOS.CONTACTS)
