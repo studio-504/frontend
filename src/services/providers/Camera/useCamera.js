@@ -70,7 +70,7 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
    * Handle camera video recording end
    * @param {boolean} shouldResetDuration
    */
-   const onRecordingEnd = (shouldResetDuration = true) => {
+  const onRecordingEnd = (shouldResetDuration = true) => {
     if (!cameraRef.current) return
     cameraRef.current.stopRecording()
     clearInterval(recordIntervalRef.current)
