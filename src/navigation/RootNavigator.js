@@ -13,6 +13,7 @@ import VerificationScreen from 'screens/VerificationScreen'
 import ProfileUpgradeScreen from 'screens/ProfileUpgradeScreen'
 import PostsFiltersScreen from 'screens/PostsFiltersScreen'
 import ThemeDefaultScreen from 'screens/ThemeDefaultScreen'
+import DownloadAppScreen from 'screens/DownloadAppScreen'
 
 const Stack = createStackNavigator()
 
@@ -30,7 +31,7 @@ const RootNavigator = () => {
   }, [])
 
   return (
-    <Stack.Navigator {...stackNavigatorDefaultProps}>
+    <Stack.Navigator {...stackNavigatorDefaultProps} mode="modal">
       <Stack.Screen
         name="Home"
         component={TabNavigator}
@@ -58,6 +59,12 @@ const RootNavigator = () => {
       <Stack.Screen
         name="PostType"
         component={PostTypeScreen}
+        {...stackScreenModalProps}
+      />
+
+      <Stack.Screen
+        name="DownloadApp"
+        component={DownloadAppScreen}
         {...stackScreenModalProps}
       />
 

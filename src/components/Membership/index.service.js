@@ -19,8 +19,16 @@ const MembershipService = ({ children }) => {
 
   const subscription = { productId: purchasesConstants.PRIMARY_SUBSCRIPTION }
   const isSubscribed = UserService.isUserSubscribed(user)
-  const requestSubscription = () => dispatch(purchasesActions.purchaseRequest(subscription))
-  const retryPurchaseRequest = () => dispatch(purchasesActions.retryPurchaseRequest(subscription))
+
+  const requestSubscription = navigationActions.mockForWeb(
+    () => dispatch(purchasesActions.purchaseRequest(subscription)),
+    navigation,
+  )
+  const retryPurchaseRequest = navigationActions.mockForWeb(
+    () => dispatch(purchasesActions.retryPurchaseRequest(subscription)),
+    navigation,
+  )
+
   const subscriptionGetRequest = () => dispatch(purchasesActions.subscriptionGetRequest(subscription))
   const manageSubscriptions = () => Linking.openURL('https://apps.apple.com/account/subscriptions')
   const handleContactUs = () => Linking.openURL('mailto:support@real.app')

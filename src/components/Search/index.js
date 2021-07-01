@@ -152,7 +152,10 @@ const styles = theme => StyleSheet.create({
     paddingBottom: theme.spacing.base / 2,
   },
   overlay: {
-    ...StyleSheet.absoluteFill,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     top: 64,
     zIndex: 1,
     backgroundColor: theme.colors.backgroundPrimary,

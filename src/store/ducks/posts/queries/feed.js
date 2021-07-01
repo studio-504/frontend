@@ -88,6 +88,7 @@ export const feedPostFragment = `
   fragment originalPostFragment on Post {
     postId
     isVerified
+    adStatus
     likesDisabled
     commentsDisabled
     sharingDisabled
@@ -99,6 +100,7 @@ export const feedPostFragment = `
   fragment postAlbumFragment on Post {
     postId
     isVerified
+    adStatus
     image {
       ...imageFragment
     }
@@ -149,9 +151,11 @@ export const feedPostFragment = `
     postType
     postedAt
     expiresAt
+    payment
     text
     imageUploadUrl
     isVerified
+    adStatus
     likeStatus
     commentsCount
     commentsUnviewedCount: commentsCount(viewedStatus: NOT_VIEWED)
