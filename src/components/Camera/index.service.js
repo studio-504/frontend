@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import useLibrary from 'services/providers/Camera/useLibrary'
@@ -13,6 +14,7 @@ const CameraService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const route = useRoute()
+  const cameraRef = useRef(null)
   const multiple = pathOr(true, ['params', 'multiple'], route)
 
   /**
@@ -35,7 +37,7 @@ const CameraService = ({ children }) => {
     }
   }
 
-  const camera = useCamera({ handleProcessedMedia })
+  const camera = useCamera({ handleProcessedMedia, cameraRef })
   const library = useLibrary({ handleProcessedMedia, multiple })
 
   return children({ ...camera, ...library })

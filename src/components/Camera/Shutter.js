@@ -17,10 +17,10 @@ const Shutter = ({
   handleLibrarySnap,
   handleCameraSnap,
   handleVideoRecord,
-  handleVideoRecordEnd,
+  onRecordingEnd,
   handleFlashToggle,
   recordedDuration,
-  shutterButtonScale,
+  shutterButtonScaleRef,
 }) => {
   const styling = styles(theme)
 
@@ -37,10 +37,10 @@ const Shutter = ({
         <Pressable
           onPress={handleCameraSnap}
           onLongPress={handleVideoRecord}
-          onPressOut={handleVideoRecordEnd}
+          onPressOut={onRecordingEnd}
         >
           <Animated.View
-            style={[styling.capture, styling.shutterButtonScale(shutterButtonScale)]}
+            style={[styling.capture, styling.shutterButtonScale(shutterButtonScaleRef.current)]}
           >
             <AnimatedCircularProgress
               size={80}
@@ -119,9 +119,9 @@ Shutter.propTypes = {
   handleFlashToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
   handleVideoRecord: PropTypes.any,
-  handleVideoRecordEnd: PropTypes.any,
+  onRecordingEnd: PropTypes.any,
   recordedDuration: PropTypes.number,
-  shutterButtonScale: PropTypes.any,
+  shutterButtonScaleRef: PropTypes.any,
 }
 
 export default withTheme(Shutter)

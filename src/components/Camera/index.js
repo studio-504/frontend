@@ -36,12 +36,14 @@ const CameraComponent = ({
   handleLibrarySnap,
   handleCameraSnap,
   handleVideoRecord,
-  handleVideoRecordEnd,
+  onRecordingEnd,
   handleFlashToggle,
   postsCreateRequest,
   postsCreate,
   recordedDuration,
-  shutterButtonScale,
+  shutterButtonScaleRef,
+
+  onRecordingStart,
 }) => {
   const styling = styles
   const navigation = useNavigation()
@@ -72,6 +74,7 @@ const CameraComponent = ({
             </Animated.View>
 
             <RNCamera
+              onRecordingStart={onRecordingStart}
               key={(
                 flipMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back
               )}
@@ -94,12 +97,12 @@ const CameraComponent = ({
               handleLibrarySnap={handleLibrarySnap}
               handleCameraSnap={handleCameraSnap}
               handleVideoRecord={handleVideoRecord}
-              handleVideoRecordEnd={handleVideoRecordEnd}
+              onRecordingEnd={onRecordingEnd}
               handleFlipToggle={handleFlipToggle}
               handleFlashToggle={handleFlashToggle}
               postsCreateRequest={postsCreateRequest}
               recordedDuration={recordedDuration}
-              shutterButtonScale={shutterButtonScale}
+              shutterButtonScaleRef={shutterButtonScaleRef}
               postsCreate={postsCreate}
             />
             <PickerComponent setMediaSize={setMediaSize} />
@@ -150,7 +153,7 @@ CameraComponent.propTypes = {
   handleLibrarySnap: PropTypes.func,
   handleCameraSnap: PropTypes.any,
   handleVideoRecord: PropTypes.any,
-  handleVideoRecordEnd: PropTypes.any,
+  onRecordingEnd: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   postsCreateRequest: PropTypes.any,
   postsCreate: PropTypes.any,
@@ -159,7 +162,8 @@ CameraComponent.propTypes = {
   cameraEnabled: PropTypes.any,
   libraryEnabled: PropTypes.any,
   recordedDuration: PropTypes.number,
-  shutterButtonScale: PropTypes.any,
+  shutterButtonScaleRef: PropTypes.any,
+  onRecordingStart: PropTypes.func,
 }
 
 export default CameraComponent
