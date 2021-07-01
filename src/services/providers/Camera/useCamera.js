@@ -1,125 +1,76 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Animated } from 'react-native'
 import CropPicker from 'react-native-image-crop-picker'
-import { useDispatch, useSelector } from 'react-redux'
-import useToggle from 'react-use/lib/useToggle'
-import * as postsSelector from 'store/ducks/posts/selectors'
+import { useDispatch } from 'react-redux'
 import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
 import { MAX_VIDEO_RECORD_DURATION } from 'store/ducks/player/constants'
 import * as cameraActions from 'store/ducks/camera/actions'
+import useCameraState from 'services/providers/Camera/useCameraState'
 
 /**
  * react-native-camera request object
  */
-const cameraOptions = () => ({
+const cameraPhotoOptions = {
   quality: 1,
   base64: false,
   writeExif: true,
   exif: true,
   mirrorImage: false,
-})
-
-const useCameraState = () => {
-  const postsCreate = useSelector(postsSelector.postsCreate)
-  const [flashMode, handleFlashToggle] = useToggle(false)
-  const [flipMode, handleFlipToggle] = useToggle(false)
-  const [mediaSize, setMediaSize] = useState('4:3')
-  const [recordedDuration, setRecordedDuration] = useState(0)
-
-  return {
-    postsCreate,
-    flashMode,
-    handleFlashToggle,
-    flipMode,
-    handleFlipToggle,
-    mediaSize,
-    setMediaSize,
-    recordedDuration,
-    setRecordedDuration,
-  }
 }
 
-const useCamera = ({ handleProcessedMedia = () => {} }) => {
+const cameraVideoOptions = {
+  maxDuration: MAX_VIDEO_RECORD_DURATION,
+}
+
+const videoCropOptions = {
+  path: '',
+  cropRect: {
+    x: 0,
+    y: 0,
+    height: 0,
+    width: 0,
+  },
+}
+
+const videoExtensionOptions = {
+  extension: 'mov',
+  format: 'mov',
+}
+
+const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
   const dispatch = useDispatch()
   const cameraState = useCameraState()
-  const cameraRef = useRef(null)
   const recordIntervalRef = useRef()
-  const shutterButtonScale = useRef(new Animated.Value(1)).current
+  const shutterButtonScaleRef = useRef(new Animated.Value(1))
 
   /**
    * Handle camera photo capture
    */
   const handleCameraSnap = async () => {
-    /**
-     * Camera module might eventually throw an error when camera is not initialized on native side
-     */
-    try {
-      if (!cameraRef.current) return
-        cameraRef.current.pausePreview()
-        const snappedPhoto = await cameraRef.current.takePictureAsync(cameraOptions())
-        const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
-        const payload = requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
-        handleProcessedMedia([payload])
-        cameraRef.current.resumePreview()
-        autoKeyboardClose()
-    } catch (error) {
-      handleError(error)
-    }
-  }
-
-  /**
-   * Handle camera video recording
-   */
-  const handleVideoRecord = async () => {
+    if (!cameraRef.current) return
 
     /**
      * Camera module might eventually throw an error when camera is not initialized on native side
      */
     try {
-      if (!cameraRef.current) return
-      const promise = cameraRef.current.recordAsync({
-        maxDuration: MAX_VIDEO_RECORD_DURATION,
-      })
-      if (promise) {
-        handleShutterButtonAnimation(1.4)
-        dispatch(cameraActions.changeRecordingState(true))
-        recordIntervalRef.current = setInterval(() => {
-          cameraState.setRecordedDuration(duration => {
-            if (duration === MAX_VIDEO_RECORD_DURATION - 1)
-            {
-              handleVideoRecordEnd(false)
-              return 0
-            }
-            return duration + 1
-          })
-        }, 1000)
-        const recordedVideo = { ...await promise, ...{
-          extension: 'mov',
-          format: 'mov',
-        } }
-        const croppedVideo = {
-          path: '',
-          cropRect: {
-            x: 0,
-            y: 0,
-            height: 0,
-            width: 0,
-          },
-        }
-        const payload = requestPayload('gallery')(cameraState, recordedVideo, croppedVideo)
-        handleProcessedMedia([payload])
-        autoKeyboardClose()
-      }
+      cameraRef.current.pausePreview()
+      const snappedPhoto = await cameraRef.current.takePictureAsync(cameraPhotoOptions)
+      const croppedPhoto = await CropPicker.openCropper(cropperOptions(cameraState, snappedPhoto))
+      const payload = requestPayload('camera')(cameraState, snappedPhoto, croppedPhoto)
+      handleProcessedMedia([payload])
+      cameraRef.current.resumePreview()
+      autoKeyboardClose()
     } catch (error) {
       handleError(error)
     }
   }
+
 
   /**
    * Handle camera video recording end
    * @param {boolean} shouldResetDuration
    */
-  const handleVideoRecordEnd = (shouldResetDuration = true) => {
+   const onRecordingEnd = (shouldResetDuration = true) => {
     if (!cameraRef.current) return
     cameraRef.current.stopRecording()
     clearInterval(recordIntervalRef.current)
@@ -134,17 +85,55 @@ const useCamera = ({ handleProcessedMedia = () => {} }) => {
    * @param {number} toVal
    * @returns
    */
-  const handleShutterButtonAnimation = (toVal) => Animated.spring(shutterButtonScale, {
-    toValue: toVal,
+  const handleShutterButtonAnimation = (toValue) => Animated.spring(shutterButtonScaleRef.current, {
+    toValue,
     duration: 80,
     useNativeDriver: true,
   }).start()
 
+  const handleVideoProgress = () => {
+    cameraState.setRecordedDuration(duration => {
+      if (duration === MAX_VIDEO_RECORD_DURATION - 1) {
+        onRecordingEnd(false)
+        return 0
+      }
+
+      return duration + 1
+    })
+  }
+
+  const onRecordingStart = () => {
+    handleShutterButtonAnimation(1.4)
+    dispatch(cameraActions.changeRecordingState(true))
+    recordIntervalRef.current = setInterval(handleVideoProgress, 1000)
+  }
+
+  /**
+   * Handle camera video recording
+   */
+  const handleVideoRecord = async () => {
+    if (!cameraRef.current) return
+
+    /**
+     * Camera module might eventually throw an error when camera is not initialized on native side
+     */
+    try {
+      const promise = await cameraRef.current.recordAsync(cameraVideoOptions)
+      const recordedVideo = { ...await promise, ...videoExtensionOptions }
+      const payload = requestPayload('gallery')(cameraState, recordedVideo, videoCropOptions)
+      handleProcessedMedia([payload])
+      autoKeyboardClose()
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
   return {
     handleCameraSnap,
     handleVideoRecord,
-    handleVideoRecordEnd,
-    shutterButtonScale,
+    onRecordingStart,
+    onRecordingEnd,
+    shutterButtonScaleRef,
     cameraRef,
     ...cameraState,
   }
