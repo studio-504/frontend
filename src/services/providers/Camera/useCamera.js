@@ -82,7 +82,7 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
 
   /**
    * Animated the shutter button on video record start or end
-   * @param {number} toVal
+   * @param {number} toValue
    * @returns
    */
   const handleShutterButtonAnimation = (toValue) => Animated.spring(shutterButtonScaleRef.current, {

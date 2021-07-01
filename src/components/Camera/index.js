@@ -74,7 +74,6 @@ const CameraComponent = ({
             </Animated.View>
 
             <RNCamera
-              onPictureTaken={console}
               onRecordingStart={onRecordingStart}
               key={(
                 flipMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back
