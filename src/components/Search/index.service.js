@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -22,20 +22,22 @@ const SearchService = ({ children }) => {
    */
   useScrollToTop(feedRef)
 
-  const usersSearchRequest = ({ searchToken }) => {
+  const usersSearchRequest = useCallback(({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
     dispatch(usersActions.usersUnfollowIdle({}))
     dispatch(usersActions.usersSearchRequest({ searchToken: toLower(searchToken || '') }))
-  }
+  }, [])
 
   /**
    * Trending Filters
    */
-  const postsGetTrendingPostsRequest = () =>
+  const postsGetTrendingPostsRequest = useCallback(() =>
     dispatch(postsActions.postsGetTrendingPostsRequest())
+  , [])
 
-  const postsGetTrendingPostsMoreRequest = (payload) =>
+  const postsGetTrendingPostsMoreRequest = useCallback((payload) =>
     dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload }))
+  , [])
 
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))
