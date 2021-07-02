@@ -15,8 +15,8 @@ const cameraStateValue = ({
   handleFlipToggle: 'handleFlipToggle',
   mediaSize: 'mediaSize',
   setMediaSize: 'setMediaSize',
-  recordedDuration: 'recordedDuration',
-  setRecordedDuration: jest.fn(),
+  recordedDuration: 0,
+  setRecordedDuration: jest.fn(number => number),
 })
 
 const cropOptionsValue = ({
@@ -77,6 +77,7 @@ describe('PostType screen', () => {
     navigation.navigate.mockClear()
     navigation.popToTop.mockClear()
     openCropper.mockClear()
+    cameraStateValue.setRecordedDuration.mockClear()
   })
 
   it('should provide handleProcessedMedia for useCamera hook', async () => {
@@ -112,4 +113,17 @@ describe('PostType screen', () => {
     expect(await cameraRef.current.stopRecording).toHaveBeenCalled()
 
   })
+
+  it('should increase recorded duration on video recording start', () => {
+
+    const { result } = renderHook(() => useCamera({ cameraRef: {} }))
+
+    jest.useFakeTimers()
+    result.current.onRecordingStart()
+    jest.runOnlyPendingTimers()
+
+    expect(cameraStateValue.setRecordedDuration.mock.calls).toHaveLength(1)
+
+  })
+
 })
