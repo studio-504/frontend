@@ -21,7 +21,6 @@ const Feed = ({
 
   handleScrollPrev,
   handleScrollNext,
-  postsGetTrendingPosts,
 
   bookmarkSeparatorIndex,
   feedRef,
@@ -44,7 +43,7 @@ const Feed = ({
 
   const { onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
 
-  const renderBookmark = () => <BookmarkComponent postsGetTrendingPosts={postsGetTrendingPosts} />
+  const renderBookmark = useCallback(() => <BookmarkComponent />, [])
 
   const renderItem = useCallback(({ item: post, index }) => (
     <React.Fragment>
@@ -142,7 +141,6 @@ Feed.propTypes = {
   postsFeedGetMoreRequest: PropTypes.any,
   handleScrollPrev: PropTypes.any,
   handleScrollNext: PropTypes.any,
-  postsGetTrendingPosts: PropTypes.any,
   bookmarkSeparatorIndex: PropTypes.any,
   createActionSheetRef: PropTypes.any,
   getActionSheetRef: PropTypes.any,

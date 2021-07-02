@@ -10,9 +10,13 @@ import * as authSelector from 'store/ducks/auth/selectors'
 
 const FeedService = ({ children }) => {
   const dispatch = useDispatch()
-  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
-  const postsCreate = useSelector(postsSelector.postsCreate)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
+
+  const postsFeedGetSelector = useCallback(postsSelector.postsFeedGetSelector(), [])
+  const postsFeedGet = useSelector(postsFeedGetSelector)
+
+  const postsCreateSelector = useCallback(postsSelector.postsCreate, [])
+  const postsCreate = useSelector(postsCreateSelector)
+
   const userId = useSelector(authSelector.authUserId)
 
   const updateRelatedData = useCallback(() => {
@@ -107,7 +111,6 @@ const FeedService = ({ children }) => {
     loadInit,
     postsFeedGetMoreRequest,
     postsCreate,
-    postsGetTrendingPosts,
     handleScrollPrev,
     handleScrollNext,
     bookmarkSeparatorIndex,
