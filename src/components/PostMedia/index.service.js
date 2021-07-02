@@ -16,7 +16,6 @@ const PostMediaService = ({ children }) => {
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const username = path(['data', 'postedBy', 'username'])(postsSingleGet)
 
   useEffectWhenFocused(() => {
@@ -86,7 +85,6 @@ const PostMediaService = ({ children }) => {
 
   return children({
     postsSingleGet,
-    postsGetTrendingPosts,
     postsSingleGetRequest,
     feedRef,
     handleScrollPrev,
