@@ -1,3 +1,1 @@
-import { View } from 'react-native'
-
-export const BlurView = View
+export const BlurView = () => null
