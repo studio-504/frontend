@@ -36,7 +36,7 @@ const PostTypeService = ({ children }) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
   }
-  
+
   const library = useLibrary({ handleProcessedMedia })
   const handleManageAccess = () => openSettings()
 

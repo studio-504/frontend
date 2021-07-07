@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, memo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import secondsToDuration from 'services/helpers/secondsToDuration'
 import * as playerActions from 'store/ducks/player/actions'
+import * as playerSelectors from 'store/ducks/player/selectors'
 
 const VideoPlayerService = ({ postId, postInView, children }) => {
-
   const dispatch = useDispatch()
-  const playerState = useSelector(({ player }) => player)
+  const playerState = useSelector(playerSelectors.getState)
   const soundTimeout = useRef()
   const [isPlaying, setPlaying] = useState(false)
   const [soundVisible, setSoundVisible] = useState(false)
@@ -26,11 +26,13 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
   const toggleSound = () => dispatch(playerActions.toggleSound())
 
   useEffect(() => {
-    if (isInView)
+    if (isInView) {
       setPlaying(isInView)
+    }
 
-    if (!isInView && isPlaying)
+    if (!isInView && isPlaying) {
       setPlaying(false)
+    }
   }, [postInView])
 
   useEffect(() => {
@@ -55,12 +57,8 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     onVideoLoad,
     onProgress,
     isMuted: playerState.muted,
-    timeLeft: secondsToDuration(duration - ~~progress),
+    timeLeft: secondsToDuration(duration - Math.trunc(progress)),
   })
 }
 
-const arePropsEqual = (prev, next) => {
-  return prev.postInView === next.postInView
-}
-
-export default memo(VideoPlayerService, arePropsEqual)
+export default VideoPlayerService

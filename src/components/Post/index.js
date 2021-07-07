@@ -88,7 +88,7 @@ const PostComponent = ({
       />
 
       <View style={styling.inner}>
-        {post.postType === 'TEXT_ONLY' ?
+        {post.postType === 'TEXT_ONLY' && (
           <ViewShot ref={createTextPostRef} onCapture={onCapture}>
             <TextOnlyComponent
               text={post.text}
@@ -97,44 +97,45 @@ const PostComponent = ({
               <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
             </TextOnlyComponent>
           </ViewShot>
-        : null}
+        )}
 
-      {post.postType === 'IMAGE' ?
-        <ListItemComponent
-          post={post}
-          feedRef={feedRef}
-        >
-          <CacheComponent
-            thread="post"
-            images={[
-              [path(['image', 'url480p'])(post), true],
-              [path(['image', 'url4k'])(post), true],
-              [path(['image', 'url'])(post), false],
-            ]}
-            fallback={path(['image', 'url4k'])(post)}
-            priorityIndex={priorityIndex}
-            resizeMode="contain"
-            hideLabel={false}
+        {post.postType === 'IMAGE' && (
+          <ListItemComponent
+            post={post}
+            feedRef={feedRef}
+          >
+            <CacheComponent
+              thread="post"
+              images={[
+                [path(['image', 'url480p'])(post), true],
+                [path(['image', 'url4k'])(post), true],
+                [path(['image', 'url'])(post), false],
+              ]}
+              fallback={path(['image', 'url4k'])(post)}
+              priorityIndex={priorityIndex}
+              resizeMode="contain"
+              hideLabel={false}
+            />
+            <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
+            <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
+          </ListItemComponent>
+        )}
+
+        {post.postType === 'VIDEO' && (
+          <VideoPlayer
+            post={post}
+            postInView={postInView}
           />
-          <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
-          <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
-        </ListItemComponent>
-      : null}
-        {unpaid(post) ?
+        )}
+
+        {unpaid(post) && (
           <UnlockComponent payment={post.payment} postId={post.postId} />
-        : null}
+        )}
       </View>
 
-      {post.postType === 'VIDEO' && (
-        <VideoPlayer
-          post={post}
-          postInView={postInView}
-        />
-      )}
-
-      {albumLength > 1 ?
+      {albumLength > 1 && (
         <AlbumComponent post={post} />
-      : null}
+      )}
 
       <ActionComponent
         user={user}
@@ -144,17 +145,16 @@ const PostComponent = ({
         handlePostShare={handlePostShare}
       />
 
-
       <ReactionsPreviewTemplate
         post={post}
         user={user}
       />
 
-      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ?
+      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') && (
         <DescriptionComponent
           post={post}
         />
-      : null}
+      )}
 
       <CommentComponent post={post} />
     </View>
@@ -211,7 +211,7 @@ PostComponent.propTypes = {
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
   changeAvatarRequest: PropTypes.func,
-  postInView: PropTypes.any,
+  postInView: PropTypes.string,
 }
 
 export default withTheme(PostComponent)

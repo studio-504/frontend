@@ -13,7 +13,6 @@ const NoSound = ({ size = 24, fill = '#333' }) => (
 )
 
 NoSound.propTypes = {
-  /** In pixels */
   size: PropTypes.number,
   fill: PropTypes.string,
 }

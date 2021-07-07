@@ -3,14 +3,13 @@ import { eventChannel, END } from 'redux-saga'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import toLower from 'ramda/src/toLower'
-import replace from 'ramda/src/replace'
 import * as actions from 'store/ducks/posts/actions'
 import RNFS from 'react-native-fs'
 import filePath from 'path'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   const getName = (image) => {
-    return compose(replace('.heic', ''), replace('.jpg', ''), replace('.mp4', ''), toLower, filePath.basename)(image)
+    return filePath.basename(image).replace(/\.[^/.]+$/, '').toLowerCase()
   }
 
   const getFilename = (image) => {

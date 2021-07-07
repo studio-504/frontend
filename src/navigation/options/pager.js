@@ -10,8 +10,8 @@ const AppViewPagerAdapter = (props) => {
   const currentIndex = path(['navigationState', 'index'])(props)
   const nextIndex = path(['navigationState', 'routes', currentIndex, 'state', 'index'])(props)
   const hasNextScreen = !nextIndex || nextIndex === 0
-
-  return <ViewPagerAdapter {...props} swipeEnabled={isRecording ? false : swipeEnabled && hasNextScreen} />
+  const isSwipeEnabled = !isRecording && swipeEnabled && hasNextScreen
+  return <ViewPagerAdapter {...props} swipeEnabled={isSwipeEnabled} />
 }
 
 const pager = (props) => <AppViewPagerAdapter {...props} />

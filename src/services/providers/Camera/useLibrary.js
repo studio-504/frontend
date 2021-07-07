@@ -4,13 +4,20 @@ import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from '
 import { mediaType } from 'services/providers/Camera/helpers'
 
 /**
+ * Check if extension exist
+*/
+const extentionExist = (extension, includes) => {
+  return extension && extension.toUpperCase().includes(includes)
+}
+
+/**
  * Asset format definition is required for createPost graphql query
  */
 const generateAssetFormat = (extension) => {
-  if (extension && extension.toUpperCase().includes('HEIC')) {
+  if (extentionExist(extension, 'HEIC')) {
     return 'HEIC'
   }
-  if (extension && extension.toUpperCase().includes('MP4')) {
+  if (extentionExist(extension, 'MP4')) {
     return 'MP4'
   }
   return 'JPEG'
@@ -27,6 +34,16 @@ const pickerOptions = (multiple) => ({
   compressVideoPreset: 'HighestQuality',
   compressImageQuality: 1,
   maxFiles: multiple ? 5 : 1,
+})
+
+const videoCroppedOptions = (size) => ({
+  path: '',
+  cropRect: {
+    x: 0,
+    y: 0,
+    height: size,
+    width: size,
+  },
 })
 
 const mapCropperResponse = async (selected, processor) => {
@@ -69,15 +86,9 @@ const useLibrary = ({ handleProcessedMedia = () => {}, multiple = true }) => {
       const payloadSeries = await mapCropperResponse(selectedMedia, async (media, callback) => {
         const tempMedia = formatPickerResponse(media)
         const snappedMedia = { ...media, ...tempMedia }
-        const croppedMedia = mediaType(tempMedia.extension) === 'VIDEO' ? {
-          path: '',
-          cropRect: {
-            x: 0,
-            y: 0,
-            height: selectedMedia.width,
-            width: selectedMedia.width,
-          },
-        } : await CropPicker.openCropper(cropperOptions(cameraState, media))
+        const croppedMedia = mediaType(tempMedia.extension) === 'VIDEO'
+          ? videoCroppedOptions(selectedMedia.width)
+          : await CropPicker.openCropper(cropperOptions(cameraState, media))
         const payload = requestPayload('gallery')(cameraState, snappedMedia, croppedMedia)
         autoKeyboardClose()
         callback(null, payload)

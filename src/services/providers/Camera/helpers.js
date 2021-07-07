@@ -63,7 +63,7 @@ export const requestPayload = (type = 'gallery') => (state, snappedMedia, croppe
  * @returns VIDEO | IMAGE
  */
 export const mediaType = (originalFormat) => {
-  const images = ['jpg', 'jpeg', 'heic']
+  const images = ['jpg', 'jpeg', 'heic', 'png']
   if (images.includes(originalFormat))
     return 'IMAGE'
 
