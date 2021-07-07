@@ -89,17 +89,16 @@ describe('PostType screen', () => {
     }
     const { result } = renderHook(() => useCamera({ cameraRef }))
 
-    result.current.handleCameraSnap()
-    expect(await cameraRef.current.pausePreview).toHaveBeenCalled()
-    expect(await cameraRef.current.takePictureAsync).toHaveBeenCalledWith(takePictureOptions)
+    await result.current.handleCameraSnap()
+    expect(cameraRef.current.pausePreview).toHaveBeenCalled()
+    expect(cameraRef.current.takePictureAsync).toHaveBeenCalledWith(takePictureOptions)
     expect(CropPicker.openCropper).toHaveBeenCalled()
   })
 
   it('should record a video and stop recording', async () => {
-
     const cameraRef = {
       current: {
-        recordAsync: jest.fn(() => Promise.resolve(1)),
+        recordAsync: jest.fn().mockResolvedValue(1),
         onRecordingStart: jest.fn(),
         stopRecording: jest.fn(),
       },
@@ -107,23 +106,19 @@ describe('PostType screen', () => {
 
     const { result } = renderHook(() => useCamera({ cameraRef }))
 
-    result.current.handleVideoRecord()
-    expect(await cameraRef.current.recordAsync).toHaveBeenCalledWith(recordVideoOptions)
+    await result.current.handleVideoRecord()
+    expect(cameraRef.current.recordAsync).toHaveBeenCalledWith(recordVideoOptions)
     result.current.onRecordingEnd()
-    expect(await cameraRef.current.stopRecording).toHaveBeenCalled()
-
+    expect(cameraRef.current.stopRecording).toHaveBeenCalled()
   })
 
   it('should increase recorded duration on video recording start', () => {
-
     const { result } = renderHook(() => useCamera({ cameraRef: {} }))
 
     jest.useFakeTimers()
     result.current.onRecordingStart()
     jest.runOnlyPendingTimers()
-
     expect(cameraStateValue.setRecordedDuration.mock.calls).toHaveLength(1)
-
   })
 
 })
