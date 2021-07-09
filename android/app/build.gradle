@@ -149,6 +149,7 @@ android {
         resValue "string", "build_config_package", "app.real.mobile"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true //react-native-image-crop-picker
     }
     splits {
         abi {
