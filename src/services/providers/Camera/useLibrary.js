@@ -38,17 +38,17 @@ const mapCropperResponse = async (selected, processor) => {
  * which only works by applying a patch from patches/react-native-image-crop-picker
  */
 const formatPickerResponse = (selectedPhoto) => {
-  
-  const extension = Platform.OS === 'ios' ? 
+
+  const extension = Platform.OS === 'ios' ?
     selectedPhoto.fileSource.split('?')[0].split('#')[0].split('.').pop()
     : selectedPhoto.path.split('?')[0].split('#')[0].split('.').pop()
-  
+
   const format = generateAssetFormat(extension)
-  
-  const filename = Platform.OS === 'ios' ? 
-    selectedPhoto.filename 
+
+  const filename = Platform.OS === 'ios' ?
+    selectedPhoto.filename
     : selectedPhoto.path.split('?')[0].split('#')[0].split('/').pop()
-  
+
   return {
     format,
     extension,
