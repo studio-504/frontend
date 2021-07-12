@@ -11,4 +11,4 @@ export const cameraCaptureRequest = createAction(constants.CAMERA_CAPTURE_REQUES
 export const cameraCaptureSuccess = createAction(constants.CAMERA_CAPTURE_SUCCESS)
 export const cameraCaptureFailure = createFailureAction(constants.CAMERA_CAPTURE_FAILURE)
 
-export const changeRecordingState = createAction(constants.CHANGE_RECORDING_STATE)
+export const toggleRecordingState = createAction(constants.TOGGLE_RECORDING_STATE)

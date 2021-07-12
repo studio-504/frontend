@@ -74,7 +74,7 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
     cameraRef.current.stopRecording()
     clearInterval(recordIntervalRef.current)
     handleShutterButtonAnimation(1)
-    dispatch(cameraActions.changeRecordingState(false))
+    dispatch(cameraActions.toggleRecordingState())
     if (shouldResetDuration)
       cameraState.setRecordedDuration(0)
   }
@@ -101,7 +101,7 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
 
   const onRecordingStart = () => {
     handleShutterButtonAnimation(1.4)
-    dispatch(cameraActions.changeRecordingState(true))
+    dispatch(cameraActions.toggleRecordingState())
     recordIntervalRef.current = setInterval(handleVideoProgress, 1000)
   }
 

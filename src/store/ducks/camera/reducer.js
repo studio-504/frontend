@@ -44,9 +44,9 @@ const cameraCaptureIdle = (state, action) => update(state, {
 /**
  * Toggle the video recording state
  */
-const changeRecordingState = (state, action) => update(state, {
+const toggleRecordingState = (state) => update(state, {
   isRecording: {
-    $set: action.payload,
+    $set: !state.isRecording,
   },
 })
 
@@ -55,5 +55,5 @@ export default handleActions({
   [constants.CAMERA_CAPTURE_SUCCESS]: cameraCaptureSuccess,
   [constants.CAMERA_CAPTURE_FAILURE]: cameraCaptureFailure,
   [constants.CAMERA_CAPTURE_IDLE]: cameraCaptureIdle,
-  [constants.CHANGE_RECORDING_STATE]: changeRecordingState,
+  [constants.TOGGLE_RECORDING_STATE]: toggleRecordingState,
 }, initialState)
