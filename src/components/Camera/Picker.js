@@ -69,7 +69,7 @@ const Picker = ({ t, setMediaSize }) => {
 }
 
 Picker.propTypes = {
-  setMediaSize: PropTypes.any,
+  setMediaSize: PropTypes.func,
   t: PropTypes.any,
 }
 

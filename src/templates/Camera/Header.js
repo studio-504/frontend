@@ -18,17 +18,17 @@ const Header = ({
 
   return (
     <View style={styling.root}>
-      {recordedDuration > 0 && (
+      {recordedDuration > 0 ? (
         <View style={styling.timerWrapper}>
           <Text style={styling.timerText}>{secondsToDuration(recordedDuration)}</Text>
         </View>
-      )}
+      ) : null}
 
-      {content !== undefined && (
+      {content !== undefined ? (
         <View style={styling.content}>
           {content}
         </View>
-      )}
+      ) : null}
 
       <View style={styling.action}>
         <View style={styling.actionItem} />

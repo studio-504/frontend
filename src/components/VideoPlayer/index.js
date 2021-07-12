@@ -23,14 +23,14 @@ const VideoPlayer = ({ post, postInView }) => (
     }) => (
       <TouchableWithoutFeedback onPress={toggleSound}>
         <View style={styles.playerContainer}>
-          {isInView && (
+          {isInView ? (
             <Text style={styles.progress}>{timeLeft}</Text>
-          )}
-          {soundVisible && (
+          ) : null}
+          {soundVisible ? (
             <View style={styles.volume}>
               {isMuted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
             </View>
-          )}
+          ) : null}
           <Video
             poster={post.image.url}
             source={{

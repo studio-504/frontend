@@ -4,23 +4,12 @@ import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from '
 import { mediaType } from 'services/providers/Camera/helpers'
 
 /**
- * Check if extension exist
-*/
-const extentionExist = (extension, includes) => {
-  return extension && extension.toUpperCase().includes(includes)
-}
-
-/**
  * Asset format definition is required for createPost graphql query
  */
 const generateAssetFormat = (extension) => {
-  if (extentionExist(extension, 'HEIC')) {
-    return 'HEIC'
-  }
-  if (extentionExist(extension, 'MP4')) {
-    return 'MP4'
-  }
-  return 'JPEG'
+  const format = extension.toUpperCase()
+
+  return ['HEIC', 'MP4'].includes(format) ? format : 'JPEG'
 }
 
 /**

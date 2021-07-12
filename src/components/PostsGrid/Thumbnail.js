@@ -74,11 +74,11 @@ const PostsGridThumbnail = ({
         activeIcon={activeIcon}
         inactiveIcon={null}
       >
-        {post.postType === 'VIDEO' && (
+        {post.postType === 'VIDEO' ? (
           <View style={styling.videoIconWrapper}>
             <VideoIcon fill="#fff" size={20} />
           </View>
-        )}
+        ) : null}
         {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ?
           <CacheComponent
             thread={thread}

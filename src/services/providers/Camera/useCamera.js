@@ -68,7 +68,6 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
 
   /**
    * Handle camera video recording end
-   * @param {boolean} shouldResetDuration
    */
   const onRecordingEnd = (shouldResetDuration = true) => {
     if (!cameraRef.current) return
@@ -82,8 +81,6 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
 
   /**
    * Animated the shutter button on video record start or end
-   * @param {number} toValue
-   * @returns
    */
   const handleShutterButtonAnimation = (toValue) => Animated.spring(shutterButtonScaleRef.current, {
     toValue,

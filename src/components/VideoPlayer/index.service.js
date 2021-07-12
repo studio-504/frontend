@@ -25,6 +25,8 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
 
   const toggleSound = () => dispatch(playerActions.toggleSound())
 
+  const timeLeft = secondsToDuration(duration - Math.trunc(progress))
+
   useEffect(() => {
     if (isInView) {
       setPlaying(isInView)
@@ -33,11 +35,15 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     if (!isInView && isPlaying) {
       setPlaying(false)
     }
+
+    console.log(isInView)
   }, [postInView])
 
   useEffect(() => {
-    if (soundTimeout.current)
+    if (soundTimeout.current) {
       clearTimeout(soundTimeout.current)
+    }
+
     setSoundVisible(true)
     soundTimeout.current = setTimeout(() => {
       setSoundVisible(false)
@@ -56,8 +62,8 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     isPlaying,
     onVideoLoad,
     onProgress,
+    timeLeft,
     isMuted: playerState.muted,
-    timeLeft: secondsToDuration(duration - Math.trunc(progress)),
   })
 }
 

@@ -88,7 +88,7 @@ const PostComponent = ({
       />
 
       <View style={styling.inner}>
-        {post.postType === 'TEXT_ONLY' && (
+        {post.postType === 'TEXT_ONLY' ? (
           <ViewShot ref={createTextPostRef} onCapture={onCapture}>
             <TextOnlyComponent
               text={post.text}
@@ -97,9 +97,9 @@ const PostComponent = ({
               <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
             </TextOnlyComponent>
           </ViewShot>
-        )}
+        ) : null}
 
-        {post.postType === 'IMAGE' && (
+        {post.postType === 'IMAGE' ? (
           <ListItemComponent
             post={post}
             feedRef={feedRef}
@@ -119,23 +119,23 @@ const PostComponent = ({
             <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
             <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
           </ListItemComponent>
-        )}
+        ) : null}
 
-        {post.postType === 'VIDEO' && (
+        {post.postType === 'VIDEO' ? (
           <VideoPlayer
             post={post}
             postInView={postInView}
           />
-        )}
+        ) : null}
 
-        {unpaid(post) && (
+        {unpaid(post) ? (
           <UnlockComponent payment={post.payment} postId={post.postId} />
-        )}
+        ) : null}
       </View>
 
-      {albumLength > 1 && (
+      {albumLength > 1 ? (
         <AlbumComponent post={post} />
-      )}
+      ) : null}
 
       <ActionComponent
         user={user}
@@ -150,11 +150,11 @@ const PostComponent = ({
         user={user}
       />
 
-      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') && (
+      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ? (
         <DescriptionComponent
           post={post}
         />
-      )}
+      ) : null}
 
       <CommentComponent post={post} />
     </View>
