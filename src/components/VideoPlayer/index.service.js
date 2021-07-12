@@ -35,8 +35,6 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     if (!isInView && isPlaying) {
       setPlaying(false)
     }
-
-    console.log(isInView)
   }, [postInView])
 
   useEffect(() => {
@@ -48,6 +46,10 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
     soundTimeout.current = setTimeout(() => {
       setSoundVisible(false)
     }, 3000)
+
+    return () => {
+      clearTimeout(soundTimeout.current)
+    }
   }, [playerState.muted])
 
   useEffect(() => {
