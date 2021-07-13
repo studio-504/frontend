@@ -4,7 +4,7 @@ import secondsToDuration from 'services/helpers/secondsToDuration'
 import * as playerActions from 'store/ducks/player/actions'
 import * as playerSelectors from 'store/ducks/player/selectors'
 
-const VideoPlayerService = ({ postId, postInView, children }) => {
+const VideoPlayerService = ({ postId, postInView, autoPlay, children }) => {
   const dispatch = useDispatch()
   const playerState = useSelector(playerSelectors.getState)
   const soundTimeout = useRef()
@@ -53,8 +53,9 @@ const VideoPlayerService = ({ postId, postInView, children }) => {
   }, [playerState.muted])
 
   useEffect(() => {
-    if (postInView === undefined)
+    if (autoPlay) {
       setPlaying(true)
+    }
   }, [])
 
   return children({

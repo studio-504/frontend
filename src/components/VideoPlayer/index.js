@@ -6,10 +6,11 @@ import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
-const VideoPlayer = ({ post, postInView }) => (
+const VideoPlayer = ({ post, postInView, autoPlay }) => (
   <VideoPlayerService
     postId={post.postId}
     postInView={postInView}
+    autoPlay={autoPlay}
   >
     {({
       toggleSound,
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
 VideoPlayer.propTypes = {
   post: PropTypes.any,
   postInView: PropTypes.string,
+  autoPlay: PropTypes.bool,
 }
 
 const arePropsEqual = (prev, next) => {

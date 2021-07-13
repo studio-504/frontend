@@ -48,6 +48,7 @@ const PostComponent = ({
   changeAvatarRequest,
 
   postInView,
+  autoPlay,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -125,6 +126,7 @@ const PostComponent = ({
           <VideoPlayer
             post={post}
             postInView={postInView}
+            autoPlay={autoPlay}
           />
         ) : null}
 
@@ -212,6 +214,7 @@ PostComponent.propTypes = {
   textPostRef: PropTypes.any,
   changeAvatarRequest: PropTypes.func,
   postInView: PropTypes.string,
+  autoPlay: PropTypes.bool,
 }
 
 export default withTheme(PostComponent)
