@@ -125,8 +125,7 @@ const PostComponent = ({
         {post.postType === 'VIDEO' ? (
           <VideoPlayer
             post={post}
-            postInView={postInView}
-            autoPlay={autoPlay}
+            playing={autoPlay || postInView === post.postId}
           />
         ) : null}
 

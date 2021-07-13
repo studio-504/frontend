@@ -4,16 +4,13 @@ import secondsToDuration from 'services/helpers/secondsToDuration'
 import * as playerActions from 'store/ducks/player/actions'
 import * as playerSelectors from 'store/ducks/player/selectors'
 
-const VideoPlayerService = ({ postId, postInView, autoPlay, children }) => {
+const VideoPlayerService = ({ children }) => {
   const dispatch = useDispatch()
   const playerState = useSelector(playerSelectors.getState)
   const soundTimeout = useRef()
-  const [isPlaying, setPlaying] = useState(false)
   const [soundVisible, setSoundVisible] = useState(false)
   const [duration, setDuration] = useState(0)
   const [progress, setProgress] = useState(0)
-
-  const isInView = postId === postInView
 
   const onVideoLoad = ({ duration }) => {
     setDuration(duration)
@@ -26,16 +23,6 @@ const VideoPlayerService = ({ postId, postInView, autoPlay, children }) => {
   const toggleSound = () => dispatch(playerActions.toggleSound())
 
   const timeLeft = secondsToDuration(duration - Math.trunc(progress))
-
-  useEffect(() => {
-    if (isInView) {
-      setPlaying(isInView)
-    }
-
-    if (!isInView && isPlaying) {
-      setPlaying(false)
-    }
-  }, [postInView])
 
   useEffect(() => {
     if (soundTimeout.current) {
@@ -52,17 +39,9 @@ const VideoPlayerService = ({ postId, postInView, autoPlay, children }) => {
     }
   }, [playerState.muted])
 
-  useEffect(() => {
-    if (autoPlay) {
-      setPlaying(true)
-    }
-  }, [])
-
   return children({
     toggleSound,
-    isInView,
     soundVisible,
-    isPlaying,
     onVideoLoad,
     onProgress,
     timeLeft,

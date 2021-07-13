@@ -6,17 +6,11 @@ import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
-const VideoPlayer = ({ post, postInView, autoPlay }) => (
-  <VideoPlayerService
-    postId={post.postId}
-    postInView={postInView}
-    autoPlay={autoPlay}
-  >
+const VideoPlayer = ({ post, playing }) => (
+  <VideoPlayerService>
     {({
       toggleSound,
-      isInView,
       soundVisible,
-      isPlaying,
       onVideoLoad,
       onProgress,
       isMuted,
@@ -24,7 +18,7 @@ const VideoPlayer = ({ post, postInView, autoPlay }) => (
     }) => (
       <TouchableWithoutFeedback onPress={toggleSound}>
         <View style={styles.playerContainer}>
-          {isInView ? (
+          {playing ? (
             <Text style={styles.progress}>{timeLeft}</Text>
           ) : null}
           {soundVisible ? (
@@ -41,7 +35,7 @@ const VideoPlayer = ({ post, postInView, autoPlay }) => (
               },
             }}
             style={styles.videoStyle(post.video.resolutions[0].width, post.video.resolutions[0].height)}
-            paused={!isPlaying}
+            paused={!playing}
             muted={isMuted}
             resizeMode="cover"
             repeat
@@ -82,8 +76,7 @@ const styles = StyleSheet.create({
 
 VideoPlayer.propTypes = {
   post: PropTypes.any,
-  postInView: PropTypes.string,
-  autoPlay: PropTypes.bool,
+  playing: PropTypes.bool,
 }
 
 const arePropsEqual = (prev, next) => {
