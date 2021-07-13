@@ -80,7 +80,7 @@ VideoPlayer.propTypes = {
 }
 
 const arePropsEqual = (prev, next) => {
-  return prev.postInView === next.postInView
+  return prev.playing === next.playing
 }
 
 export default memo(VideoPlayer, arePropsEqual)

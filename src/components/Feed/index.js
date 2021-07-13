@@ -64,7 +64,7 @@ const Feed = ({
                 createTextPostRef={createTextPostRef(post)}
                 textPostRef={getTextPostRef(post)}
                 feedRef={feedRef}
-                postInView={postInView}
+                isInView={postInView === post.postId}
               />
             )}
           </PostServiceComponent>
