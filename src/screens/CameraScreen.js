@@ -18,14 +18,12 @@ class CameraScreen extends React.Component {
               />
             :
               <CameraServiceComponent>
-                {(cameraProps) => {
-                  return (
-                    <CameraComponent
-                      {...cameraProps}
-                      {...permissionsProps}
-                    />
-                  )
-                }}
+                {(cameraProps) => (
+                  <CameraComponent
+                    {...cameraProps}
+                    {...permissionsProps}
+                  />
+                )}
               </CameraServiceComponent>
             }
           </React.Fragment>
