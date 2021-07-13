@@ -42,7 +42,13 @@ const Feed = ({
     multiplier: 3,
   })
 
-  const { postInView, onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
+  const {
+    postInView,
+    onViewableItemsFocusRef,
+    viewabilityConfigRef,
+  } = useViewable({
+    viewAreaCoveragePercentThreshold: 60,
+  })
 
   const renderBookmark = () => <BookmarkComponent postsGetTrendingPosts={postsGetTrendingPosts} />
 

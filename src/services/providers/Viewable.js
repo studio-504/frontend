@@ -4,7 +4,7 @@ import * as postsActions from 'store/ducks/posts/actions'
 
 export const unpaid = (post) => post.payment > 0.00001 && post.viewedStatus !== 'VIEWED'
 
-export const useViewable = () => {
+export const useViewable = (customViewablityConfig = {}) => {
   const dispatch = useDispatch()
   const [postInView, setPostInView] = useState('')
 
@@ -34,8 +34,9 @@ export const useViewable = () => {
    * FlatList config to report post views, must be wrapped in useRef
    */
   const viewabilityConfigRef = useRef({
-    viewAreaCoveragePercentThreshold: 60,
-    waitForInteraction: true,
+    viewAreaCoveragePercentThreshold: 30,
+    waitForInteraction: false,
+    ...customViewablityConfig,
   })
 
   const onViewableItemsThumbnailsRef = useRef(({ viewableItems }) => {
