@@ -6,6 +6,6 @@ if (Config.ENVIRONMENT === 'development') {
   whyDidYouRender(React, {
     trackAllPureComponents: false,
     trackHooks: false,
-    // include: [/^VideoPlayer/],
+    // include: [/^Image/],
   })
 }

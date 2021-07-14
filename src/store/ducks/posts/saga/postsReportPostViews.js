@@ -1,4 +1,4 @@
-import { all, put, fork, take, flush, actionChannel, call, select } from 'redux-saga/effects'
+import { all, put, fork, take, flush, actionChannel, call, select, delay } from 'redux-saga/effects'
 import { buffers } from 'redux-saga'
 import path from 'ramda/src/path'
 import uniq from 'ramda/src/uniq'
@@ -80,7 +80,7 @@ function* watchPostsReportPostViewsRequest() {
      */
     const firstAction = yield take(channel)
 
-    // yield delay(3000)
+    yield delay(3000)
     const accumedActions = yield flush(channel)
     const preparedActions = packActions(groupActionsByType([firstAction, ...accumedActions]))
 
