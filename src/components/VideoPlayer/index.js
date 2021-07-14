@@ -6,7 +6,7 @@ import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
-const VideoPlayer = ({ post, playing }) => (
+const VideoPlayer = ({ poster, source, resolution, playing }) => (
   <VideoPlayerService>
     {({
       toggleSound,
@@ -27,14 +27,9 @@ const VideoPlayer = ({ post, playing }) => (
             </View>
           ) : null}
           <Video
-            poster={post.image.url}
-            source={{
-              uri: post.video.urlMasterM3U8,
-              headers: {
-                Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
-              },
-            }}
-            style={styles.videoStyle(post.video.resolutions[0].width, post.video.resolutions[0].height)}
+            poster={poster}
+            source={source}
+            style={styles.videoStyle(resolution.width, resolution.height)}
             paused={!playing}
             muted={isMuted}
             resizeMode="cover"
@@ -75,12 +70,16 @@ const styles = StyleSheet.create({
 })
 
 VideoPlayer.propTypes = {
-  post: PropTypes.any,
+  poster: PropTypes.string,
+  source: PropTypes.shape({
+    uri: PropTypes.string,
+    headers: PropTypes.object,
+  }),
+  resolution: PropTypes.shape({
+    width: PropTypes.string,
+    height: PropTypes.string,
+  }),
   playing: PropTypes.bool,
 }
 
-const arePropsEqual = (prev, next) => {
-  return prev.playing === next.playing
-}
-
-export default memo(VideoPlayer, arePropsEqual)
+export default memo(VideoPlayer)

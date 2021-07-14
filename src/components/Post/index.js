@@ -125,6 +125,17 @@ const PostComponent = ({
         {post.postType === 'VIDEO' ? (
           <VideoPlayer
             post={post}
+            poster={post.image.url}
+            source={{
+              uri: post.video.urlMasterM3U8,
+              headers: {
+                Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
+              },
+            }}
+            resolution={{
+              width: post.video.resolutions[0].width,
+              height: post.video.resolutions[0].height,
+            }}
             playing={autoPlay || isInView}
           />
         ) : null}
