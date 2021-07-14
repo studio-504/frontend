@@ -14,6 +14,7 @@ import VideoIcon from 'assets/svg/post/Video'
 
 import { useNavigation } from '@react-navigation/native'
 import testIDs from './test-ids'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 const PostsGridThumbnail = ({
   post,
@@ -79,7 +80,7 @@ const PostsGridThumbnail = ({
             <VideoIcon fill="#fff" size={20} />
           </View>
         ) : null}
-        {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ?
+        {isMedia(post.postType) ?
           <CacheComponent
             thread={thread}
             images={images}

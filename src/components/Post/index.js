@@ -24,6 +24,7 @@ import * as navigationActions from 'navigation/actions'
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { unpaid } from 'services/providers/Viewable'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 const PostComponent = ({
   theme,
@@ -162,7 +163,7 @@ const PostComponent = ({
         user={user}
       />
 
-      {(post.postType === 'IMAGE' || post.postType === 'VIDEO') ? (
+      {isMedia(post.postType) ? (
         <DescriptionComponent
           post={post}
         />

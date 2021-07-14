@@ -68,3 +68,7 @@ export const mediaType = (originalFormat) => {
 
   throw new Error('Unsupported format')
 }
+
+export const isMedia = (type) => {
+  return ['IMAGE', 'VIDEO'].includes(type)
+}

@@ -11,6 +11,7 @@ import * as cameraActions from 'store/ducks/camera/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as usersActions from 'store/ducks/users/actions'
 import postsUploadRequest from 'store/ducks/posts/saga/postsUpload'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 /**
  *
@@ -119,7 +120,7 @@ function* postsCreateRequest(req) {
 
     if (values.postType === 'TEXT_ONLY') {
       yield call(handleTextOnlyPost, values)
-    } else if (values.postType === 'IMAGE' || values.postType === 'VIDEO') {
+    } else if (isMedia(values.postType)) {
       yield call(handleMediaPost, values)
     } else {
       throw new Error('Unsupported post type')
