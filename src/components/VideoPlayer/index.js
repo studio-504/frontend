@@ -17,9 +17,9 @@ const VideoPlayer = ({ poster, source, resolution, playing }) => (
       timeLeft,
     }) => (
       <TouchableWithoutFeedback onPress={toggleSound}>
-        <View style={styles.playerContainer}>
+        <View  style={styles.playerContainer}>
           {playing ? (
-            <Text style={styles.progress}>{timeLeft}</Text>
+            <Text style={styles.progress} testID="progress">{timeLeft}</Text>
           ) : null}
           {soundVisible ? (
             <View style={styles.volume}>
@@ -76,8 +76,8 @@ VideoPlayer.propTypes = {
     headers: PropTypes.object,
   }),
   resolution: PropTypes.shape({
-    width: PropTypes.string,
-    height: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
   }),
   playing: PropTypes.bool,
 }
