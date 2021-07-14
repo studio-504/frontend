@@ -11,7 +11,6 @@ const Sound = ({ size = 24, fill = '#333' }) => (
 )
 
 Sound.propTypes = {
-  /** In pixels */
   size: PropTypes.number,
   fill: PropTypes.string,
 }

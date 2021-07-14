@@ -188,6 +188,7 @@ const styles = theme => StyleSheet.create({
 
 PostComponent.defaultProps = {
   postsGet: {},
+  autoPlay: false,
 }
 
 PostComponent.propTypes = {

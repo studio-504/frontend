@@ -54,27 +54,27 @@ const Feed = ({
 
   const renderItem = useCallback(
     ({ item: post, index }) => (
-        <React.Fragment>
-          {bookmarkSeparatorIndex === index ? renderBookmark() : null}
+      <React.Fragment>
+        {bookmarkSeparatorIndex === index ? renderBookmark() : null}
 
-          <PostServiceComponent>
-            {(postProps) => (
-              <PostComponent
-                {...postProps}
-                post={post}
-                priorityIndex={index}
-                handleScrollPrev={handleScrollPrev(index)}
-                handleScrollNext={handleScrollNext(index)}
-                createActionSheetRef={createActionSheetRef(post)}
-                actionSheetRef={getActionSheetRef(post)}
-                createTextPostRef={createTextPostRef(post)}
-                textPostRef={getTextPostRef(post)}
-                feedRef={feedRef}
-                isInView={postInView === post.postId}
-              />
-            )}
-          </PostServiceComponent>
-        </React.Fragment>
+        <PostServiceComponent>
+          {(postProps) => (
+            <PostComponent
+              {...postProps}
+              post={post}
+              priorityIndex={index}
+              handleScrollPrev={handleScrollPrev(index)}
+              handleScrollNext={handleScrollNext(index)}
+              createActionSheetRef={createActionSheetRef(post)}
+              actionSheetRef={getActionSheetRef(post)}
+              createTextPostRef={createTextPostRef(post)}
+              textPostRef={getTextPostRef(post)}
+              feedRef={feedRef}
+              isInView={postInView === post.postId}
+            />
+          )}
+        </PostServiceComponent>
+      </React.Fragment>
     ), [data],
   )
 

@@ -118,8 +118,8 @@ Shutter.propTypes = {
   handleCameraSnap: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
-  handleVideoRecord: PropTypes.any,
-  onRecordingEnd: PropTypes.any,
+  handleVideoRecord: PropTypes.func,
+  onRecordingEnd: PropTypes.func,
   recordedDuration: PropTypes.func,
   shutterButtonScaleRef: PropTypes.any,
 }
