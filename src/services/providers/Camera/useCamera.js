@@ -75,8 +75,9 @@ const useCamera = ({ cameraRef, handleProcessedMedia = () => {} }) => {
     clearInterval(recordIntervalRef.current)
     handleShutterButtonAnimation(1)
     dispatch(cameraActions.toggleRecordingState())
-    if (shouldResetDuration)
+    if (shouldResetDuration) {
       cameraState.setRecordedDuration(0)
+    }
   }
 
   /**
