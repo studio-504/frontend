@@ -15,7 +15,7 @@ const generateAssetFormat = (extension) => {
 /**
  * react-native-image-crop-picker request object
  */
-const pickerOptions = (multiple) => ({
+const pickerOptions = (multiple, customPickerOptions) => ({
   multiple: true,
   avoidEmptySpaceAroundImage: false,
   includeExif: true,
@@ -23,6 +23,7 @@ const pickerOptions = (multiple) => ({
   compressVideoPreset: 'HighestQuality',
   compressImageQuality: 1,
   maxFiles: multiple ? 5 : 1,
+  ...customPickerOptions,
 })
 
 const videoCroppedOptions = (size) => ({
@@ -60,7 +61,11 @@ const formatPickerResponse = (selectedMedia) => {
   }
 }
 
-const useLibrary = ({ handleProcessedMedia = () => {}, multiple = true }) => {
+const useLibrary = ({
+  handleProcessedMedia = () => {},
+  multiple = true,
+  customPickerOptions = {},
+}) => {
   /**
    * Handle gallery media selection
    */
@@ -71,7 +76,7 @@ const useLibrary = ({ handleProcessedMedia = () => {}, multiple = true }) => {
      * Image crop picker might eventually throw an error when user cancelled image selection
      */
     try {
-      const selectedMedia = await CropPicker.openPicker(pickerOptions(multiple))
+      const selectedMedia = await CropPicker.openPicker(pickerOptions(multiple, customPickerOptions))
       const payloadSeries = await mapCropperResponse(selectedMedia, async (media, callback) => {
         const tempMedia = formatPickerResponse(media)
         const snappedMedia = { ...media, ...tempMedia }
