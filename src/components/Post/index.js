@@ -47,8 +47,6 @@ const PostComponent = ({
 
   feedRef,
   changeAvatarRequest,
-
-  isInView,
   autoPlay,
 }) => {
   const styling = styles(theme)
@@ -137,7 +135,7 @@ const PostComponent = ({
               width: post.video.resolutions[0].width,
               height: post.video.resolutions[0].height,
             }}
-            playing={autoPlay || isInView}
+            playing={autoPlay}
           />
         ) : null}
 
@@ -225,7 +223,6 @@ PostComponent.propTypes = {
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
   changeAvatarRequest: PropTypes.func,
-  isInView: PropTypes.bool,
   autoPlay: PropTypes.bool,
 }
 

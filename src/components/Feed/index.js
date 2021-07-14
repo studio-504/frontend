@@ -70,7 +70,7 @@ const Feed = ({
               createTextPostRef={createTextPostRef(post)}
               textPostRef={getTextPostRef(post)}
               feedRef={feedRef}
-              isInView={postInView === post.postId}
+              autoPlay={postInView === post.postId}
             />
           )}
         </PostServiceComponent>
