@@ -6,42 +6,46 @@ import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
 
-const VideoPlayer = ({ poster, source, resolution, playing }) => (
-  <VideoPlayerService>
-    {({
-      toggleSound,
-      soundVisible,
-      onVideoLoad,
-      onProgress,
-      isMuted,
-      timeLeft,
-    }) => (
-      <TouchableWithoutFeedback onPress={toggleSound}>
-        <View  style={styles.playerContainer}>
-          {playing ? (
-            <Text style={styles.progress} testID="progress">{timeLeft}</Text>
-          ) : null}
-          {soundVisible ? (
-            <View style={styles.volume}>
-              {isMuted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
-            </View>
-          ) : null}
-          <Video
-            poster={poster}
-            source={source}
-            style={styles.videoStyle(resolution.width, resolution.height)}
-            paused={!playing}
-            muted={isMuted}
-            resizeMode="cover"
-            repeat
-            onLoad={onVideoLoad}
-            onProgress={onProgress}
-            progressUpdateInterval={1000}
-          />
+const withService = (Service, Component) => (props) => (
+  <Service>{(serviceProps) => <Component {...props} {...serviceProps} />}</Service>
+)
+
+const VideoPlayer = ({
+  poster,
+  source,
+  resolution,
+  playing,
+  toggleSound,
+  soundVisible,
+  onVideoLoad,
+  onProgress,
+  isMuted,
+  timeLeft,
+}) => (
+  <TouchableWithoutFeedback onPress={toggleSound}>
+    <View  style={styles.playerContainer}>
+      {playing ? (
+        <Text style={styles.progress} testID="progress">{timeLeft}</Text>
+      ) : null}
+      {soundVisible ? (
+        <View style={styles.volume}>
+          {isMuted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
         </View>
-      </TouchableWithoutFeedback>
-    )}
-  </VideoPlayerService>
+      ) : null}
+      <Video
+        poster={poster}
+        source={source}
+        style={styles.videoStyle(resolution.width, resolution.height)}
+        paused={!playing}
+        muted={isMuted}
+        resizeMode="cover"
+        repeat
+        onLoad={onVideoLoad}
+        onProgress={onProgress}
+        progressUpdateInterval={1000}
+      />
+    </View>
+  </TouchableWithoutFeedback>
 )
 
 const styles = StyleSheet.create({
@@ -80,6 +84,12 @@ VideoPlayer.propTypes = {
     height: PropTypes.number,
   }),
   playing: PropTypes.bool,
+  toggleSound: PropTypes.func,
+  soundVisible: PropTypes.bool,
+  onVideoLoad: PropTypes.func,
+  onProgress: PropTypes.func,
+  isMuted: PropTypes.bool,
+  timeLeft: PropTypes.string,
 }
 
-export default memo(VideoPlayer)
+export default memo(withService(VideoPlayerService, VideoPlayer))

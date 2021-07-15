@@ -123,7 +123,6 @@ const PostComponent = ({
 
         {post.postType === 'VIDEO' ? (
           <VideoPlayer
-            post={post}
             poster={post.image.url}
             source={{
               uri: post.video.urlMasterM3U8,
