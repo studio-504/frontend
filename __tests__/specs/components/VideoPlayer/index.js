@@ -22,17 +22,13 @@ describe('VideoPlayer component', () => {
       playing: true,
     })
 
-    const progress = queryByTestId('progress')
-    expect(progress).toBeTruthy()
+    expect(queryByTestId('progress')).toBeTruthy()
   })
 
   it('should not render progress when paused', () => {
-    const { queryByTestId } = setup({
-      playing: false,
-    })
+    const { queryByTestId } = setup()
 
-    const progress = queryByTestId('progress')
-    expect(progress).toBeNull()
+    expect(queryByTestId('progress')).toBeNull()
   })
 
 })
