@@ -5,6 +5,7 @@ import Video from 'react-native-video'
 import VideoPlayerService from 'components/VideoPlayer/index.service'
 import SoundIcon from 'assets/svg/player/Sound'
 import NoSoundIcon from 'assets/svg/player/NoSound'
+import testIDs from './test-ids'
 
 const withService = (Service, Component) => (props) => (
   <Service>{(serviceProps) => <Component {...props} {...serviceProps} />}</Service>
@@ -25,10 +26,10 @@ const VideoPlayer = ({
   <TouchableWithoutFeedback onPress={toggleSound}>
     <View  style={styles.playerContainer}>
       {playing ? (
-        <Text style={styles.progress} testID="progress">{timeLeft}</Text>
+        <Text style={styles.progress} testID={testIDs.progress}>{timeLeft}</Text>
       ) : null}
       {soundVisible ? (
-        <View style={styles.volume}>
+        <View style={styles.volume} testID={testIDs.sound}>
           {isMuted ? <NoSoundIcon fill="#fff" size={16} /> : <SoundIcon fill="#fff" size={16} />}
         </View>
       ) : null}
