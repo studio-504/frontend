@@ -1,5 +1,5 @@
 import * as emailHelpers from '../../helpers/email'
-import { generatePassword, generateUsername, typeText, tap, toBeVisible } from './../../helpers/utils'
+import { generatePassword, typeText, tap, toBeVisible, sleep } from './../../helpers/utils'
 import {
   AuthHomeScreen,
   Navigation,
@@ -30,26 +30,29 @@ export async function signIn(credentials) {
 }
 
 export async function signUp() {
-  const username = generateUsername()
   const password = generatePassword()
   const inbox = await emailHelpers.createInbox()
   const email = inbox.emailAddress
 
   await tap(AuthHomeScreen.actions.signUpBtn)
-  await typeText(AuthUsernameScreen.form.username, username)
-  await tap(AuthUsernameScreen.form.submitBtn)
+  await tap(Navigation.authNavigator.signUp.email)
+  await typeText(AuthEmailScreen.form.email, email)
+  await tap(AuthEmailScreen.form.submitBtn)
+  await toBeVisible(AuthEmailConfirmScreen.root)
+
+  await sleep(10000)
+  const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(inbox.id)
+  await typeText(AuthEmailConfirmScreen.form.confirmationCode, confirmationCode)
+  await tap(AuthEmailConfirmScreen.form.confirmButton)
+  await toBeVisible(AuthUsernameScreen.root)
+
+  await tap(AuthUsernameScreen.header.skipBtn)
+  await toBeVisible(AuthPasswordScreen.root)
 
   await typeText(AuthPasswordScreen.form.password, password)
   await tap(AuthPasswordScreen.form.submitBtn)
 
-  await tap(Navigation.authNavigator.signUp.email)
-  await typeText(AuthEmailScreen.form.email, email)
-  await tap(AuthEmailScreen.form.submitBtn)
-
-  const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(inbox.id)
-  await typeText(AuthEmailConfirmScreen.form.confirmationCode, confirmationCode)
-
-  return { username, password, inbox, email }
+  return { password, inbox, email }
 }
 
 export async function signOut() {
