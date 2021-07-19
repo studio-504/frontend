@@ -6,6 +6,7 @@ export default {
     signUpBtn: 'components/AuthHome/Actions/signup',
     appleBtn: 'components/AuthHome/Actions/apple',
     googleBtn: 'components/AuthHome/Actions/google',
+    anonymousBtn: 'components/AuthHome/Actions/anonym',
   },
   footer: {
     signInBtn: 'components/AuthHome/BottomAction',

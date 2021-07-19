@@ -8,6 +8,7 @@ import ActionsComponent from 'components/AuthHome/Actions'
 import DefaultButton from 'components/Formik/Button/DefaultButton'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import testIDs from './test-ids'
 
 const ProfileUpgrade = ({
   t,
@@ -24,7 +25,7 @@ const ProfileUpgrade = ({
   const styling = styles(theme)
 
   return (
-    <View style={styling.root}>
+    <View testID={testIDs.root} style={styling.root}>
       <TouchableOpacity style={styling.backdrop} onPress={handleClose} />
 
       <SafeAreaView style={styling.component}>
@@ -54,7 +55,12 @@ const ProfileUpgrade = ({
           <Text style={styling.descriptionText}>
             {t('You must create an account to chat, follow, create, like or use dating.' )}
           </Text>
-          <DefaultButton label={t('Already Have an Account? Log In')} onPress={navigateSignin} style={styling.signInBtn} />
+          <DefaultButton
+            testID={testIDs.actions.signInBtn}
+            label={t('Already Have an Account? Log In')}
+            onPress={navigateSignin}
+            style={styling.signInBtn}
+          />
         </View>
       </SafeAreaView>
     </View>

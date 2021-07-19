@@ -13,6 +13,7 @@ import AuthPasswordScreen from 'components/AuthPassword/test-ids'
 import AuthForgotEmailScreen from 'components/AuthForgotEmail/test-ids'
 import AuthForgotConfirmScreen from 'components/AuthForgotConfirm/test-ids'
 import ThemeDefaultScreen from 'components/ThemeDefault/test-ids'
+import ProfileUpgradeScreen from 'components/ProfileUpgrade/test-ids'
 
 export {
   SettingsScreen,
@@ -30,4 +31,5 @@ export {
   AuthForgotEmailScreen,
   AuthForgotConfirmScreen,
   ThemeDefaultScreen,
+  ProfileUpgradeScreen,
 }

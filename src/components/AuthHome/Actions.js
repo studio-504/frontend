@@ -40,7 +40,7 @@ const Actions = ({
       </View>
       {hideAnonymousBtn === false ?
         <View style={styling.item}>
-          <DefaultButton testID={testIDs.actions.anonymousBtn}  label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
+          <DefaultButton testID={testIDs.actions.anonymousBtn} label={t('Browse Anonymously')} onPress={authSigninAnonymousRequest} loading={authSigninAnonymous.status === 'loading'} style={styling.cognito} labelStyle={styling.labelStyle} />
         </View>
       : null}
     </View>
