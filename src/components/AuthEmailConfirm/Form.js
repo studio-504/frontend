@@ -35,7 +35,13 @@ const EmailConfirmForm = ({
       </View>
 
       <View style={styles.input}>
-        <DefaultButton label={t('Next')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton
+          testID={testIDs.form.confirmButton}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={loading}
+        />
       </View>
     </View>
   )

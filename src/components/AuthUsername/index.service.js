@@ -5,6 +5,7 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Validation from 'services/Validation'
 import HeaderRight from 'navigation/HeaderRight'
+import testIDs from './test-ids'
 
 const AuthUsernameComponentService = ({ children }) => {
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const AuthUsernameComponentService = ({ children }) => {
 
   const headerRight = () => (
     <HeaderRight
+      testID={testIDs.header.skipBtn}
       onPress={handleSkip}
       title="Skip"
     />

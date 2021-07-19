@@ -12,6 +12,7 @@ import AuthPhoneScreen from 'components/AuthPhone/test-ids'
 import AuthPasswordScreen from 'components/AuthPassword/test-ids'
 import AuthForgotEmailScreen from 'components/AuthForgotEmail/test-ids'
 import AuthForgotConfirmScreen from 'components/AuthForgotConfirm/test-ids'
+import ThemeDefaultScreen from 'components/ThemeDefault/test-ids'
 
 export {
   SettingsScreen,
@@ -28,4 +29,5 @@ export {
   AuthPasswordScreen,
   AuthForgotEmailScreen,
   AuthForgotConfirmScreen,
+  ThemeDefaultScreen,
 }

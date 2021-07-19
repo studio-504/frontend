@@ -45,7 +45,13 @@ const PasswordForm = ({
         />
       </View>
       <View style={styling.input}>
-        <DefaultButton testID={testIDs.form.submitBtn} label={t('Next')} onPress={handleSubmit} loading={loading} disabled={submitDisabled} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Next')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={submitDisabled}
+        />
       </View>
     </View>
   )

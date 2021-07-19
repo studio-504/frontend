@@ -5,5 +5,6 @@ export default {
   },
   form: {
     confirmationCode: 'components/AuthEmailConfirm/Form/confirmationCode',
+    confirmButton: 'components/AuthEmailConfirm/Form/submit',
   },
 }

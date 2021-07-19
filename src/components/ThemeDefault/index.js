@@ -13,7 +13,7 @@ const ThemeDefault = ({ t, handleSkip, handleEnable, theme }) => {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={styling.root}>
+      <View style={styling.root} testID={testIDs.root}>
         <TouchableOpacity testID={testIDs.backdrop} style={styling.backdrop} onPress={handleSkip} />
 
         <SafeAreaView style={styling.component}>
