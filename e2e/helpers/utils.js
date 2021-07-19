@@ -41,3 +41,11 @@ export async function waitForElement(selector, timeout = 2000) {
 export async function sleep(duration) {
   return new Promise(resolve => setTimeout(() => resolve(), duration))
 }
+
+export async function scrollTo(selector, edge) {
+  await element(by.id(selector)).scrollTo(edge)
+}
+
+export async function tapToText(text) {
+  await element(by.text(text)).tap()
+}

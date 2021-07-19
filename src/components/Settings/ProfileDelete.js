@@ -6,6 +6,7 @@ import { Text } from 'react-native-paper'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import testIDs from './test-ids'
 
 const ProfileDelete = ({ t, theme, usersDelete, usersDeleteRequest }) => {
   const styling = styles(theme)
@@ -32,6 +33,7 @@ const ProfileDelete = ({ t, theme, usersDelete, usersDeleteRequest }) => {
   return (
     <View style={styling.root}>
       <DefaultButton
+        testID={testIDs.actions.deleteProfileBtn}
         mode="outlined"
         color={theme.colors.text}
         label={t('Delete Your Profile')}
