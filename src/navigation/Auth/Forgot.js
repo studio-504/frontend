@@ -7,6 +7,7 @@ import * as navigationOptions from 'navigation/options'
 import AuthForgotPhoneScreen from 'screens/AuthForgotPhoneScreen'
 import AuthForgotEmailScreen from 'screens/AuthForgotEmailScreen'
 import * as authActions from 'store/ducks/auth/actions'
+import testIDs from '../test-ids'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -28,7 +29,7 @@ const ForgotNavigator = () => {
         component={AuthForgotPhoneScreen}
         options={{
           tabBarLabel: 'Phone',
-          tabBarTestID: 'navigation/AuthNavigator/Forgot/phone',
+          tabBarTestID: testIDs.authNavigator.forgot.phone,
         }}
       />
       <Tab.Screen
@@ -36,7 +37,7 @@ const ForgotNavigator = () => {
         component={AuthForgotEmailScreen}
         options={{
           tabBarLabel: 'Email',
-          tabBarTestID: 'navigation/AuthNavigator/Forgot/email',
+          tabBarTestID: testIDs.authNavigator.forgot.email,
         }}
       />
     </Tab.Navigator>

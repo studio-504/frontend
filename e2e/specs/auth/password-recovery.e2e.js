@@ -1,12 +1,12 @@
 import * as actions from './actions'
 import { permissions } from '../../helpers/users'
-import { generatePassword, toBeVisible, tap, typeText, toHaveValue, waitForElement } from '../../helpers/utils'
+import { generatePassword, toBeVisible, tap, typeText, toHaveValue, toBeNotVisible } from '../../helpers/utils'
 import * as emailHelpers from '../../helpers/email'
 import {
-  FeedScreen,
   AuthSigninEmail,
   AuthForgotConfirmScreen,
   AuthForgotEmailScreen,
+  Navigation,
   AuthEmailConfirmScreen,
 } from './../../helpers/screens'
 
@@ -26,47 +26,43 @@ describe('Feature: Password Recovery', () => {
   describe('As a user I want to recovery my password', () => {
     const newPassword = generatePassword()
 
-    it('Given: Unauthorized user on signin screen', async () => {
+    it('should navigate to login screen', async () => {
       await device.launchApp({ permissions, delete: true, newInstance: true })
       await actions.openSignInForm()
       await toBeVisible(AuthSigninEmail.root)
     })
 
-    it('Then tap by reset your password button', async () => {
-      await waitForElement(AuthSigninEmail.resetPasswordBtn)
+    it('should navigate to forgot email password screen ', async () => {
       await tap(AuthSigninEmail.resetPasswordBtn)
-    })
-
-    it('When wait for forgot password screen opened on email tab', async () => {
+      await tap(Navigation.authNavigator.forgot.email)
       await toBeVisible(AuthForgotEmailScreen.root)
     })
 
-    it('Then submit recovery password form with existed user email', async () => {
-      await typeText(AuthForgotEmailScreen.form.username, user.email)
+    it('should fill inputs with email and navigate to forgot confirmation screen', async () => {
+      await typeText(AuthForgotEmailScreen.form.email, user.email)
       await tap(AuthForgotEmailScreen.form.submitBtn)
-    })
-
-    it('When confirm recovery password screen open with prefilled email', async () => {
       await toBeVisible(AuthForgotConfirmScreen.root)
-      await toHaveValue(AuthForgotConfirmScreen.form.username, user.email)
     })
 
-    it('Then submit confirm form with confirmation code and new password', async () => {
+    // eslint-disable-next-line jest/expect-expect
+    it('should open forgot confirmation screen with prefilled email', async () => {
+      await toHaveValue(AuthForgotConfirmScreen.form.emailOrPhone, user.email)
+    })
+
+    it('should change password', async () => {
       const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(user.inbox.id)
 
       await typeText(AuthForgotConfirmScreen.form.confirmationCode, confirmationCode)
       await typeText(AuthForgotConfirmScreen.form.password, newPassword)
 
       await tap(AuthForgotConfirmScreen.form.submitBtn)
-    })
-
-    it('When sign in by email screen open', async () => {
       await toBeVisible(AuthSigninEmail.root)
     })
 
-    it('Then user successfully sign in with new credentials', async () => {
+    // eslint-disable-next-line jest/expect-expect
+    it('should signin the user successfully with the new credentials', async () => {
       await actions.submitSignInForm({ email: user.email, password: newPassword })
-      await waitForElement(FeedScreen.root)
+      await toBeNotVisible(AuthSigninEmail.root)
     })
   })
 

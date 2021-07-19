@@ -30,7 +30,7 @@ const ForgotConfirmForm = ({
       <View style={styles.input}>
         <Field
           {...Validation.getInputTypeProps('username')}
-          testID={testIDs.form.username}
+          testID={testIDs.form.emailOrPhone}
           name="username"
           component={TextField}
           placeholder={t('Phone or Email')}

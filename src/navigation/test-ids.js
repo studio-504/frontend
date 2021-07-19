@@ -11,5 +11,9 @@ export default {
       phone: 'navigation/AuthNavigator/Signin/phone',
       email: 'navigation/AuthNavigator/Signin/email',
     },
+    forgot: {
+      phone: 'navigation/AuthNavigator/Forgot/phone',
+      email: 'navigation/AuthNavigator/Forgot/email',
+    },
   },
 }
