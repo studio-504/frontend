@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { withTheme } from 'react-native-paper'
 import UploadIcon from 'assets/svg/camera/Upload'
 import FlipIcon from 'assets/svg/camera/Flip'
 import FlashOnIcon from 'assets/svg/camera/FlashOn'
 import FlashOffIcon from 'assets/svg/camera/FlashOff'
-
-import { withTheme } from 'react-native-paper'
+import testIDs from './test-ids'
 
 const Shutter = ({
   theme,
@@ -28,7 +28,7 @@ const Shutter = ({
         </TouchableOpacity>
         <View style={styling.item} />
 
-        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap}>
+        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap} testID={testIDs.actions.shutterBtn}>
         </TouchableOpacity>
 
         <TouchableOpacity style={styling.item} onPress={handleFlipToggle}>

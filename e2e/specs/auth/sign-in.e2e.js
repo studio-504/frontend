@@ -1,7 +1,7 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "element", "toBeVisible", "tap", "shouldStayOnSignInScreenAfterSubmit", "waitForElement"] }] */
 import { valid } from './data.mock'
 import { credentials, permissions } from '../../helpers/users'
-import * as actions from './actions'
+import * as actions from '../../helpers/actions/authActions'
 import { generateString, tap, toBeVisible, waitForElement, typeText } from '../../helpers/utils'
 import {
   FeedScreen,

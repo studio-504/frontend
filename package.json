@@ -15,7 +15,7 @@
     "lint:editorconfig": "editorconfig-checker",
     "translations-scan": "i18next-scanner --config i18next-scanner.config.engine.js src/**/*.js",
     "tests:unit": "jest",
-    "tests:e2e": "detox test",
+    "tests:e2e": "RN_SRC_EXT=e2e.js detox build && detox test e2e/specs/profile/upload-avatar.e2e.js",
     "validate": "npm run lint:editorconfig && npm run lint && npm run tests:unit"
   },
   "dependencies": {

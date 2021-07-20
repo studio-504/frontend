@@ -1,4 +1,4 @@
-import CropPicker from 'react-native-image-crop-picker'
+import CropPicker from 'services/ImageCropPicker'
 import mapSeries from 'async/mapSeries'
 import { autoKeyboardClose, cropperOptions, requestPayload, handleError } from 'services/providers/Camera/helpers'
 

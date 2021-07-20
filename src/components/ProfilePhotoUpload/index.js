@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
+import { withTranslation } from 'react-i18next'
 import ProgressComponent from 'components/ProfilePhotoUpload/Progress'
 import PhotoComponent from 'components/ProfilePhotoUpload/Photo'
 import AuthHeaderTemplate from 'templates/Auth/Header'
-
-import { withTranslation } from 'react-i18next'
+import testIDs from './test-ids'
 
 const ProfilePhotoUpload = ({ t, activeUpload }) => {
   return (
-    <View style={styles.root}>
+    <View style={styles.root} testID={testIDs.root}>
       <View style={styles.component}>
         <AuthHeaderTemplate
           title={t('Add Profile Picture')}

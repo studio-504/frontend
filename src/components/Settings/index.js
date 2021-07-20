@@ -61,6 +61,7 @@ const Settings = ({
             icon: <EditIcon fill={theme.colors.text} />,
           },
           {
+            testID: testIDs.actions.changeAvatarBtn,
             label: t('Change Profile Picture'),
             onPress: openUploadAvatarMenu,
             icon: <PhotoIcon fill={theme.colors.text} />,

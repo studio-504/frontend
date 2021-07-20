@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import * as actions from '../../helpers/actions/authActions'
 import { credentials, permissions } from '../../helpers/users'
 import { tap, toBeVisible, waitForElement } from '../../helpers/utils'
 import { FeedScreen, SettingsScreen, ProfileScreen, AuthHomeScreen, Navigation } from './../../helpers/screens'

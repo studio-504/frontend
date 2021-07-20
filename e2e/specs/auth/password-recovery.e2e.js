@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import * as actions from '../../helpers/actions/authActions'
 import { permissions } from '../../helpers/users'
 import { generatePassword, toBeVisible, tap, typeText, toHaveValue, toBeNotVisible } from '../../helpers/utils'
 import * as emailHelpers from '../../helpers/email'

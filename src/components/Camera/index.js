@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import CameraTemplate from 'templates/Camera'
 import CameraHeaderTemplate from 'templates/Camera/Header'
 import ShutterComponent from 'components/Camera/Shutter'
@@ -16,8 +17,7 @@ import usePrevious from 'react-use/lib/usePrevious'
 import { getCameraBonds } from 'services/Dimensions'
 import { BlurView } from '@react-native-community/blur'
 import * as navigationActions from 'navigation/actions'
-
-import { useNavigation } from '@react-navigation/native'
+import testIDs from './test-ids'
 
 const usePulse = (fromValue, toValue) => {
   const width = new Animated.Value(fromValue)
@@ -50,7 +50,7 @@ const CameraComponent = ({
   const bottomHeight = usePulse(getCameraBonds(prevStatus).bottom, getCameraBonds(photoSize).bottom)
 
   return (
-    <View style={styling.root}>
+    <View style={styling.root} testID={testIDs.root}>
       <CameraTemplate
         header={(
           <CameraHeaderTemplate

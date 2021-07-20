@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import * as actions from '../../helpers/actions/authActions'
 import { permissions } from '../../helpers/users'
 import { toBeVisible, tap, scrollTo, tapToText } from '../../helpers/utils'
 import * as emailHelpers from '../../helpers/email'
@@ -62,5 +62,4 @@ describe('Feature: Destroy profile', () => {
       await toBeVisible(AuthSigninEmail.root)
     })
   })
-
 })

@@ -10,7 +10,7 @@ import {
   AuthEmailConfirmScreen,
   AuthEmailScreen,
   AuthPasswordScreen,
-} from './../../helpers/screens'
+} from '../screens'
 
 export async function openSignInForm() {
   await toBeVisible(AuthHomeScreen.root)
