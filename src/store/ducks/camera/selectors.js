@@ -1,8 +1,5 @@
-import path from 'ramda/src/path'
-import { createDeepEqualSelector } from 'store/helpers'
+import { prop } from 'ramda'
+import { createSelector } from 'reselect'
 
-/**
- *
- */
-const isRecording = path(['camera', 'isRecording'])
-export const cameraRecordingSelector = () => createDeepEqualSelector([isRecording], (isRecording) => isRecording)
+const camera = prop('camera')
+export const cameraRecordingSelector = createSelector(camera, prop('isRecording'))

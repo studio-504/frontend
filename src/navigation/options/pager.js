@@ -7,7 +7,7 @@ import { cameraRecordingSelector } from 'store/ducks/camera/selectors'
 
 const AppViewPagerAdapter = (props) => {
   const { swipeEnabled } = useContext(AuthContext)
-  const isRecording = useSelector(cameraRecordingSelector())
+  const isRecording = useSelector(cameraRecordingSelector)
   const currentIndex = path(['navigationState', 'index'])(props)
   const nextIndex = path(['navigationState', 'routes', currentIndex, 'state', 'index'])(props)
   const hasNextScreen = !nextIndex || nextIndex === 0

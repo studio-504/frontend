@@ -2,8 +2,8 @@ import React from 'react'
 import Video from 'react-native-video'
 import { renderWithStore, act } from 'tests/utils'
 import VideoPlayer from 'components/VideoPlayer'
-import * as PlayerActions from 'store/ducks/player/actions'
 import testIDs from 'components/VideoPlayer/test-ids'
+import { fireEvent } from '@testing-library/react-native'
 
 jest.mock('react-native-video', () => jest.fn().mockImplementation(() => null))
 
@@ -21,7 +21,7 @@ const setup = (props) => renderWithStore(
 
 describe('VideoPlayer component', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    Video.mockClear()
   })
 
   it('should render Video', () => {
@@ -46,11 +46,11 @@ describe('VideoPlayer component', () => {
     expect(video.repeat).toBeTruthy()
   })
 
-  it('should show sound control after toggling the sound', async () => {
-    const { queryByTestId, store } = setup()
+  it('should show the sound control after toggling the sound', async () => {
+    const { queryByTestId } = setup()
 
     await act(async () => {
-      store.dispatch(PlayerActions.toggleSound())
+      fireEvent.press(queryByTestId(testIDs.root))
     })
 
     expect(queryByTestId(testIDs.sound)).toBeTruthy()
@@ -59,10 +59,10 @@ describe('VideoPlayer component', () => {
   it('should hide sound control after 3s delay', async () => {
     jest.useFakeTimers()
 
-    const { queryByTestId, store } = setup()
+    const { queryByTestId } = setup()
 
     await act(async () => {
-      store.dispatch(PlayerActions.toggleSound())
+      fireEvent.press(queryByTestId(testIDs.root))
     })
 
     jest.runOnlyPendingTimers()

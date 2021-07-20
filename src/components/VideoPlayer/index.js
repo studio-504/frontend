@@ -23,7 +23,7 @@ const VideoPlayer = ({
   isMuted,
   timeLeft,
 }) => (
-  <TouchableWithoutFeedback onPress={toggleSound}>
+  <TouchableWithoutFeedback onPress={toggleSound} testID={testIDs.root}>
     <View  style={styles.playerContainer}>
       {playing ? (
         <Text style={styles.progress} testID={testIDs.progress}>{timeLeft}</Text>

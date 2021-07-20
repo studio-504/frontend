@@ -1,4 +1,5 @@
 export default {
-  progress: 'progress',
-  sound: 'sound',
+  root: 'components/VideoPlayer',
+  progress: 'components/VideoPlayer/progress',
+  sound: 'components/VideoPlayer/sound',
 }
