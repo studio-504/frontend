@@ -69,7 +69,7 @@ describe('Feature: Sign up', () => {
     await emailHelpers.deleteInbox(inbox.id)
   })
 
-  describe('Signup with incorrect inputs', () => {
+  describe('Scenario: Signup with incorrect inputs', () => {
     let email
 
     beforeAll(async () => {
@@ -77,15 +77,15 @@ describe('Feature: Sign up', () => {
       email = fields.email
     })
 
-    describe('Email signup fails', () => {
-      it('should navigate to signup with email screen', async () => {
+    describe('Scenario: e-mail signup fails', () => {
+      it('Given: navigated to signup screen', async () => {
         await toBeVisible(AuthHomeScreen.root)
         await tap(AuthHomeScreen.actions.signUpBtn)
         await tap(Navigation.authNavigator.signUp.email)
         await toBeVisible(AuthEmailScreen.root)
       })
 
-      it('should fail with invalid email addresses', async () => {
+      it('Then fail with invalid e-mail addresses', async () => {
         await testField(email, 'notvalid', 'email', AuthEmailScreen.form.submitBtn)
         await testField(email, 'notvalid@', 'email', AuthEmailScreen.form.submitBtn)
         await testField(email, 'notvalid@email', 'email', AuthEmailScreen.form.submitBtn)
@@ -93,7 +93,7 @@ describe('Feature: Sign up', () => {
         await shouldStayOnStep('email')
       })
 
-      it('should fail with existing email', async () => {
+      it('Then fail with existing e-mail adress', async () => {
         await fillField('email', credentials.email)
         await tap(AuthEmailScreen.form.submitBtn)
         await shouldStayOnStep('email')
@@ -101,7 +101,7 @@ describe('Feature: Sign up', () => {
     })
   })
 
-  describe('Signup with correct credentials', () => {
+  describe('Scenario: signup with correct credentials', () => {
     let username
     let password
 
@@ -111,18 +111,18 @@ describe('Feature: Sign up', () => {
       password = fields.password
     })
 
-    describe('Signup with email and confirm', () => {
-      it('should show signup with email screen', async () => {
+    describe('Scenario: signup with e-mail and confirm the e-mail', () => {
+      it('Given: auth screen with e-mail', async () => {
         await toBeVisible(AuthEmailScreen.root)
       })
 
-      it('should navigate to email confirmation screen', async () => {
+      it('Then enter the e-mail and submit', async () => {
         await fillField('email', inbox.emailAddress)
         await tap(AuthEmailScreen.form.submitBtn)
         await toBeVisible(AuthEmailConfirmScreen.root)
       })
 
-      it('should confirm the email address', async () => {
+      it('Then confirm the e-mail', async () => {
         await sleep(10000)
         const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(inbox.id)
         await fillField('code', confirmationCode)
@@ -131,8 +131,8 @@ describe('Feature: Sign up', () => {
       })
     })
 
-    describe('Username fails', () => {
-      it('should fail with invalid characters', async () => {
+    describe('Given: auth username screen', () => {
+      it('Then fail with invalid characters', async () => {
         await testField(username, '!', 'username', AuthUsernameScreen.form.submitBtn)
         await testField(username, '&', 'username', AuthUsernameScreen.form.submitBtn)
         await testField(username, '#', 'username', AuthUsernameScreen.form.submitBtn)
@@ -142,43 +142,43 @@ describe('Feature: Sign up', () => {
         await shouldStayOnStep('username')
       })
 
-      it('should fail existing username', async () => {
+      it('Then fail with existing username', async () => {
         await testField(username, 'real', 'username', AuthUsernameScreen.form.submitBtn)
         await shouldStayOnStep('username')
       })
 
-      it('should fail with less than 3 characters', async () => {
+      it('Then fail with minimum character length', async () => {
         await testField(username, 'abc', 'username', AuthUsernameScreen.form.submitBtn)
         await shouldStayOnStep('username')
       })
 
-      it('should fail with more than 30 characters', async () => {
+      it('Then fail with maximum character length', async () => {
         await testField(username, generateString({ length: 31 }), 'username', AuthUsernameScreen.form.submitBtn)
         await shouldStayOnStep('username')
       })
     })
 
-    describe('Username skipping', () => {
-      it('should skip username screen', async () => {
+    describe('Scenario: skip the username screen', () => {
+      it('Then navigate to auth password screen', async () => {
         await tap(AuthUsernameScreen.header.skipBtn)
         await toBeVisible(AuthPasswordScreen.root)
       })
     })
 
-    describe('Password fails', () => {
-      it('should fail with less than 8 characters', async () => {
+    describe('Scenario: fail with invalid password', () => {
+      it('Fail with minimum character length', async () => {
         await testField(password, generateString({ length: 7 }), 'password', AuthPasswordScreen.form.submitBtn)
         await shouldStayOnStep('password')
       })
 
-      it('should fail with more than 50 characters', async () => {
+      it('The fail with maximum character length', async () => {
         await testField(password, generateString({ length: 51 }), 'password', AuthPasswordScreen.form.submitBtn)
         await shouldStayOnStep('password')
       })
     })
 
-    describe('Setting password', () => {
-      it('should set password and sign up successfully', async () => {
+    describe('Scenario: set acceptable password', () => {
+      it('Set the password and signup', async () => {
         await fillField('password', generateString({ length: 10 }))
         await tap(AuthPasswordScreen.form.submitBtn)
         await toBeNotVisible(AuthUsernameScreen.root)
