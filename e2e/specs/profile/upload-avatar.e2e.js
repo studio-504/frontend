@@ -17,56 +17,56 @@ async function initialize() {
 }
 
 describe('Feature: Upload avatar', () => {
-  describe('Upload avatar with camera', () => {
-    it('should navigate to profile screen', async () => {
+  describe('Scenario: upload avatar with camera', () => {
+    it('Given app is ready', async () => {
       await initialize()
       await tap(Navigation.tabNavigator.profile)
       await toBeVisible(ProfileScreen.root)
     })
 
-    it('should navigate to settings screen', async () => {
+    it('Then navigate to settings screen', async () => {
       await tap(ProfileScreen.actions.settingsBtn)
       await toBeVisible(SettingsScreen.root)
     })
 
-    it('should open camera screen', async () => {
+    it('Then open the camera', async () => {
       await tap(SettingsScreen.actions.changeAvatarBtn)
       await tapToText('Take a Photo')
       await tapToText('Confirm')
       await toBeVisible(CameraScreen.root)
     })
 
-    it('should take a photo and upload', async () => {
+    it('Then take a photo and upload it', async () => {
       await tap(CameraScreen.actions.shutterBtn)
       await tapToText('Choose')
       await toBeVisible(ProfilePhotoUploadScreen.root)
     })
 
-    it('should navigate to profile screen after uploading', async () => {
+    it('Then expect the image to be uploaded', async () => {
       toBeVisible(ProfileScreen.root)
     })
   })
 
-  describe('Upload avatar from library', () => {
-    it('should navigate to profile screen', async () => {
+  describe('Scenario: upload avatar from library', () => {
+    it('Given: app is ready', async () => {
       await initialize()
       await tap(Navigation.tabNavigator.profile)
       await toBeVisible(ProfileScreen.root)
     })
 
-    it('should navigate to settings screen', async () => {
+    it('Then navigate to settings screen', async () => {
       await tap(ProfileScreen.actions.settingsBtn)
       await toBeVisible(SettingsScreen.root)
     })
 
-    it('should pick an image from gallery', async () => {
+    it('Then pick an image from gallery and start uploading', async () => {
       await tap(SettingsScreen.actions.changeAvatarBtn)
       await tapToText('Choose From Gallery')
       await tapToText('Confirm')
       await toBeVisible(ProfilePhotoUploadScreen.root)
     })
 
-    it('should navigate to profile screen after uploading', async () => {
+    it('Then expect the image to be uploaded', async () => {
       toBeVisible(ProfileScreen.root)
     })
   })
