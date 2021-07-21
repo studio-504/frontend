@@ -25,36 +25,36 @@ describe('Feature: Destroy profile', () => {
     await emailHelpers.deleteInbox(user.inbox.id)
   })
 
-  describe('destroy the profile', () => {
-    it('should close theme selector', async () => {
+  describe('Scenario: destroy profile', () => {
+    it('Given: feed screen', async () => {
       await tap(ThemeDefaultScreen.backdrop)
       await toBeVisible(FeedScreen.root)
     })
 
-    it('should navigate to profile screen', async () => {
+    it('Then navigate to profile screen', async () => {
       await tap(Navigation.tabNavigator.profile)
       await toBeVisible(ProfileScreen.root)
     })
 
-    it('should navigate to settings screen', async () => {
+    it('Then navigate to settings screen', async () => {
       await tap(ProfileScreen.actions.settingsBtn)
       await toBeVisible(SettingsScreen.root)
     })
 
-    it('should scroll to bottom', async () => {
+    it('Then scroll to bottom', async () => {
       await scrollTo(SettingsScreen.root, 'bottom')
       await toBeVisible(SettingsScreen.actions.deleteProfileBtn)
     })
 
-    it('should delete the profile', async () => {
+    it('Then tap to delete the profile button and confirm', async () => {
       await tap(SettingsScreen.actions.deleteProfileBtn)
       await tapToText('Delete now')
       await toBeVisible(AuthHomeScreen.root)
     })
   })
 
-  describe('try to signin to destroyed profile', () => {
-    it('should fail', async () => {
+  describe('Scenario: try to signin to destroyed profile', () => {
+    it('Fail with sign in to destroyed profile', async () => {
       await actions.signIn({
         email: user.email,
         password: user.password,
