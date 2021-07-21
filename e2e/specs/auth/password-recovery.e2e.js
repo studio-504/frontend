@@ -23,33 +23,33 @@ describe('Feature: Password Recovery', () => {
     await emailHelpers.deleteInbox(user.inbox.id)
   })
 
-  describe('As a user I want to recovery my password', () => {
+  describe('Scenario: recover the password', () => {
     const newPassword = generatePassword()
 
-    it('should navigate to login screen', async () => {
+    it('Given: sign in with e-mail screen', async () => {
       await device.launchApp({ permissions, delete: true, newInstance: true })
       await actions.openSignInForm()
       await toBeVisible(AuthSigninEmail.root)
     })
 
-    it('should navigate to forgot email password screen ', async () => {
+    it('Then navigate to forgot password of e-mail screen', async () => {
       await tap(AuthSigninEmail.resetPasswordBtn)
       await tap(Navigation.authNavigator.forgot.email)
       await toBeVisible(AuthForgotEmailScreen.root)
     })
 
-    it('should fill inputs with email and navigate to forgot confirmation screen', async () => {
+    it('Then enter the e-mail', async () => {
       await typeText(AuthForgotEmailScreen.form.email, user.email)
       await tap(AuthForgotEmailScreen.form.submitBtn)
       await toBeVisible(AuthForgotConfirmScreen.root)
     })
 
     // eslint-disable-next-line jest/expect-expect
-    it('should open forgot confirmation screen with prefilled email', async () => {
+    it('When: app is navigated to confirm e-mail screen', async () => {
       await toHaveValue(AuthForgotConfirmScreen.form.emailOrPhone, user.email)
     })
 
-    it('should change password', async () => {
+    it('Then enter the confirmation code and new password', async () => {
       const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(user.inbox.id)
 
       await typeText(AuthForgotConfirmScreen.form.confirmationCode, confirmationCode)
@@ -60,7 +60,7 @@ describe('Feature: Password Recovery', () => {
     })
 
     // eslint-disable-next-line jest/expect-expect
-    it('should signin the user successfully with the new credentials', async () => {
+    it('Then sign in with new password', async () => {
       await actions.submitSignInForm({ email: user.email, password: newPassword })
       await toBeNotVisible(AuthSigninEmail.root)
     })
