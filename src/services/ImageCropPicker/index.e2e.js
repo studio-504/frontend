@@ -1,7 +1,9 @@
+import Config from 'react-native-config'
+const imagePath = Config.E2E_HEIC_FILE
 const image = {
-  path: '/Users/danieldarko/Downloads/sample1.heic',
-  sourceURL: 'file:///Users/danieldarko/Downloads/sample1.heic',
-  fileSource: '/Users/danieldarko/Downloads/sample1.heic',
+  path: imagePath,
+  sourceURL: `file://${imagePath}`,
+  fileSource: imagePath,
   adjustmentData: false,
   creationDate: '1626774899',
   cropRect: null,
