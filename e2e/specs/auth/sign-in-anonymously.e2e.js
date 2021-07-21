@@ -14,27 +14,31 @@ describe('Feature: Sign in anonymously', () => {
     await device.launchApp({ permissions, newInstance: true })
   })
 
-  describe('sign in anonymously', () => {
-    it('should sign in anonymously', async () => {
+  describe('Scenario: sign in anonymously', () => {
+    it('When app is opened', async () => {
+      await toBeVisible(AuthHomeScreen.root)
+    })
+
+    it('Then sign in anonymously', async () => {
       await tap(AuthHomeScreen.actions.anonymousBtn)
       await tap(ThemeDefaultScreen.backdrop)
       await toBeVisible(FeedScreen.root)
     })
+  })
 
-    it('should open auth modal', async () => {
+  describe('Scenario: sign in with existing account', () => {
+    it('Given: auth modal', async () => {
       await tap(Navigation.tabNavigator.profile)
       await toBeVisible(ProfileUpgradeScreen.root)
     })
-  })
 
-  describe('sign in with real profile', () => {
-    it('should navigate login form', async () => {
+    it('Then open sign in with e-mail screen', async () => {
       await tap(ProfileUpgradeScreen.actions.signInBtn)
       await tap(Navigation.authNavigator.signIn.email)
       await toBeVisible(AuthSigninEmail.root)
     })
 
-    it('should sign in', async () => {
+    it('Then sign in with existing account', async () => {
       await typeText(AuthSigninEmail.form.email, credentials.email)
       await typeText(AuthSigninEmail.form.password, credentials.password)
       await tap(AuthSigninEmail.form.submitBtn)
