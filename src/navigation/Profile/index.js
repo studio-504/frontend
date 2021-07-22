@@ -20,6 +20,7 @@ import DatingSettingsScreen from 'screens/DatingSettingsScreen'
 import DatingMatchScreen from 'screens/DatingMatchScreen'
 import DatingAboutScreen from 'screens/DatingAboutScreen'
 import DatingProfileScreen from 'screens/DatingProfileScreen'
+import ProfileEditTestIDs from 'components/ProfileEdit/test-ids'
 
 const Stack = createStackNavigator()
 
@@ -38,7 +39,12 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="ProfileEdit"
         component={ProfileEditScreen}
-        {...stackScreenPageProps({ options: { title: 'Edit Profile' } })}
+        {...stackScreenPageProps({
+          options: {
+            title: 'Edit Profile',
+            backButtonTestID: ProfileEditTestIDs.actions.headerBack,
+          },
+        })}
       />
       <Stack.Screen
         name="ProfilePhotoGrid"

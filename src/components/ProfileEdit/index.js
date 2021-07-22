@@ -7,6 +7,7 @@ import {
 import ProfileEditForm from 'components/ProfileEdit/Form'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withTheme } from 'react-native-paper'
+import testIDs from './test-ids'
 
 const ProfileEdit = ({
   theme,
@@ -17,7 +18,7 @@ const ProfileEdit = ({
   const styling = styles(theme)
 
   return (
-    <View style={styling.root}>
+    <View style={styling.root} testID={testIDs.root}>
       <KeyboardAwareScrollView>
         <ProfileEditForm
           formInitialValues={formInitialValues}

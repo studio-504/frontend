@@ -56,6 +56,7 @@ const Settings = ({
       <RowsComponent
         items={[
           {
+            testID: testIDs.actions.editProfileBtn,
             label: t('Edit Profile'),
             onPress: () => navigationActions.navigateProfileEdit(navigation),
             icon: <EditIcon fill={theme.colors.text} />,

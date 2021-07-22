@@ -340,7 +340,7 @@ export const stackScreenPageProps = ({ theme }) => ({ options } = {}) => ({
         borderBottomWidth: 0,
         shadowColor: 'transparent',
       },
-      headerLeft: (props) => pageHeaderLeft({ ...props, theme }),
+      headerLeft: (props) => pageHeaderLeft({ ...props, theme, testID: options.backButtonTestID }),
       headerRight: () => null,
       headerTintColor: 'red',
       ...options,

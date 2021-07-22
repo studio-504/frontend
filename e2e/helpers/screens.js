@@ -16,6 +16,7 @@ import ThemeDefaultScreen from 'components/ThemeDefault/test-ids'
 import ProfileUpgradeScreen from 'components/ProfileUpgrade/test-ids'
 import CameraScreen from 'components/Camera/test-ids'
 import ProfilePhotoUploadScreen from 'components/ProfilePhotoUpload/test-ids'
+import ProfileEditScreen from 'components/ProfileEdit/test-ids'
 
 export {
   SettingsScreen,
@@ -36,4 +37,5 @@ export {
   ProfileUpgradeScreen,
   CameraScreen,
   ProfilePhotoUploadScreen,
+  ProfileEditScreen,
 }

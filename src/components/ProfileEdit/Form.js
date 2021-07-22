@@ -8,6 +8,7 @@ import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
 import * as Validation from 'services/Validation'
 import { withTranslation } from 'react-i18next'
+import testIDs from './test-ids'
 
 const formSchema = Yup.object().shape({
   bio: Validation.bio,
@@ -42,6 +43,7 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values, initialValues }) =>
       </View>
       <View style={styles.input}>
         <Field
+          testID={testIDs.form.username}
           {...Validation.getInputTypeProps('username')}
           name="username"
           component={TextField}
@@ -55,6 +57,7 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values, initialValues }) =>
       </View>
       <View style={styles.input}>
         <Field
+          testID={testIDs.form.fullname}
           name="fullName"
           accessibilityLabel="fullName"
           component={TextField}
@@ -63,10 +66,21 @@ const ProfileEditForm = ({ t, handleSubmit, loading, values, initialValues }) =>
         />
       </View>
       <View style={styles.input}>
-        <Field name="bio" accessibilityLabel="bio" component={TextField} placeholder={t('Bio')} />
+        <Field
+          testID={testIDs.form.bio}
+          name="bio"
+          accessibilityLabel="bio"
+          component={TextField} placeholder={t('Bio')}
+        />
       </View>
       <View style={styles.input}>
-        <DefaultButton label={t('Update')} onPress={handleSubmit} loading={loading} disabled={loading} />
+        <DefaultButton
+          testID={testIDs.form.submitBtn}
+          label={t('Update')}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={loading}
+        />
       </View>
     </View>
   )
