@@ -1,6 +1,6 @@
 import * as emailHelpers from '../../helpers/email'
 import { credentials, permissions } from '../../helpers/users'
-import { generateString, tap, toBeVisible, toBeNotVisible, sleep } from '../../helpers/utils'
+import { generateString, tap, toBeVisible, toBeNotVisible, sleep, generateUsername } from '../../helpers/utils'
 import {
   AuthHomeScreen,
   AuthUsernameScreen,
@@ -123,7 +123,7 @@ describe('Feature: Sign up', () => {
       })
 
       it('Then confirm the e-mail', async () => {
-        await sleep(10000)
+        await sleep(40000)
         const confirmationCode = await emailHelpers.extractCodeFromLatestEmail(inbox.id)
         await fillField('code', confirmationCode)
         await tap(AuthEmailConfirmScreen.form.confirmButton)
@@ -161,6 +161,19 @@ describe('Feature: Sign up', () => {
     describe('Scenario: skip the username screen', () => {
       it('Then navigate to auth password screen', async () => {
         await tap(AuthUsernameScreen.header.skipBtn)
+        await toBeVisible(AuthPasswordScreen.root)
+      })
+    })
+
+    describe('Scenario: set username', () => {
+      it('When tapping to back button from auth password screen', async () => {
+        await tap(AuthPasswordScreen.header.backBtn)
+        await toBeVisible(AuthUsernameScreen.root)
+      })
+
+      it('Then set a username', async () => {
+        await fillField('username', generateUsername())
+        await tap(AuthUsernameScreen.form.submitBtn)
         await toBeVisible(AuthPasswordScreen.root)
       })
     })
