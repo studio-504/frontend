@@ -1,9 +1,8 @@
 import React from 'react'
 import Video from 'react-native-video'
-import { renderWithStore, act } from 'tests/utils'
+import { renderWithStore, act, fireEvent } from 'tests/utils'
 import VideoPlayer from 'components/VideoPlayer'
 import testIDs from 'components/VideoPlayer/test-ids'
-import { fireEvent } from '@testing-library/react-native'
 
 jest.mock('react-native-video', () => jest.fn().mockImplementation(() => null))
 
